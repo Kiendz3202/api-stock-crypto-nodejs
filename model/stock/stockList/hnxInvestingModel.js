@@ -3,15 +3,15 @@ const mongoose = require('mongoose')
 const hnxInvestingSchema = mongoose.Schema(
     {
         id: { type: "String" },
-        name: { type: "String" },
-        last: { type: "String" },
-        change: { type: "String" },
-        changePercent: { type: "String" },
-        high: { type: "String" },
-        low: { type: "String" },
-        turnOver: { type: "String" },
-        time: { type: "String" },
-        hrefDetail: { type: "String" }
+        name: { type: "String", default: "" },
+        // last: { type: "String", default: "" },
+        // change: { type: "String", default: "" },
+        // changePercent: { type: "String", default: "" },
+        // high: { type: "String", default: "" },
+        // low: { type: "String", default: "" },
+        // turnOver: { type: "String", default: "" },
+        // time: { type: "String", default: "" },
+        hrefDetail: { type: "String", default: "" }
     },
     {
         timestamps: true

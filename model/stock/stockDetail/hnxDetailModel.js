@@ -14,12 +14,23 @@ const hnxDetailSchema = mongoose.Schema(
         high: { type: "String" },
         low: { type: "String" },
         turnOver: { type: "String" },
-        sumValue: { type: "String" },
-        turnOverBuy: [{ type: String }],
-        turnOverSell: [{ type: String }],
-        buyPrice: [{ type: String }],
-        sellPrice: [{ type: String }],
-        urlChart: { type: "String" }
+
+        marketcap: { type: "String" },
+        overBought: { type: "String" },
+        overSold: { type: "String" },
+        high52Week: { type: "String" },
+        low52Week: { type: "String" },
+        turnOver52WeekAverage: { type: "String" },
+        foreignBuy: { type: "String" },
+        ownedRatio: { type: "String" },
+        dividendCast: { type: "String" }, //cổ tức tiền mặt
+        dividendYield: { type: "String" }, // tỷ lệ cổ tức
+        beta: { type: "String" },
+        eps: { type: "String" },
+        pe: { type: "String" },
+        fpe: { type: "String" }, // F P/e
+        bvps: { type: "String" }, //book value per share
+        pb: { type: "String" }
     },
     {
         timestamps: true

@@ -38,10 +38,10 @@ const crawlHnx30 = asyncHandler(async () => {
                 let dataJson = {}
 
                 try {
-                    dataJson.name = stock.getElementsByTagName('td')[0].dataset.tooltip;
-                    let symbolCrawl = stock.getElementsByTagName('span')[0].innerText
+                    dataJson.name = stock.getElementsByTagName('td')[0]?.dataset.tooltip;
+                    let symbolCrawl = stock.getElementsByTagName('span')[0]?.innerText
                     if (symbolCrawl.includes('*')) {
-                        let len = symbolCrawl.length
+                        let len = symbolCrawl?.length
                         if (symbolCrawl.includes('**')) {
                             dataJson.symbol = symbolCrawl.slice(0, len - 2)
                         } else {
@@ -51,20 +51,20 @@ const crawlHnx30 = asyncHandler(async () => {
                         dataJson.symbol = symbolCrawl
                     }
 
-                    dataJson.reference = stock.getElementsByClassName('cell-body-highlight')[0].innerText
-                    dataJson.ceil = stock.getElementsByClassName('cell-body-highlight')[1].innerText
-                    dataJson.floor = stock.getElementsByClassName('cell-body-highlight')[2].innerText
+                    dataJson.reference = stock.getElementsByClassName('cell-body-highlight')[0]?.innerText
+                    dataJson.ceil = stock.getElementsByClassName('cell-body-highlight')[1]?.innerText
+                    dataJson.floor = stock.getElementsByClassName('cell-body-highlight')[2]?.innerText
 
-                    dataJson.currentPrice = stock.getElementsByClassName('cell-body-highlight')[3].innerText
+                    dataJson.currentPrice = stock.getElementsByClassName('cell-body-highlight')[3]?.innerText
 
-                    dataJson.high = stock.getElementsByClassName('cell-body-highlight')[7].innerText
-                    dataJson.low = stock.getElementsByClassName('cell-body-highlight')[8].innerText
+                    dataJson.high = stock.getElementsByClassName('cell-body-highlight')[7]?.innerText
+                    dataJson.low = stock.getElementsByClassName('cell-body-highlight')[8]?.innerText
 
-                    dataJson.change = stock.getElementsByClassName('cell-body-highlight')[5].innerText
-                    dataJson.changePercent = stock.getElementsByClassName('cell-body-highlight')[6].innerText
+                    dataJson.change = stock.getElementsByClassName('cell-body-highlight')[5]?.innerText
+                    dataJson.changePercent = stock.getElementsByClassName('cell-body-highlight')[6]?.innerText
 
                     const turnOverElement = stock.getElementsByTagName('td')[20]
-                    dataJson.turnOver = turnOverElement.getElementsByTagName('span')[0].innerText
+                    dataJson.turnOver = turnOverElement.getElementsByTagName('span')[0]?.innerText
 
                 } catch (err) {
                     console.log(err)
@@ -137,10 +137,10 @@ const crawlHnx = asyncHandler(async () => {
                 let dataJson = {}
 
                 try {
-                    dataJson.name = stock.getElementsByTagName('td')[0].dataset.tooltip;
+                    dataJson.name = stock.getElementsByTagName('td')[0]?.dataset.tooltip;
                     let symbolCrawl = stock.getElementsByTagName('span')[0].innerText
                     if (symbolCrawl.includes('*')) {
-                        let len = symbolCrawl.length
+                        let len = symbolCrawl?.length
                         if (symbolCrawl.includes('**')) {
                             dataJson.symbol = symbolCrawl.slice(0, len - 2)
                         } else {
@@ -150,20 +150,20 @@ const crawlHnx = asyncHandler(async () => {
                         dataJson.symbol = symbolCrawl
                     }
 
-                    dataJson.reference = stock.getElementsByClassName('cell-body-highlight')[0].innerText
-                    dataJson.ceil = stock.getElementsByClassName('cell-body-highlight')[1].innerText
-                    dataJson.floor = stock.getElementsByClassName('cell-body-highlight')[2].innerText
+                    dataJson.reference = stock.getElementsByClassName('cell-body-highlight')[0]?.innerText
+                    dataJson.ceil = stock.getElementsByClassName('cell-body-highlight')[1]?.innerText
+                    dataJson.floor = stock.getElementsByClassName('cell-body-highlight')[2]?.innerText
 
-                    dataJson.currentPrice = stock.getElementsByClassName('cell-body-highlight')[3].innerText
+                    dataJson.currentPrice = stock.getElementsByClassName('cell-body-highlight')[3]?.innerText
 
-                    dataJson.high = stock.getElementsByClassName('cell-body-highlight')[7].innerText
-                    dataJson.low = stock.getElementsByClassName('cell-body-highlight')[8].innerText
+                    dataJson.high = stock.getElementsByClassName('cell-body-highlight')[7]?.innerText
+                    dataJson.low = stock.getElementsByClassName('cell-body-highlight')[8]?.innerText
 
-                    dataJson.change = stock.getElementsByClassName('cell-body-highlight')[5].innerText
-                    dataJson.changePercent = stock.getElementsByClassName('cell-body-highlight')[6].innerText
+                    dataJson.change = stock.getElementsByClassName('cell-body-highlight')[5]?.innerText
+                    dataJson.changePercent = stock.getElementsByClassName('cell-body-highlight')[6]?.innerText
 
                     const turnOverElement = stock.getElementsByTagName('td')[20]
-                    dataJson.turnOver = turnOverElement.getElementsByTagName('span')[0].innerText
+                    dataJson.turnOver = turnOverElement.getElementsByTagName('span')[0]?.innerText
                 } catch (err) {
                     console.log(err)
                 }
@@ -212,10 +212,10 @@ const crawlVn30 = asyncHandler(async () => {
                 let dataJson = {}
 
                 try {
-                    dataJson.name = stock.getElementsByTagName('td')[0].dataset.tooltip;
-                    let symbolCrawl = stock.getElementsByTagName('span')[0].innerText
+                    dataJson.name = stock.getElementsByTagName('td')[0]?.dataset.tooltip;
+                    let symbolCrawl = stock.getElementsByTagName('span')[0]?.innerText
                     if (symbolCrawl.includes('*')) {
-                        let len = symbolCrawl.length
+                        let len = symbolCrawl?.length
                         if (symbolCrawl.includes('**')) {
                             dataJson.symbol = symbolCrawl.slice(0, len - 2)
                         } else {
@@ -225,20 +225,20 @@ const crawlVn30 = asyncHandler(async () => {
                         dataJson.symbol = symbolCrawl
                     }
 
-                    dataJson.reference = stock.getElementsByClassName('cell-body-highlight')[0].innerText
-                    dataJson.ceil = stock.getElementsByClassName('cell-body-highlight')[1].innerText
-                    dataJson.floor = stock.getElementsByClassName('cell-body-highlight')[2].innerText
+                    dataJson.reference = stock.getElementsByClassName('cell-body-highlight')[0]?.innerText
+                    dataJson.ceil = stock.getElementsByClassName('cell-body-highlight')[1]?.innerText
+                    dataJson.floor = stock.getElementsByClassName('cell-body-highlight')[2]?.innerText
 
-                    dataJson.currentPrice = stock.getElementsByClassName('cell-body-highlight')[3].innerText
+                    dataJson.currentPrice = stock.getElementsByClassName('cell-body-highlight')[3]?.innerText
 
-                    dataJson.high = stock.getElementsByClassName('cell-body-highlight')[7].innerText
-                    dataJson.low = stock.getElementsByClassName('cell-body-highlight')[8].innerText
+                    dataJson.high = stock.getElementsByClassName('cell-body-highlight')[7]?.innerText
+                    dataJson.low = stock.getElementsByClassName('cell-body-highlight')[8]?.innerText
 
-                    dataJson.change = stock.getElementsByClassName('cell-body-highlight')[5].innerText
-                    dataJson.changePercent = stock.getElementsByClassName('cell-body-highlight')[6].innerText
+                    dataJson.change = stock.getElementsByClassName('cell-body-highlight')[5]?.innerText
+                    dataJson.changePercent = stock.getElementsByClassName('cell-body-highlight')[6]?.innerText
 
                     const turnOverElement = stock.getElementsByTagName('td')[20]
-                    dataJson.turnOver = turnOverElement.getElementsByTagName('span')[0].innerText
+                    dataJson.turnOver = turnOverElement.getElementsByTagName('span')[0]?.innerText
                 } catch (err) {
                     console.log(err)
                 }
@@ -309,10 +309,10 @@ const crawlHose = asyncHandler(async () => {
                 let dataJson = {}
 
                 try {
-                    dataJson.name = stock.getElementsByTagName('td')[0].dataset.tooltip;
-                    let symbolCrawl = stock.getElementsByTagName('span')[0].innerText
+                    dataJson.name = stock.getElementsByTagName('td')[0]?.dataset.tooltip;
+                    let symbolCrawl = stock.getElementsByTagName('span')[0]?.innerText
                     if (symbolCrawl.includes('*')) {
-                        let len = symbolCrawl.length
+                        let len = symbolCrawl?.length
                         if (symbolCrawl.includes('**')) {
                             dataJson.symbol = symbolCrawl.slice(0, len - 2)
                         } else {
@@ -322,20 +322,20 @@ const crawlHose = asyncHandler(async () => {
                         dataJson.symbol = symbolCrawl
                     }
 
-                    dataJson.reference = stock.getElementsByClassName('cell-body-highlight')[0].innerText
-                    dataJson.ceil = stock.getElementsByClassName('cell-body-highlight')[1].innerText
-                    dataJson.floor = stock.getElementsByClassName('cell-body-highlight')[2].innerText
+                    dataJson.reference = stock.getElementsByClassName('cell-body-highlight')[0]?.innerText
+                    dataJson.ceil = stock.getElementsByClassName('cell-body-highlight')[1]?.innerText
+                    dataJson.floor = stock.getElementsByClassName('cell-body-highlight')[2]?.innerText
 
-                    dataJson.currentPrice = stock.getElementsByClassName('cell-body-highlight')[3].innerText
+                    dataJson.currentPrice = stock.getElementsByClassName('cell-body-highlight')[3]?.innerText
 
-                    dataJson.high = stock.getElementsByClassName('cell-body-highlight')[7].innerText
-                    dataJson.low = stock.getElementsByClassName('cell-body-highlight')[8].innerText
+                    dataJson.high = stock.getElementsByClassName('cell-body-highlight')[7]?.innerText
+                    dataJson.low = stock.getElementsByClassName('cell-body-highlight')[8]?.innerText
 
-                    dataJson.change = stock.getElementsByClassName('cell-body-highlight')[5].innerText
-                    dataJson.changePercent = stock.getElementsByClassName('cell-body-highlight')[6].innerText
+                    dataJson.change = stock.getElementsByClassName('cell-body-highlight')[5]?.innerText
+                    dataJson.changePercent = stock.getElementsByClassName('cell-body-highlight')[6]?.innerText
 
                     const turnOverElement = stock.getElementsByTagName('td')[20]
-                    dataJson.turnOver = turnOverElement.getElementsByTagName('span')[0].innerText
+                    dataJson.turnOver = turnOverElement.getElementsByTagName('span')[0]?.innerText
                 } catch (err) {
                     console.log(err)
                 }
@@ -406,10 +406,10 @@ const crawlUpcom = asyncHandler(async () => {
                 let dataJson = {}
 
                 try {
-                    dataJson.name = stock.getElementsByTagName('td')[0].dataset.tooltip;
-                    let symbolCrawl = stock.getElementsByTagName('span')[0].innerText
+                    dataJson.name = stock.getElementsByTagName('td')[0]?.dataset.tooltip;
+                    let symbolCrawl = stock.getElementsByTagName('span')[0]?.innerText
                     if (symbolCrawl.includes('*')) {
-                        let len = symbolCrawl.length
+                        let len = symbolCrawl?.length
                         if (symbolCrawl.includes('**')) {
                             dataJson.symbol = symbolCrawl.slice(0, len - 2)
                         } else {
@@ -419,20 +419,20 @@ const crawlUpcom = asyncHandler(async () => {
                         dataJson.symbol = symbolCrawl
                     }
 
-                    dataJson.reference = stock.getElementsByClassName('cell-body-highlight')[0].innerText
-                    dataJson.ceil = stock.getElementsByClassName('cell-body-highlight')[1].innerText
-                    dataJson.floor = stock.getElementsByClassName('cell-body-highlight')[2].innerText
+                    dataJson.reference = stock.getElementsByClassName('cell-body-highlight')[0]?.innerText
+                    dataJson.ceil = stock.getElementsByClassName('cell-body-highlight')[1]?.innerText
+                    dataJson.floor = stock.getElementsByClassName('cell-body-highlight')[2]?.innerText
 
-                    dataJson.currentPrice = stock.getElementsByClassName('cell-body-highlight')[3].innerText
+                    dataJson.currentPrice = stock.getElementsByClassName('cell-body-highlight')[3]?.innerText
 
-                    dataJson.high = stock.getElementsByClassName('cell-body-highlight')[7].innerText
-                    dataJson.low = stock.getElementsByClassName('cell-body-highlight')[8].innerText
+                    dataJson.high = stock.getElementsByClassName('cell-body-highlight')[7]?.innerText
+                    dataJson.low = stock.getElementsByClassName('cell-body-highlight')[8]?.innerText
 
-                    dataJson.change = stock.getElementsByClassName('cell-body-highlight')[5].innerText
-                    dataJson.changePercent = stock.getElementsByClassName('cell-body-highlight')[6].innerText
+                    dataJson.change = stock.getElementsByClassName('cell-body-highlight')[5]?.innerText
+                    dataJson.changePercent = stock.getElementsByClassName('cell-body-highlight')[6]?.innerText
 
                     const turnOverElement = stock.getElementsByTagName('td')[20]
-                    dataJson.turnOver = turnOverElement.getElementsByTagName('span')[0].innerText
+                    dataJson.turnOver = turnOverElement.getElementsByTagName('span')[0]?.innerText
                 } catch (err) {
                     console.log(err)
                 }
@@ -503,21 +503,21 @@ const crawlHnxInvesting = asyncHandler(async () => {
 
             try {
                 dataJson.id = stock.getAttribute('id').split('_')[1]
-                dataJson.name = stock.getElementsByTagName('td')[1].innerText;
+                dataJson.name = stock.getElementsByTagName('td')[1]?.innerText;
 
-                dataJson.last = stock.getElementsByTagName('td')[2].innerText
+                // dataJson.last = stock.getElementsByTagName('td')[2]?.innerText
 
-                // dataJson.currentPrice = stock.getElementsByClassName('cell-body-highlight')[3].innerText
+                // dataJson.currentPrice = stock.getElementsByClassName('cell-body-highlight')[3]?.innerText
 
-                dataJson.high = stock.getElementsByTagName('td')[3].innerText
-                dataJson.low = stock.getElementsByTagName('td')[4].innerText
+                // dataJson.high = stock.getElementsByTagName('td')[3]?.innerText
+                // dataJson.low = stock.getElementsByTagName('td')[4]?.innerText
 
-                dataJson.change = stock.getElementsByTagName('td')[5].innerText
-                dataJson.changePercent = stock.getElementsByTagName('td')[6].innerText
+                // dataJson.change = stock.getElementsByTagName('td')[5]?.innerText
+                // dataJson.changePercent = stock.getElementsByTagName('td')[6]?.innerText
 
-                dataJson.turnOver = stock.getElementsByTagName('td')[7].innerText
+                // dataJson.turnOver = stock.getElementsByTagName('td')[7]?.innerText
 
-                dataJson.time = stock.getElementsByTagName('td')[8].innerText
+                // dataJson.time = stock.getElementsByTagName('td')[8]?.innerText
                 dataJson.hrefDetail = stock.querySelector('a').getAttribute('href')
             } catch (err) {
                 console.log(err)
@@ -532,14 +532,14 @@ const crawlHnxInvesting = asyncHandler(async () => {
         HnxInvesting.findOneAndUpdate({ name: stock.name }, {
             id: stock.id,
             name: stock.name,
-            last: stock.last,
-            currentPrice: stock.currentPrice,
-            high: stock.high,
-            low: stock.low,
-            change: stock.change,
-            changePercent: stock.changePercent,
-            turnOver: stock.turnOver,
-            time: stock.time,
+            // last: stock.last,
+            // currentPrice: stock.currentPrice,
+            // high: stock.high,
+            // low: stock.low,
+            // change: stock.change,
+            // changePercent: stock.changePercent,
+            // turnOver: stock.turnOver,
+            // time: stock.time,
             hrefDetail: stock.hrefDetail
         }, { upsert: true }).then(doc => console.log(doc)).catch(err => console.log(err))
     })

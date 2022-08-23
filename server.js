@@ -1,4 +1,4 @@
-const { crawlCoin, updateCurrentcy, crawlChartData1d, crawlChartData7d, crawlChartData14d, crawlChartData30d, crawlChartData90d, crawlChartData1y, crawlChartDataMax, crawlHnx30, crawlHnx, crawlVn30, crawlHose, crawlUpcom, crawlHnxInvesting, crawlDetailHnx30, crawlDetailHnx, crawlDetailVn30, crawlDetailHose, crawlDetailupcom, crawlDetailHnxInvesting } = require('./crawl/coin/index')
+const { crawlCoin, updateCurrentcy, crawlChartData1d, crawlChartData7d, crawlChartData14d, crawlChartData30d, crawlChartData90d, crawlChartData1y, crawlChartDataMax, crawlHnx30, crawlHnx, crawlVn30, crawlHose, crawlUpcom, crawlHnxInvesting, crawlDetailHnx30, crawlDetailHnx, crawlDetailVn30, crawlDetailHose, crawlDetailupcom, crawlDetailHnxInvesting, crawlDetailReportChartHnx, crawlDetailChartHnx } = require('./crawl/index')
 const asyncHandler = require('express-async-handler')
 const Coin = require('./model/coin/coinModel')
 const axios = require('axios')
@@ -6,6 +6,7 @@ const cron = require('node-cron')
 const Hnx30 = require('./model/stock/stockList/hnx30Model')
 const Hnx = require('./model/stock/stockList/hnxModel')
 const HnxInvesting = require('./model/stock/stockList/hnxInvestingModel')
+const HnxInvestingDetail = require('./model/stock/stockDetail/hnxInvestingDetailModel')
 const Hnx30Detail = require('./model/stock/stockDetail/hnx30DetailModel')
 const EventEmitter = require('events')
 
@@ -48,11 +49,21 @@ const crawlAllDetailHnx30 = asyncHandler(async () => {
 })
 
 const crawlAllDetailHnx = asyncHandler(async () => {
-    const list = await Hnx.find({}).limit(6)
+    const list = await Hnx.find({})
 
     list.forEach(async (stock, index) => {
         setTimeout(() => {
-            crawlDetailHnx(stock.symbol)
+            crawlDetailHnx(stock.name, stock.symbol, stock.reference, stock.ceil, stock.floor, stock.currentPrice, stock.high, stock.low, stock.change, stock.changePercent, stock.turnOver)
+        }, 2000 * index)
+    })
+})
+
+const crawlAllDetailChartHnx = asyncHandler(async () => {
+    const list = await Hnx.find({}).limit(10)
+
+    list.forEach(async (stock, index) => {
+        setTimeout(() => {
+            crawlDetailChartHnx(stock.symbol)
         }, 2000 * index)
     })
 })
@@ -62,8 +73,18 @@ const crawlAllDetailHnxInvesting = asyncHandler(async () => {
 
     list.forEach(async (stock, index) => {
         setTimeout(() => {
-            crawlDetailHnxInvesting(stock.id, stock.name, stock.change, stock.changePercent, stock.high, stock.low, stock.turnOver, stock.time, stock.hrefDetail)
+            crawlDetailHnxInvesting(stock.id, stock.name, stock.hrefDetail)
         }, 2000 * index)
+    })
+})
+
+const crawlAllDetailReportChartHnx = asyncHandler(async () => {
+    const list = await HnxInvestingDetail.find({})
+
+    list.forEach(async (stock, index) => {
+        setTimeout(() => {
+            crawlDetailReportChartHnx(stock.id, stock.symbol)
+        }, index * 2000)
     })
 })
 
@@ -72,7 +93,11 @@ const crawlAllDetailHnxInvesting = asyncHandler(async () => {
 // crawlAllDetailHnx30()
 // crawlAllDetailHnx()
 
-crawlAllDetailHnxInvesting()
+// crawlAllDetailHnxInvesting()
+
+// crawlAllDetailChartHnx()
+
+// crawlAllDetailReportChartHnx()
 
 // getallCoinsChart()
 
@@ -90,6 +115,7 @@ const cors = require('cors')
 const env = require('dotenv')
 const connectDB = require('./config/db')
 const coinRoutes = require('./routes/coinRoutes')
+const stockRoutes = require('./routes/stockRoutes')
 
 const app = express()
 env.config()
@@ -101,6 +127,8 @@ app.use(cors())
 
 
 app.use('/', coinRoutes)
+
+app.use('/', stockRoutes)
 
 
 const PORT = process.env.PORT || 5000

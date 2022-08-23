@@ -40,7 +40,7 @@ const crawlChartData7d = asyncHandler(async (nameId, rank) => {
 
 const crawlChartData14d = asyncHandler(async (nameId, rank) => {
     cron.schedule('*/20 * * * * *', async () => {
-        axios.get('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=14')
+        axios.get(`https://api.coingecko.com/api/v3/coins/${nameId}/market_chart?vs_currency=usd&days=14`)
             .then(response => {
 
                 Chart14d.findOneAndUpdate({ name: nameId }, {
@@ -54,7 +54,7 @@ const crawlChartData14d = asyncHandler(async (nameId, rank) => {
 
 const crawlChartData30d = asyncHandler(async (nameId, rank) => {
     cron.schedule('* * * * * *', async () => {
-        axios.get('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=30')
+        axios.get(`https://api.coingecko.com/api/v3/coins/${nameId}/market_chart?vs_currency=usd&days=30`)
             .then(response => {
                 Chart30d.findOneAndUpdate({ name: nameId }, {
                     data: response.data.prices,
@@ -67,7 +67,7 @@ const crawlChartData30d = asyncHandler(async (nameId, rank) => {
 
 const crawlChartData90d = asyncHandler(async (nameId, rank) => {
     cron.schedule('* * * * * *', async () => {
-        axios.get('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=90')
+        axios.get(`https://api.coingecko.com/api/v3/coins/${nameId}/market_chart?vs_currency=usd&days=90`)
             .then(response => {
                 Chart90d.findOneAndUpdate({ name: nameId }, {
                     data: response.data.prices,
@@ -80,7 +80,7 @@ const crawlChartData90d = asyncHandler(async (nameId, rank) => {
 
 const crawlChartData1y = asyncHandler(async (nameId, rank) => {
     cron.schedule('* * * * * *', async () => {
-        axios.get('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=365')
+        axios.get(`https://api.coingecko.com/api/v3/coins/${nameId}/market_chart?vs_currency=usd&days=365`)
             .then(response => {
                 Chart1y.findOneAndUpdate({ name: nameId }, {
                     data: response.data.prices,
@@ -93,7 +93,7 @@ const crawlChartData1y = asyncHandler(async (nameId, rank) => {
 
 const crawlChartDataMax = asyncHandler(async (nameId, rank) => {
     cron.schedule('* * * * * *', async () => {
-        axios.get('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=max')
+        axios.get(`https://api.coingecko.com/api/v3/coins/${nameId}/market_chart?vs_currency=usd&days=max`)
             .then(response => {
                 ChartMax.findOneAndUpdate({ name: nameId }, {
                     data: response.data.prices,
