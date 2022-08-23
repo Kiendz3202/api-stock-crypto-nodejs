@@ -69,7 +69,7 @@ const crawlAllDetailChartHnx = asyncHandler(async () => {
 })
 
 const crawlAllDetailHnxInvesting = asyncHandler(async () => {
-    const list = await HnxInvesting.find({}).limit(10)
+    const list = await HnxInvesting.find({})
 
     list.forEach(async (stock, index) => {
         setTimeout(() => {

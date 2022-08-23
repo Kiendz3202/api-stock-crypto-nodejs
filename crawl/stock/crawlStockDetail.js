@@ -733,10 +733,10 @@ const crawlDetailHnxInvesting = asyncHandler(async (id, name, hrefDetail) => {
                 // dataJson.dividend = document.querySelector('dl div:nth-child(9) dd div span :nth-child(1)')?.innerText + document.querySelector('dl div:nth-child(9) dd div span :nth-child(2)')?.innerText
                 // dataJson.yield = document.querySelector('dl div:nth-child(9) dd div div :nth-child(2) :nth-child(1)')?.innerText + document.querySelector('dl div:nth-child(9) dd div div :nth-child(2) :nth-child(2)')?.innerText
                 // dataJson.timeReport = document.querySelector('dl div:nth-child(15) dd a')?.innerText
-                // dataJson.descriptionCompany = document.getElementsByClassName('company-profile_profile-description__30Rta')[0]?.innerText
-                // let mainElement = document.querySelectorAll(".instrumentOverview_overview-section__2hN4A")[5]
-                // dataJson.major = mainElement.querySelector('div :nth-child(6) div :nth-child(3) :nth-child(1) a ')?.innerText
-                // dataJson.field = mainElement.querySelector('div :nth-child(6) div :nth-child(3) :nth-child(2) a ')?.innerText
+                dataJson.descriptionCompany = document.getElementsByClassName('company-profile_profile-description__30Rta')[0]?.innerText
+                let mainElement = document.querySelectorAll(".instrumentOverview_overview-section__2hN4A")[5]
+                dataJson.major = mainElement.querySelector('div :nth-child(6) div :nth-child(3) :nth-child(1) a ')?.innerText
+                dataJson.field = mainElement.querySelector('div :nth-child(6) div :nth-child(3) :nth-child(2) a ')?.innerText
                 // dataJson.numberOfEmployees = mainElement.querySelector('div :nth-child(6) div :nth-child(3) :nth-child(3) :nth-child(2) ')?.innerText
                 // dataJson.marketLocation = mainElement.querySelector('div :nth-child(6) div :nth-child(3) :nth-child(4) a ')?.innerText
 
@@ -776,9 +776,9 @@ const crawlDetailHnxInvesting = asyncHandler(async (id, name, hrefDetail) => {
             // dividend: hnxInvestingDetailData.dividend,
             // yield: hnxInvestingDetailData.yield,
             // timeReport: hnxInvestingDetailData.timeReport,
-            // descriptionCompany: hnxInvestingDetailData.descriptionCompany,
-            // major: hnxInvestingDetailData.major,
-            // field: hnxInvestingDetailData.field,
+            descriptionCompany: hnxInvestingDetailData.descriptionCompany,
+            major: hnxInvestingDetailData.major,
+            field: hnxInvestingDetailData.field,
             // numberOfEmployees: hnxInvestingDetailData.numberOfEmployees,
             // marketLocation: hnxInvestingDetailData.marketLocation
         }, { upsert: true }).then(doc => console.log(doc)).catch(err => console.log(err))
