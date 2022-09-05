@@ -21,7 +21,6 @@ const HnxReportChart = require('../../model/stock/chartStock/reportChart/hnxRepo
 
 
 const crawlDetailChartHnx = asyncHandler(async (symbol) => {
-    // cron.schedule('*/20 * * * * *', async () => {
     let currentTime = Math.floor(Date.now() / 1000)
     axios.get(`https://api.vietstock.vn/ta/history?symbol=${symbol}&resolution=D&from=1500000000&to=${currentTime}`)
         .then((response) => {
@@ -38,7 +37,6 @@ const crawlDetailChartHnx = asyncHandler(async (symbol) => {
         .catch((err) => {
             console.log(err)
         })
-    // })
 })
 
 module.exports = { crawlDetailChartHnx }

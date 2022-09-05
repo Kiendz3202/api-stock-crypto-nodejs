@@ -5,6 +5,9 @@ const hnxInvestingDetailSchema = mongoose.Schema(
         id: { type: "String" },
         name: { type: "String", default: "" },
         symbol: { type: "String", default: "" },
+        descriptionCompany: { type: "String", default: "" },
+        major: { type: "String", default: "" },
+        field: { type: "String", default: "" }
         // currentPrice: { type: "String", default: "" },
         // referencePrice: { type: "String", default: "" },
         // openPrice: { type: "String", default: "" },
@@ -26,9 +29,6 @@ const hnxInvestingDetailSchema = mongoose.Schema(
         // dividend: { type: "String", default: "" },
         // yield: { type: "String", default: "" },
         // timeReport: { type: "String", default: "" },
-        descriptionCompany: { type: "String", default: "" },
-        major: { type: "String", default: "" },
-        field: { type: "String", default: "" }
         // numberOfEmployees: { type: "String", default: "" },
         // marketLocation: { type: "String", default: "" }
     },

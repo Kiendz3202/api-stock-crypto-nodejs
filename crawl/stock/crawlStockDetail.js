@@ -649,11 +649,6 @@ const crawlDetailupcom = asyncHandler(async (symbol) => {
 })
 
 const crawlDetailHnxInvesting = asyncHandler(async (id, name, hrefDetail) => {
-    // cron.schedule('*/20 * * * * *', async () =>{
-
-    // const hnx30List = await Hnx30.find({}).sort({ symbol: 'asc' })
-
-    // let selector = `td[data-tooltip = ${name}]`
 
     try {
         const browser = await puppeteer.launch({ headless: true })
@@ -755,6 +750,9 @@ const crawlDetailHnxInvesting = asyncHandler(async (id, name, hrefDetail) => {
             id: hnxInvestingDetailData.id,
             name: hnxInvestingDetailData.name,
             symbol: hnxInvestingDetailData.symbol,
+            descriptionCompany: hnxInvestingDetailData.descriptionCompany,
+            major: hnxInvestingDetailData.major,
+            field: hnxInvestingDetailData.field,
             // currentPrice: hnxInvestingDetailData.currentPrice,
             // referencePrice: hnxInvestingDetailData.referencePrice,
             // openPrice: hnxInvestingDetailData.openPrice,
@@ -776,9 +774,6 @@ const crawlDetailHnxInvesting = asyncHandler(async (id, name, hrefDetail) => {
             // dividend: hnxInvestingDetailData.dividend,
             // yield: hnxInvestingDetailData.yield,
             // timeReport: hnxInvestingDetailData.timeReport,
-            descriptionCompany: hnxInvestingDetailData.descriptionCompany,
-            major: hnxInvestingDetailData.major,
-            field: hnxInvestingDetailData.field,
             // numberOfEmployees: hnxInvestingDetailData.numberOfEmployees,
             // marketLocation: hnxInvestingDetailData.marketLocation
         }, { upsert: true }).then(doc => console.log(doc)).catch(err => console.log(err))
@@ -790,7 +785,6 @@ const crawlDetailHnxInvesting = asyncHandler(async (id, name, hrefDetail) => {
         console.log(error)
     }
 
-    // })
 })
 
 module.exports = { crawlDetailHnx30, crawlDetailHnx, crawlDetailVn30, crawlDetailHose, crawlDetailupcom, crawlDetailHnxInvesting }
