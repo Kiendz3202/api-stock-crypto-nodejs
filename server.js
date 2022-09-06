@@ -1,4 +1,4 @@
-const { crawlCoin, updateCurrentcy, crawlChartData1d, crawlChartData7d, crawlChartData14d, crawlChartData30d, crawlChartData90d, crawlChartData1y, crawlChartDataMax, crawlHnx30, crawlHnx, crawlVn30, crawlHose, crawlUpcom, crawlHnxInvesting, crawlDetailHnx30, crawlDetailHnx, crawlDetailVn30, crawlDetailHose, crawlDetailupcom, crawlDetailHnxInvesting, crawlDetailReportChartHnx, crawlDetailChartHnx, crawlSjc, crawlPnj, crawlDoji, crawlPhuQuySjc, crawlBaoTinMinhChau, crawlMiHong, crawlPetrolimex, crawlAbBank, crawlAcb } = require('./crawl/index')
+const { crawlCoin, updateCurrentcy, crawlChartData1d, crawlChartData7d, crawlChartData14d, crawlChartData30d, crawlChartData90d, crawlChartData1y, crawlChartDataMax, crawlHnx30, crawlHnx, crawlVn30, crawlHose, crawlUpcom, crawlHnxInvesting, crawlDetailHnx30, crawlDetailHnx, crawlDetailVn30, crawlDetailHose, crawlDetailupcom, crawlDetailHnxInvesting, crawlDetailReportChartHnx, crawlDetailChartHnx, crawlSjc, crawlPnj, crawlDoji, crawlPhuQuySjc, crawlBaoTinMinhChau, crawlMiHong, crawlPetrolimex, crawlAbBank, crawlAgribank, crawlVietcombank, crawlBidv, crawlTechcombank } = require('./crawl/index')
 const asyncHandler = require('express-async-handler')
 const Coin = require('./model/coin/coinModel')
 const axios = require('axios')
@@ -47,7 +47,10 @@ const crawlAllDetailPnj = asyncHandler(async () => {
 //---------foreignCurrency--------
 
 // crawlAbBank()
-crawlAcb()
+// crawlAgribank()
+// crawlVietcombank()
+// crawlBidv()
+crawlTechcombank()
 
 
 //------------Stock-----------------

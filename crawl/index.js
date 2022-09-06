@@ -16,6 +16,6 @@ const { crawlSjc, crawlPnj, crawlDoji, crawlPhuQuySjc, crawlBaoTinMinhChau, craw
 
 const { crawlPetrolimex } = require('./petrol/crawlPetrol')
 
-const { crawlAbBank, crawlAcb } = require('./foreignCurrency/crawlBank')
+const { crawlAbBank, crawlAgribank, crawlVietcombank, crawlBidv, crawlTechcombank } = require('./foreignCurrency/crawlBank')
 
-module.exports = { crawlCoin, updateCurrentcy, crawlChartData1d, crawlChartData7d, crawlChartData14d, crawlChartData30d, crawlChartData90d, crawlChartData1y, crawlChartDataMax, crawlHnx30, crawlHnx, crawlVn30, crawlHose, crawlUpcom, crawlHnxInvesting, crawlDetailHnx30, crawlDetailHnx, crawlDetailVn30, crawlDetailHose, crawlDetailupcom, crawlDetailHnxInvesting, crawlDetailReportChartHnx, crawlDetailChartHnx, crawlSjc, crawlPnj, crawlDoji, crawlPhuQuySjc, crawlBaoTinMinhChau, crawlMiHong, crawlPetrolimex, crawlAbBank, crawlAcb }
+module.exports = { crawlCoin, updateCurrentcy, crawlChartData1d, crawlChartData7d, crawlChartData14d, crawlChartData30d, crawlChartData90d, crawlChartData1y, crawlChartDataMax, crawlHnx30, crawlHnx, crawlVn30, crawlHose, crawlUpcom, crawlHnxInvesting, crawlDetailHnx30, crawlDetailHnx, crawlDetailVn30, crawlDetailHose, crawlDetailupcom, crawlDetailHnxInvesting, crawlDetailReportChartHnx, crawlDetailChartHnx, crawlSjc, crawlPnj, crawlDoji, crawlPhuQuySjc, crawlBaoTinMinhChau, crawlMiHong, crawlPetrolimex, crawlAbBank, crawlAgribank, crawlVietcombank, crawlBidv, crawlTechcombank }
