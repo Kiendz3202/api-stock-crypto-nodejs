@@ -1,0 +1,157 @@
+const mongoose = require('mongoose');
+
+const scbInterestRateSchema = mongoose.Schema(
+	{
+		name: {
+			type: 'String',
+			default: 'Ngân hàng Thương mại Cổ phần Sài Gòn',
+		},
+		symbol: { type: 'String', default: 'SCB' },
+		timeUpdate: { type: 'String' },
+		khongkyhan: {
+			cuoiky: { type: 'String' },
+			hangnam: { type: 'String' },
+			hang6thang: { type: 'String' },
+			hangquy: { type: 'String' },
+			hangthang: { type: 'String' },
+			truoc: { type: 'String' },
+		},
+		month1: {
+			cuoiky: { type: 'String' },
+			hangnam: { type: 'String' },
+			hang6thang: { type: 'String' },
+			hangquy: { type: 'String' },
+			hangthang: { type: 'String' },
+			truoc: { type: 'String' },
+		},
+		month2: {
+			cuoiky: { type: 'String' },
+			hangnam: { type: 'String' },
+			hang6thang: { type: 'String' },
+			hangquy: { type: 'String' },
+			hangthang: { type: 'String' },
+			truoc: { type: 'String' },
+		},
+		month3: {
+			cuoiky: { type: 'String' },
+			hangnam: { type: 'String' },
+			hang6thang: { type: 'String' },
+			hangquy: { type: 'String' },
+			hangthang: { type: 'String' },
+			truoc: { type: 'String' },
+		},
+		month4: {
+			cuoiky: { type: 'String' },
+			hangnam: { type: 'String' },
+			hang6thang: { type: 'String' },
+			hangquy: { type: 'String' },
+			hangthang: { type: 'String' },
+			truoc: { type: 'String' },
+		},
+		month5: {
+			cuoiky: { type: 'String' },
+			hangnam: { type: 'String' },
+			hang6thang: { type: 'String' },
+			hangquy: { type: 'String' },
+			hangthang: { type: 'String' },
+			truoc: { type: 'String' },
+		},
+		month6: {
+			cuoiky: { type: 'String' },
+			hangnam: { type: 'String' },
+			hang6thang: { type: 'String' },
+			hangquy: { type: 'String' },
+			hangthang: { type: 'String' },
+			truoc: { type: 'String' },
+		},
+		month7: {
+			cuoiky: { type: 'String' },
+			hangnam: { type: 'String' },
+			hang6thang: { type: 'String' },
+			hangquy: { type: 'String' },
+			hangthang: { type: 'String' },
+			truoc: { type: 'String' },
+		},
+		month8: {
+			cuoiky: { type: 'String' },
+			hangnam: { type: 'String' },
+			hang6thang: { type: 'String' },
+			hangquy: { type: 'String' },
+			hangthang: { type: 'String' },
+			truoc: { type: 'String' },
+		},
+		month9: {
+			cuoiky: { type: 'String' },
+			hangnam: { type: 'String' },
+			hang6thang: { type: 'String' },
+			hangquy: { type: 'String' },
+			hangthang: { type: 'String' },
+			truoc: { type: 'String' },
+		},
+		month10: {
+			cuoiky: { type: 'String' },
+			hangnam: { type: 'String' },
+			hang6thang: { type: 'String' },
+			hangquy: { type: 'String' },
+			hangthang: { type: 'String' },
+			truoc: { type: 'String' },
+		},
+		month11: {
+			cuoiky: { type: 'String' },
+			hangnam: { type: 'String' },
+			hang6thang: { type: 'String' },
+			hangquy: { type: 'String' },
+			hangthang: { type: 'String' },
+			truoc: { type: 'String' },
+		},
+		month12: {
+			cuoiky: { type: 'String' },
+			hangnam: { type: 'String' },
+			hang6thang: { type: 'String' },
+			hangquy: { type: 'String' },
+			hangthang: { type: 'String' },
+			truoc: { type: 'String' },
+		},
+		month15: {
+			cuoiky: { type: 'String' },
+			hangnam: { type: 'String' },
+			hang6thang: { type: 'String' },
+			hangquy: { type: 'String' },
+			hangthang: { type: 'String' },
+			truoc: { type: 'String' },
+		},
+		month18: {
+			cuoiky: { type: 'String' },
+			hangnam: { type: 'String' },
+			hang6thang: { type: 'String' },
+			hangquy: { type: 'String' },
+			hangthang: { type: 'String' },
+			truoc: { type: 'String' },
+		},
+		month24: {
+			cuoiky: { type: 'String' },
+			hangnam: { type: 'String' },
+			hang6thang: { type: 'String' },
+			hangquy: { type: 'String' },
+			hangthang: { type: 'String' },
+			truoc: { type: 'String' },
+		},
+		month36: {
+			cuoiky: { type: 'String' },
+			hangnam: { type: 'String' },
+			hang6thang: { type: 'String' },
+			hangquy: { type: 'String' },
+			hangthang: { type: 'String' },
+			truoc: { type: 'String' },
+		},
+	},
+	{
+		timestamps: true,
+	}
+);
+
+const ScbInterestRate = mongoose.model(
+	'ScbInterestRate',
+	scbInterestRateSchema
+);
+module.exports = ScbInterestRate;

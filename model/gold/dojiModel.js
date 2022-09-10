@@ -4,6 +4,7 @@ const dojiSchema = mongoose.Schema(
     {
         name: { type: "String", default: "DOJI" },
         // location: { type: "String" },
+        timeUpdate: { type: "String" },
 
         sjcHNBuy: { type: "String" },
         sjcHNSell: { type: "String" },

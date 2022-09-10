@@ -4,6 +4,7 @@ const miHongSchema = mongoose.Schema(
     {
         name: { type: "String", default: "Mi Hồng" },
         location: { type: "String", default: "Hồ Chí Minh" },
+        timeUpdate: { type: "String" },
 
         sjcBuy: { type: "String" },
         vang999Buy: { type: "String" },

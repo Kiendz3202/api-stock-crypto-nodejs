@@ -4,7 +4,7 @@ const pnjSchema = mongoose.Schema(
     {
         name: { type: "String", default: "PNJ" },
         location: { type: "String" },
-        updateTime: { type: "String" },
+        timeUpdate: { type: "String" },
         vangmiengsjcBuy: { type: "String" },
         nhantronpnjBuy: { type: "String" },
         vangkimbaoBuy: { type: "String" },

@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const sjcSchema = mongoose.Schema(
     {
         name: { type: "String", default: "SJC" },
+        timeUpdate: { type: "String" },
         sjc1l10lBuy: { type: "String" },
         sjc5cBuy: { type: "String" },
         sjc2c1c5phanBuy: { type: "String" },

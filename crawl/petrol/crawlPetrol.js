@@ -62,7 +62,14 @@ const crawlPetrolimex = asyncHandler(async () => {
 
             try {
                 dataJson.name = 'Petrolimex'
-                dataJson.timeUpdate = document.querySelector('p.f-info')?.innerText.slice(-17)
+
+                let date = new Date()
+                dataJson.timeUpdate = date.getHours() +
+                    ":" + date.getMinutes() +
+                    ":" + date.getSeconds() +
+                    " " + date.getDate() +
+                    "/" + (date.getMonth() + 1) +
+                    "/" + date.getFullYear()
 
                 const tableElement = document.querySelector('tbody.product')
 
