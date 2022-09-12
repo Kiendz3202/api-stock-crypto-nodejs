@@ -119,12 +119,12 @@ const crawlAllDetailPnj = asyncHandler(async () => {
 
 //-----------------------------Stock----------------------------------------------------------
 // crawlHnx30()
-// crawlHnx()
+// crawlHnx();
 // crawlVn30()
 // crawlHose()
 // crawlUpcom()
 
-// crawlHnxInvesting()
+// crawlHnxInvesting();
 
 const crawlAllDetailHnx30 = asyncHandler(async () => {
 	const list = await Hnx30.find({});
@@ -137,7 +137,7 @@ const crawlAllDetailHnx30 = asyncHandler(async () => {
 });
 
 const crawlAllDetailHnx = asyncHandler(async () => {
-	const list = await Hnx.find({});
+	const list = await Hnx.find({}).limit(20);
 
 	list.forEach(async (stock, index) => {
 		setTimeout(() => {
@@ -169,7 +169,7 @@ const crawlAllDetailChartHnx = asyncHandler(async () => {
 });
 
 const crawlAllDetailHnxInvesting = asyncHandler(async () => {
-	const list = await HnxInvesting.find({});
+	const list = await HnxInvesting.find({}).limit(20);
 
 	list.forEach(async (stock, index) => {
 		setTimeout(() => {
@@ -189,9 +189,9 @@ const crawlAllDetailReportChartHnx = asyncHandler(async () => {
 });
 
 // crawlAllDetailHnx30()
-// crawlAllDetailHnx()
+// crawlAllDetailHnx();
 
-// crawlAllDetailHnxInvesting()
+// crawlAllDetailHnxInvesting();
 
 // crawlAllDetailChartHnx()
 

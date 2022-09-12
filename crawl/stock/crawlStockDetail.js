@@ -255,7 +255,8 @@ const crawlDetailHnx = asyncHandler(async (name, symbol, reference, ceil, floor,
             pe: hnxDetailData.pe,
             fpe: hnxDetailData.fpe, // F P/e
             bvps: hnxDetailData.bvps, //book value per share
-            pb: hnxDetailData.pb
+            pb: hnxDetailData.pb,
+            companyInfo: hnxDetailData.symbol
         }, { upsert: true }).then(doc => console.log(doc)).catch(err => console.log(hnxDetailData.name))
 
         // return hnxDetailData
@@ -703,7 +704,6 @@ const crawlDetailHnxInvesting = asyncHandler(async (id, name, hrefDetail) => {
             let dataJson = {}
 
             try {
-
                 dataJson.id = id
                 dataJson.name = name
                 dataJson.symbol = document.querySelector('main div h2')?.innerText.slice(10)
@@ -747,6 +747,7 @@ const crawlDetailHnxInvesting = asyncHandler(async (id, name, hrefDetail) => {
 
 
         HnxInvestingDetail.findOneAndUpdate({ name: hnxInvestingDetailData.name }, {
+            _id: hnxInvestingDetailData.symbol,
             id: hnxInvestingDetailData.id,
             name: hnxInvestingDetailData.name,
             symbol: hnxInvestingDetailData.symbol,
