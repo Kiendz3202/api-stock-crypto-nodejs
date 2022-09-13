@@ -18,7 +18,7 @@ const {
 	crawlDetailHnx,
 	crawlDetailVn30,
 	crawlDetailHose,
-	crawlDetailupcom,
+	crawlDetailUpcom,
 	crawlDetailHnxInvesting,
 	crawlDetailReportChartHnx,
 	crawlDetailChartHnx,
@@ -50,11 +50,17 @@ const asyncHandler = require('express-async-handler');
 const Coin = require('./model/coin/coinModel');
 const axios = require('axios');
 const cron = require('node-cron');
+
 const Hnx30 = require('./model/stock/stockList/hnx30Model');
 const Hnx = require('./model/stock/stockList/hnxModel');
+const Vn30 = require('./model/stock/stockList/vn30Model');
+const Hose = require('./model/stock/stockList/hoseModel');
+const Upcom = require('./model/stock/stockList/upcomModel');
+
 const HnxInvesting = require('./model/stock/stockList/hnxInvestingModel');
 const HnxInvestingDetail = require('./model/stock/stockDetail/hnxInvestingDetailModel');
 const Hnx30Detail = require('./model/stock/stockDetail/hnx30DetailModel');
+
 const EventEmitter = require('events');
 
 //https://www.binance.com/bapi/composite/v1/public/promo/cmc/cryptocurrency/detail/chart?id=${i}&range=1D
@@ -118,20 +124,33 @@ const crawlAllDetailPnj = asyncHandler(async () => {
 //-----------------------------------
 
 //-----------------------------Stock----------------------------------------------------------
-// crawlHnx30()
+// crawlHnx30();
 // crawlHnx();
-// crawlVn30()
-// crawlHose()
-// crawlUpcom()
+// crawlVn30();
+// crawlHose();
+// crawlUpcom();
 
 // crawlHnxInvesting();
 
+//crawlAllDetail Stock
 const crawlAllDetailHnx30 = asyncHandler(async () => {
-	const list = await Hnx30.find({});
-	let sum = 0;
+	const list = await Hnx30.find({}).limit(20);
+
 	list.forEach(async (stock, index) => {
 		setTimeout(() => {
-			crawlDetailHnx30(stock.symbol);
+			crawlDetailHnx30(
+				stock.name,
+				stock.symbol,
+				stock.reference,
+				stock.ceil,
+				stock.floor,
+				stock.currentPrice,
+				stock.high,
+				stock.low,
+				stock.change,
+				stock.changePercent,
+				stock.turnOver
+			);
 		}, 2000 * index);
 	});
 });
@@ -157,6 +176,73 @@ const crawlAllDetailHnx = asyncHandler(async () => {
 		}, 2000 * index);
 	});
 });
+
+const crawlAllDetailVn30 = asyncHandler(async () => {
+	const list = await Vn30.find({}).limit(20);
+
+	list.forEach(async (stock, index) => {
+		setTimeout(() => {
+			crawlDetailVn30(
+				stock.name,
+				stock.symbol,
+				stock.reference,
+				stock.ceil,
+				stock.floor,
+				stock.currentPrice,
+				stock.high,
+				stock.low,
+				stock.change,
+				stock.changePercent,
+				stock.turnOver
+			);
+		}, 2000 * index);
+	});
+});
+
+const crawlAllDetailHose = asyncHandler(async () => {
+	const list = await Hose.find({}).limit(20);
+
+	list.forEach(async (stock, index) => {
+		setTimeout(() => {
+			crawlDetailHose(
+				stock.name,
+				stock.symbol,
+				stock.reference,
+				stock.ceil,
+				stock.floor,
+				stock.currentPrice,
+				stock.high,
+				stock.low,
+				stock.change,
+				stock.changePercent,
+				stock.turnOver
+			);
+		}, 2000 * index);
+	});
+});
+
+const crawlAllDetailUpcom = asyncHandler(async () => {
+	const list = await Upcom.find({}).limit(20);
+
+	list.forEach(async (stock, index) => {
+		setTimeout(() => {
+			crawlDetailUpcom(
+				stock.name,
+				stock.symbol,
+				stock.reference,
+				stock.ceil,
+				stock.floor,
+				stock.currentPrice,
+				stock.high,
+				stock.low,
+				stock.change,
+				stock.changePercent,
+				stock.turnOver
+			);
+		}, 2000 * index);
+	});
+});
+//-----------------
 
 const crawlAllDetailChartHnx = asyncHandler(async () => {
 	const list = await Hnx.find({}).limit(10);
@@ -188,8 +274,11 @@ const crawlAllDetailReportChartHnx = asyncHandler(async () => {
 	});
 });
 
-// crawlAllDetailHnx30()
+// crawlAllDetailHnx30();
 // crawlAllDetailHnx();
+crawlAllDetailVn30();
+crawlAllDetailHose();
+crawlAllDetailUpcom();
 
 // crawlAllDetailHnxInvesting();
 

@@ -26,7 +26,7 @@ const {
 	crawlDetailHnx,
 	crawlDetailVn30,
 	crawlDetailHose,
-	crawlDetailupcom,
+	crawlDetailUpcom,
 	crawlDetailHnxInvesting,
 } = require('./stock/crawlStockDetail');
 
@@ -87,7 +87,7 @@ module.exports = {
 	crawlDetailHnx,
 	crawlDetailVn30,
 	crawlDetailHose,
-	crawlDetailupcom,
+	crawlDetailUpcom,
 	crawlDetailHnxInvesting,
 	crawlDetailReportChartHnx,
 	crawlDetailChartHnx,
