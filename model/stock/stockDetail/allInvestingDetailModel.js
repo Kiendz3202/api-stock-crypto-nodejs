@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const hnxInvestingDetailSchema = mongoose.Schema(
+const allInvestingDetailSchema = mongoose.Schema(
 	{
 		_id: { type: 'String' },
 		id: { type: 'String' },
@@ -38,8 +38,8 @@ const hnxInvestingDetailSchema = mongoose.Schema(
 	}
 );
 
-const HnxInvestingDetail = mongoose.model(
-	'HnxInvestingDetail',
-	hnxInvestingDetailSchema
+const AllInvestingDetail = mongoose.model(
+	'AllInvestingDetail',
+	allInvestingDetailSchema
 );
-module.exports = HnxInvestingDetail;
+module.exports = AllInvestingDetail;

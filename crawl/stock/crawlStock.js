@@ -8,7 +8,7 @@ const Vn30 = require('../../model/stock/stockList/vn30Model');
 const Hose = require('../../model/stock/stockList/hoseModel');
 const Upcom = require('../../model/stock/stockList/upcomModel');
 
-const HnxInvesting = require('../../model/stock/stockList/hnxInvestingModel');
+const AllInvesting = require('../../model/stock/stockList/allInvestingModel');
 
 const url = 'https://vn.investing.com/equities/vietnam';
 
@@ -589,7 +589,7 @@ const crawlUpcom = asyncHandler(async () => {
 	// });
 });
 
-const crawlHnxInvesting = asyncHandler(async () => {
+const crawlAllInvesting = asyncHandler(async () => {
 	// cron.schedule('*/20 * * * * *', async () => {
 
 	const browser = await puppeteer.launch({ headless: true });
@@ -598,7 +598,7 @@ const crawlHnxInvesting = asyncHandler(async () => {
 		'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
 	);
 	await page.goto(urlInvesting, { timeout: 0 });
-	await page.select('#stocksFilter', 'HNX');
+	await page.select('#stocksFilter', 'Tất cả cổ phiếu Việt Nam');
 	await page.waitForTimeout(40000);
 	// const bodyHandle = await page.$('body');
 	// const { height } = await bodyHandle.boundingBox();
@@ -623,7 +623,7 @@ const crawlHnxInvesting = asyncHandler(async () => {
 	// // Some extra delay to let all data load
 	// await page.waitForTimeout(1000);
 
-	let hnxInvestingData = await page.evaluate(() => {
+	let allInvestingData = await page.evaluate(() => {
 		let stocks = [];
 		let stockElements = document.querySelectorAll(
 			'#cross_rate_markets_stocks_1 tbody tr'
@@ -661,8 +661,8 @@ const crawlHnxInvesting = asyncHandler(async () => {
 		return stocks;
 	});
 
-	hnxInvestingData.forEach((stock) => {
-		HnxInvesting.findOneAndUpdate(
+	allInvestingData.forEach((stock) => {
+		AllInvesting.findOneAndUpdate(
 			{ name: stock.name },
 			{
 				id: stock.id,
@@ -693,5 +693,5 @@ module.exports = {
 	crawlVn30,
 	crawlHose,
 	crawlUpcom,
-	crawlHnxInvesting,
+	crawlAllInvesting,
 };

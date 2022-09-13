@@ -3,8 +3,8 @@ const asyncHandler = require('express-async-handler');
 const Hnx = require('../../../model/stock/stockList/hnxModel');
 const HnxDetail = require('../../../model/stock/stockDetail/hnxDetailModel');
 const HnxChart = require('../../../model/stock/chartStock/chart/hnxChartModel');
-const HnxReportChart = require('../../../model/stock/chartStock/reportChart/hnxReportChartModel');
-const HnxInvestingDetail = require('../../../model/stock/stockDetail/hnxInvestingDetailModel');
+const AllReportChart = require('../../../model/stock/chartStock/reportChart/allReportChartModel');
+const AllInvestingDetail = require('../../../model/stock/stockDetail/allInvestingDetailModel');
 
 const hnxStockList = asyncHandler(async (req, res, next) => {
 	const stockList = await Hnx.find({}).select(
@@ -52,7 +52,7 @@ const hnxDetailChart = asyncHandler(async (req, res, next) => {
 
 const hnxDetailReportChart = asyncHandler(async (req, res, next) => {
 	const symbol = req.params.symbol;
-	const listChart = await HnxReportChart.find({
+	const listChart = await AllReportChart.find({
 		symbol: symbol,
 	}).select('-_id -createdAt -updatedAt -__v');
 
@@ -62,7 +62,7 @@ const hnxDetailReportChart = asyncHandler(async (req, res, next) => {
 const hnxCompanyDetail = asyncHandler(async (req, res, next) => {
 	const symbol = req.params.symbol;
 
-	const list = await HnxInvestingDetail.find({
+	const list = await AllInvestingDetail.find({
 		symbol: symbol,
 	}).select('-_id -createdAt -updatedAt -__v');
 

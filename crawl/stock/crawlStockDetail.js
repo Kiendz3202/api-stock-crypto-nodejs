@@ -14,7 +14,7 @@ const HoseDetail = require('../../model/stock/stockDetail/hoseDetailModel');
 const Vn30Detail = require('../../model/stock/stockDetail/vn30DetailModel');
 const UpcomDetail = require('../../model/stock/stockDetail/upcomDetailModel');
 
-const HnxInvestingDetail = require('../../model/stock/stockDetail/hnxInvestingDetailModel');
+const AllInvestingDetail = require('../../model/stock/stockDetail/allInvestingDetailModel');
 
 const urlHnx30 = 'https://banggia.vietstock.vn/bang-gia/hnx30';
 const urlHnx = 'https://banggia.vietstock.vn/bang-gia/hnx';
@@ -989,7 +989,7 @@ const crawlDetailUpcom = asyncHandler(
 	}
 );
 
-const crawlDetailHnxInvesting = asyncHandler(async (id, name, hrefDetail) => {
+const crawlDetailAllInvesting = asyncHandler(async (id, name, hrefDetail) => {
 	try {
 		const browser = await puppeteer.launch({ headless: true });
 		const page = await browser.newPage();
@@ -1029,7 +1029,7 @@ const crawlDetailHnxInvesting = asyncHandler(async (id, name, hrefDetail) => {
 		// // Some extra delay to let all data load
 		// await page.waitForTimeout(1000);
 
-		let hnxInvestingDetailData = await page.evaluate(
+		let allInvestingDetailData = await page.evaluate(
 			async (id, name) => {
 				const delay = (m) => new Promise((r) => setTimeout(r, m));
 
@@ -1096,18 +1096,18 @@ const crawlDetailHnxInvesting = asyncHandler(async (id, name, hrefDetail) => {
 			name
 		);
 
-		// console.log(hnxInvestingDetailData)
+		// console.log(allInvestingDetailData)
 
-		HnxInvestingDetail.findOneAndUpdate(
-			{ name: hnxInvestingDetailData.name },
+		AllInvestingDetail.findOneAndUpdate(
+			{ symbol: allInvestingDetailData.symbol },
 			{
-				_id: hnxInvestingDetailData.symbol,
-				id: hnxInvestingDetailData.id,
-				name: hnxInvestingDetailData.name,
-				symbol: hnxInvestingDetailData.symbol,
-				descriptionCompany: hnxInvestingDetailData.descriptionCompany,
-				major: hnxInvestingDetailData.major,
-				field: hnxInvestingDetailData.field,
+				_id: allInvestingDetailData.symbol,
+				id: allInvestingDetailData.id,
+				name: allInvestingDetailData.name,
+				symbol: allInvestingDetailData.symbol,
+				descriptionCompany: allInvestingDetailData.descriptionCompany,
+				major: allInvestingDetailData.major,
+				field: allInvestingDetailData.field,
 				// currentPrice: hnxInvestingDetailData.currentPrice,
 				// referencePrice: hnxInvestingDetailData.referencePrice,
 				// openPrice: hnxInvestingDetailData.openPrice,
@@ -1151,5 +1151,5 @@ module.exports = {
 	crawlDetailVn30,
 	crawlDetailHose,
 	crawlDetailUpcom,
-	crawlDetailHnxInvesting,
+	crawlDetailAllInvesting,
 };

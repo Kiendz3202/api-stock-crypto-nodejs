@@ -13,13 +13,13 @@ const {
 	crawlVn30,
 	crawlHose,
 	crawlUpcom,
-	crawlHnxInvesting,
+	crawlAllInvesting,
 	crawlDetailHnx30,
 	crawlDetailHnx,
 	crawlDetailVn30,
 	crawlDetailHose,
 	crawlDetailUpcom,
-	crawlDetailHnxInvesting,
+	crawlDetailAllInvesting,
 	crawlDetailReportChartHnx,
 	crawlDetailChartHnx,
 	crawlSjc,
@@ -57,8 +57,8 @@ const Vn30 = require('./model/stock/stockList/vn30Model');
 const Hose = require('./model/stock/stockList/hoseModel');
 const Upcom = require('./model/stock/stockList/upcomModel');
 
-const HnxInvesting = require('./model/stock/stockList/hnxInvestingModel');
-const HnxInvestingDetail = require('./model/stock/stockDetail/hnxInvestingDetailModel');
+const AllInvesting = require('./model/stock/stockList/allInvestingModel');
+const AllInvestingDetail = require('./model/stock/stockDetail/allInvestingDetailModel');
 const Hnx30Detail = require('./model/stock/stockDetail/hnx30DetailModel');
 
 const EventEmitter = require('events');
@@ -130,9 +130,9 @@ const crawlAllDetailPnj = asyncHandler(async () => {
 // crawlHose();
 // crawlUpcom();
 
-// crawlHnxInvesting();
+// crawlAllInvesting();
 
-//crawlAllDetail Stock
+//---crawlAllDetail Stock---
 const crawlAllDetailHnx30 = asyncHandler(async () => {
 	const list = await Hnx30.find({}).limit(20);
 
@@ -242,7 +242,17 @@ const crawlAllDetailUpcom = asyncHandler(async () => {
 		}, 2000 * index);
 	});
 });
-//-----------------
+//--------------------------
+
+const crawlAllDetailAllInvesting = asyncHandler(async () => {
+	const list = await AllInvesting.find({}).limit(20);
+
+	list.forEach(async (stock, index) => {
+		setTimeout(() => {
+			crawlDetailAllInvesting(stock.id, stock.name, stock.hrefDetail);
+		}, 2000 * index);
+	});
+});
 
 const crawlAllDetailChartHnx = asyncHandler(async () => {
 	const list = await Hnx.find({}).limit(10);
@@ -254,18 +264,8 @@ const crawlAllDetailChartHnx = asyncHandler(async () => {
 	});
 });
 
-const crawlAllDetailHnxInvesting = asyncHandler(async () => {
-	const list = await HnxInvesting.find({}).limit(20);
-
-	list.forEach(async (stock, index) => {
-		setTimeout(() => {
-			crawlDetailHnxInvesting(stock.id, stock.name, stock.hrefDetail);
-		}, 2000 * index);
-	});
-});
-
 const crawlAllDetailReportChartHnx = asyncHandler(async () => {
-	const list = await HnxInvestingDetail.find({});
+	const list = await AllInvestingDetail.find({}).limit(10);
 
 	list.forEach(async (stock, index) => {
 		setTimeout(() => {
@@ -276,15 +276,15 @@ const crawlAllDetailReportChartHnx = asyncHandler(async () => {
 
 // crawlAllDetailHnx30();
 // crawlAllDetailHnx();
-crawlAllDetailVn30();
-crawlAllDetailHose();
-crawlAllDetailUpcom();
+// crawlAllDetailVn30();
+// crawlAllDetailHose();
+// crawlAllDetailUpcom();
 
-// crawlAllDetailHnxInvesting();
+// crawlAllDetailAllInvesting();
 
 // crawlAllDetailChartHnx()
 
-// crawlAllDetailReportChartHnx()
+// crawlAllDetailReportChartHnx();
 
 //---------------------------------------------------------------------------
 
