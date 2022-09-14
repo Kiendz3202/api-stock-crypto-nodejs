@@ -71,7 +71,7 @@ const EventEmitter = require('events');
 
 //--------Gold--------------
 
-// crawlSjc()
+// crawlSjc();
 
 const crawlAllDetailPnj = asyncHandler(async () => {
 	const arr = ['00', '07', '11', '13', '14', '21'];
