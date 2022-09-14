@@ -20,7 +20,7 @@ const {
 	crawlDetailHose,
 	crawlDetailUpcom,
 	crawlDetailAllInvesting,
-	crawlDetailReportChartHnx,
+	crawlDetailReportChartAll,
 	crawlDetailChartHnx,
 	crawlSjc,
 	crawlPnj,
@@ -264,12 +264,12 @@ const crawlAllDetailChartHnx = asyncHandler(async () => {
 	});
 });
 
-const crawlAllDetailReportChartHnx = asyncHandler(async () => {
+const crawlAllDetailReportChart = asyncHandler(async () => {
 	const list = await AllInvestingDetail.find({}).limit(10);
 
 	list.forEach(async (stock, index) => {
 		setTimeout(() => {
-			crawlDetailReportChartHnx(stock.id, stock.symbol);
+			crawlDetailReportChartAll(stock.id, stock.symbol);
 		}, index * 2000);
 	});
 });
@@ -282,9 +282,9 @@ const crawlAllDetailReportChartHnx = asyncHandler(async () => {
 
 // crawlAllDetailAllInvesting();
 
-// crawlAllDetailChartHnx()
+// crawlAllDetailChartHnx();
 
-// crawlAllDetailReportChartHnx();
+// crawlAllDetailReportChart();
 
 //---------------------------------------------------------------------------
 

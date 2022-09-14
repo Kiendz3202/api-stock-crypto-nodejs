@@ -18,7 +18,7 @@ const AllInvestingDetail = require('../../model/stock/stockDetail/allInvestingDe
 
 const AllReportChart = require('../../model/stock/chartStock/reportChart/allReportChartModel');
 
-const crawlDetailReportChartHnx = asyncHandler(async (id, symbol) => {
+const crawlDetailReportChartAll = asyncHandler(async (id, symbol) => {
 	// cron.schedule('*/20 * * * * *', async () => {
 	axios
 		.get(
@@ -44,4 +44,4 @@ const crawlDetailReportChartHnx = asyncHandler(async (id, symbol) => {
 	// })
 });
 
-module.exports = { crawlDetailReportChartHnx };
+module.exports = { crawlDetailReportChartAll };

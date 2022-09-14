@@ -18,350 +18,311 @@ const ulrBaoTinMinhChau = 'https://btmc.vn/bieu-do-gia-vang.html?t=ngay';
 const urlMiHong = 'https://www.mihong.vn/vi/gia-vang-trong-nuoc';
 
 const crawlSjc = asyncHandler(async () => {
-	cron.schedule('*/50 * * * * *', async () => {
-		try {
-			const browser = await puppeteer.launch({ headless: true });
-			const page = await browser.newPage();
-			await page.setUserAgent(
-				'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
-			);
-			await page.goto(urlSjc, { timeout: 0 });
-			// await page.click('[data-tooltip = "CTCP Xi măng Bỉm Sơn"]')
-			// await page.click(`[data-value = ${symbol}]`)
-			// const selector = await page.$(`#sym-328`)
-			// await page.waitForSelector(`span[data-value=${symbol}]`)
-			// await page.click('#sym-328')
-			await page.waitForTimeout(2000);
-			// await page.click(`[data-value=${symbol}]`)
-			// await page.waitForSelector('#symbol-detail-popup', { visible: true })
+	// cron.schedule('*/50 * * * * *', async () => {
+	try {
+		const browser = await puppeteer.launch({ headless: true });
+		const page = await browser.newPage();
+		await page.setUserAgent(
+			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
+		);
+		await page.goto(urlSjc, { timeout: 0 });
 
-			// await page.evaluate(selector, (selector) => selector.click())
-			// await page.waitForTimeout(3000)
+		await page.waitForTimeout(2000);
 
-			// const bodyHandle = await page.$('body');
-			// const { height } = await bodyHandle.boundingBox();
-			// await bodyHandle.dispose();
+		let sjcDetailData = await page.evaluate(async () => {
+			// const delay = (m) => new Promise((r) => setTimeout(r, m));
 
-			// // Scroll one viewport at a time, pausing to let content load
-			// const viewportHeight = page.viewport().height;
-			// let viewportIncr = 0;
-			// while (viewportIncr + viewportHeight < height) {
-			//     await page.evaluate(_viewportHeight => {
-			//         window.scrollBy(0, _viewportHeight);
-			//     }, viewportHeight);
-			//     await page.waitForTimeout(2000);
-			//     viewportIncr = viewportIncr + viewportHeight;
-			// }
+			// document.querySelector(`span[data-value=${symbol}]`).click()
 
-			// // Scroll back to top
-			// await page.evaluate(_ => {
-			//     window.scrollTo(0, 0);
-			// });
+			// await delay(2000);
 
-			// // Some extra delay to let all data load
-			// await page.waitForTimeout(1000);
-			let sjcDetailData = await page.evaluate(async () => {
-				// const delay = (m) => new Promise((r) => setTimeout(r, m));
+			let stocks = [];
 
-				// document.querySelector(`span[data-value=${symbol}]`).click()
+			let dataJson = {};
 
-				// await delay(2000);
+			try {
+				dataJson.name = 'sjc';
 
-				let stocks = [];
+				let date = new Date();
+				dataJson.timeUpdate =
+					date.getHours() +
+					':' +
+					date.getMinutes() +
+					':' +
+					date.getSeconds() +
+					' ' +
+					date.getDate() +
+					'/' +
+					(date.getMonth() + 1) +
+					'/' +
+					date.getFullYear();
 
-				let dataJson = {};
+				dataJson.sjc1l10lBuy = document.querySelector(
+					'#price1 table tbody :nth-child(4) :nth-child(2)'
+				)?.innerText;
+				dataJson.sjc1l10lSell = document.querySelector(
+					'#price1 table tbody :nth-child(4) :nth-child(3)'
+				)?.innerText;
 
-				try {
-					dataJson.name = 'sjc';
+				dataJson.sjc5cBuy = document.querySelector(
+					'#price1 table tbody :nth-child(5) :nth-child(2)'
+				)?.innerText;
+				dataJson.sjc5cSell = document.querySelector(
+					'#price1 table tbody :nth-child(5) :nth-child(3)'
+				)?.innerText;
 
-					let date = new Date();
-					dataJson.timeUpdate =
-						date.getHours() +
-						':' +
-						date.getMinutes() +
-						':' +
-						date.getSeconds() +
-						' ' +
-						date.getDate() +
-						'/' +
-						(date.getMonth() + 1) +
-						'/' +
-						date.getFullYear();
+				dataJson.sjc2c1c5phanBuy = document.querySelector(
+					'#price1 table tbody :nth-child(6) :nth-child(2)'
+				)?.innerText;
+				dataJson.sjc2c1c5phanSell = document.querySelector(
+					'#price1 table tbody :nth-child(6) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.sjc1l10lBuy = document.querySelector(
-						'#price1 table tbody :nth-child(4) :nth-child(2)'
-					)?.innerText;
-					dataJson.sjc1l10lSell = document.querySelector(
-						'#price1 table tbody :nth-child(4) :nth-child(3)'
-					)?.innerText;
+				dataJson.nhansjc99_991chi2chi5chiBuy = document.querySelector(
+					'#price1 table tbody :nth-child(7) :nth-child(2)'
+				)?.innerText;
+				dataJson.nhansjc99_991chi2chi5chiSell = document.querySelector(
+					'#price1 table tbody :nth-child(7) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.sjc5cBuy = document.querySelector(
-						'#price1 table tbody :nth-child(5) :nth-child(2)'
-					)?.innerText;
-					dataJson.sjc5cSell = document.querySelector(
-						'#price1 table tbody :nth-child(5) :nth-child(3)'
-					)?.innerText;
+				dataJson.nhansjc99_99_0_5chiBuy = document.querySelector(
+					'#price1 table tbody :nth-child(8) :nth-child(2)'
+				)?.innerText;
+				dataJson.nhansjc99_99_0_5chiSell = document.querySelector(
+					'#price1 table tbody :nth-child(8) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.sjc2c1c5phanBuy = document.querySelector(
-						'#price1 table tbody :nth-child(6) :nth-child(2)'
-					)?.innerText;
-					dataJson.sjc2c1c5phanSell = document.querySelector(
-						'#price1 table tbody :nth-child(6) :nth-child(3)'
-					)?.innerText;
+				dataJson.nutrang99_99percentBuy = document.querySelector(
+					'#price1 table tbody :nth-child(9) :nth-child(2)'
+				)?.innerText;
+				dataJson.nutrang99_99percentSell = document.querySelector(
+					'#price1 table tbody :nth-child(9) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.nhansjc99_991chi2chi5chiBuy =
-						document.querySelector(
-							'#price1 table tbody :nth-child(7) :nth-child(2)'
-						)?.innerText;
-					dataJson.nhansjc99_991chi2chi5chiSell =
-						document.querySelector(
-							'#price1 table tbody :nth-child(7) :nth-child(3)'
-						)?.innerText;
+				dataJson.nutrang99percentBuy = document.querySelector(
+					'#price1 table tbody :nth-child(10) :nth-child(2)'
+				)?.innerText;
+				dataJson.nutrang99percentSell = document.querySelector(
+					'#price1 table tbody :nth-child(10) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.nhansjc99_99_0_5chiBuy = document.querySelector(
-						'#price1 table tbody :nth-child(8) :nth-child(2)'
-					)?.innerText;
-					dataJson.nhansjc99_99_0_5chiSell = document.querySelector(
-						'#price1 table tbody :nth-child(8) :nth-child(3)'
-					)?.innerText;
+				dataJson.nutrang75percentBuy = document.querySelector(
+					'#price1 table tbody :nth-child(11) :nth-child(2)'
+				)?.innerText;
+				dataJson.nutrang75percentSell = document.querySelector(
+					'#price1 table tbody :nth-child(11) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.nutrang99_99percentBuy = document.querySelector(
-						'#price1 table tbody :nth-child(9) :nth-child(2)'
-					)?.innerText;
-					dataJson.nutrang99_99percentSell = document.querySelector(
-						'#price1 table tbody :nth-child(9) :nth-child(3)'
-					)?.innerText;
+				dataJson.nutrang58_3percentBuy = document.querySelector(
+					'#price1 table tbody :nth-child(12) :nth-child(2)'
+				)?.innerText;
+				dataJson.nutrang58_3percentSell = document.querySelector(
+					'#price1 table tbody :nth-child(12) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.nutrang99percentBuy = document.querySelector(
-						'#price1 table tbody :nth-child(10) :nth-child(2)'
-					)?.innerText;
-					dataJson.nutrang99percentSell = document.querySelector(
-						'#price1 table tbody :nth-child(10) :nth-child(3)'
-					)?.innerText;
+				dataJson.nutrang41_7percentBuy = document.querySelector(
+					'#price1 table tbody :nth-child(13) :nth-child(2)'
+				)?.innerText;
+				dataJson.nutrang41_7percentSell = document.querySelector(
+					'#price1 table tbody :nth-child(13) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.nutrang75percentBuy = document.querySelector(
-						'#price1 table tbody :nth-child(11) :nth-child(2)'
-					)?.innerText;
-					dataJson.nutrang75percentSell = document.querySelector(
-						'#price1 table tbody :nth-child(11) :nth-child(3)'
-					)?.innerText;
+				dataJson.sjc1l10lHaNoiBuy = document.querySelector(
+					'#price1 table tbody :nth-child(15) :nth-child(2)'
+				)?.innerText;
+				dataJson.sjc1l10lHaNoiSell = document.querySelector(
+					'#price1 table tbody :nth-child(15) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.nutrang58_3percentBuy = document.querySelector(
-						'#price1 table tbody :nth-child(12) :nth-child(2)'
-					)?.innerText;
-					dataJson.nutrang58_3percentSell = document.querySelector(
-						'#price1 table tbody :nth-child(12) :nth-child(3)'
-					)?.innerText;
+				dataJson.sjc1l10lDaNangBuy = document.querySelector(
+					'#price1 table tbody :nth-child(17) :nth-child(2)'
+				)?.innerText;
+				dataJson.sjc1l10lDaNangSell = document.querySelector(
+					'#price1 table tbody :nth-child(17) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.nutrang41_7percentBuy = document.querySelector(
-						'#price1 table tbody :nth-child(13) :nth-child(2)'
-					)?.innerText;
-					dataJson.nutrang41_7percentSell = document.querySelector(
-						'#price1 table tbody :nth-child(13) :nth-child(3)'
-					)?.innerText;
+				dataJson.sjc1l10lNhaTrangBuy = document.querySelector(
+					'#price1 table tbody :nth-child(19) :nth-child(2)'
+				)?.innerText;
+				dataJson.sjc1l10lNhaTrangSell = document.querySelector(
+					'#price1 table tbody :nth-child(19) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.sjc1l10lHaNoiBuy = document.querySelector(
-						'#price1 table tbody :nth-child(15) :nth-child(2)'
-					)?.innerText;
-					dataJson.sjc1l10lHaNoiSell = document.querySelector(
-						'#price1 table tbody :nth-child(15) :nth-child(3)'
-					)?.innerText;
+				dataJson.sjc1l10lCaMauBuy = document.querySelector(
+					'#price1 table tbody :nth-child(21) :nth-child(2)'
+				)?.innerText;
+				dataJson.sjc1l10lCaMauSell = document.querySelector(
+					'#price1 table tbody :nth-child(21) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.sjc1l10lDaNangBuy = document.querySelector(
-						'#price1 table tbody :nth-child(17) :nth-child(2)'
-					)?.innerText;
-					dataJson.sjc1l10lDaNangSell = document.querySelector(
-						'#price1 table tbody :nth-child(17) :nth-child(3)'
-					)?.innerText;
+				dataJson.sjc1l10lHueBuy = document.querySelector(
+					'#price1 table tbody :nth-child(23) :nth-child(2)'
+				)?.innerText;
+				dataJson.sjc1l10lHueSell = document.querySelector(
+					'#price1 table tbody :nth-child(23) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.sjc1l10lNhaTrangBuy = document.querySelector(
-						'#price1 table tbody :nth-child(19) :nth-child(2)'
-					)?.innerText;
-					dataJson.sjc1l10lNhaTrangSell = document.querySelector(
-						'#price1 table tbody :nth-child(19) :nth-child(3)'
-					)?.innerText;
+				dataJson.sjc1l10lBinhPhuocBuy = document.querySelector(
+					'#price1 table tbody :nth-child(25) :nth-child(2)'
+				)?.innerText;
+				dataJson.sjc1l10lBinhPhuocSell = document.querySelector(
+					'#price1 table tbody :nth-child(25) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.sjc1l10lCaMauBuy = document.querySelector(
-						'#price1 table tbody :nth-child(21) :nth-child(2)'
-					)?.innerText;
-					dataJson.sjc1l10lCaMauSell = document.querySelector(
-						'#price1 table tbody :nth-child(21) :nth-child(3)'
-					)?.innerText;
+				dataJson.sjc1l10lBienHoaBuy = document.querySelector(
+					'#price1 table tbody :nth-child(27) :nth-child(2)'
+				)?.innerText;
+				dataJson.sjc1l10lBienHoaSell = document.querySelector(
+					'#price1 table tbody :nth-child(27) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.sjc1l10lHueBuy = document.querySelector(
-						'#price1 table tbody :nth-child(23) :nth-child(2)'
-					)?.innerText;
-					dataJson.sjc1l10lHueSell = document.querySelector(
-						'#price1 table tbody :nth-child(23) :nth-child(3)'
-					)?.innerText;
+				dataJson.sjc1l10lMienTayBuy = document.querySelector(
+					'#price1 table tbody :nth-child(29) :nth-child(2)'
+				)?.innerText;
+				dataJson.sjc1l10lMienTaySell = document.querySelector(
+					'#price1 table tbody :nth-child(29) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.sjc1l10lBinhPhuocBuy = document.querySelector(
-						'#price1 table tbody :nth-child(25) :nth-child(2)'
-					)?.innerText;
-					dataJson.sjc1l10lBinhPhuocSell = document.querySelector(
-						'#price1 table tbody :nth-child(25) :nth-child(3)'
-					)?.innerText;
+				dataJson.sjc1l10lQuangNgaiBuy = document.querySelector(
+					'#price1 table tbody :nth-child(31) :nth-child(2)'
+				)?.innerText;
+				dataJson.sjc1l10lQuangNgaiSell = document.querySelector(
+					'#price1 table tbody :nth-child(31) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.sjc1l10lBienHoaBuy = document.querySelector(
-						'#price1 table tbody :nth-child(27) :nth-child(2)'
-					)?.innerText;
-					dataJson.sjc1l10lBienHoaSell = document.querySelector(
-						'#price1 table tbody :nth-child(27) :nth-child(3)'
-					)?.innerText;
+				dataJson.sjc1l10lLongXuyenBuy = document.querySelector(
+					'#price1 table tbody :nth-child(33) :nth-child(2)'
+				)?.innerText;
+				dataJson.sjc1l10lLongXuyenSell = document.querySelector(
+					'#price1 table tbody :nth-child(33) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.sjc1l10lMienTayBuy = document.querySelector(
-						'#price1 table tbody :nth-child(29) :nth-child(2)'
-					)?.innerText;
-					dataJson.sjc1l10lMienTaySell = document.querySelector(
-						'#price1 table tbody :nth-child(29) :nth-child(3)'
-					)?.innerText;
+				dataJson.sjc1l10lBacLieuBuy = document.querySelector(
+					'#price1 table tbody :nth-child(35) :nth-child(2)'
+				)?.innerText;
+				dataJson.sjc1l10lBacLieuSell = document.querySelector(
+					'#price1 table tbody :nth-child(35) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.sjc1l10lQuangNgaiBuy = document.querySelector(
-						'#price1 table tbody :nth-child(31) :nth-child(2)'
-					)?.innerText;
-					dataJson.sjc1l10lQuangNgaiSell = document.querySelector(
-						'#price1 table tbody :nth-child(31) :nth-child(3)'
-					)?.innerText;
+				dataJson.sjc1l10lQuyNhonBuy = document.querySelector(
+					'#price1 table tbody :nth-child(37) :nth-child(2)'
+				)?.innerText;
+				dataJson.sjc1l10lQuyNhonSell = document.querySelector(
+					'#price1 table tbody :nth-child(37) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.sjc1l10lLongXuyenBuy = document.querySelector(
-						'#price1 table tbody :nth-child(33) :nth-child(2)'
-					)?.innerText;
-					dataJson.sjc1l10lLongXuyenSell = document.querySelector(
-						'#price1 table tbody :nth-child(33) :nth-child(3)'
-					)?.innerText;
+				dataJson.sjc1l10lPhanRangBuy = document.querySelector(
+					'#price1 table tbody :nth-child(39) :nth-child(2)'
+				)?.innerText;
+				dataJson.sjc1l10lPhanRangSell = document.querySelector(
+					'#price1 table tbody :nth-child(39) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.sjc1l10lBacLieuBuy = document.querySelector(
-						'#price1 table tbody :nth-child(35) :nth-child(2)'
-					)?.innerText;
-					dataJson.sjc1l10lBacLieuSell = document.querySelector(
-						'#price1 table tbody :nth-child(35) :nth-child(3)'
-					)?.innerText;
+				dataJson.sjc1l10lHaLongBuy = document.querySelector(
+					'#price1 table tbody :nth-child(41) :nth-child(2)'
+				)?.innerText;
+				dataJson.sjc1l10lHaLongSell = document.querySelector(
+					'#price1 table tbody :nth-child(41) :nth-child(3)'
+				)?.innerText;
 
-					dataJson.sjc1l10lQuyNhonBuy = document.querySelector(
-						'#price1 table tbody :nth-child(37) :nth-child(2)'
-					)?.innerText;
-					dataJson.sjc1l10lQuyNhonSell = document.querySelector(
-						'#price1 table tbody :nth-child(37) :nth-child(3)'
-					)?.innerText;
+				dataJson.sjc1l10lQuangNamBuy = document.querySelector(
+					'#price1 table tbody :nth-child(43) :nth-child(2)'
+				)?.innerText;
+				dataJson.sjc1l10lQuangNamSell = document.querySelector(
+					'#price1 table tbody :nth-child(43) :nth-child(3)'
+				)?.innerText;
+			} catch (err) {
+				console.log(err);
+			}
+			return dataJson;
+		});
 
-					dataJson.sjc1l10lPhanRangBuy = document.querySelector(
-						'#price1 table tbody :nth-child(39) :nth-child(2)'
-					)?.innerText;
-					dataJson.sjc1l10lPhanRangSell = document.querySelector(
-						'#price1 table tbody :nth-child(39) :nth-child(3)'
-					)?.innerText;
+		// console.log(sjcDetailData)
 
-					dataJson.sjc1l10lHaLongBuy = document.querySelector(
-						'#price1 table tbody :nth-child(41) :nth-child(2)'
-					)?.innerText;
-					dataJson.sjc1l10lHaLongSell = document.querySelector(
-						'#price1 table tbody :nth-child(41) :nth-child(3)'
-					)?.innerText;
+		Sjc.findOneAndUpdate(
+			{ name: sjcDetailData.name },
+			{
+				name: sjcDetailData.name,
+				timeUpdate: sjcDetailData.timeUpdate,
+				sjc1l10lBuy: sjcDetailData.sjc1l10lBuy,
+				sjc5cBuy: sjcDetailData.sjc5cBuy,
+				sjc2c1c5phanBuy: sjcDetailData.sjc2c1c5phanBuy,
+				nhansjc99_991chi2chi5chiBuy:
+					sjcDetailData.nhansjc99_991chi2chi5chiBuy,
+				nhansjc99_99_0_5chiBuy: sjcDetailData.nhansjc99_99_0_5chiBuy,
+				nutrang99_99percentBuy: sjcDetailData.nutrang99_99percentBuy,
+				nutrang99percentBuy: sjcDetailData.nutrang99percentBuy,
+				nutrang75percentBuy: sjcDetailData.nutrang75percentBuy,
+				nutrang58_3percentBuy: sjcDetailData.nutrang58_3percentBuy,
+				nutrang41_7percentBuy: sjcDetailData.nutrang41_7percentBuy,
 
-					dataJson.sjc1l10lQuangNamBuy = document.querySelector(
-						'#price1 table tbody :nth-child(43) :nth-child(2)'
-					)?.innerText;
-					dataJson.sjc1l10lQuangNamSell = document.querySelector(
-						'#price1 table tbody :nth-child(43) :nth-child(3)'
-					)?.innerText;
-				} catch (err) {
-					console.log(err);
-				}
-				return dataJson;
-			});
+				sjc1l10lSell: sjcDetailData.sjc1l10lSell,
+				sjc5cSell: sjcDetailData.sjc5cSell,
+				sjc2c1c5phanSell: sjcDetailData.sjc2c1c5phanSell,
+				nhansjc99_991chi2chi5chiSell:
+					sjcDetailData.nhansjc99_991chi2chi5chiSell,
+				nhansjc99_99_0_5chiSell: sjcDetailData.nhansjc99_99_0_5chiSell,
+				nutrang99_99percentSell: sjcDetailData.nutrang99_99percentSell,
+				nutrang99percentSell: sjcDetailData.nutrang99percentSell,
+				nutrang75percentSell: sjcDetailData.nutrang75percentSell,
+				nutrang58_3percentSell: sjcDetailData.nutrang58_3percentSell,
+				nutrang41_7percentSell: sjcDetailData.nutrang41_7percentSell,
 
-			// console.log(sjcDetailData)
+				sjc1l10lHanoiBuy: sjcDetailData.sjc1l10lHanoiBuy,
+				sjc1l10lHaNoiSell: sjcDetailData.sjc1l10lHaNoiSell,
 
-			Sjc.findOneAndUpdate(
-				{ name: sjcDetailData.name },
-				{
-					name: sjcDetailData.name,
-					timeUpdate: sjcDetailData.timeUpdate,
-					sjc1l10lBuy: sjcDetailData.sjc1l10lBuy,
-					sjc5cBuy: sjcDetailData.sjc5cBuy,
-					sjc2c1c5phanBuy: sjcDetailData.sjc2c1c5phanBuy,
-					nhansjc99_991chi2chi5chiBuy:
-						sjcDetailData.nhansjc99_991chi2chi5chiBuy,
-					nhansjc99_99_0_5chiBuy:
-						sjcDetailData.nhansjc99_99_0_5chiBuy,
-					nutrang99_99percentBuy:
-						sjcDetailData.nutrang99_99percentBuy,
-					nutrang99percentBuy: sjcDetailData.nutrang99percentBuy,
-					nutrang75percentBuy: sjcDetailData.nutrang75percentBuy,
-					nutrang58_3percentBuy: sjcDetailData.nutrang58_3percentBuy,
-					nutrang41_7percentBuy: sjcDetailData.nutrang41_7percentBuy,
+				sjc1l10lDaNangBuy: sjcDetailData.sjc1l10lDaNangBuy,
+				sjc1l10lDaNangSell: sjcDetailData.sjc1l10lDaNangSell,
 
-					sjc1l10lSell: sjcDetailData.sjc1l10lSell,
-					sjc5cSell: sjcDetailData.sjc5cSell,
-					sjc2c1c5phanSell: sjcDetailData.sjc2c1c5phanSell,
-					nhansjc99_991chi2chi5chiSell:
-						sjcDetailData.nhansjc99_991chi2chi5chiSell,
-					nhansjc99_99_0_5chiSell:
-						sjcDetailData.nhansjc99_99_0_5chiSell,
-					nutrang99_99percentSell:
-						sjcDetailData.nutrang99_99percentSell,
-					nutrang99percentSell: sjcDetailData.nutrang99percentSell,
-					nutrang75percentSell: sjcDetailData.nutrang75percentSell,
-					nutrang58_3percentSell:
-						sjcDetailData.nutrang58_3percentSell,
-					nutrang41_7percentSell:
-						sjcDetailData.nutrang41_7percentSell,
+				sjc1l10lNhatrangBuy: sjcDetailData.sjc1l10lNhatrangBuy,
+				sjc1l10lNhatrangSell: sjcDetailData.sjc1l10lNhatrangSell,
 
-					sjc1l10lHanoiBuy: sjcDetailData.sjc1l10lHanoiBuy,
-					sjc1l10lHaNoiSell: sjcDetailData.sjc1l10lHaNoiSell,
+				sjc1l10lCaMauBuy: sjcDetailData.sjc1l10lCaMauBuy,
+				sjc1l10lCaMauSell: sjcDetailData.sjc1l10lCaMauSell,
 
-					sjc1l10lDaNangBuy: sjcDetailData.sjc1l10lDaNangBuy,
-					sjc1l10lDaNangSell: sjcDetailData.sjc1l10lDaNangSell,
+				sjc1l10lHueBuy: sjcDetailData.sjc1l10lHueBuy,
+				sjc1l10lHueSell: sjcDetailData.sjc1l10lHueSell,
 
-					sjc1l10lNhatrangBuy: sjcDetailData.sjc1l10lNhatrangBuy,
-					sjc1l10lNhatrangSell: sjcDetailData.sjc1l10lNhatrangSell,
+				sjc1l10lBinhPhuocBuy: sjcDetailData.sjc1l10lBinhPhuocBuy,
+				sjc1l10lBinhPhuocSell: sjcDetailData.sjc1l10lBinhPhuocSell,
 
-					sjc1l10lCaMauBuy: sjcDetailData.sjc1l10lCaMauBuy,
-					sjc1l10lCaMauSell: sjcDetailData.sjc1l10lCaMauSell,
+				sjc1l10lBienHoaBuy: sjcDetailData.sjc1l10lBienHoaBuy,
+				sjc1l10lBienHoaSell: sjcDetailData.sjc1l10lBienHoaSell,
 
-					sjc1l10lHueBuy: sjcDetailData.sjc1l10lHueBuy,
-					sjc1l10lHueSell: sjcDetailData.sjc1l10lHueSell,
+				sjc1l10lMientayBuy: sjcDetailData.sjc1l10lMientayBuy,
+				sjc1l10lMientaySell: sjcDetailData.sjc1l10lMientaySell,
 
-					sjc1l10lBinhPhuocBuy: sjcDetailData.sjc1l10lBinhPhuocBuy,
-					sjc1l10lBinhPhuocSell: sjcDetailData.sjc1l10lBinhPhuocSell,
+				sjc1l10lQuangNgaiBuy: sjcDetailData.sjc1l10lQuangNgaiBuy,
+				sjc1l10lQuangNgaiSell: sjcDetailData.sjc1l10lQuangNgaiSell,
 
-					sjc1l10lBienHoaBuy: sjcDetailData.sjc1l10lBienHoaBuy,
-					sjc1l10lBienHoaSell: sjcDetailData.sjc1l10lBienHoaSell,
+				sjc1l10lLongXuyenBuy: sjcDetailData.sjc1l10lLongXuyenBuy,
+				sjc1l10lLongXuyenSell: sjcDetailData.sjc1l10lLongXuyenSell,
 
-					sjc1l10lMientayBuy: sjcDetailData.sjc1l10lMientayBuy,
-					sjc1l10lMientaySell: sjcDetailData.sjc1l10lMientaySell,
+				sjc1l10lBacLieuBuy: sjcDetailData.sjc1l10lBacLieuBuy,
+				sjc1l10lBacLieuSell: sjcDetailData.sjc1l10lBacLieuSell,
 
-					sjc1l10lQuangNgaiBuy: sjcDetailData.sjc1l10lQuangNgaiBuy,
-					sjc1l10lQuangNgaiSell: sjcDetailData.sjc1l10lQuangNgaiSell,
+				sjc1l10lQuyNhonBuy: sjcDetailData.sjc1l10lQuyNhonBuy,
+				sjc1l10lQuyNhonSell: sjcDetailData.sjc1l10lQuyNhonSell,
 
-					sjc1l10lLongXuyenBuy: sjcDetailData.sjc1l10lLongXuyenBuy,
-					sjc1l10lLongXuyenSell: sjcDetailData.sjc1l10lLongXuyenSell,
+				sjc1l10lPhanRangBuy: sjcDetailData.sjc1l10lPhanRangBuy,
+				sjc1l10lPhanRangSell: sjcDetailData.sjc1l10lPhanRangSell,
 
-					sjc1l10lBacLieuBuy: sjcDetailData.sjc1l10lBacLieuBuy,
-					sjc1l10lBacLieuSell: sjcDetailData.sjc1l10lBacLieuSell,
+				sjc1l10lHaLongBuy: sjcDetailData.sjc1l10lHaLongBuy,
+				sjc1l10lHaLongSell: sjcDetailData.sjc1l10lHaLongSell,
 
-					sjc1l10lQuyNhonBuy: sjcDetailData.sjc1l10lQuyNhonBuy,
-					sjc1l10lQuyNhonSell: sjcDetailData.sjc1l10lQuyNhonSell,
+				sjc1l10lQuangNamBuy: sjcDetailData.sjc1l10lQuangNamBuy,
+				sjc1l10lQuangNamSell: sjcDetailData.sjc1l10lQuangNamSell,
+			},
+			{ upsert: true }
+		)
+			.then((doc) => console.log(doc))
+			.catch((err) => console.log(sjcDetailData.name));
 
-					sjc1l10lPhanRangBuy: sjcDetailData.sjc1l10lPhanRangBuy,
-					sjc1l10lPhanRangSell: sjcDetailData.sjc1l10lPhanRangSell,
-
-					sjc1l10lHaLongBuy: sjcDetailData.sjc1l10lHaLongBuy,
-					sjc1l10lHaLongSell: sjcDetailData.sjc1l10lHaLongSell,
-
-					sjc1l10lQuangNamBuy: sjcDetailData.sjc1l10lQuangNamBuy,
-					sjc1l10lQuangNamSell: sjcDetailData.sjc1l10lQuangNamSell,
-				},
-				{ upsert: true }
-			)
-				.then((doc) => console.log(doc))
-				.catch((err) => console.log(sjcDetailData.name));
-
-			await browser.close();
-		} catch (error) {
-			console.log(error);
-		}
-	});
+		await browser.close();
+	} catch (error) {
+		console.log(error);
+	}
+	// });
 });
 
 const crawlPnj = asyncHandler(async (localtionNumber, index) => {
