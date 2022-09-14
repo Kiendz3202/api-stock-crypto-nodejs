@@ -16,6 +16,13 @@ const UpcomDetail = require('../../model/stock/stockDetail/upcomDetailModel');
 
 const AllInvestingDetail = require('../../model/stock/stockDetail/allInvestingDetailModel');
 
+//update data push arr database lam not
+const HnxChart = require('../../model/stock/chartStock/chart/hnxChartModel');
+const Hnx30Chart = require('../../model/stock/chartStock/chart/hnx30ChartModel');
+const HoseChart = require('../../model/stock/chartStock/chart/hoseChartModel');
+const Vn30Chart = require('../../model/stock/chartStock/chart/vn30ChartModel');
+const UpcomChart = require('../../model/stock/chartStock/chart/upcomChartModel');
+
 const urlHnx30 = 'https://banggia.vietstock.vn/bang-gia/hnx30';
 const urlHnx = 'https://banggia.vietstock.vn/bang-gia/hnx';
 const urlVn30 = 'https://banggia.vietstock.vn/bang-gia/vn30';

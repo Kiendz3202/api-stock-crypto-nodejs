@@ -92,7 +92,7 @@ const crawlHnx30 = asyncHandler(async () => {
 		return stocks;
 	});
 
-	console.log(hnx30Data);
+	// console.log(hnx30Data);
 	hnx30Data.forEach((stock) => {
 		Hnx30.findOneAndUpdate(
 			{ name: stock.name },

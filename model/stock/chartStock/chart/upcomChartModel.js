@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const hnxChartSchema = mongoose.Schema(
+const upcomChartSchema = mongoose.Schema(
 	{
 		symbol: { type: 'String' },
 		t: [Number],
@@ -11,5 +11,5 @@ const hnxChartSchema = mongoose.Schema(
 	}
 );
 
-const HnxChart = mongoose.model('HnxChart', hnxChartSchema);
-module.exports = HnxChart;
+const UpcomChart = mongoose.model('UpcomChart', upcomChartSchema);
+module.exports = UpcomChart;

@@ -19,6 +19,7 @@ const urlPhuQuySjc = 'http://gold.phuquy.com.vn/';
 const ulrBaoTinMinhChau = 'https://btmc.vn/bieu-do-gia-vang.html?t=ngay';
 const urlMiHong = 'https://www.mihong.vn/vi/gia-vang-trong-nuoc';
 
+//only this function crawlSjc crawl data price of sjc and update both price and chart
 const crawlSjc = asyncHandler(async () => {
 	cron.schedule('0 30 * * * *', async () => {
 		try {
@@ -352,7 +353,7 @@ const crawlSjc = asyncHandler(async () => {
 });
 
 const crawlPnj = asyncHandler(async (localtionNumber, index) => {
-	// cron.schedule('*/50 * * * * *', async () => {
+	// cron.schedule('0 30 * * * *', async () => {
 	try {
 		const browser = await puppeteer.launch({ headless: true });
 		const page = await browser.newPage();
@@ -360,31 +361,8 @@ const crawlPnj = asyncHandler(async (localtionNumber, index) => {
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
 		);
 		await page.goto(`${urlPnj}${localtionNumber}`, { timeout: 0 });
-		// await page.select('#select_gold_area', localtionNumber)
+
 		await page.waitForTimeout(2000);
-
-		// const bodyHandle = await page.$('body');
-		// const { height } = await bodyHandle.boundingBox();
-		// await bodyHandle.dispose();
-
-		// // Scroll one viewport at a time, pausing to let content load
-		// const viewportHeight = page.viewport().height;
-		// let viewportIncr = 0;
-		// while (viewportIncr + viewportHeight < height) {
-		//     await page.evaluate(_viewportHeight => {
-		//         window.scrollBy(0, _viewportHeight);
-		//     }, viewportHeight);
-		//     await page.waitForTimeout(2000);
-		//     viewportIncr = viewportIncr + viewportHeight;
-		// }
-
-		// // Scroll back to top
-		// await page.evaluate(_ => {
-		//     window.scrollTo(0, 0);
-		// });
-
-		// // Some extra delay to let all data load
-		// await page.waitForTimeout(2000);
 
 		let pnjDetailData = await page.evaluate(
 			async (localtionNumber, index) => {
@@ -557,7 +535,7 @@ const crawlPnj = asyncHandler(async (localtionNumber, index) => {
 });
 
 const crawlDoji = asyncHandler(async (location) => {
-	// cron.schedule('*/50 * * * * *', async () => {
+	// cron.schedule('0 30 * * * *', async () => {
 	try {
 		const browser = await puppeteer.launch({ headless: true });
 		const page = await browser.newPage();
@@ -565,31 +543,8 @@ const crawlDoji = asyncHandler(async (location) => {
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
 		);
 		await page.goto(urlDoji, { timeout: 0 });
-		// await page.select('#select_gold_area', localtionNumber)
+
 		await page.waitForTimeout(2000);
-
-		// const bodyHandle = await page.$('body');
-		// const { height } = await bodyHandle.boundingBox();
-		// await bodyHandle.dispose();
-
-		// // Scroll one viewport at a time, pausing to let content load
-		// const viewportHeight = page.viewport().height;
-		// let viewportIncr = 0;
-		// while (viewportIncr + viewportHeight < height) {
-		//     await page.evaluate(_viewportHeight => {
-		//         window.scrollBy(0, _viewportHeight);
-		//     }, viewportHeight);
-		//     await page.waitForTimeout(2000);
-		//     viewportIncr = viewportIncr + viewportHeight;
-		// }
-
-		// // Scroll back to top
-		// await page.evaluate(_ => {
-		//     window.scrollTo(0, 0);
-		// });
-
-		// // Some extra delay to let all data load
-		// await page.waitForTimeout(2000);
 
 		let dojiDetailData = await page.evaluate(async (localtion) => {
 			// const delay = (m) => new Promise((r) => setTimeout(r, m));
@@ -875,7 +830,7 @@ const crawlDoji = asyncHandler(async (location) => {
 });
 
 const crawlPhuQuySjc = asyncHandler(async () => {
-	// cron.schedule('*/50 * * * * *', async () => {
+	// cron.schedule('0 30 * * * *', async () => {
 	try {
 		const browser = await puppeteer.launch({ headless: true });
 		const page = await browser.newPage();
@@ -883,31 +838,8 @@ const crawlPhuQuySjc = asyncHandler(async () => {
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
 		);
 		await page.goto(urlPhuQuySjc, { timeout: 0 });
-		// await page.select('#select_gold_area', localtionNumber)
+
 		await page.waitForTimeout(2000);
-
-		// const bodyHandle = await page.$('body');
-		// const { height } = await bodyHandle.boundingBox();
-		// await bodyHandle.dispose();
-
-		// // Scroll one viewport at a time, pausing to let content load
-		// const viewportHeight = page.viewport().height;
-		// let viewportIncr = 0;
-		// while (viewportIncr + viewportHeight < height) {
-		//     await page.evaluate(_viewportHeight => {
-		//         window.scrollBy(0, _viewportHeight);
-		//     }, viewportHeight);
-		//     await page.waitForTimeout(2000);
-		//     viewportIncr = viewportIncr + viewportHeight;
-		// }
-
-		// // Scroll back to top
-		// await page.evaluate(_ => {
-		//     window.scrollTo(0, 0);
-		// });
-
-		// // Some extra delay to let all data load
-		// await page.waitForTimeout(2000);
 
 		let phuQuySjcDetailData = await page.evaluate(async () => {
 			// const delay = (m) => new Promise((r) => setTimeout(r, m));
@@ -1065,7 +997,7 @@ const crawlPhuQuySjc = asyncHandler(async () => {
 });
 
 const crawlBaoTinMinhChau = asyncHandler(async () => {
-	// cron.schedule('*/50 * * * * *', async () => {
+	// cron.schedule('0 30 * * * *', async () => {
 	try {
 		const browser = await puppeteer.launch({ headless: true });
 		const page = await browser.newPage();
@@ -1073,31 +1005,8 @@ const crawlBaoTinMinhChau = asyncHandler(async () => {
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
 		);
 		await page.goto(ulrBaoTinMinhChau, { timeout: 0 });
-		// await page.select('#select_gold_area', localtionNumber)
+
 		await page.waitForTimeout(2000);
-
-		// const bodyHandle = await page.$('body');
-		// const { height } = await bodyHandle.boundingBox();
-		// await bodyHandle.dispose();
-
-		// // Scroll one viewport at a time, pausing to let content load
-		// const viewportHeight = page.viewport().height;
-		// let viewportIncr = 0;
-		// while (viewportIncr + viewportHeight < height) {
-		//     await page.evaluate(_viewportHeight => {
-		//         window.scrollBy(0, _viewportHeight);
-		//     }, viewportHeight);
-		//     await page.waitForTimeout(2000);
-		//     viewportIncr = viewportIncr + viewportHeight;
-		// }
-
-		// // Scroll back to top
-		// await page.evaluate(_ => {
-		//     window.scrollTo(0, 0);
-		// });
-
-		// // Some extra delay to let all data load
-		// await page.waitForTimeout(2000);
 
 		let baoTinMinhChauDetailData = await page.evaluate(async () => {
 			// const delay = (m) => new Promise((r) => setTimeout(r, m));
@@ -1242,7 +1151,7 @@ const crawlBaoTinMinhChau = asyncHandler(async () => {
 });
 
 const crawlMiHong = asyncHandler(async () => {
-	// cron.schedule('*/50 * * * * *', async () => {
+	// cron.schedule('0 30 * * * *', async () => {
 	try {
 		const browser = await puppeteer.launch({ headless: true });
 		const page = await browser.newPage();

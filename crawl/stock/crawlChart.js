@@ -19,6 +19,7 @@ const puppeteer = require('puppeteer');
 const HnxChart = require('../../model/stock/chartStock/chart/hnxChartModel');
 // const AllReportChart = require('../../model/stock/chartStock/reportChart/allReportChartModel');
 
+// khong can dung de crawl data chart sjc
 const crawlDetailChartHnx = asyncHandler(async (symbol) => {
 	let currentTime = Math.floor(Date.now() / 1000);
 	axios

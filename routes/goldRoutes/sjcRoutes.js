@@ -1,9 +1,13 @@
-const express = require('express')
+const express = require('express');
 
-const { sjcData } = require('../../controllers/gold/sjc/sjcController')
+const {
+	sjcDataController,
+	sjcChartDataController,
+} = require('../../controllers/gold/sjc/sjcController');
 
-const router = express.Router()
+const router = express.Router();
 
-router.get('/gold/sjc', sjcData)
+router.get('/gold/sjc', sjcDataController);
+router.get('/gold/chart/sjc', sjcChartDataController);
 
-module.exports = router
+module.exports = router;

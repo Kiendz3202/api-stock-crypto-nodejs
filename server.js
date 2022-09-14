@@ -156,6 +156,7 @@ const crawlAllDetailHnx30 = asyncHandler(async () => {
 });
 
 const crawlAllDetailHnx = asyncHandler(async () => {
+	// cron.schedule('*/35 * * * *', async () => {
 	const list = await Hnx.find({}).limit(20);
 
 	list.forEach(async (stock, index) => {
@@ -175,6 +176,7 @@ const crawlAllDetailHnx = asyncHandler(async () => {
 			);
 		}, 2000 * index);
 	});
+	// });
 });
 
 const crawlAllDetailVn30 = asyncHandler(async () => {
@@ -200,6 +202,7 @@ const crawlAllDetailVn30 = asyncHandler(async () => {
 });
 
 const crawlAllDetailHose = asyncHandler(async () => {
+	// cron.schedule('14 * * * *', async () => {
 	const list = await Hose.find({}).limit(20);
 
 	list.forEach(async (stock, index) => {
@@ -219,6 +222,7 @@ const crawlAllDetailHose = asyncHandler(async () => {
 			);
 		}, 2000 * index);
 	});
+	// })
 });
 
 const crawlAllDetailUpcom = asyncHandler(async () => {
