@@ -153,6 +153,10 @@ const crawlDetailHnx30 = asyncHandler(
 						dataJson.pb = document.querySelector(
 							'.stock-price-info :nth-child(5) :nth-child(5) b'
 						)?.innerText;
+
+						dataJson.currentTimestamp = Math.floor(
+							Date.now() / 1000
+						);
 					} catch (err) {
 						console.log(err);
 					}
@@ -171,7 +175,7 @@ const crawlDetailHnx30 = asyncHandler(
 				turnOver
 			);
 
-			console.log(hnx30DetailData);
+			// console.log(hnx30DetailData);
 
 			Hnx30Detail.findOneAndUpdate(
 				{ symbol: hnx30DetailData.symbol },
@@ -210,9 +214,22 @@ const crawlDetailHnx30 = asyncHandler(
 				},
 				{ upsert: true }
 			)
-				.then((doc) => console.log(doc))
+				.then((doc) => console.log(doc?.symbol))
 				.catch((err) => console.log(hnx30DetailData.name));
 
+			Hnx30Chart.findOneAndUpdate(
+				{ symbol: hnx30DetailData.symbol },
+				{
+					symbol: hnx30DetailData.symbol,
+					$push: {
+						t: hnx30DetailData.currentTimestamp,
+						price: hnx30DetailData.currentPrice,
+					},
+				},
+				{ upsert: true }
+			)
+				.then((doc) => console.log(doc?.symbol))
+				.catch((err) => console.log(err));
 			// return hnx30DetailData
 
 			await browser.close();
@@ -347,6 +364,10 @@ const crawlDetailHnx = asyncHandler(
 						dataJson.pb = document.querySelector(
 							'.stock-price-info :nth-child(5) :nth-child(5) b'
 						)?.innerText;
+
+						dataJson.currentTimestamp = Math.floor(
+							Date.now() / 1000
+						);
 					} catch (err) {
 						console.log(err);
 					}
@@ -365,7 +386,7 @@ const crawlDetailHnx = asyncHandler(
 				turnOver
 			);
 
-			console.log(hnxDetailData);
+			// console.log(hnxDetailData);
 
 			HnxDetail.findOneAndUpdate(
 				{ symbol: hnxDetailData.symbol },
@@ -403,9 +424,22 @@ const crawlDetailHnx = asyncHandler(
 				},
 				{ upsert: true }
 			)
-				.then((doc) => console.log(doc))
+				.then((doc) => console.log(doc?.symbol))
 				.catch((err) => console.log(hnxDetailData.name));
 
+			HnxChart.findOneAndUpdate(
+				{ symbol: hnxDetailData.symbol },
+				{
+					symbol: hnxDetailData.symbol,
+					$push: {
+						t: hnxDetailData.currentTimestamp,
+						price: hnxDetailData.currentPrice,
+					},
+				},
+				{ upsert: true }
+			)
+				.then((doc) => console.log(doc?.symbol))
+				.catch((err) => console.log(err));
 			// return hnxDetailData
 
 			await browser.close();
@@ -540,6 +574,10 @@ const crawlDetailVn30 = asyncHandler(
 						dataJson.pb = document.querySelector(
 							'.stock-price-info :nth-child(5) :nth-child(5) b'
 						)?.innerText;
+
+						dataJson.currentTimestamp = Math.floor(
+							Date.now() / 1000
+						);
 					} catch (err) {
 						console.log(err);
 					}
@@ -558,7 +596,7 @@ const crawlDetailVn30 = asyncHandler(
 				turnOver
 			);
 
-			console.log(vn30DetailData);
+			// console.log(vn30DetailData);
 
 			Vn30Detail.findOneAndUpdate(
 				{ symbol: vn30DetailData.symbol },
@@ -596,9 +634,22 @@ const crawlDetailVn30 = asyncHandler(
 				},
 				{ upsert: true }
 			)
-				.then((doc) => console.log(doc))
+				.then((doc) => console.log(doc?.symbol))
 				.catch((err) => console.log(vn30DetailData.name));
 
+			Vn30Chart.findOneAndUpdate(
+				{ symbol: vn30DetailData.symbol },
+				{
+					symbol: vn30DetailData.symbol,
+					$push: {
+						t: vn30DetailData.currentTimestamp,
+						price: vn30DetailData.currentPrice,
+					},
+				},
+				{ upsert: true }
+			)
+				.then((doc) => console.log(doc?.symbol))
+				.catch((err) => console.log(err));
 			// return vn30DetailData
 
 			await browser.close();
@@ -733,6 +784,10 @@ const crawlDetailHose = asyncHandler(
 						dataJson.pb = document.querySelector(
 							'.stock-price-info :nth-child(5) :nth-child(5) b'
 						)?.innerText;
+
+						dataJson.currentTimestamp = Math.floor(
+							Date.now() / 1000
+						);
 					} catch (err) {
 						console.log(err);
 					}
@@ -751,7 +806,7 @@ const crawlDetailHose = asyncHandler(
 				turnOver
 			);
 
-			console.log(hoseDetailData);
+			// console.log(hoseDetailData);
 
 			HoseDetail.findOneAndUpdate(
 				{ symbol: hoseDetailData.symbol },
@@ -789,9 +844,22 @@ const crawlDetailHose = asyncHandler(
 				},
 				{ upsert: true }
 			)
-				.then((doc) => console.log(doc))
+				.then((doc) => console.log(doc?.symbol))
 				.catch((err) => console.log(hoseDetailData.name));
 
+			HoseChart.findOneAndUpdate(
+				{ symbol: hoseDetailData.symbol },
+				{
+					symbol: hoseDetailData.symbol,
+					$push: {
+						t: hoseDetailData.currentTimestamp,
+						price: hoseDetailData.currentPrice,
+					},
+				},
+				{ upsert: true }
+			)
+				.then((doc) => console.log(doc?.symbol))
+				.catch((err) => console.log(err));
 			// return hoseDetailData
 
 			await browser.close();
@@ -926,6 +994,10 @@ const crawlDetailUpcom = asyncHandler(
 						dataJson.pb = document.querySelector(
 							'.stock-price-info :nth-child(5) :nth-child(5) b'
 						)?.innerText;
+
+						dataJson.currentTimestamp = Math.floor(
+							Date.now() / 1000
+						);
 					} catch (err) {
 						console.log(err);
 					}
@@ -944,7 +1016,7 @@ const crawlDetailUpcom = asyncHandler(
 				turnOver
 			);
 
-			console.log(upcomDetailData);
+			// console.log(upcomDetailData);
 
 			UpcomDetail.findOneAndUpdate(
 				{ symbol: upcomDetailData.symbol },
@@ -983,9 +1055,22 @@ const crawlDetailUpcom = asyncHandler(
 				},
 				{ upsert: true }
 			)
-				.then((doc) => console.log(doc))
+				.then((doc) => console.log(doc?.symbol))
 				.catch((err) => console.log(upcomDetailData.name));
 
+			UpcomChart.findOneAndUpdate(
+				{ symbol: upcomDetailData.symbol },
+				{
+					symbol: upcomDetailData.symbol,
+					$push: {
+						t: upcomDetailData.currentTimestamp,
+						price: upcomDetailData.currentPrice,
+					},
+				},
+				{ upsert: true }
+			)
+				.then((doc) => console.log(doc?.symbol))
+				.catch((err) => console.log(err));
 			// return upcomDetailData
 
 			await browser.close();
@@ -1141,7 +1226,7 @@ const crawlDetailAllInvesting = asyncHandler(async (id, name, hrefDetail) => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			.then((doc) => console.log(doc?.sy))
 			.catch((err) => console.log(err));
 
 		// return upcomDetailData

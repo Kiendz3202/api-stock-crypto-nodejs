@@ -111,7 +111,7 @@ const crawlHnx30 = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			.then((doc) => console.log(doc?.symbol))
 			.catch((err) => console.log(err));
 	});
 
@@ -235,7 +235,7 @@ const crawlHnx = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			.then((doc) => console.log(doc?.symbol))
 			.catch((err) => console.log(err));
 	});
 
@@ -335,7 +335,7 @@ const crawlVn30 = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			.then((doc) => console.log(doc?.symbol))
 			.catch((err) => console.log(err));
 	});
 
@@ -457,7 +457,7 @@ const crawlHose = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			.then((doc) => console.log(doc?.symbol))
 			.catch((err) => console.log(err));
 	});
 
@@ -581,7 +581,7 @@ const crawlUpcom = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			.then((doc) => console.log(doc?.symbol))
 			.catch((err) => console.log(err));
 	});
 
@@ -679,7 +679,7 @@ const crawlAllInvesting = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			.then((doc) => console.log(doc?.symbol))
 			.catch((err) => console.log(err));
 	});
 

@@ -21,7 +21,7 @@ const urlMiHong = 'https://www.mihong.vn/vi/gia-vang-trong-nuoc';
 
 //only this function crawlSjc crawl data price of sjc and update both price and chart
 const crawlSjc = asyncHandler(async () => {
-	cron.schedule('0 30 * * * *', async () => {
+	cron.schedule('*/15 * * * *', async () => {
 		try {
 			const browser = await puppeteer.launch({ headless: true });
 			const page = await browser.newPage();
@@ -353,7 +353,7 @@ const crawlSjc = asyncHandler(async () => {
 });
 
 const crawlPnj = asyncHandler(async (localtionNumber, index) => {
-	// cron.schedule('0 30 * * * *', async () => {
+	// cron.schedule('*/15 * * * *', async () => {
 	try {
 		const browser = await puppeteer.launch({ headless: true });
 		const page = await browser.newPage();
@@ -535,7 +535,7 @@ const crawlPnj = asyncHandler(async (localtionNumber, index) => {
 });
 
 const crawlDoji = asyncHandler(async (location) => {
-	// cron.schedule('0 30 * * * *', async () => {
+	// cron.schedule('*/15 * * * *', async () => {
 	try {
 		const browser = await puppeteer.launch({ headless: true });
 		const page = await browser.newPage();
@@ -830,7 +830,7 @@ const crawlDoji = asyncHandler(async (location) => {
 });
 
 const crawlPhuQuySjc = asyncHandler(async () => {
-	// cron.schedule('0 30 * * * *', async () => {
+	// cron.schedule('*/15 * * * *', async () => {
 	try {
 		const browser = await puppeteer.launch({ headless: true });
 		const page = await browser.newPage();
@@ -997,7 +997,7 @@ const crawlPhuQuySjc = asyncHandler(async () => {
 });
 
 const crawlBaoTinMinhChau = asyncHandler(async () => {
-	// cron.schedule('0 30 * * * *', async () => {
+	// cron.schedule('*/15 * * * *', async () => {
 	try {
 		const browser = await puppeteer.launch({ headless: true });
 		const page = await browser.newPage();
@@ -1151,7 +1151,7 @@ const crawlBaoTinMinhChau = asyncHandler(async () => {
 });
 
 const crawlMiHong = asyncHandler(async () => {
-	// cron.schedule('0 30 * * * *', async () => {
+	// cron.schedule('*/15 * * * *', async () => {
 	try {
 		const browser = await puppeteer.launch({ headless: true });
 		const page = await browser.newPage();
