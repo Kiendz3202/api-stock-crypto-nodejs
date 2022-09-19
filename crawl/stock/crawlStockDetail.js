@@ -464,12 +464,6 @@ const crawlDetailVn30 = asyncHandler(
 		changePercent,
 		turnOver
 	) => {
-		// cron.schedule('*/20 * * * * *', async () =>{
-
-		// const hnx30List = await Hnx30.find({}).sort({ symbol: 'asc' })
-
-		// let selector = `td[data-tooltip = ${name}]`
-
 		try {
 			const browser = await puppeteer.launch({ headless: true });
 			const page = await browser.newPage();
@@ -477,17 +471,9 @@ const crawlDetailVn30 = asyncHandler(
 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
 				{ timeout: 0 }
 			);
-			// await page.click('[data-tooltip = "CTCP Xi măng Bỉm Sơn"]')
-			// await page.click(`[data-value = ${symbol}]`)
-			// const selector = await page.$(`#sym-328`)
-			// await page.waitForSelector(`span[data-value=${symbol}]`)
-			// await page.click('#sym-328')
-			await page.waitForTimeout(2000);
-			// await page.click(`[data-value=${symbol}]`)
-			// await page.waitForSelector('#symbol-detail-popup', { visible: true })
 
-			// await page.evaluate(selector, (selector) => selector.click())
-			// await page.waitForTimeout(3000)
+			await page.waitForTimeout(2000);
+
 			let vn30DetailData = await page.evaluate(
 				async (
 					name,
@@ -502,14 +488,6 @@ const crawlDetailVn30 = asyncHandler(
 					changePercent,
 					turnOver
 				) => {
-					// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-					// document.querySelector(`span[data-value=${symbol}]`).click()
-
-					// await delay(2000);
-
-					let stocks = [];
-
 					let dataJson = {};
 
 					try {
@@ -656,7 +634,6 @@ const crawlDetailVn30 = asyncHandler(
 		} catch (error) {
 			console.log(error);
 		}
-		// })
 	}
 );
 

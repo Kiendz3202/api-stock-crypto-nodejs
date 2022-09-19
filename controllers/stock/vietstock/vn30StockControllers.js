@@ -1,8 +1,8 @@
 const asyncHandler = require('express-async-handler');
 
-const Hnx = require('../../../model/stock/stockList/hnxModel');
-const HnxDetail = require('../../../model/stock/stockDetail/hnxDetailModel');
-const HnxChart = require('../../../model/stock/chartStock/chart/hnxChartModel');
+const Vn30 = require('../../../model/stock/stockList/vn30Model');
+const Vn30Detail = require('../../../model/stock/stockDetail/vn30DetailModel');
+const Vn30Chart = require('../../../model/stock/chartStock/chart/vn30ChartModel');
 const AllReportChart = require('../../../model/stock/chartStock/reportChart/allReportChartModel');
 const AllInvestingDetail = require('../../../model/stock/stockDetail/allInvestingDetailModel');
 
@@ -14,8 +14,8 @@ const AllInvestingDetail = require('../../../model/stock/stockDetail/allInvestin
 // 	res.status(200).json(stockList);
 // });
 
-const hnxStockList = async (req, res, next) => {
-	const stockList = await Hnx.find({}).select(
+const vn30StockList = async (req, res, next) => {
+	const stockList = await Vn30.find({}).select(
 		'-_id -createdAt -updatedAt -__v'
 	);
 
@@ -23,25 +23,25 @@ const hnxStockList = async (req, res, next) => {
 };
 
 //populate thì đầu tiên cần có data description của tất cả công ty lấy từ web investing đã
-const hnxDetailStock = async (req, res, next) => {
+const vn30DetailStock = async (req, res, next) => {
 	const symbol = req.params.symbol;
 	// console.log(symbol)
 
-	const stock = await HnxDetail.find({
+	const stock = await Vn30Detail.find({
 		symbol: symbol,
-	});
-	// .populate(
-	// 	'companyInfo',
-	// 	'-_id -createdAt -updatedAt -__v -name -symbol'
-	// )
-	// .select('-_id -createdAt -updatedAt -__v');
+	})
+		// .populate(
+		// 	'companyInfo',
+		// 	'-_id -createdAt -updatedAt -__v -name -symbol'
+		// )
+		.select('-_id -createdAt -updatedAt -__v');
 
 	res.status(200).json(stock);
 };
 
-const hnxDetailChart = async (req, res, next) => {
+const vn30DetailChart = async (req, res, next) => {
 	const symbol = req.params.symbol;
-	const list = await HnxChart.find({ symbol: symbol }).select(
+	const list = await Vn30Chart.find({ symbol: symbol }).select(
 		'-_id -createdAt -updatedAt -__v'
 	);
 	// let arr = []
@@ -59,7 +59,7 @@ const hnxDetailChart = async (req, res, next) => {
 	res.status(200).json(list);
 };
 
-const hnxDetailReportChart = async (req, res, next) => {
+const vn30DetailReportChart = async (req, res, next) => {
 	const symbol = req.params.symbol;
 	const listChart = await AllReportChart.find({
 		symbol: symbol,
@@ -68,7 +68,7 @@ const hnxDetailReportChart = async (req, res, next) => {
 	res.status(200).json(listChart);
 };
 
-const hnxCompanyDetail = async (req, res, next) => {
+const vn30CompanyDetail = async (req, res, next) => {
 	const symbol = req.params.symbol;
 
 	const list = await AllInvestingDetail.find({
@@ -79,9 +79,9 @@ const hnxCompanyDetail = async (req, res, next) => {
 };
 
 module.exports = {
-	hnxStockList,
-	hnxDetailStock,
-	hnxDetailReportChart,
-	hnxDetailChart,
-	hnxCompanyDetail,
+	vn30StockList,
+	vn30DetailStock,
+	vn30DetailReportChart,
+	vn30DetailChart,
+	vn30CompanyDetail,
 };
