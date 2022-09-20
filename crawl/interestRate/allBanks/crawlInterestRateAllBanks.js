@@ -18,7 +18,7 @@ const urlVietinbank = 'https://www.vietinbank.vn/web/home/vn/lai-suat';
 const urlAgribank = 'https://www.agribank.com.vn/vn/lai-suat';
 const urlBidv = 'https://www.bidv.com.vn/vn/tra-cuu-lai-suat';
 const urlScb = 'https://www.scb.com.vn/vie/lai-suat';
-const urlMbbank = 'https://mbbank.com.vn/Fee#/card-info1';
+const urlMbbank = 'https://webgia.com/lai-suat/mbbank/';
 const urlVib =
 	'https://www.vib.com.vn/vn/tiet-kiem/bieu-lai-suat-tiet-kiem-tai-quay';
 
@@ -1113,7 +1113,7 @@ const crawlScbInterestRate = asyncHandler(async () => {
 			return dataJson;
 		});
 
-		console.log(scbData);
+		// console.log(scbData);
 
 		ScbInterestRate.findOneAndUpdate(
 			{ symbol: scbData.symbol },
@@ -1294,95 +1294,95 @@ const crawlMbbankInterestRate = asyncHandler(async () => {
 					date.getFullYear();
 
 				dataJson.khongkyhan = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(2) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(1) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.week1 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(3) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(2) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.week2 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(4) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(3) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.week3 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(5) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(4) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month1 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(6) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(5) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month2 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(7) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(6) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month3 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(8) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(7) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month4 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(9) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(8) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month5 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(10) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(9) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month6 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(11) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(10) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month7 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(12) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(11) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month8 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(13) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(12) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month9 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(14) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(13) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month10 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(15) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(14) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month11 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(16) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(15) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month12 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(17) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(16) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month13 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(18) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(17) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month15 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(19) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(18) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month18 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(20) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(19) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month24 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(21) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(20) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month36 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(22) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(21) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month48 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(23) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(22) :nth-child(2)'
 				)?.innerText;
 
 				dataJson.month60 = document.querySelector(
-					'.detail-panel-body table tbody :nth-child(24) :nth-child(2) '
+					'section.bang-lai-suat tbody :nth-child(23) :nth-child(2)'
 				)?.innerText;
 			} catch (err) {
 				console.log(err);
@@ -1930,7 +1930,8 @@ const crawlVpbankInterestRate = asyncHandler(async () => {
 			return dataJson;
 		});
 
-		console.log(vpbankData);
+		// console.log(vpbankData);
+
 		VpbankInterestRate.findOneAndUpdate(
 			{ symbol: vpbankData.symbol },
 			{

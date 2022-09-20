@@ -18,7 +18,7 @@ const urlBidv = 'https://www.bidv.com.vn/vn/ty-gia-ngoai-te';
 const urlTechcombank =
 	'https://www.techcombank.com.vn/cong-cu-tien-ich/ti-gia/ti-gia-hoi-doai';
 const urlVietinbank = 'https://www.vietinbank.vn/web/home/vn/ty-gia/';
-const urlMbbank = 'https://www.mbbank.com.vn/ExchangeRate';
+const urlMbbank = 'https://webgia.com/ty-gia/mbbank/';
 
 const crawlAbBank = asyncHandler(async () => {
 	// cron.schedule('*/50 * * * * *', async () => {
@@ -325,49 +325,10 @@ const crawlAgribank = asyncHandler(async () => {
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
 		);
 		await page.goto(urlAgribank, { timeout: 0 });
-		// await page.click('[data-tooltip = "CTCP Xi măng Bỉm Sơn"]')
-		// await page.click(`[data-value = ${symbol}]`)
-		// const selector = await page.$(`#sym-328`)
-		// await page.waitForSelector(`span[data-value=${symbol}]`)
-		// await page.click('#sym-328')
+
 		await page.waitForTimeout(2000);
-		// await page.click(`[data-value=${symbol}]`)
-		// await page.waitForSelector('#symbol-detail-popup', { visible: true })
 
-		// await page.evaluate(selector, (selector) => selector.click())
-		// await page.waitForTimeout(3000)
-
-		// const bodyHandle = await page.$('body');
-		// const { height } = await bodyHandle.boundingBox();
-		// await bodyHandle.dispose();
-
-		// // Scroll one viewport at a time, pausing to let content load
-		// const viewportHeight = page.viewport().height;
-		// let viewportIncr = 0;
-		// while (viewportIncr + viewportHeight < height) {
-		//     await page.evaluate(_viewportHeight => {
-		//         window.scrollBy(0, _viewportHeight);
-		//     }, viewportHeight);
-		//     await page.waitForTimeout(2000);
-		//     viewportIncr = viewportIncr + viewportHeight;
-		// }
-
-		// // Scroll back to top
-		// await page.evaluate(_ => {
-		//     window.scrollTo(0, 0);
-		// });
-
-		// // Some extra delay to let all data load
-		// await page.waitForTimeout(1000);
 		let agribankData = await page.evaluate(async () => {
-			// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-			// document.querySelector(`span[data-value=${symbol}]`).click()
-
-			// await delay(2000);
-
-			let stocks = [];
-
 			let dataJson = {};
 
 			try {
@@ -596,12 +557,6 @@ const crawlVietcombank = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let vietcombankData = await page.evaluate(async () => {
-			// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-			// await delay(2000);
-
-			let stocks = [];
-
 			let dataJson = {};
 
 			try {
@@ -942,12 +897,6 @@ const crawlBidv = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let bidvData = await page.evaluate(async () => {
-			// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-			// await delay(2000);
-
-			let stocks = [];
-
 			let dataJson = {};
 
 			try {
@@ -1288,12 +1237,6 @@ const crawlTechcombank = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let techcombankData = await page.evaluate(async () => {
-			// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-			// await delay(2000);
-
-			let stocks = [];
-
 			let dataJson = {};
 
 			try {
@@ -1536,12 +1479,6 @@ const crawlVietinbank = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let vietinbankData = await page.evaluate(async () => {
-			// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-			// await delay(2000);
-
-			let stocks = [];
-
 			let dataJson = {};
 
 			try {
@@ -1844,12 +1781,6 @@ const crawlMbbank = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let mbbankData = await page.evaluate(async () => {
-			// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-			// await delay(2000);
-
-			let stocks = [];
-
 			let dataJson = {};
 
 			try {
@@ -1871,211 +1802,211 @@ const crawlMbbank = asyncHandler(async () => {
 					date.getFullYear();
 
 				dataJson.usdBuyCast = document.querySelector(
-					'.table-fee tbody :nth-child(1) :nth-child(2) '
+					'#main tbody :nth-child(1) :nth-child(3)'
 				)?.innerText;
 				dataJson.usdBuyTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(1) :nth-child(3) '
+					'#main tbody :nth-child(1) :nth-child(4)'
 				)?.innerText;
 				dataJson.usdSellCast = document.querySelector(
-					'table.table-fee tbody :nth-child(1) :nth-child(4) '
+					'#main tbody :nth-child(1) :nth-child(5)'
 				)?.innerText;
 				dataJson.usdSellTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(1) :nth-child(5) '
+					'#main tbody :nth-child(1) :nth-child(6)'
 				)?.innerText;
 
 				dataJson.eurBuyCast = document.querySelector(
-					'.table-fee tbody :nth-child(4) :nth-child(2) '
+					'#main tbody :nth-child(4) :nth-child(3)'
 				)?.innerText;
 				dataJson.eurBuyTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(4) :nth-child(3) '
+					'#main tbody :nth-child(4) :nth-child(4)'
 				)?.innerText;
 				dataJson.eurSellCast = document.querySelector(
-					'table.table-fee tbody :nth-child(4) :nth-child(4) '
+					'#main tbody :nth-child(4) :nth-child(5)'
 				)?.innerText;
 				dataJson.eurSellTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(4) :nth-child(5) '
-				)?.innerText;
-
-				dataJson.gbpBuyCast = document.querySelector(
-					'.table-fee tbody :nth-child(5) :nth-child(2) '
-				)?.innerText;
-				dataJson.gbpBuyTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(5) :nth-child(3) '
-				)?.innerText;
-				dataJson.gbpSellCast = document.querySelector(
-					'table.table-fee tbody :nth-child(5) :nth-child(4) '
-				)?.innerText;
-				dataJson.gbpSellTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(5) :nth-child(5) '
-				)?.innerText;
-
-				dataJson.jpyBuyCast = document.querySelector(
-					'.table-fee tbody :nth-child(6) :nth-child(2) '
-				)?.innerText;
-				dataJson.jpyBuyTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(6) :nth-child(3) '
-				)?.innerText;
-				dataJson.jpySellCast = document.querySelector(
-					'table.table-fee tbody :nth-child(6) :nth-child(4) '
-				)?.innerText;
-				dataJson.jpySellTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(6) :nth-child(5) '
-				)?.innerText;
-
-				dataJson.hkdBuyCast = document.querySelector(
-					'.table-fee tbody :nth-child(7) :nth-child(2) '
-				)?.innerText;
-				dataJson.hkdBuyTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(7) :nth-child(3) '
-				)?.innerText;
-				dataJson.hkdSellCast = document.querySelector(
-					'table.table-fee tbody :nth-child(7) :nth-child(4) '
-				)?.innerText;
-				dataJson.hkdSellTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(7) :nth-child(5) '
-				)?.innerText;
-
-				dataJson.cnyBuyCast = document.querySelector(
-					'.table-fee tbody :nth-child(8) :nth-child(2) '
-				)?.innerText;
-				dataJson.cnyBuyTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(8) :nth-child(3) '
-				)?.innerText;
-				dataJson.cnySellCast = document.querySelector(
-					'table.table-fee tbody :nth-child(8) :nth-child(4) '
-				)?.innerText;
-				dataJson.cnySellTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(8) :nth-child(5) '
+					'#main tbody :nth-child(4) :nth-child(6)'
 				)?.innerText;
 
 				dataJson.audBuyCast = document.querySelector(
-					'.table-fee tbody :nth-child(9) :nth-child(2) '
+					'#main tbody :nth-child(5) :nth-child(3)'
 				)?.innerText;
 				dataJson.audBuyTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(9) :nth-child(3) '
+					'#main tbody :nth-child(5) :nth-child(4)'
 				)?.innerText;
 				dataJson.audSellCast = document.querySelector(
-					'table.table-fee tbody :nth-child(9) :nth-child(4) '
+					'#main tbody :nth-child(5) :nth-child(5)'
 				)?.innerText;
 				dataJson.audSellTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(9) :nth-child(5) '
-				)?.innerText;
-
-				dataJson.nzdBuyCast = document.querySelector(
-					'.table-fee tbody :nth-child(10) :nth-child(2) '
-				)?.innerText;
-				dataJson.nzdBuyTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(10) :nth-child(3) '
-				)?.innerText;
-				dataJson.nzdSellCast = document.querySelector(
-					'table.table-fee tbody :nth-child(10) :nth-child(4) '
-				)?.innerText;
-				dataJson.nzdSellTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(10) :nth-child(5) '
+					'#main tbody :nth-child(5) :nth-child(6)'
 				)?.innerText;
 
 				dataJson.cadBuyCast = document.querySelector(
-					'.table-fee tbody :nth-child(11) :nth-child(2) '
+					'#main tbody :nth-child(6) :nth-child(3)'
 				)?.innerText;
 				dataJson.cadBuyTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(11) :nth-child(3) '
+					'#main tbody :nth-child(6) :nth-child(4)'
 				)?.innerText;
 				dataJson.cadSellCast = document.querySelector(
-					'table.table-fee tbody :nth-child(11) :nth-child(4) '
+					'#main tbody :nth-child(6) :nth-child(5)'
 				)?.innerText;
 				dataJson.cadSellTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(11) :nth-child(5) '
-				)?.innerText;
-
-				dataJson.sgdBuyCast = document.querySelector(
-					'.table-fee tbody :nth-child(12) :nth-child(2) '
-				)?.innerText;
-				dataJson.sgdBuyTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(12) :nth-child(3) '
-				)?.innerText;
-				dataJson.sgdSellCast = document.querySelector(
-					'table.table-fee tbody :nth-child(12) :nth-child(4) '
-				)?.innerText;
-				dataJson.sgdSellTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(12) :nth-child(5) '
-				)?.innerText;
-
-				dataJson.thbBuyCast = document.querySelector(
-					'.table-fee tbody :nth-child(13) :nth-child(2) '
-				)?.innerText;
-				dataJson.thbBuyTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(13) :nth-child(3) '
-				)?.innerText;
-				dataJson.thbSellCast = document.querySelector(
-					'table.table-fee tbody :nth-child(13) :nth-child(4) '
-				)?.innerText;
-				dataJson.thbSellTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(13) :nth-child(5) '
+					'#main tbody :nth-child(6) :nth-child(6)'
 				)?.innerText;
 
 				dataJson.chfBuyCast = document.querySelector(
-					'.table-fee tbody :nth-child(14) :nth-child(2) '
+					'#main tbody :nth-child(7) :nth-child(3)'
 				)?.innerText;
 				dataJson.chfBuyTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(14) :nth-child(3) '
+					'#main tbody :nth-child(7) :nth-child(4)'
 				)?.innerText;
 				dataJson.chfSellCast = document.querySelector(
-					'table.table-fee tbody :nth-child(14) :nth-child(4) '
+					'#main tbody :nth-child(7) :nth-child(5)'
 				)?.innerText;
 				dataJson.chfSellTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(14) :nth-child(5) '
+					'#main tbody :nth-child(7) :nth-child(6)'
 				)?.innerText;
 
-				dataJson.krwBuyCast = document.querySelector(
-					'.table-fee tbody :nth-child(15) :nth-child(2) '
+				dataJson.cnyBuyCast = document.querySelector(
+					'#main tbody :nth-child(8) :nth-child(3)'
 				)?.innerText;
-				dataJson.krwBuyTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(15) :nth-child(3) '
+				dataJson.cnyBuyTransfer = document.querySelector(
+					'#main tbody :nth-child(8) :nth-child(4)'
 				)?.innerText;
-				dataJson.krwSellCast = document.querySelector(
-					'table.table-fee tbody :nth-child(15) :nth-child(4) '
+				dataJson.cnySellCast = document.querySelector(
+					'#main tbody :nth-child(8) :nth-child(5)'
 				)?.innerText;
-				dataJson.krwSellTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(15) :nth-child(5) '
+				dataJson.cnySellTransfer = document.querySelector(
+					'#main tbody :nth-child(8) :nth-child(6)'
 				)?.innerText;
 
-				dataJson.lakBuyCast = document.querySelector(
-					'.table-fee tbody :nth-child(16) :nth-child(2) '
+				dataJson.gbpBuyCast = document.querySelector(
+					'#main tbody :nth-child(9) :nth-child(3)'
 				)?.innerText;
-				dataJson.lakBuyTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(16) :nth-child(3) '
+				dataJson.gbpBuyTransfer = document.querySelector(
+					'#main tbody :nth-child(9) :nth-child(4)'
 				)?.innerText;
-				dataJson.lakSellCast = document.querySelector(
-					'table.table-fee tbody :nth-child(16) :nth-child(4) '
+				dataJson.gbpSellCast = document.querySelector(
+					'#main tbody :nth-child(9) :nth-child(5)'
 				)?.innerText;
-				dataJson.lakSellTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(16) :nth-child(5) '
+				dataJson.gbpSellTransfer = document.querySelector(
+					'#main tbody :nth-child(9) :nth-child(6)'
+				)?.innerText;
+
+				dataJson.hkdBuyCast = document.querySelector(
+					'#main tbody :nth-child(10) :nth-child(3)'
+				)?.innerText;
+				dataJson.hkdBuyTransfer = document.querySelector(
+					'#main tbody :nth-child(10) :nth-child(4)'
+				)?.innerText;
+				dataJson.hkdSellCast = document.querySelector(
+					'#main tbody :nth-child(10) :nth-child(5)'
+				)?.innerText;
+				dataJson.hkdSellTransfer = document.querySelector(
+					'#main tbody :nth-child(10) :nth-child(6)'
+				)?.innerText;
+
+				dataJson.jpyBuyCast = document.querySelector(
+					'#main tbody :nth-child(11) :nth-child(3)'
+				)?.innerText;
+				dataJson.jpyBuyTransfer = document.querySelector(
+					'#main tbody :nth-child(11) :nth-child(4)'
+				)?.innerText;
+				dataJson.jpySellCast = document.querySelector(
+					'#main tbody :nth-child(11) :nth-child(5)'
+				)?.innerText;
+				dataJson.jpySellTransfer = document.querySelector(
+					'#main tbody :nth-child(11) :nth-child(6)'
 				)?.innerText;
 
 				dataJson.khrBuyCast = document.querySelector(
-					'.table-fee tbody :nth-child(17) :nth-child(2) '
+					'#main tbody :nth-child(12) :nth-child(3)'
 				)?.innerText;
 				dataJson.khrBuyTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(17) :nth-child(3) '
+					'#main tbody :nth-child(12) :nth-child(4)'
 				)?.innerText;
 				dataJson.khrSellCast = document.querySelector(
-					'table.table-fee tbody :nth-child(17) :nth-child(4) '
+					'#main tbody :nth-child(12) :nth-child(5)'
 				)?.innerText;
 				dataJson.khrSellTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(17) :nth-child(5) '
+					'#main tbody :nth-child(12) :nth-child(6)'
+				)?.innerText;
+
+				dataJson.krwBuyCast = document.querySelector(
+					'#main tbody :nth-child(13) :nth-child(3)'
+				)?.innerText;
+				dataJson.krwBuyTransfer = document.querySelector(
+					'#main tbody :nth-child(13) :nth-child(4)'
+				)?.innerText;
+				dataJson.krwSellCast = document.querySelector(
+					'#main tbody :nth-child(13) :nth-child(5)'
+				)?.innerText;
+				dataJson.krwSellTransfer = document.querySelector(
+					'#main tbody :nth-child(13) :nth-child(6)'
+				)?.innerText;
+
+				dataJson.lakBuyCast = document.querySelector(
+					'#main tbody :nth-child(14) :nth-child(3)'
+				)?.innerText;
+				dataJson.lakBuyTransfer = document.querySelector(
+					'#main tbody :nth-child(14) :nth-child(4)'
+				)?.innerText;
+				dataJson.lakSellCast = document.querySelector(
+					'#main tbody :nth-child(14) :nth-child(5)'
+				)?.innerText;
+				dataJson.lakSellTransfer = document.querySelector(
+					'#main tbody :nth-child(14) :nth-child(6)'
+				)?.innerText;
+
+				dataJson.nzdBuyCast = document.querySelector(
+					'#main tbody :nth-child(15) :nth-child(3)'
+				)?.innerText;
+				dataJson.nzdBuyTransfer = document.querySelector(
+					'#main tbody :nth-child(15) :nth-child(4)'
+				)?.innerText;
+				dataJson.nzdSellCast = document.querySelector(
+					'#main tbody :nth-child(15) :nth-child(5)'
+				)?.innerText;
+				dataJson.nzdSellTransfer = document.querySelector(
+					'#main tbody :nth-child(15) :nth-child(6)'
 				)?.innerText;
 
 				dataJson.sekBuyCast = document.querySelector(
-					'.table-fee tbody :nth-child(18) :nth-child(2) '
+					'#main tbody :nth-child(16) :nth-child(3)'
 				)?.innerText;
 				dataJson.sekBuyTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(18) :nth-child(3) '
+					'#main tbody :nth-child(16) :nth-child(4)'
 				)?.innerText;
 				dataJson.sekSellCast = document.querySelector(
-					'table.table-fee tbody :nth-child(18) :nth-child(4) '
+					'#main tbody :nth-child(16) :nth-child(5)'
 				)?.innerText;
 				dataJson.sekSellTransfer = document.querySelector(
-					'table.table-fee tbody :nth-child(18) :nth-child(5) '
+					'#main tbody :nth-child(16) :nth-child(6)'
+				)?.innerText;
+
+				dataJson.sgdBuyCast = document.querySelector(
+					'#main tbody :nth-child(17) :nth-child(3)'
+				)?.innerText;
+				dataJson.sgdBuyTransfer = document.querySelector(
+					'#main tbody :nth-child(17) :nth-child(4)'
+				)?.innerText;
+				dataJson.sgdSellCast = document.querySelector(
+					'#main tbody :nth-child(17) :nth-child(5)'
+				)?.innerText;
+				dataJson.sgdSellTransfer = document.querySelector(
+					'#main tbody :nth-child(17) :nth-child(6)'
+				)?.innerText;
+
+				dataJson.thbBuyCast = document.querySelector(
+					'#main tbody :nth-child(18) :nth-child(3)'
+				)?.innerText;
+				dataJson.thbBuyTransfer = document.querySelector(
+					'#main tbody :nth-child(18) :nth-child(4)'
+				)?.innerText;
+				dataJson.thbSellCast = document.querySelector(
+					'#main tbody :nth-child(18) :nth-child(5)'
+				)?.innerText;
+				dataJson.thbSellTransfer = document.querySelector(
+					'#main tbody :nth-child(18) :nth-child(6)'
 				)?.innerText;
 			} catch (err) {
 				console.log(err);

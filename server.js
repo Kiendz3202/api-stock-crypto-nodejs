@@ -78,60 +78,6 @@ const Coin = require('./model/coin/coinModel');
 
 //--------------------------------------------Main Body------------------------------------------------------------------
 
-//--------Gold--------------
-
-// crawlSjc();
-
-const crawlAllDetailPnj = asyncHandler(async () => {
-	const arr = ['00', '07', '11', '13', '14', '21'];
-	const arrCt = [07];
-
-	arr.forEach((gold, index) => {
-		setTimeout(() => {
-			crawlPnj(gold, index + 1);
-		}, 2000 * index);
-	});
-});
-// crawlAllDetailPnj()
-
-// crawlDoji()
-// crawlPhuQuySjc()
-// crawlBaoTinMinhChau()
-// crawlMiHong()
-
-//----------------------------
-
-//----------Petrol---------------
-
-// crawlPetrolimex()
-
-//-----------------------------
-
-//---------exchangRate--------
-
-// crawlAbBank()
-// crawlAgribank()
-// crawlVietcombank()
-// crawlBidv()
-// crawlTechcombank()
-// crawlVietinbank()
-// crawlMbbank();
-
-//-----------------------------
-
-//----------interestRate-----------
-// crawlVietcombankInterestRate();
-// crawlVietinbankInterestRate();
-// crawlAgribankbankInterestRate();
-// crawlBidvInterestRate();
-// crawlScbInterestRate();
-// crawlMbbankInterestRate();
-// crawlVibInterestRate();
-// crawlTpbankInterestRate();
-// crawlVpbankInterestRate();
-
-//-----------------------------------
-
 //-----------------------------Stock----------------------------------------------------------
 const stockRunAll = async () => {
 	//----Length of collection to caculate time delay each crawlingFunction executes
@@ -144,11 +90,15 @@ const stockRunAll = async () => {
 
 		//----crawl all basic information stocks----
 		crawlHnx();
+		await delay(2000);
 		crawlHnx30();
+		await delay(2000);
 		crawlVn30();
+		await delay(2000);
 		crawlHose();
+		await delay(2000);
 		crawlUpcom();
-		await delay(20000);
+		await delay(10000);
 		// crawlAllInvesting();
 		//--------------------------------------
 
@@ -377,38 +327,124 @@ const stockRunAll = async () => {
 	});
 };
 
-stockRunAll();
+// stockRunAll();
 
 //---------------------------------------------------------------------------
 
 //-------------Coin------------------
 
-const getallCoinsChart = asyncHandler(async () => {
-	const coinList = await Coin.find({}).sort({ rank: 1 }).skip(0).limit(100);
+// const getallCoinsChart = asyncHandler(async () => {
+// 	const coinList = await Coin.find({}).sort({ rank: 1 }).skip(0).limit(100);
 
-	coinList.forEach((coin) => {
-		crawlChartData1d(coin.nameId, coin.rank);
-		crawlChartData7d(coin.nameId, coin.rank);
-		crawlChartData14d(coin.nameId, coin.rank);
-		crawlChartData30d(coin.nameId, coin.rank);
-		crawlChartData90d(coin.nameId, coin.rank);
-		crawlChartData1y(coin.nameId, coin.rank);
-		crawlChartDataMax(coin.nameId, coin.rank);
-	});
-});
+// 	coinList.forEach((coin) => {
+// 		crawlChartData1d(coin.nameId, coin.rank);
+// 		crawlChartData7d(coin.nameId, coin.rank);
+// 		crawlChartData14d(coin.nameId, coin.rank);
+// 		crawlChartData30d(coin.nameId, coin.rank);
+// 		crawlChartData90d(coin.nameId, coin.rank);
+// 		crawlChartData1y(coin.nameId, coin.rank);
+// 		crawlChartDataMax(coin.nameId, coin.rank);
+// 	});
+// });
 // getallCoinsChart()
 
-// crawlCoin()
-// updateCurrentcy()
+const coinRunAll = async () => {
+	cron.schedule('*/2 * * * *', async () => {
+		crawlCoin();
+		// updateCurrentcy();
+	});
+};
+// coinRunAll();
 
 // -----------------------------------------------
+
+//--------Gold--------------
+
+const goldRunAll = async () => {
+	cron.schedule('*/2 * * * *', async () => {
+		const crawlAllDetailPnj = asyncHandler(async () => {
+			const arr = ['00', '07', '11', '13', '14', '21'];
+			const arrCt = [07];
+
+			arr.forEach((gold, index) => {
+				setTimeout(() => {
+					crawlPnj(gold, index + 1);
+				}, 2000 * index);
+			});
+		});
+
+		crawlSjc();
+		crawlDoji();
+		crawlPhuQuySjc();
+		await delay(5000);
+		crawlBaoTinMinhChau();
+		crawlMiHong();
+		crawlAllDetailPnj();
+	});
+};
+// goldRunAll();
+
+//----------------------------
+
+//----------Petrol---------------
+
+const petrolRunAll = async () => {
+	cron.schedule('*/2 * * * *', async () => {
+		crawlPetrolimex();
+	});
+};
+// petrolRunAll();
+
+//-----------------------------
+
+//---------exchangRate--------
+
+const exchangeRateRunAll = async () => {
+	cron.schedule('*/2 * * * *', async () => {
+		crawlAbBank();
+		crawlAgribank();
+		await delay(5000);
+		crawlVietcombank();
+		crawlBidv();
+		crawlTechcombank();
+		await delay(5000);
+		crawlVietinbank();
+		crawlMbbank();
+	});
+};
+// exchangeRateRunAll();
+
+//-----------------------------
+
+//----------interestRate-----------
+
+const interestRateRunAll = async () => {
+	cron.schedule('*/2 * * * *', async () => {
+		crawlVietcombankInterestRate();
+		crawlVietinbankInterestRate();
+		crawlAgribankbankInterestRate();
+		await delay(5000);
+		crawlBidvInterestRate();
+		crawlScbInterestRate();
+		crawlMbbankInterestRate();
+		await delay(5000);
+		crawlVibInterestRate();
+		crawlTpbankInterestRate();
+		crawlVpbankInterestRate();
+	});
+};
+// interestRateRunAll();
+
+//-----------------------------------
+
 // -----------------------------------------------
 
 const express = require('express');
 const cors = require('cors');
 const env = require('dotenv');
 const connectDB = require('./config/db');
-const coinRoutes = require('./routes/coinRoutes');
+const { coinRoutes } = require('./routes/coinRoutes/index');
+//------------import Routes--------------------
 const {
 	hnxStockRoutes,
 	hnx30StockRoutes,
@@ -416,8 +452,6 @@ const {
 	hoseStockRoutes,
 	upcomStockRoutes,
 } = require('./routes/stockRoutes/index');
-// const hnxStockRoutes = require('./routes/stockRoutes/hnxStockRoutes');
-// const goldRoutes = require('./routes/goldRoutes/sjcRoutes')
 const {
 	sjcRoutes,
 	pnjRoutes,
@@ -426,8 +460,10 @@ const {
 	baoTinMinhChauRoutes,
 	miHongRoutes,
 } = require('./routes/goldRoutes/index');
-const interestRateRoutes = require('./routes/interestRate/interestRateRoutes');
-const priceRoutes = require('./routes/exchangeRate/priceOfAllBankRoutes/priceExchangeRateRoutes');
+const { petrolimexRoutes } = require('./routes/petrol/index');
+const { priceExchangeRateRoutes } = require('./routes/exchangeRate/index');
+const { interestRateRoutes } = require('./routes/interestRate/index');
+//----------------------------------------------------------------------
 const { del } = require('request');
 
 const app = express();
@@ -462,8 +498,13 @@ app.use('/', miHongRoutes);
 
 //-------------------------
 
+//-----routes cua petrol--------
+app.use('/', petrolimexRoutes);
+
+//----------------------------
+
 //---------routes of exchangeRate----------
-app.use('/', priceRoutes);
+app.use('/', priceExchangeRateRoutes);
 
 //-----------------------------------------
 

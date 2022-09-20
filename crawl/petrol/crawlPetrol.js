@@ -47,6 +47,7 @@ const crawlPetrolimex = asyncHandler(async () => {
 
 		// Some extra delay to let all data load
 		await page.waitForTimeout(1000);
+
 		let petrolimexData = await page.evaluate(async () => {
 			// const delay = (m) => new Promise((r) => setTimeout(r, m));
 
