@@ -38,6 +38,8 @@ const crawlVietcombankInterestRate = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let vietcombankData = await page.evaluate(async () => {
+			const $ = document.querySelector.bind(document);
+
 			let dataJson = {};
 
 			try {
@@ -59,43 +61,43 @@ const crawlVietcombankInterestRate = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				dataJson.khongkyhan = document.querySelector(
+				dataJson.khongkyhan = $(
 					'#danhsachlaisuat tbody :nth-child(3) :nth-child(2)'
 				)?.innerText;
-				dataJson.day7 = document.querySelector(
+				dataJson.day7 = $(
 					'#danhsachlaisuat tbody :nth-child(4) :nth-child(2)'
 				)?.innerText;
-				dataJson.day14 = document.querySelector(
+				dataJson.day14 = $(
 					'#danhsachlaisuat tbody :nth-child(5) :nth-child(2)'
 				)?.innerText;
-				dataJson.month1 = document.querySelector(
+				dataJson.month1 = $(
 					'#danhsachlaisuat tbody :nth-child(6) :nth-child(2)'
 				)?.innerText;
-				dataJson.month2 = document.querySelector(
+				dataJson.month2 = $(
 					'#danhsachlaisuat tbody :nth-child(7) :nth-child(2)'
 				)?.innerText;
-				dataJson.month3 = document.querySelector(
+				dataJson.month3 = $(
 					'#danhsachlaisuat tbody :nth-child(8) :nth-child(2)'
 				)?.innerText;
-				dataJson.month6 = document.querySelector(
+				dataJson.month6 = $(
 					'#danhsachlaisuat tbody :nth-child(9) :nth-child(2)'
 				)?.innerText;
-				dataJson.month9 = document.querySelector(
+				dataJson.month9 = $(
 					'#danhsachlaisuat tbody :nth-child(10) :nth-child(2)'
 				)?.innerText;
-				dataJson.month12 = document.querySelector(
+				dataJson.month12 = $(
 					'#danhsachlaisuat tbody :nth-child(11) :nth-child(2)'
 				)?.innerText;
-				dataJson.month24 = document.querySelector(
+				dataJson.month24 = $(
 					'#danhsachlaisuat tbody :nth-child(12) :nth-child(2)'
 				)?.innerText;
-				dataJson.month36 = document.querySelector(
+				dataJson.month36 = $(
 					'#danhsachlaisuat tbody :nth-child(13) :nth-child(2)'
 				)?.innerText;
-				dataJson.month48 = document.querySelector(
+				dataJson.month48 = $(
 					'#danhsachlaisuat tbody :nth-child(14) :nth-child(2)'
 				)?.innerText;
-				dataJson.month60 = document.querySelector(
+				dataJson.month60 = $(
 					'#danhsachlaisuat tbody :nth-child(15) :nth-child(2)'
 				)?.innerText;
 			} catch (err) {
@@ -128,7 +130,7 @@ const crawlVietcombankInterestRate = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(vietcombankData.symbol));
 
 		await browser.close();
@@ -151,6 +153,8 @@ const crawlVietinbankInterestRate = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let vietinbankData = await page.evaluate(async () => {
+			const $ = document.querySelector.bind(document);
+
 			let dataJson = {};
 
 			try {
@@ -173,175 +177,137 @@ const crawlVietinbankInterestRate = asyncHandler(async () => {
 					date.getFullYear();
 
 				dataJson.khongkyhan =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(4) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(4) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.khongkyhanBusiness =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(4) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(4) :nth-child(5) ')
+						?.innerText + '%';
 
 				dataJson.under1month =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(5) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(5) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.under1monthBusiness =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(5) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(5) :nth-child(5) ')
+						?.innerText + '%';
 
 				dataJson.from1to2month =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(6) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(6) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.from1to2monthBusiness =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(6) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(6) :nth-child(5) ')
+						?.innerText + '%';
 
 				dataJson.from2to3month =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(7) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(7) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.from2to3monthBusiness =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(7) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(7) :nth-child(5) ')
+						?.innerText + '%';
 
 				dataJson.from3to4month =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(8) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(8) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.from3to4monthBusiness =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(8) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(8) :nth-child(5) ')
+						?.innerText + '%';
 
 				dataJson.from4to5month =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(9) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(9) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.from4to5monthBusiness =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(9) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(9) :nth-child(5) ')
+						?.innerText + '%';
 
 				dataJson.from5to6month =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(10) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(10) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.from5to6monthBusiness =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(10) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(10) :nth-child(5) ')
+						?.innerText + '%';
 
 				dataJson.from6to7month =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(11) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(11) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.from6to7monthBusiness =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(11) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(11) :nth-child(5) ')
+						?.innerText + '%';
 
 				dataJson.from7to8month =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(12) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(12) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.from7to8monthBusiness =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(12) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(12) :nth-child(5) ')
+						?.innerText + '%';
 
 				dataJson.from8to9month =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(13) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(13) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.from8to9monthBusiness =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(13) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(13) :nth-child(5) ')
+						?.innerText + '%';
 
 				dataJson.from9to10month =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(14) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(14) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.from9to10monthBusiness =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(14) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(14) :nth-child(5) ')
+						?.innerText + '%';
 
 				dataJson.from10to11month =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(15) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(15) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.from10to11monthBusiness =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(15) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(15) :nth-child(5) ')
+						?.innerText + '%';
 
 				dataJson.from11to12month =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(16) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(16) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.from11to12monthBusiness =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(16) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(16) :nth-child(5) ')
+						?.innerText + '%';
 
 				dataJson.month12 =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(17) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(17) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.month12Business =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(17) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(17) :nth-child(5) ')
+						?.innerText + '%';
 
 				dataJson.from12to18month =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(18) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(18) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.from12to18monthBusiness =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(18) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(18) :nth-child(5) ')
+						?.innerText + '%';
 
 				dataJson.from18to24month =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(19) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(19) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.from18to24monthBusiness =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(19) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(19) :nth-child(5) ')
+						?.innerText + '%';
 
 				dataJson.from24to36month =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(20) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(20) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.from24to36monthBusiness =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(20) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(20) :nth-child(5) ')
+						?.innerText + '%';
 
 				dataJson.month36 =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(21) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(21) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.month36Business =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(21) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(21) :nth-child(5) ')
+						?.innerText + '%';
 
 				dataJson.upper36month =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(22) :nth-child(2) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(22) :nth-child(2) ')
+						?.innerText + '%';
 				dataJson.upper36monthBusiness =
-					document.querySelector(
-						'#hor-ex-b tbody :nth-child(22) :nth-child(5) '
-					)?.innerText + '%';
+					$('#hor-ex-b tbody :nth-child(22) :nth-child(5) ')
+						?.innerText + '%';
 			} catch (err) {
 				console.log(err);
 			}
@@ -398,7 +364,7 @@ const crawlVietinbankInterestRate = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(vietinbankData.symbol));
 
 		await browser.close();
@@ -421,6 +387,8 @@ const crawlAgribankbankInterestRate = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let agribankbankData = await page.evaluate(async () => {
+			const $$ = document.querySelectorAll.bind(document);
+
 			let dataJson = {};
 
 			try {
@@ -442,8 +410,8 @@ const crawlAgribankbankInterestRate = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				const table1Element = document.querySelectorAll('table')[0];
-				const table2Element = document.querySelectorAll('table')[1];
+				const table1Element = $$('table')[0];
+				const table2Element = $$('table')[1];
 
 				dataJson.khongkyhanPersonal = table1Element.querySelector(
 					' tbody :nth-child(1) :nth-child(2)'
@@ -612,7 +580,7 @@ const crawlAgribankbankInterestRate = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(agribankbankData.symbol));
 
 		await browser.close();
@@ -635,6 +603,8 @@ const crawlBidvInterestRate = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let bidvbankData = await page.evaluate(async () => {
+			const $ = document.querySelector.bind(document);
+
 			let dataJson = {};
 
 			try {
@@ -656,43 +626,43 @@ const crawlBidvInterestRate = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				dataJson.khongkyhan = document.querySelector(
+				dataJson.khongkyhan = $(
 					'#rates table tbody :nth-child(2) :nth-child(4) '
 				)?.innerText;
-				dataJson.month1 = document.querySelector(
+				dataJson.month1 = $(
 					'#rates table tbody :nth-child(3) :nth-child(4) '
 				)?.innerText;
-				dataJson.month2 = document.querySelector(
+				dataJson.month2 = $(
 					'#rates table tbody :nth-child(4) :nth-child(4) '
 				)?.innerText;
-				dataJson.month3 = document.querySelector(
+				dataJson.month3 = $(
 					'#rates table tbody :nth-child(5) :nth-child(4) '
 				)?.innerText;
-				dataJson.month5 = document.querySelector(
+				dataJson.month5 = $(
 					'#rates table tbody :nth-child(6) :nth-child(4) '
 				)?.innerText;
-				dataJson.month6 = document.querySelector(
+				dataJson.month6 = $(
 					'#rates table tbody :nth-child(7) :nth-child(4) '
 				)?.innerText;
-				dataJson.month9 = document.querySelector(
+				dataJson.month9 = $(
 					'#rates table tbody :nth-child(8) :nth-child(4) '
 				)?.innerText;
-				dataJson.month12 = document.querySelector(
+				dataJson.month12 = $(
 					'#rates table tbody :nth-child(9) :nth-child(4) '
 				)?.innerText;
-				dataJson.month13 = document.querySelector(
+				dataJson.month13 = $(
 					'#rates table tbody :nth-child(10) :nth-child(4) '
 				)?.innerText;
-				dataJson.month15 = document.querySelector(
+				dataJson.month15 = $(
 					'#rates table tbody :nth-child(11) :nth-child(4) '
 				)?.innerText;
-				dataJson.month18 = document.querySelector(
+				dataJson.month18 = $(
 					'#rates table tbody :nth-child(12) :nth-child(4) '
 				)?.innerText;
-				dataJson.month24 = document.querySelector(
+				dataJson.month24 = $(
 					'#rates table tbody :nth-child(13) :nth-child(4) '
 				)?.innerText;
-				dataJson.month36 = document.querySelector(
+				dataJson.month36 = $(
 					'#rates table tbody :nth-child(14) :nth-child(4) '
 				)?.innerText;
 			} catch (err) {
@@ -725,7 +695,7 @@ const crawlBidvInterestRate = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(bidvbankData.symbol));
 
 		await browser.close();
@@ -748,6 +718,8 @@ const crawlScbInterestRate = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let scbData = await page.evaluate(async () => {
+			const $ = document.querySelector.bind(document);
+
 			let dataJson = {};
 
 			try {
@@ -769,342 +741,342 @@ const crawlScbInterestRate = asyncHandler(async () => {
 					date.getFullYear();
 
 				dataJson.khongkyhan = {};
-				dataJson.khongkyhan.cuoiky = document.querySelector(
+				dataJson.khongkyhan.cuoiky = $(
 					'.content-table table tbody :nth-child(1) :nth-child(2)'
 				)?.innerText;
-				dataJson.khongkyhan.hangnam = document.querySelector(
+				dataJson.khongkyhan.hangnam = $(
 					'.content-table table tbody :nth-child(1) :nth-child(3)'
 				)?.innerText;
-				dataJson.khongkyhan.hang6thang = document.querySelector(
+				dataJson.khongkyhan.hang6thang = $(
 					'.content-table table tbody :nth-child(1) :nth-child(4)'
 				)?.innerText;
-				dataJson.khongkyhan.hangquy = document.querySelector(
+				dataJson.khongkyhan.hangquy = $(
 					'.content-table table tbody :nth-child(1) :nth-child(5)'
 				)?.innerText;
-				dataJson.khongkyhan.hangthang = document.querySelector(
+				dataJson.khongkyhan.hangthang = $(
 					'.content-table table tbody :nth-child(1) :nth-child(6)'
 				)?.innerText;
-				dataJson.khongkyhan.truoc = document.querySelector(
+				dataJson.khongkyhan.truoc = $(
 					'.content-table table tbody :nth-child(1) :nth-child(7)'
 				)?.innerText;
 
 				dataJson.month1 = {};
-				dataJson.month1.cuoiky = document.querySelector(
+				dataJson.month1.cuoiky = $(
 					'.content-table table tbody :nth-child(3) :nth-child(2)'
 				)?.innerText;
-				dataJson.month1.hangnam = document.querySelector(
+				dataJson.month1.hangnam = $(
 					'.content-table table tbody :nth-child(3) :nth-child(3)'
 				)?.innerText;
-				dataJson.month1.hang6thang = document.querySelector(
+				dataJson.month1.hang6thang = $(
 					'.content-table table tbody :nth-child(3) :nth-child(4)'
 				)?.innerText;
-				dataJson.month1.hangquy = document.querySelector(
+				dataJson.month1.hangquy = $(
 					'.content-table table tbody :nth-child(3) :nth-child(5)'
 				)?.innerText;
-				dataJson.month1.hangthang = document.querySelector(
+				dataJson.month1.hangthang = $(
 					'.content-table table tbody :nth-child(3) :nth-child(6)'
 				)?.innerText;
-				dataJson.month1.truoc = document.querySelector(
+				dataJson.month1.truoc = $(
 					'.content-table table tbody :nth-child(3) :nth-child(7)'
 				)?.innerText;
 
 				dataJson.month2 = {};
-				dataJson.month2.cuoiky = document.querySelector(
+				dataJson.month2.cuoiky = $(
 					'.content-table table tbody :nth-child(4) :nth-child(2)'
 				)?.innerText;
-				dataJson.month2.hangnam = document.querySelector(
+				dataJson.month2.hangnam = $(
 					'.content-table table tbody :nth-child(4) :nth-child(3)'
 				)?.innerText;
-				dataJson.month2.hang6thang = document.querySelector(
+				dataJson.month2.hang6thang = $(
 					'.content-table table tbody :nth-child(4) :nth-child(4)'
 				)?.innerText;
-				dataJson.month2.hangquy = document.querySelector(
+				dataJson.month2.hangquy = $(
 					'.content-table table tbody :nth-child(4) :nth-child(5)'
 				)?.innerText;
-				dataJson.month2.hangthang = document.querySelector(
+				dataJson.month2.hangthang = $(
 					'.content-table table tbody :nth-child(4) :nth-child(6)'
 				)?.innerText;
-				dataJson.month2.truoc = document.querySelector(
+				dataJson.month2.truoc = $(
 					'.content-table table tbody :nth-child(4) :nth-child(7)'
 				)?.innerText;
 
 				dataJson.month3 = {};
-				dataJson.month3.cuoiky = document.querySelector(
+				dataJson.month3.cuoiky = $(
 					'.content-table table tbody :nth-child(5) :nth-child(2)'
 				)?.innerText;
-				dataJson.month3.hangnam = document.querySelector(
+				dataJson.month3.hangnam = $(
 					'.content-table table tbody :nth-child(5) :nth-child(3)'
 				)?.innerText;
-				dataJson.month3.hang6thang = document.querySelector(
+				dataJson.month3.hang6thang = $(
 					'.content-table table tbody :nth-child(5) :nth-child(4)'
 				)?.innerText;
-				dataJson.month3.hangquy = document.querySelector(
+				dataJson.month3.hangquy = $(
 					'.content-table table tbody :nth-child(5) :nth-child(5)'
 				)?.innerText;
-				dataJson.month3.hangthang = document.querySelector(
+				dataJson.month3.hangthang = $(
 					'.content-table table tbody :nth-child(5) :nth-child(6)'
 				)?.innerText;
-				dataJson.month3.truoc = document.querySelector(
+				dataJson.month3.truoc = $(
 					'.content-table table tbody :nth-child(5) :nth-child(7)'
 				)?.innerText;
 
 				dataJson.month4 = {};
-				dataJson.month4.cuoiky = document.querySelector(
+				dataJson.month4.cuoiky = $(
 					'.content-table table tbody :nth-child(6) :nth-child(2)'
 				)?.innerText;
-				dataJson.month4.hangnam = document.querySelector(
+				dataJson.month4.hangnam = $(
 					'.content-table table tbody :nth-child(6) :nth-child(3)'
 				)?.innerText;
-				dataJson.month4.hang6thang = document.querySelector(
+				dataJson.month4.hang6thang = $(
 					'.content-table table tbody :nth-child(6) :nth-child(4)'
 				)?.innerText;
-				dataJson.month4.hangquy = document.querySelector(
+				dataJson.month4.hangquy = $(
 					'.content-table table tbody :nth-child(6) :nth-child(5)'
 				)?.innerText;
-				dataJson.month4.hangthang = document.querySelector(
+				dataJson.month4.hangthang = $(
 					'.content-table table tbody :nth-child(6) :nth-child(6)'
 				)?.innerText;
-				dataJson.month4.truoc = document.querySelector(
+				dataJson.month4.truoc = $(
 					'.content-table table tbody :nth-child(6) :nth-child(7)'
 				)?.innerText;
 
 				dataJson.month5 = {};
-				dataJson.month5.cuoiky = document.querySelector(
+				dataJson.month5.cuoiky = $(
 					'.content-table table tbody :nth-child(7) :nth-child(2)'
 				)?.innerText;
-				dataJson.month5.hangnam = document.querySelector(
+				dataJson.month5.hangnam = $(
 					'.content-table table tbody :nth-child(7) :nth-child(3)'
 				)?.innerText;
-				dataJson.month5.hang6thang = document.querySelector(
+				dataJson.month5.hang6thang = $(
 					'.content-table table tbody :nth-child(7) :nth-child(4)'
 				)?.innerText;
-				dataJson.month5.hangquy = document.querySelector(
+				dataJson.month5.hangquy = $(
 					'.content-table table tbody :nth-child(7) :nth-child(5)'
 				)?.innerText;
-				dataJson.month5.hangthang = document.querySelector(
+				dataJson.month5.hangthang = $(
 					'.content-table table tbody :nth-child(7) :nth-child(6)'
 				)?.innerText;
-				dataJson.month5.truoc = document.querySelector(
+				dataJson.month5.truoc = $(
 					'.content-table table tbody :nth-child(7) :nth-child(7)'
 				)?.innerText;
 
 				dataJson.month6 = {};
-				dataJson.month6.cuoiky = document.querySelector(
+				dataJson.month6.cuoiky = $(
 					'.content-table table tbody :nth-child(8) :nth-child(2)'
 				)?.innerText;
-				dataJson.month6.hangnam = document.querySelector(
+				dataJson.month6.hangnam = $(
 					'.content-table table tbody :nth-child(8) :nth-child(3)'
 				)?.innerText;
-				dataJson.month6.hang6thang = document.querySelector(
+				dataJson.month6.hang6thang = $(
 					'.content-table table tbody :nth-child(8) :nth-child(4)'
 				)?.innerText;
-				dataJson.month6.hangquy = document.querySelector(
+				dataJson.month6.hangquy = $(
 					'.content-table table tbody :nth-child(8) :nth-child(5)'
 				)?.innerText;
-				dataJson.month6.hangthang = document.querySelector(
+				dataJson.month6.hangthang = $(
 					'.content-table table tbody :nth-child(8) :nth-child(6)'
 				)?.innerText;
-				dataJson.month6.truoc = document.querySelector(
+				dataJson.month6.truoc = $(
 					'.content-table table tbody :nth-child(8) :nth-child(7)'
 				)?.innerText;
 
 				dataJson.month7 = {};
-				dataJson.month7.cuoiky = document.querySelector(
+				dataJson.month7.cuoiky = $(
 					'.content-table table tbody :nth-child(9) :nth-child(2)'
 				)?.innerText;
-				dataJson.month7.hangnam = document.querySelector(
+				dataJson.month7.hangnam = $(
 					'.content-table table tbody :nth-child(9) :nth-child(3)'
 				)?.innerText;
-				dataJson.month7.hang6thang = document.querySelector(
+				dataJson.month7.hang6thang = $(
 					'.content-table table tbody :nth-child(9) :nth-child(4)'
 				)?.innerText;
-				dataJson.month7.hangquy = document.querySelector(
+				dataJson.month7.hangquy = $(
 					'.content-table table tbody :nth-child(9) :nth-child(5)'
 				)?.innerText;
-				dataJson.month7.hangthang = document.querySelector(
+				dataJson.month7.hangthang = $(
 					'.content-table table tbody :nth-child(9) :nth-child(6)'
 				)?.innerText;
-				dataJson.month7.truoc = document.querySelector(
+				dataJson.month7.truoc = $(
 					'.content-table table tbody :nth-child(9) :nth-child(7)'
 				)?.innerText;
 
 				dataJson.month8 = {};
-				dataJson.month8.cuoiky = document.querySelector(
+				dataJson.month8.cuoiky = $(
 					'.content-table table tbody :nth-child(10) :nth-child(2)'
 				)?.innerText;
-				dataJson.month8.hangnam = document.querySelector(
+				dataJson.month8.hangnam = $(
 					'.content-table table tbody :nth-child(10) :nth-child(3)'
 				)?.innerText;
-				dataJson.month8.hang6thang = document.querySelector(
+				dataJson.month8.hang6thang = $(
 					'.content-table table tbody :nth-child(10) :nth-child(4)'
 				)?.innerText;
-				dataJson.month8.hangquy = document.querySelector(
+				dataJson.month8.hangquy = $(
 					'.content-table table tbody :nth-child(10) :nth-child(5)'
 				)?.innerText;
-				dataJson.month8.hangthang = document.querySelector(
+				dataJson.month8.hangthang = $(
 					'.content-table table tbody :nth-child(10) :nth-child(6)'
 				)?.innerText;
-				dataJson.month8.truoc = document.querySelector(
+				dataJson.month8.truoc = $(
 					'.content-table table tbody :nth-child(10) :nth-child(7)'
 				)?.innerText;
 
 				dataJson.month9 = {};
-				dataJson.month9.cuoiky = document.querySelector(
+				dataJson.month9.cuoiky = $(
 					'.content-table table tbody :nth-child(11) :nth-child(2)'
 				)?.innerText;
-				dataJson.month9.hangnam = document.querySelector(
+				dataJson.month9.hangnam = $(
 					'.content-table table tbody :nth-child(11) :nth-child(3)'
 				)?.innerText;
-				dataJson.month9.hang6thang = document.querySelector(
+				dataJson.month9.hang6thang = $(
 					'.content-table table tbody :nth-child(11) :nth-child(4)'
 				)?.innerText;
-				dataJson.month9.hangquy = document.querySelector(
+				dataJson.month9.hangquy = $(
 					'.content-table table tbody :nth-child(11) :nth-child(5)'
 				)?.innerText;
-				dataJson.month9.hangthang = document.querySelector(
+				dataJson.month9.hangthang = $(
 					'.content-table table tbody :nth-child(11) :nth-child(6)'
 				)?.innerText;
-				dataJson.month9.truoc = document.querySelector(
+				dataJson.month9.truoc = $(
 					'.content-table table tbody :nth-child(11) :nth-child(7)'
 				)?.innerText;
 
 				dataJson.month10 = {};
-				dataJson.month10.cuoiky = document.querySelector(
+				dataJson.month10.cuoiky = $(
 					'.content-table table tbody :nth-child(12) :nth-child(2)'
 				)?.innerText;
-				dataJson.month10.hangnam = document.querySelector(
+				dataJson.month10.hangnam = $(
 					'.content-table table tbody :nth-child(12) :nth-child(3)'
 				)?.innerText;
-				dataJson.month10.hang6thang = document.querySelector(
+				dataJson.month10.hang6thang = $(
 					'.content-table table tbody :nth-child(12) :nth-child(4)'
 				)?.innerText;
-				dataJson.month10.hangquy = document.querySelector(
+				dataJson.month10.hangquy = $(
 					'.content-table table tbody :nth-child(12) :nth-child(5)'
 				)?.innerText;
-				dataJson.month10.hangthang = document.querySelector(
+				dataJson.month10.hangthang = $(
 					'.content-table table tbody :nth-child(12) :nth-child(6)'
 				)?.innerText;
-				dataJson.month10.truoc = document.querySelector(
+				dataJson.month10.truoc = $(
 					'.content-table table tbody :nth-child(12) :nth-child(7)'
 				)?.innerText;
 
 				dataJson.month11 = {};
-				dataJson.month11.cuoiky = document.querySelector(
+				dataJson.month11.cuoiky = $(
 					'.content-table table tbody :nth-child(13) :nth-child(2)'
 				)?.innerText;
-				dataJson.month11.hangnam = document.querySelector(
+				dataJson.month11.hangnam = $(
 					'.content-table table tbody :nth-child(13) :nth-child(3)'
 				)?.innerText;
-				dataJson.month11.hang6thang = document.querySelector(
+				dataJson.month11.hang6thang = $(
 					'.content-table table tbody :nth-child(13) :nth-child(4)'
 				)?.innerText;
-				dataJson.month11.hangquy = document.querySelector(
+				dataJson.month11.hangquy = $(
 					'.content-table table tbody :nth-child(13) :nth-child(5)'
 				)?.innerText;
-				dataJson.month11.hangthang = document.querySelector(
+				dataJson.month11.hangthang = $(
 					'.content-table table tbody :nth-child(13) :nth-child(6)'
 				)?.innerText;
-				dataJson.month11.truoc = document.querySelector(
+				dataJson.month11.truoc = $(
 					'.content-table table tbody :nth-child(13) :nth-child(7)'
 				)?.innerText;
 
 				dataJson.month12 = {};
-				dataJson.month12.cuoiky = document.querySelector(
+				dataJson.month12.cuoiky = $(
 					'.content-table table tbody :nth-child(14) :nth-child(2)'
 				)?.innerText;
-				dataJson.month12.hangnam = document.querySelector(
+				dataJson.month12.hangnam = $(
 					'.content-table table tbody :nth-child(14) :nth-child(3)'
 				)?.innerText;
-				dataJson.month12.hang6thang = document.querySelector(
+				dataJson.month12.hang6thang = $(
 					'.content-table table tbody :nth-child(14) :nth-child(4)'
 				)?.innerText;
-				dataJson.month12.hangquy = document.querySelector(
+				dataJson.month12.hangquy = $(
 					'.content-table table tbody :nth-child(14) :nth-child(5)'
 				)?.innerText;
-				dataJson.month12.hangthang = document.querySelector(
+				dataJson.month12.hangthang = $(
 					'.content-table table tbody :nth-child(14) :nth-child(6)'
 				)?.innerText;
-				dataJson.month12.truoc = document.querySelector(
+				dataJson.month12.truoc = $(
 					'.content-table table tbody :nth-child(14) :nth-child(7)'
 				)?.innerText;
 
 				dataJson.month15 = {};
-				dataJson.month15.cuoiky = document.querySelector(
+				dataJson.month15.cuoiky = $(
 					'.content-table table tbody :nth-child(15) :nth-child(2)'
 				)?.innerText;
-				dataJson.month15.hangnam = document.querySelector(
+				dataJson.month15.hangnam = $(
 					'.content-table table tbody :nth-child(15) :nth-child(3)'
 				)?.innerText;
-				dataJson.month15.hang6thang = document.querySelector(
+				dataJson.month15.hang6thang = $(
 					'.content-table table tbody :nth-child(15) :nth-child(4)'
 				)?.innerText;
-				dataJson.month15.hangquy = document.querySelector(
+				dataJson.month15.hangquy = $(
 					'.content-table table tbody :nth-child(15) :nth-child(5)'
 				)?.innerText;
-				dataJson.month15.hangthang = document.querySelector(
+				dataJson.month15.hangthang = $(
 					'.content-table table tbody :nth-child(15) :nth-child(6)'
 				)?.innerText;
-				dataJson.month15.truoc = document.querySelector(
+				dataJson.month15.truoc = $(
 					'.content-table table tbody :nth-child(15) :nth-child(7)'
 				)?.innerText;
 
 				dataJson.month18 = {};
-				dataJson.month18.cuoiky = document.querySelector(
+				dataJson.month18.cuoiky = $(
 					'.content-table table tbody :nth-child(16) :nth-child(2)'
 				)?.innerText;
-				dataJson.month18.hangnam = document.querySelector(
+				dataJson.month18.hangnam = $(
 					'.content-table table tbody :nth-child(16) :nth-child(3)'
 				)?.innerText;
-				dataJson.month18.hang6thang = document.querySelector(
+				dataJson.month18.hang6thang = $(
 					'.content-table table tbody :nth-child(16) :nth-child(4)'
 				)?.innerText;
-				dataJson.month18.hangquy = document.querySelector(
+				dataJson.month18.hangquy = $(
 					'.content-table table tbody :nth-child(16) :nth-child(5)'
 				)?.innerText;
-				dataJson.month18.hangthang = document.querySelector(
+				dataJson.month18.hangthang = $(
 					'.content-table table tbody :nth-child(16) :nth-child(6)'
 				)?.innerText;
-				dataJson.month18.truoc = document.querySelector(
+				dataJson.month18.truoc = $(
 					'.content-table table tbody :nth-child(16) :nth-child(7)'
 				)?.innerText;
 
 				dataJson.month24 = {};
-				dataJson.month24.cuoiky = document.querySelector(
+				dataJson.month24.cuoiky = $(
 					'.content-table table tbody :nth-child(17) :nth-child(2)'
 				)?.innerText;
-				dataJson.month24.hangnam = document.querySelector(
+				dataJson.month24.hangnam = $(
 					'.content-table table tbody :nth-child(17) :nth-child(3)'
 				)?.innerText;
-				dataJson.month24.hang6thang = document.querySelector(
+				dataJson.month24.hang6thang = $(
 					'.content-table table tbody :nth-child(17) :nth-child(4)'
 				)?.innerText;
-				dataJson.month24.hangquy = document.querySelector(
+				dataJson.month24.hangquy = $(
 					'.content-table table tbody :nth-child(17) :nth-child(5)'
 				)?.innerText;
-				dataJson.month24.hangthang = document.querySelector(
+				dataJson.month24.hangthang = $(
 					'.content-table table tbody :nth-child(17) :nth-child(6)'
 				)?.innerText;
-				dataJson.month24.truoc = document.querySelector(
+				dataJson.month24.truoc = $(
 					'.content-table table tbody :nth-child(17) :nth-child(7)'
 				)?.innerText;
 
 				dataJson.month36 = {};
-				dataJson.month36.cuoiky = document.querySelector(
+				dataJson.month36.cuoiky = $(
 					'.content-table table tbody :nth-child(18) :nth-child(2)'
 				)?.innerText;
-				dataJson.month36.hangnam = document.querySelector(
+				dataJson.month36.hangnam = $(
 					'.content-table table tbody :nth-child(18) :nth-child(3)'
 				)?.innerText;
-				dataJson.month36.hang6thang = document.querySelector(
+				dataJson.month36.hang6thang = $(
 					'.content-table table tbody :nth-child(18) :nth-child(4)'
 				)?.innerText;
-				dataJson.month36.hangquy = document.querySelector(
+				dataJson.month36.hangquy = $(
 					'.content-table table tbody :nth-child(18) :nth-child(5)'
 				)?.innerText;
-				dataJson.month36.hangthang = document.querySelector(
+				dataJson.month36.hangthang = $(
 					'.content-table table tbody :nth-child(18) :nth-child(6)'
 				)?.innerText;
-				dataJson.month36.truoc = document.querySelector(
+				dataJson.month36.truoc = $(
 					'.content-table table tbody :nth-child(18) :nth-child(7)'
 				)?.innerText;
 			} catch (err) {
@@ -1250,7 +1222,7 @@ const crawlScbInterestRate = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(scbData.symbol));
 
 		await browser.close();
@@ -1273,6 +1245,8 @@ const crawlMbbankInterestRate = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let mbbankData = await page.evaluate(async () => {
+			const $ = document.querySelector.bind(document);
+
 			let dataJson = {};
 
 			try {
@@ -1293,95 +1267,95 @@ const crawlMbbankInterestRate = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				dataJson.khongkyhan = document.querySelector(
+				dataJson.khongkyhan = $(
 					'section.bang-lai-suat tbody :nth-child(1) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.week1 = document.querySelector(
+				dataJson.week1 = $(
 					'section.bang-lai-suat tbody :nth-child(2) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.week2 = document.querySelector(
+				dataJson.week2 = $(
 					'section.bang-lai-suat tbody :nth-child(3) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.week3 = document.querySelector(
+				dataJson.week3 = $(
 					'section.bang-lai-suat tbody :nth-child(4) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month1 = document.querySelector(
+				dataJson.month1 = $(
 					'section.bang-lai-suat tbody :nth-child(5) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month2 = document.querySelector(
+				dataJson.month2 = $(
 					'section.bang-lai-suat tbody :nth-child(6) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month3 = document.querySelector(
+				dataJson.month3 = $(
 					'section.bang-lai-suat tbody :nth-child(7) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month4 = document.querySelector(
+				dataJson.month4 = $(
 					'section.bang-lai-suat tbody :nth-child(8) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month5 = document.querySelector(
+				dataJson.month5 = $(
 					'section.bang-lai-suat tbody :nth-child(9) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month6 = document.querySelector(
+				dataJson.month6 = $(
 					'section.bang-lai-suat tbody :nth-child(10) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month7 = document.querySelector(
+				dataJson.month7 = $(
 					'section.bang-lai-suat tbody :nth-child(11) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month8 = document.querySelector(
+				dataJson.month8 = $(
 					'section.bang-lai-suat tbody :nth-child(12) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month9 = document.querySelector(
+				dataJson.month9 = $(
 					'section.bang-lai-suat tbody :nth-child(13) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month10 = document.querySelector(
+				dataJson.month10 = $(
 					'section.bang-lai-suat tbody :nth-child(14) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month11 = document.querySelector(
+				dataJson.month11 = $(
 					'section.bang-lai-suat tbody :nth-child(15) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month12 = document.querySelector(
+				dataJson.month12 = $(
 					'section.bang-lai-suat tbody :nth-child(16) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month13 = document.querySelector(
+				dataJson.month13 = $(
 					'section.bang-lai-suat tbody :nth-child(17) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month15 = document.querySelector(
+				dataJson.month15 = $(
 					'section.bang-lai-suat tbody :nth-child(18) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month18 = document.querySelector(
+				dataJson.month18 = $(
 					'section.bang-lai-suat tbody :nth-child(19) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month24 = document.querySelector(
+				dataJson.month24 = $(
 					'section.bang-lai-suat tbody :nth-child(20) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month36 = document.querySelector(
+				dataJson.month36 = $(
 					'section.bang-lai-suat tbody :nth-child(21) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month48 = document.querySelector(
+				dataJson.month48 = $(
 					'section.bang-lai-suat tbody :nth-child(22) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month60 = document.querySelector(
+				dataJson.month60 = $(
 					'section.bang-lai-suat tbody :nth-child(23) :nth-child(2)'
 				)?.innerText;
 			} catch (err) {
@@ -1424,7 +1398,7 @@ const crawlMbbankInterestRate = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(mbbankData.symbol));
 
 		await browser.close();
@@ -1447,6 +1421,8 @@ const crawlVibInterestRate = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let vibData = await page.evaluate(async () => {
+			const $$ = document.querySelectorAll.bind(document);
+
 			let dataJson = {};
 
 			try {
@@ -1467,7 +1443,7 @@ const crawlVibInterestRate = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				const tableElement = document.querySelectorAll(
+				const tableElement = $$(
 					' .vib-v2-right-box-table-expression'
 				)[0];
 
@@ -1699,7 +1675,7 @@ const crawlVibInterestRate = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(vibData.symbol));
 
 		await browser.close();
@@ -1722,6 +1698,9 @@ const crawlTpbankInterestRate = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let tpbankData = await page.evaluate(async () => {
+			const $ = document.querySelector.bind(document);
+			const $$ = document.querySelectorAll.bind(document);
+
 			let dataJson = {};
 
 			try {
@@ -1742,47 +1721,47 @@ const crawlTpbankInterestRate = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				dataJson.month1Offline = document.querySelector(
+				dataJson.month1Offline = $(
 					'.bang-lai-suat table tbody :nth-child(1) :nth-child(2) '
 				)?.innerText;
-				dataJson.month3Offline = document.querySelector(
+				dataJson.month3Offline = $(
 					'.bang-lai-suat table tbody :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.mont6Offline = document.querySelector(
+				dataJson.mont6Offline = $(
 					'.bang-lai-suat table tbody :nth-child(3) :nth-child(2) '
 				)?.innerText;
-				dataJson.month12Offline = document.querySelector(
+				dataJson.month12Offline = $(
 					'.bang-lai-suat table tbody :nth-child(4) :nth-child(2) '
 				)?.innerText;
-				dataJson.month18Offline = document.querySelector(
+				dataJson.month18Offline = $(
 					'.bang-lai-suat table tbody :nth-child(5) :nth-child(2) '
 				)?.innerText;
-				dataJson.month24Offline = document.querySelector(
+				dataJson.month24Offline = $(
 					'.bang-lai-suat table tbody :nth-child(6) :nth-child(2) '
 				)?.innerText;
-				dataJson.month36Offline = document.querySelector(
+				dataJson.month36Offline = $(
 					'.bang-lai-suat table tbody :nth-child(7) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.month1Online = document.querySelectorAll(
+				dataJson.month1Online = $$(
 					'.bang-lai-suat table tbody :nth-child(1) :nth-child(2) '
 				)[1]?.innerText;
-				dataJson.month3Online = document.querySelectorAll(
+				dataJson.month3Online = $$(
 					'.bang-lai-suat table tbody :nth-child(2) :nth-child(2) '
 				)[1]?.innerText;
-				dataJson.month6Online = document.querySelectorAll(
+				dataJson.month6Online = $$(
 					'.bang-lai-suat table tbody :nth-child(3) :nth-child(2) '
 				)[1]?.innerText;
-				dataJson.month12Online = document.querySelectorAll(
+				dataJson.month12Online = $$(
 					'.bang-lai-suat table tbody :nth-child(4) :nth-child(2) '
 				)[1]?.innerText;
-				dataJson.month18Online = document.querySelectorAll(
+				dataJson.month18Online = $$(
 					'.bang-lai-suat table tbody :nth-child(5) :nth-child(2) '
 				)[1]?.innerText;
-				dataJson.month24Online = document.querySelectorAll(
+				dataJson.month24Online = $$(
 					'.bang-lai-suat table tbody :nth-child(6) :nth-child(2) '
 				)[1]?.innerText;
-				dataJson.month36Online = document.querySelectorAll(
+				dataJson.month36Online = $$(
 					'.bang-lai-suat table tbody :nth-child(7) :nth-child(2) '
 				)[1]?.innerText;
 			} catch (err) {
@@ -1816,7 +1795,7 @@ const crawlTpbankInterestRate = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(tpbankData.symbol));
 
 		await browser.close();
@@ -1839,6 +1818,8 @@ const crawlVpbankInterestRate = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let vpbankData = await page.evaluate(async () => {
+			const $ = document.querySelector.bind(document);
+
 			let dataJson = {};
 
 			try {
@@ -1860,68 +1841,68 @@ const crawlVpbankInterestRate = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				dataJson.month1under300 = document.querySelector(
+				dataJson.month1under300 = $(
 					'.bang-lai-suat div table tbody :nth-child(1) :nth-child(2)'
 				)?.innerText;
-				dataJson.month6under300 = document.querySelector(
+				dataJson.month6under300 = $(
 					'.bang-lai-suat div table tbody :nth-child(2) :nth-child(2)'
 				)?.innerText;
-				dataJson.month12under300 = document.querySelector(
+				dataJson.month12under300 = $(
 					'.bang-lai-suat div table tbody :nth-child(3) :nth-child(2)'
 				)?.innerText;
-				dataJson.month24under300 = document.querySelector(
+				dataJson.month24under300 = $(
 					'.bang-lai-suat div table tbody :nth-child(4) :nth-child(2)'
 				)?.innerText;
 
-				dataJson.month1from300t03000 = document.querySelector(
+				dataJson.month1from300t03000 = $(
 					'.bang-lai-suat div table tbody :nth-child(1) :nth-child(3)'
 				)?.innerText;
-				dataJson.month6from300t03000 = document.querySelector(
+				dataJson.month6from300t03000 = $(
 					'.bang-lai-suat div table tbody :nth-child(2) :nth-child(3)'
 				)?.innerText;
-				dataJson.month12from300t03000 = document.querySelector(
+				dataJson.month12from300t03000 = $(
 					'.bang-lai-suat div table tbody :nth-child(3) :nth-child(3)'
 				)?.innerText;
-				dataJson.month24from300t03000 = document.querySelector(
+				dataJson.month24from300t03000 = $(
 					'.bang-lai-suat div table tbody :nth-child(4) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.month1from3000to10000 = document.querySelector(
+				dataJson.month1from3000to10000 = $(
 					'.bang-lai-suat div table tbody :nth-child(1) :nth-child(4)'
 				)?.innerText;
-				dataJson.month6from3000to10000 = document.querySelector(
+				dataJson.month6from3000to10000 = $(
 					'.bang-lai-suat div table tbody :nth-child(2) :nth-child(4)'
 				)?.innerText;
-				dataJson.month12from3000to10000 = document.querySelector(
+				dataJson.month12from3000to10000 = $(
 					'.bang-lai-suat div table tbody :nth-child(3) :nth-child(4)'
 				)?.innerText;
-				dataJson.month24from3000to10000 = document.querySelector(
+				dataJson.month24from3000to10000 = $(
 					'.bang-lai-suat div table tbody :nth-child(4) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.month1from10000to50000 = document.querySelector(
+				dataJson.month1from10000to50000 = $(
 					'.bang-lai-suat div table tbody :nth-child(1) :nth-child(5)'
 				)?.innerText;
-				dataJson.month6from10000to50000 = document.querySelector(
+				dataJson.month6from10000to50000 = $(
 					'.bang-lai-suat div table tbody :nth-child(2) :nth-child(5)'
 				)?.innerText;
-				dataJson.month12from10000to50000 = document.querySelector(
+				dataJson.month12from10000to50000 = $(
 					'.bang-lai-suat div table tbody :nth-child(3) :nth-child(5)'
 				)?.innerText;
-				dataJson.month24from10000to50000 = document.querySelector(
+				dataJson.month24from10000to50000 = $(
 					'.bang-lai-suat div table tbody :nth-child(4) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.month1upper50000 = document.querySelector(
+				dataJson.month1upper50000 = $(
 					'.bang-lai-suat div table tbody :nth-child(1) :nth-child(6)'
 				)?.innerText;
-				dataJson.month6upper50000 = document.querySelector(
+				dataJson.month6upper50000 = $(
 					'.bang-lai-suat div table tbody :nth-child(2) :nth-child(6)'
 				)?.innerText;
-				dataJson.month12upper50000 = document.querySelector(
+				dataJson.month12upper50000 = $(
 					'.bang-lai-suat div table tbody :nth-child(3) :nth-child(6)'
 				)?.innerText;
-				dataJson.month24upper50000 = document.querySelector(
+				dataJson.month24upper50000 = $(
 					'.bang-lai-suat div table tbody :nth-child(4) :nth-child(6)'
 				)?.innerText;
 			} catch (err) {
@@ -1965,7 +1946,7 @@ const crawlVpbankInterestRate = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(vpbankData.symbol));
 
 		await browser.close();

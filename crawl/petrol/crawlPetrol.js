@@ -49,13 +49,7 @@ const crawlPetrolimex = asyncHandler(async () => {
 		await page.waitForTimeout(1000);
 
 		let petrolimexData = await page.evaluate(async () => {
-			// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-			// document.querySelector(`span[data-value=${symbol}]`).click()
-
-			// await delay(2000);
-
-			let stocks = [];
+			const $ = document.querySelector.bind(document);
 
 			let dataJson = {};
 
@@ -76,7 +70,7 @@ const crawlPetrolimex = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				const tableElement = document.querySelector('tbody.product');
+				const tableElement = $('tbody.product');
 
 				dataJson.ron95v_1 = tableElement.querySelector(
 					'tr:nth-child(1) td:nth-child(2)'
@@ -147,7 +141,7 @@ const crawlPetrolimex = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(petrolimexData.name));
 
 		await browser.close();

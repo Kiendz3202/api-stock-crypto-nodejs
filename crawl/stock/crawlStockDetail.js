@@ -2,11 +2,6 @@ const asyncHandler = require('express-async-handler');
 const cron = require('node-cron');
 const axios = require('axios');
 const puppeteer = require('puppeteer');
-// const Hnx30 = require('../../model/stock/stockList/hnx30Model');
-// const Hnx = require('../../model/stock/stockList/hnxModel');
-// const Vn30 = require('../../model/stock/stockList/vn30Model');
-// const Hose = require('../../model/stock/stockList/hoseModel');
-// const Upcom = require('../../model/stock/stockList/upcomModel');
 
 const Hnx30Detail = require('../../model/stock/stockDetail/hnx30DetailModel');
 const HnxDetail = require('../../model/stock/stockDetail/hnxDetailModel');
@@ -16,18 +11,13 @@ const UpcomDetail = require('../../model/stock/stockDetail/upcomDetailModel');
 
 const AllInvestingDetail = require('../../model/stock/stockDetail/allInvestingDetailModel');
 
-//update data push arr database lam not
 const HnxChart = require('../../model/stock/chartStock/chart/hnxChartModel');
 const Hnx30Chart = require('../../model/stock/chartStock/chart/hnx30ChartModel');
 const HoseChart = require('../../model/stock/chartStock/chart/hoseChartModel');
 const Vn30Chart = require('../../model/stock/chartStock/chart/vn30ChartModel');
 const UpcomChart = require('../../model/stock/chartStock/chart/upcomChartModel');
 
-const urlHnx30 = 'https://banggia.vietstock.vn/bang-gia/hnx30';
-const urlHnx = 'https://banggia.vietstock.vn/bang-gia/hnx';
-const urlVn30 = 'https://banggia.vietstock.vn/bang-gia/vn30';
-const urlHose = 'https://banggia.vietstock.vn/bang-gia/hose';
-const urlUpcom = 'https://banggia.vietstock.vn/bang-gia/upcom';
+//----------------------main body-------------------------------------
 
 const crawlDetailHnx30 = asyncHandler(
 	async (
@@ -81,13 +71,7 @@ const crawlDetailHnx30 = asyncHandler(
 					changePercent,
 					turnOver
 				) => {
-					// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-					// document.querySelector(`span[data-value=${symbol}]`).click()
-
-					// await delay(2000);
-
-					let stocks = [];
+					const $ = document.querySelector.bind(document);
 
 					let dataJson = {};
 
@@ -105,52 +89,52 @@ const crawlDetailHnx30 = asyncHandler(
 						dataJson.openPrice =
 							document.getElementById('openprice')?.innerText;
 						dataJson.turnOver = turnOver;
-						dataJson.marketcap = document.querySelector(
+						dataJson.marketcap = $(
 							'.stock-price-info :nth-child(2) :nth-child(5) b'
 						)?.innerText;
-						dataJson.overBought = document.querySelector(
+						dataJson.overBought = $(
 							'.stock-price-info :nth-child(3) :nth-child(1) b'
 						)?.innerText;
-						dataJson.overSold = document.querySelector(
+						dataJson.overSold = $(
 							'.stock-price-info :nth-child(3) :nth-child(2) b'
 						)?.innerText;
-						dataJson.high52Week = document.querySelector(
+						dataJson.high52Week = $(
 							'.stock-price-info :nth-child(3) :nth-child(3) b'
 						)?.innerText;
-						dataJson.low52Week = document.querySelector(
+						dataJson.low52Week = $(
 							'.stock-price-info :nth-child(3) :nth-child(4) b'
 						)?.innerText;
-						dataJson.turnOver52WeekAverage = document.querySelector(
+						dataJson.turnOver52WeekAverage = $(
 							'.stock-price-info :nth-child(3) :nth-child(5) b'
 						)?.innerText;
-						dataJson.foreignBuy = document.querySelector(
+						dataJson.foreignBuy = $(
 							'.stock-price-info :nth-child(4) :nth-child(1) b'
 						)?.innerText;
-						dataJson.ownedRatio = document.querySelector(
+						dataJson.ownedRatio = $(
 							'.stock-price-info :nth-child(4) :nth-child(2) b'
 						)?.innerText;
-						dataJson.dividendCast = document.querySelector(
+						dataJson.dividendCast = $(
 							'.stock-price-info :nth-child(4) :nth-child(3) b'
 						)?.innerText;
-						dataJson.dividendYield = document.querySelector(
+						dataJson.dividendYield = $(
 							'.stock-price-info :nth-child(4) :nth-child(4) b'
 						)?.innerText;
-						dataJson.beta = document.querySelector(
+						dataJson.beta = $(
 							'.stock-price-info :nth-child(4) :nth-child(5) b'
 						)?.innerText;
-						dataJson.eps = document.querySelector(
+						dataJson.eps = $(
 							'.stock-price-info :nth-child(5) :nth-child(1) b'
 						)?.innerText;
-						dataJson.pe = document.querySelector(
+						dataJson.pe = $(
 							'.stock-price-info :nth-child(5) :nth-child(2) b'
 						)?.innerText;
-						dataJson.fpe = document.querySelector(
+						dataJson.fpe = $(
 							'.stock-price-info :nth-child(5) :nth-child(3) b'
 						)?.innerText;
-						dataJson.bvps = document.querySelector(
+						dataJson.bvps = $(
 							'.stock-price-info :nth-child(5) :nth-child(4) b'
 						)?.innerText;
-						dataJson.pb = document.querySelector(
+						dataJson.pb = $(
 							'.stock-price-info :nth-child(5) :nth-child(5) b'
 						)?.innerText;
 
@@ -158,7 +142,7 @@ const crawlDetailHnx30 = asyncHandler(
 							Date.now() / 1000
 						);
 					} catch (err) {
-						console.log(err);
+						console.log('crawldetail hnx30' + err);
 					}
 					return dataJson;
 				},
@@ -214,8 +198,8 @@ const crawlDetailHnx30 = asyncHandler(
 				},
 				{ upsert: true }
 			)
-				.then((doc) => console.log(doc?.symbol))
-				.catch((err) => console.log(hnx30DetailData.name));
+				// .then((doc) => console.log(doc?.symbol))
+				.catch((err) => console.log('crawldetail hnx30' + err));
 
 			Hnx30Chart.findOneAndUpdate(
 				{ symbol: hnx30DetailData.symbol },
@@ -228,13 +212,13 @@ const crawlDetailHnx30 = asyncHandler(
 				},
 				{ upsert: true }
 			)
-				.then((doc) => console.log(doc?.symbol))
-				.catch((err) => console.log(err));
+				// .then((doc) => console.log(doc?.symbol))
+				.catch((err) => console.log('crawldetail hnx30' + err));
 			// return hnx30DetailData
 
 			await browser.close();
 		} catch (error) {
-			console.log(error);
+			console.log('crawldetail hnx30' + error);
 		}
 		// })
 	}
@@ -254,30 +238,18 @@ const crawlDetailHnx = asyncHandler(
 		changePercent,
 		turnOver
 	) => {
-		// cron.schedule('*/20 * * * * *', async () =>{
-
-		// const hnx30List = await Hnx30.find({}).sort({ symbol: 'asc' })
-
-		// let selector = `td[data-tooltip = ${name}]`
-
 		try {
 			const browser = await puppeteer.launch({ headless: true });
 			const page = await browser.newPage();
 			let status = await page.goto(
 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
-				{ timeout: 0 }
+				{
+					timeout: 0,
+				}
 			);
-			// await page.click('[data-tooltip = "CTCP Xi măng Bỉm Sơn"]')
-			// await page.click(`[data-value = ${symbol}]`)
-			// const selector = await page.$(`#sym-328`)
-			// await page.waitForSelector(`span[data-value=${symbol}]`)
-			// await page.click('#sym-328')
-			await page.waitForTimeout(2000);
-			// await page.click(`[data-value=${symbol}]`)
-			// await page.waitForSelector('#symbol-detail-popup', { visible: true })
 
-			// await page.evaluate(selector, (selector) => selector.click())
-			// await page.waitForTimeout(3000)
+			await page.waitForTimeout(2000);
+
 			let hnxDetailData = await page.evaluate(
 				async (
 					name,
@@ -292,13 +264,7 @@ const crawlDetailHnx = asyncHandler(
 					changePercent,
 					turnOver
 				) => {
-					// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-					// document.querySelector(`span[data-value=${symbol}]`).click()
-
-					// await delay(2000);
-
-					let stocks = [];
+					const $ = document.querySelector.bind(document);
 
 					let dataJson = {};
 
@@ -316,52 +282,52 @@ const crawlDetailHnx = asyncHandler(
 						dataJson.openPrice =
 							document.getElementById('openprice')?.innerText;
 						dataJson.turnOver = turnOver;
-						dataJson.marketcap = document.querySelector(
+						dataJson.marketcap = $(
 							'.stock-price-info :nth-child(2) :nth-child(5) b'
 						)?.innerText;
-						dataJson.overBought = document.querySelector(
+						dataJson.overBought = $(
 							'.stock-price-info :nth-child(3) :nth-child(1) b'
 						)?.innerText;
-						dataJson.overSold = document.querySelector(
+						dataJson.overSold = $(
 							'.stock-price-info :nth-child(3) :nth-child(2) b'
 						)?.innerText;
-						dataJson.high52Week = document.querySelector(
+						dataJson.high52Week = $(
 							'.stock-price-info :nth-child(3) :nth-child(3) b'
 						)?.innerText;
-						dataJson.low52Week = document.querySelector(
+						dataJson.low52Week = $(
 							'.stock-price-info :nth-child(3) :nth-child(4) b'
 						)?.innerText;
-						dataJson.turnOver52WeekAverage = document.querySelector(
+						dataJson.turnOver52WeekAverage = $(
 							'.stock-price-info :nth-child(3) :nth-child(5) b'
 						)?.innerText;
-						dataJson.foreignBuy = document.querySelector(
+						dataJson.foreignBuy = $(
 							'.stock-price-info :nth-child(4) :nth-child(1) b'
 						)?.innerText;
-						dataJson.ownedRatio = document.querySelector(
+						dataJson.ownedRatio = $(
 							'.stock-price-info :nth-child(4) :nth-child(2) b'
 						)?.innerText;
-						dataJson.dividendCast = document.querySelector(
+						dataJson.dividendCast = $(
 							'.stock-price-info :nth-child(4) :nth-child(3) b'
 						)?.innerText;
-						dataJson.dividendYield = document.querySelector(
+						dataJson.dividendYield = $(
 							'.stock-price-info :nth-child(4) :nth-child(4) b'
 						)?.innerText;
-						dataJson.beta = document.querySelector(
+						dataJson.beta = $(
 							'.stock-price-info :nth-child(4) :nth-child(5) b'
 						)?.innerText;
-						dataJson.eps = document.querySelector(
+						dataJson.eps = $(
 							'.stock-price-info :nth-child(5) :nth-child(1) b'
 						)?.innerText;
-						dataJson.pe = document.querySelector(
+						dataJson.pe = $(
 							'.stock-price-info :nth-child(5) :nth-child(2) b'
 						)?.innerText;
-						dataJson.fpe = document.querySelector(
+						dataJson.fpe = $(
 							'.stock-price-info :nth-child(5) :nth-child(3) b'
 						)?.innerText;
-						dataJson.bvps = document.querySelector(
+						dataJson.bvps = $(
 							'.stock-price-info :nth-child(5) :nth-child(4) b'
 						)?.innerText;
-						dataJson.pb = document.querySelector(
+						dataJson.pb = $(
 							'.stock-price-info :nth-child(5) :nth-child(5) b'
 						)?.innerText;
 
@@ -369,7 +335,7 @@ const crawlDetailHnx = asyncHandler(
 							Date.now() / 1000
 						);
 					} catch (err) {
-						console.log(err);
+						console.log('crawldetail hnx' + err);
 					}
 					return dataJson;
 				},
@@ -424,8 +390,8 @@ const crawlDetailHnx = asyncHandler(
 				},
 				{ upsert: true }
 			)
-				.then((doc) => console.log(doc?.symbol))
-				.catch((err) => console.log(hnxDetailData.name));
+				// .then((doc) => console.log(doc?.symbol))
+				.catch((err) => console.log('crawldetail hnx' + err));
 
 			HnxChart.findOneAndUpdate(
 				{ symbol: hnxDetailData.symbol },
@@ -438,13 +404,13 @@ const crawlDetailHnx = asyncHandler(
 				},
 				{ upsert: true }
 			)
-				.then((doc) => console.log(doc?.symbol))
-				.catch((err) => console.log(err));
+				// .then((doc) => console.log(doc?.symbol))
+				.catch((err) => console.log('crawldetail hnx' + err));
 			// return hnxDetailData
 
 			await browser.close();
 		} catch (error) {
-			console.log(error);
+			console.log('crawldetail hnx' + error);
 		}
 		// })
 	}
@@ -488,6 +454,8 @@ const crawlDetailVn30 = asyncHandler(
 					changePercent,
 					turnOver
 				) => {
+					const $ = document.querySelector.bind(document);
+
 					let dataJson = {};
 
 					try {
@@ -504,52 +472,52 @@ const crawlDetailVn30 = asyncHandler(
 						dataJson.openPrice =
 							document.getElementById('openprice')?.innerText;
 						dataJson.turnOver = turnOver;
-						dataJson.marketcap = document.querySelector(
+						dataJson.marketcap = $(
 							'.stock-price-info :nth-child(2) :nth-child(5) b'
 						)?.innerText;
-						dataJson.overBought = document.querySelector(
+						dataJson.overBought = $(
 							'.stock-price-info :nth-child(3) :nth-child(1) b'
 						)?.innerText;
-						dataJson.overSold = document.querySelector(
+						dataJson.overSold = $(
 							'.stock-price-info :nth-child(3) :nth-child(2) b'
 						)?.innerText;
-						dataJson.high52Week = document.querySelector(
+						dataJson.high52Week = $(
 							'.stock-price-info :nth-child(3) :nth-child(3) b'
 						)?.innerText;
-						dataJson.low52Week = document.querySelector(
+						dataJson.low52Week = $(
 							'.stock-price-info :nth-child(3) :nth-child(4) b'
 						)?.innerText;
-						dataJson.turnOver52WeekAverage = document.querySelector(
+						dataJson.turnOver52WeekAverage = $(
 							'.stock-price-info :nth-child(3) :nth-child(5) b'
 						)?.innerText;
-						dataJson.foreignBuy = document.querySelector(
+						dataJson.foreignBuy = $(
 							'.stock-price-info :nth-child(4) :nth-child(1) b'
 						)?.innerText;
-						dataJson.ownedRatio = document.querySelector(
+						dataJson.ownedRatio = $(
 							'.stock-price-info :nth-child(4) :nth-child(2) b'
 						)?.innerText;
-						dataJson.dividendCast = document.querySelector(
+						dataJson.dividendCast = $(
 							'.stock-price-info :nth-child(4) :nth-child(3) b'
 						)?.innerText;
-						dataJson.dividendYield = document.querySelector(
+						dataJson.dividendYield = $(
 							'.stock-price-info :nth-child(4) :nth-child(4) b'
 						)?.innerText;
-						dataJson.beta = document.querySelector(
+						dataJson.beta = $(
 							'.stock-price-info :nth-child(4) :nth-child(5) b'
 						)?.innerText;
-						dataJson.eps = document.querySelector(
+						dataJson.eps = $(
 							'.stock-price-info :nth-child(5) :nth-child(1) b'
 						)?.innerText;
-						dataJson.pe = document.querySelector(
+						dataJson.pe = $(
 							'.stock-price-info :nth-child(5) :nth-child(2) b'
 						)?.innerText;
-						dataJson.fpe = document.querySelector(
+						dataJson.fpe = $(
 							'.stock-price-info :nth-child(5) :nth-child(3) b'
 						)?.innerText;
-						dataJson.bvps = document.querySelector(
+						dataJson.bvps = $(
 							'.stock-price-info :nth-child(5) :nth-child(4) b'
 						)?.innerText;
-						dataJson.pb = document.querySelector(
+						dataJson.pb = $(
 							'.stock-price-info :nth-child(5) :nth-child(5) b'
 						)?.innerText;
 
@@ -557,7 +525,7 @@ const crawlDetailVn30 = asyncHandler(
 							Date.now() / 1000
 						);
 					} catch (err) {
-						console.log(err);
+						console.log('crawldetail vn30' + err);
 					}
 					return dataJson;
 				},
@@ -612,8 +580,8 @@ const crawlDetailVn30 = asyncHandler(
 				},
 				{ upsert: true }
 			)
-				.then((doc) => console.log(doc?.symbol))
-				.catch((err) => console.log(vn30DetailData.name));
+				// .then((doc) => console.log(doc?.symbol))
+				.catch((err) => console.log('crawldetail vn30' + err));
 
 			Vn30Chart.findOneAndUpdate(
 				{ symbol: vn30DetailData.symbol },
@@ -626,13 +594,13 @@ const crawlDetailVn30 = asyncHandler(
 				},
 				{ upsert: true }
 			)
-				.then((doc) => console.log(doc?.symbol))
-				.catch((err) => console.log(err));
+				// .then((doc) => console.log(doc?.symbol))
+				.catch((err) => console.log('crawldetail vn30' + err));
 			// return vn30DetailData
 
 			await browser.close();
 		} catch (error) {
-			console.log(error);
+			console.log('crawldetail vn30' + error);
 		}
 	}
 );
@@ -689,13 +657,7 @@ const crawlDetailHose = asyncHandler(
 					changePercent,
 					turnOver
 				) => {
-					// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-					// document.querySelector(`span[data-value=${symbol}]`).click()
-
-					// await delay(2000);
-
-					let stocks = [];
+					const $ = document.querySelector.bind(document);
 
 					let dataJson = {};
 
@@ -713,52 +675,52 @@ const crawlDetailHose = asyncHandler(
 						dataJson.openPrice =
 							document.getElementById('openprice')?.innerText;
 						dataJson.turnOver = turnOver;
-						dataJson.marketcap = document.querySelector(
+						dataJson.marketcap = $(
 							'.stock-price-info :nth-child(2) :nth-child(5) b'
 						)?.innerText;
-						dataJson.overBought = document.querySelector(
+						dataJson.overBought = $(
 							'.stock-price-info :nth-child(3) :nth-child(1) b'
 						)?.innerText;
-						dataJson.overSold = document.querySelector(
+						dataJson.overSold = $(
 							'.stock-price-info :nth-child(3) :nth-child(2) b'
 						)?.innerText;
-						dataJson.high52Week = document.querySelector(
+						dataJson.high52Week = $(
 							'.stock-price-info :nth-child(3) :nth-child(3) b'
 						)?.innerText;
-						dataJson.low52Week = document.querySelector(
+						dataJson.low52Week = $(
 							'.stock-price-info :nth-child(3) :nth-child(4) b'
 						)?.innerText;
-						dataJson.turnOver52WeekAverage = document.querySelector(
+						dataJson.turnOver52WeekAverage = $(
 							'.stock-price-info :nth-child(3) :nth-child(5) b'
 						)?.innerText;
-						dataJson.foreignBuy = document.querySelector(
+						dataJson.foreignBuy = $(
 							'.stock-price-info :nth-child(4) :nth-child(1) b'
 						)?.innerText;
-						dataJson.ownedRatio = document.querySelector(
+						dataJson.ownedRatio = $(
 							'.stock-price-info :nth-child(4) :nth-child(2) b'
 						)?.innerText;
-						dataJson.dividendCast = document.querySelector(
+						dataJson.dividendCast = $(
 							'.stock-price-info :nth-child(4) :nth-child(3) b'
 						)?.innerText;
-						dataJson.dividendYield = document.querySelector(
+						dataJson.dividendYield = $(
 							'.stock-price-info :nth-child(4) :nth-child(4) b'
 						)?.innerText;
-						dataJson.beta = document.querySelector(
+						dataJson.beta = $(
 							'.stock-price-info :nth-child(4) :nth-child(5) b'
 						)?.innerText;
-						dataJson.eps = document.querySelector(
+						dataJson.eps = $(
 							'.stock-price-info :nth-child(5) :nth-child(1) b'
 						)?.innerText;
-						dataJson.pe = document.querySelector(
+						dataJson.pe = $(
 							'.stock-price-info :nth-child(5) :nth-child(2) b'
 						)?.innerText;
-						dataJson.fpe = document.querySelector(
+						dataJson.fpe = $(
 							'.stock-price-info :nth-child(5) :nth-child(3) b'
 						)?.innerText;
-						dataJson.bvps = document.querySelector(
+						dataJson.bvps = $(
 							'.stock-price-info :nth-child(5) :nth-child(4) b'
 						)?.innerText;
-						dataJson.pb = document.querySelector(
+						dataJson.pb = $(
 							'.stock-price-info :nth-child(5) :nth-child(5) b'
 						)?.innerText;
 
@@ -766,7 +728,7 @@ const crawlDetailHose = asyncHandler(
 							Date.now() / 1000
 						);
 					} catch (err) {
-						console.log(err);
+						console.log('crawldetail hose' + err);
 					}
 					return dataJson;
 				},
@@ -821,8 +783,8 @@ const crawlDetailHose = asyncHandler(
 				},
 				{ upsert: true }
 			)
-				.then((doc) => console.log(doc?.symbol))
-				.catch((err) => console.log(hoseDetailData.name));
+				// .then((doc) => console.log(doc?.symbol))
+				.catch((err) => console.log('crawldetail hose' + err));
 
 			HoseChart.findOneAndUpdate(
 				{ symbol: hoseDetailData.symbol },
@@ -835,13 +797,13 @@ const crawlDetailHose = asyncHandler(
 				},
 				{ upsert: true }
 			)
-				.then((doc) => console.log(doc?.symbol))
-				.catch((err) => console.log(err));
+				// .then((doc) => console.log(doc?.symbol))
+				.catch((err) => console.log('crawldetail hose' + err));
 			// return hoseDetailData
 
 			await browser.close();
 		} catch (error) {
-			console.log(error);
+			console.log('crawldetail hose' + error);
 		}
 		// })
 	}
@@ -899,13 +861,7 @@ const crawlDetailUpcom = asyncHandler(
 					changePercent,
 					turnOver
 				) => {
-					// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-					// document.querySelector(`span[data-value=${symbol}]`).click()
-
-					// await delay(2000);
-
-					let stocks = [];
+					const $ = document.querySelector.bind(document);
 
 					let dataJson = {};
 
@@ -923,52 +879,52 @@ const crawlDetailUpcom = asyncHandler(
 						dataJson.openPrice =
 							document.getElementById('openprice')?.innerText;
 						dataJson.turnOver = turnOver;
-						dataJson.marketcap = document.querySelector(
+						dataJson.marketcap = $(
 							'.stock-price-info :nth-child(2) :nth-child(5) b'
 						)?.innerText;
-						dataJson.overBought = document.querySelector(
+						dataJson.overBought = $(
 							'.stock-price-info :nth-child(3) :nth-child(1) b'
 						)?.innerText;
-						dataJson.overSold = document.querySelector(
+						dataJson.overSold = $(
 							'.stock-price-info :nth-child(3) :nth-child(2) b'
 						)?.innerText;
-						dataJson.high52Week = document.querySelector(
+						dataJson.high52Week = $(
 							'.stock-price-info :nth-child(3) :nth-child(3) b'
 						)?.innerText;
-						dataJson.low52Week = document.querySelector(
+						dataJson.low52Week = $(
 							'.stock-price-info :nth-child(3) :nth-child(4) b'
 						)?.innerText;
-						dataJson.turnOver52WeekAverage = document.querySelector(
+						dataJson.turnOver52WeekAverage = $(
 							'.stock-price-info :nth-child(3) :nth-child(5) b'
 						)?.innerText;
-						dataJson.foreignBuy = document.querySelector(
+						dataJson.foreignBuy = $(
 							'.stock-price-info :nth-child(4) :nth-child(1) b'
 						)?.innerText;
-						dataJson.ownedRatio = document.querySelector(
+						dataJson.ownedRatio = $(
 							'.stock-price-info :nth-child(4) :nth-child(2) b'
 						)?.innerText;
-						dataJson.dividendCast = document.querySelector(
+						dataJson.dividendCast = $(
 							'.stock-price-info :nth-child(4) :nth-child(3) b'
 						)?.innerText;
-						dataJson.dividendYield = document.querySelector(
+						dataJson.dividendYield = $(
 							'.stock-price-info :nth-child(4) :nth-child(4) b'
 						)?.innerText;
-						dataJson.beta = document.querySelector(
+						dataJson.beta = $(
 							'.stock-price-info :nth-child(4) :nth-child(5) b'
 						)?.innerText;
-						dataJson.eps = document.querySelector(
+						dataJson.eps = $(
 							'.stock-price-info :nth-child(5) :nth-child(1) b'
 						)?.innerText;
-						dataJson.pe = document.querySelector(
+						dataJson.pe = $(
 							'.stock-price-info :nth-child(5) :nth-child(2) b'
 						)?.innerText;
-						dataJson.fpe = document.querySelector(
+						dataJson.fpe = $(
 							'.stock-price-info :nth-child(5) :nth-child(3) b'
 						)?.innerText;
-						dataJson.bvps = document.querySelector(
+						dataJson.bvps = $(
 							'.stock-price-info :nth-child(5) :nth-child(4) b'
 						)?.innerText;
-						dataJson.pb = document.querySelector(
+						dataJson.pb = $(
 							'.stock-price-info :nth-child(5) :nth-child(5) b'
 						)?.innerText;
 
@@ -976,7 +932,7 @@ const crawlDetailUpcom = asyncHandler(
 							Date.now() / 1000
 						);
 					} catch (err) {
-						console.log(err);
+						console.log('crawldetail upcom' + err);
 					}
 					return dataJson;
 				},
@@ -1032,8 +988,8 @@ const crawlDetailUpcom = asyncHandler(
 				},
 				{ upsert: true }
 			)
-				.then((doc) => console.log(doc?.symbol))
-				.catch((err) => console.log(upcomDetailData.name));
+				// .then((doc) => console.log(doc?.symbol))
+				.catch((err) => console.log('crawldetail upcom' + err));
 
 			UpcomChart.findOneAndUpdate(
 				{ symbol: upcomDetailData.symbol },
@@ -1046,13 +1002,13 @@ const crawlDetailUpcom = asyncHandler(
 				},
 				{ upsert: true }
 			)
-				.then((doc) => console.log(doc?.symbol))
-				.catch((err) => console.log(err));
+				// .then((doc) => console.log(doc?.symbol))
+				.catch((err) => console.log('crawldetail upcom' + err));
 			// return upcomDetailData
 
 			await browser.close();
 		} catch (error) {
-			console.log(error);
+			console.log('crawldetail upcom' + error);
 		}
 		// })
 	}
@@ -1100,13 +1056,8 @@ const crawlDetailAllInvesting = asyncHandler(async (id, name, hrefDetail) => {
 
 		let allInvestingDetailData = await page.evaluate(
 			async (id, name) => {
-				const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-				// document.querySelector(`span[data-value=${symbol}]`).click()
-
-				// await delay(2000);
-
-				let stocks = [];
+				const $ = document.querySelector.bind(document);
+				const $$ = document.querySelectorAll.bind(document);
 
 				// let mainElement = document.querySelector("div[data-set='chat-panel-main']").previousSibling
 				// let infoCompanyElement = mainElement.querySelector(':nth-last-child(2)')
@@ -1116,9 +1067,7 @@ const crawlDetailAllInvesting = asyncHandler(async (id, name, hrefDetail) => {
 				try {
 					dataJson.id = id;
 					dataJson.name = name;
-					dataJson.symbol = document
-						.querySelector('main div h2')
-						?.innerText.slice(10);
+					dataJson.symbol = $('main div h2')?.innerText.slice(10);
 					// dataJson.currentPrice = document.querySelector("span[data-test='instrument-price-last']")?.innerText
 					// dataJson.referencePrice = document.querySelector('dl div:nth-child(1) dd span :nth-child(1)')?.innerText + document.querySelector('dl div:nth-child(1) dd span :nth-child(2)')?.innerText
 					// dataJson.openPrice = document.querySelector('dl div:nth-child(4) dd span :nth-child(1)')?.innerText + document.querySelector('dl div:nth-child(4) dd span :nth-child(2)')?.innerText
@@ -1144,7 +1093,7 @@ const crawlDetailAllInvesting = asyncHandler(async (id, name, hrefDetail) => {
 						document.getElementsByClassName(
 							'company-profile_profile-description__30Rta'
 						)[0]?.innerText;
-					let mainElement = document.querySelectorAll(
+					let mainElement = $$(
 						'.instrumentOverview_overview-section__2hN4A'
 					)[5];
 					dataJson.major = mainElement.querySelector(
@@ -1156,7 +1105,7 @@ const crawlDetailAllInvesting = asyncHandler(async (id, name, hrefDetail) => {
 					// dataJson.numberOfEmployees = mainElement.querySelector('div :nth-child(6) div :nth-child(3) :nth-child(3) :nth-child(2) ')?.innerText
 					// dataJson.marketLocation = mainElement.querySelector('div :nth-child(6) div :nth-child(3) :nth-child(4) a ')?.innerText
 				} catch (err) {
-					console.log(err);
+					console.log('crawldetail allinvesting' + err);
 				}
 				// await delay(2000);
 				return dataJson;
@@ -1203,14 +1152,14 @@ const crawlDetailAllInvesting = asyncHandler(async (id, name, hrefDetail) => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc?.sy))
-			.catch((err) => console.log(err));
+			// .then((doc) => console.log(doc?.sy))
+			.catch((err) => console.log('crawldetail allinvesting' + err));
 
 		// return upcomDetailData
 
 		await browser.close();
 	} catch (error) {
-		console.log(error);
+		console.log('crawldetail allinvesting' + error);
 	}
 });
 

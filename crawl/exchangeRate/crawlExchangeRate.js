@@ -64,13 +64,7 @@ const crawlAbBank = asyncHandler(async () => {
 		// // Some extra delay to let all data load
 		// await page.waitForTimeout(1000);
 		let abBankData = await page.evaluate(async () => {
-			// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-			// document.querySelector(`span[data-value=${symbol}]`).click()
-
-			// await delay(2000);
-
-			let stocks = [];
+			const $ = document.querySelector.bind(document);
 
 			let dataJson = {};
 
@@ -92,146 +86,146 @@ const crawlAbBank = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				dataJson.usdBuyCast = document.querySelector(
+				dataJson.usdBuyCast = $(
 					'table tbody :nth-child(17) :nth-child(2) span'
 				)?.innerText;
-				dataJson.usdBuyTransfer = document.querySelector(
+				dataJson.usdBuyTransfer = $(
 					'table tbody :nth-child(17) :nth-child(3) span'
 				)?.innerText;
-				dataJson.usdSellTransfer = document.querySelector(
+				dataJson.usdSellTransfer = $(
 					'table tbody :nth-child(17) :nth-child(4) span'
 				)?.innerText;
-				dataJson.usdSellCast = document.querySelector(
+				dataJson.usdSellCast = $(
 					'table tbody :nth-child(17) :nth-child(5) span'
 				)?.innerText;
 
-				dataJson.eurBuyCast = document.querySelector(
+				dataJson.eurBuyCast = $(
 					'table tbody :nth-child(19) :nth-child(2) span'
 				)?.innerText;
-				dataJson.eurBuyTransfer = document.querySelector(
+				dataJson.eurBuyTransfer = $(
 					'table tbody :nth-child(19) :nth-child(3) span'
 				)?.innerText;
-				dataJson.eurSellTransfer = document.querySelector(
+				dataJson.eurSellTransfer = $(
 					'table tbody :nth-child(19) :nth-child(4) span'
 				)?.innerText;
-				dataJson.eurSellCast = document.querySelector(
+				dataJson.eurSellCast = $(
 					'table tbody :nth-child(19) :nth-child(5) span'
 				)?.innerText;
 
-				dataJson.gbpBuyCast = document.querySelector(
+				dataJson.gbpBuyCast = $(
 					'table tbody :nth-child(20) :nth-child(2) span'
 				)?.innerText;
-				dataJson.gbpBuyTransfer = document.querySelector(
+				dataJson.gbpBuyTransfer = $(
 					'table tbody :nth-child(20) :nth-child(3) span'
 				)?.innerText;
-				dataJson.gbpSellTransfer = document.querySelector(
+				dataJson.gbpSellTransfer = $(
 					'table tbody :nth-child(20) :nth-child(4) span'
 				)?.innerText;
-				dataJson.gbpSellCast = document.querySelector(
+				dataJson.gbpSellCast = $(
 					'table tbody :nth-child(20) :nth-child(5) span'
 				)?.innerText;
 
-				dataJson.jpyBuyCast = document.querySelector(
+				dataJson.jpyBuyCast = $(
 					'table tbody :nth-child(21) :nth-child(2) span'
 				)?.innerText;
-				dataJson.jpyBuyTransfer = document.querySelector(
+				dataJson.jpyBuyTransfer = $(
 					'table tbody :nth-child(21) :nth-child(3) span'
 				)?.innerText;
-				dataJson.jpySellTransfer = document.querySelector(
+				dataJson.jpySellTransfer = $(
 					'table tbody :nth-child(21) :nth-child(4) span'
 				)?.innerText;
-				dataJson.jpySellCast = document.querySelector(
+				dataJson.jpySellCast = $(
 					'table tbody :nth-child(21) :nth-child(5) span'
 				)?.innerText;
 
-				dataJson.audBuyCast = document.querySelector(
+				dataJson.audBuyCast = $(
 					'table tbody :nth-child(22) :nth-child(2) span'
 				)?.innerText;
-				dataJson.audBuyTransfer = document.querySelector(
+				dataJson.audBuyTransfer = $(
 					'table tbody :nth-child(22) :nth-child(3) span'
 				)?.innerText;
-				dataJson.audSellTransfer = document.querySelector(
+				dataJson.audSellTransfer = $(
 					'table tbody :nth-child(22) :nth-child(4) span'
 				)?.innerText;
-				dataJson.audSellCast = document.querySelector(
+				dataJson.audSellCast = $(
 					'table tbody :nth-child(22) :nth-child(5) span'
 				)?.innerText;
 
-				dataJson.cadBuyCast = document.querySelector(
+				dataJson.cadBuyCast = $(
 					'table tbody :nth-child(23) :nth-child(2) span'
 				)?.innerText;
-				dataJson.cadBuyTransfer = document.querySelector(
+				dataJson.cadBuyTransfer = $(
 					'table tbody :nth-child(23) :nth-child(3) span'
 				)?.innerText;
-				dataJson.cadSellTransfer = document.querySelector(
+				dataJson.cadSellTransfer = $(
 					'table tbody :nth-child(23) :nth-child(4) span'
 				)?.innerText;
-				dataJson.cadSellCast = document.querySelector(
+				dataJson.cadSellCast = $(
 					'table tbody :nth-child(23) :nth-child(5) span'
 				)?.innerText;
 
-				dataJson.nzdBuyCast = document.querySelector(
+				dataJson.nzdBuyCast = $(
 					'table tbody :nth-child(24) :nth-child(2) span'
 				)?.innerText;
-				dataJson.nzdBuyTransfer = document.querySelector(
+				dataJson.nzdBuyTransfer = $(
 					'table tbody :nth-child(24) :nth-child(3) span'
 				)?.innerText;
-				dataJson.nzdSellTransfer = document.querySelector(
+				dataJson.nzdSellTransfer = $(
 					'table tbody :nth-child(24) :nth-child(4) span'
 				)?.innerText;
-				dataJson.nzdSellCast = document.querySelector(
+				dataJson.nzdSellCast = $(
 					'table tbody :nth-child(24) :nth-child(5) span'
 				)?.innerText;
 
-				dataJson.sgdBuyCast = document.querySelector(
+				dataJson.sgdBuyCast = $(
 					'table tbody :nth-child(25) :nth-child(2) span'
 				)?.innerText;
-				dataJson.sgdBuyTransfer = document.querySelector(
+				dataJson.sgdBuyTransfer = $(
 					'table tbody :nth-child(25) :nth-child(3) span'
 				)?.innerText;
-				dataJson.sgdSellTransfer = document.querySelector(
+				dataJson.sgdSellTransfer = $(
 					'table tbody :nth-child(25) :nth-child(4) span'
 				)?.innerText;
-				dataJson.sgdSellCast = document.querySelector(
+				dataJson.sgdSellCast = $(
 					'table tbody :nth-child(25) :nth-child(5) span'
 				)?.innerText;
 
-				dataJson.chfBuyCast = document.querySelector(
+				dataJson.chfBuyCast = $(
 					'table tbody :nth-child(26) :nth-child(2) span'
 				)?.innerText;
-				dataJson.chfBuyTransfer = document.querySelector(
+				dataJson.chfBuyTransfer = $(
 					'table tbody :nth-child(26) :nth-child(3) span'
 				)?.innerText;
-				dataJson.chfSellTransfer = document.querySelector(
+				dataJson.chfSellTransfer = $(
 					'table tbody :nth-child(26) :nth-child(4) span'
 				)?.innerText;
-				dataJson.chfSellCast = document.querySelector(
+				dataJson.chfSellCast = $(
 					'table tbody :nth-child(26) :nth-child(5) span'
 				)?.innerText;
 
-				dataJson.hkdBuyCast = document.querySelector(
+				dataJson.hkdBuyCast = $(
 					'table tbody :nth-child(27) :nth-child(2) span'
 				)?.innerText;
-				dataJson.hkdBuyTransfer = document.querySelector(
+				dataJson.hkdBuyTransfer = $(
 					'table tbody :nth-child(27) :nth-child(3) span'
 				)?.innerText;
-				dataJson.hkdSellTransfer = document.querySelector(
+				dataJson.hkdSellTransfer = $(
 					'table tbody :nth-child(27) :nth-child(4) span'
 				)?.innerText;
-				dataJson.hkdSellCast = document.querySelector(
+				dataJson.hkdSellCast = $(
 					'table tbody :nth-child(27) :nth-child(5) span'
 				)?.innerText;
 
-				dataJson.krwBuyCast = document.querySelector(
+				dataJson.krwBuyCast = $(
 					'table tbody :nth-child(28) :nth-child(2) span'
 				)?.innerText;
-				dataJson.krwBuyTransfer = document.querySelector(
+				dataJson.krwBuyTransfer = $(
 					'table tbody :nth-child(28) :nth-child(3) span'
 				)?.innerText;
-				dataJson.krwSellTransfer = document.querySelector(
+				dataJson.krwSellTransfer = $(
 					'table tbody :nth-child(28) :nth-child(4) span'
 				)?.innerText;
-				dataJson.krwSellCast = document.querySelector(
+				dataJson.krwSellCast = $(
 					'table tbody :nth-child(28) :nth-child(5) span'
 				)?.innerText;
 			} catch (err) {
@@ -306,7 +300,7 @@ const crawlAbBank = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(abBankData.symbol));
 
 		await browser.close();
@@ -329,6 +323,8 @@ const crawlAgribank = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let agribankData = await page.evaluate(async () => {
+			const $ = document.querySelector.bind(document);
+
 			let dataJson = {};
 
 			try {
@@ -350,123 +346,123 @@ const crawlAgribank = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				dataJson.usdBuyCast = document.querySelector(
+				dataJson.usdBuyCast = $(
 					'#tyGiaCn table tbody :nth-child(1) :nth-child(2)'
 				)?.innerText;
-				dataJson.usdBuyTransfer = document.querySelector(
+				dataJson.usdBuyTransfer = $(
 					'#tyGiaCn table tbody :nth-child(1) :nth-child(3)'
 				)?.innerText;
-				dataJson.usdSell = document.querySelector(
+				dataJson.usdSell = $(
 					'#tyGiaCn table tbody :nth-child(1) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.eurBuyCast = document.querySelector(
+				dataJson.eurBuyCast = $(
 					'#tyGiaCn table tbody :nth-child(2) :nth-child(2)'
 				)?.innerText;
-				dataJson.eurBuyTransfer = document.querySelector(
+				dataJson.eurBuyTransfer = $(
 					'#tyGiaCn table tbody :nth-child(2) :nth-child(3)'
 				)?.innerText;
-				dataJson.eurSell = document.querySelector(
+				dataJson.eurSell = $(
 					'#tyGiaCn table tbody :nth-child(2) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.gbpBuyCast = document.querySelector(
+				dataJson.gbpBuyCast = $(
 					'#tyGiaCn table tbody :nth-child(3) :nth-child(2)'
 				)?.innerText;
-				dataJson.gbpBuyTransfer = document.querySelector(
+				dataJson.gbpBuyTransfer = $(
 					'#tyGiaCn table tbody :nth-child(3) :nth-child(3)'
 				)?.innerText;
-				dataJson.gbpSell = document.querySelector(
+				dataJson.gbpSell = $(
 					'#tyGiaCn table tbody :nth-child(3) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.hkdBuyCast = document.querySelector(
+				dataJson.hkdBuyCast = $(
 					'#tyGiaCn table tbody :nth-child(4) :nth-child(2)'
 				)?.innerText;
-				dataJson.hkdBuyTransfer = document.querySelector(
+				dataJson.hkdBuyTransfer = $(
 					'#tyGiaCn table tbody :nth-child(4) :nth-child(3)'
 				)?.innerText;
-				dataJson.hkdSell = document.querySelector(
+				dataJson.hkdSell = $(
 					'#tyGiaCn table tbody :nth-child(4) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.chfBuyCast = document.querySelector(
+				dataJson.chfBuyCast = $(
 					'#tyGiaCn table tbody :nth-child(5) :nth-child(2)'
 				)?.innerText;
-				dataJson.chfBuyTransfer = document.querySelector(
+				dataJson.chfBuyTransfer = $(
 					'#tyGiaCn table tbody :nth-child(5) :nth-child(3)'
 				)?.innerText;
-				dataJson.chfSell = document.querySelector(
+				dataJson.chfSell = $(
 					'#tyGiaCn table tbody :nth-child(5) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.jpyBuyCast = document.querySelector(
+				dataJson.jpyBuyCast = $(
 					'#tyGiaCn table tbody :nth-child(6) :nth-child(2)'
 				)?.innerText;
-				dataJson.jpyBuyTransfer = document.querySelector(
+				dataJson.jpyBuyTransfer = $(
 					'#tyGiaCn table tbody :nth-child(6) :nth-child(3)'
 				)?.innerText;
-				dataJson.jpySell = document.querySelector(
+				dataJson.jpySell = $(
 					'#tyGiaCn table tbody :nth-child(6) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.audBuyCast = document.querySelector(
+				dataJson.audBuyCast = $(
 					'#tyGiaCn table tbody :nth-child(7) :nth-child(2)'
 				)?.innerText;
-				dataJson.audBuyTransfer = document.querySelector(
+				dataJson.audBuyTransfer = $(
 					'#tyGiaCn table tbody :nth-child(7) :nth-child(3)'
 				)?.innerText;
-				dataJson.audSell = document.querySelector(
+				dataJson.audSell = $(
 					'#tyGiaCn table tbody :nth-child(7) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.sgdBuyCast = document.querySelector(
+				dataJson.sgdBuyCast = $(
 					'#tyGiaCn table tbody :nth-child(8) :nth-child(2)'
 				)?.innerText;
-				dataJson.sgdBuyTransfer = document.querySelector(
+				dataJson.sgdBuyTransfer = $(
 					'#tyGiaCn table tbody :nth-child(8) :nth-child(3)'
 				)?.innerText;
-				dataJson.sgdSell = document.querySelector(
+				dataJson.sgdSell = $(
 					'#tyGiaCn table tbody :nth-child(8) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.thbBuyCast = document.querySelector(
+				dataJson.thbBuyCast = $(
 					'#tyGiaCn table tbody :nth-child(9) :nth-child(2)'
 				)?.innerText;
-				dataJson.thbBuyTransfer = document.querySelector(
+				dataJson.thbBuyTransfer = $(
 					'#tyGiaCn table tbody :nth-child(9) :nth-child(3)'
 				)?.innerText;
-				dataJson.thbSell = document.querySelector(
+				dataJson.thbSell = $(
 					'#tyGiaCn table tbody :nth-child(9) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.cadBuyCast = document.querySelector(
+				dataJson.cadBuyCast = $(
 					'#tyGiaCn table tbody :nth-child(10) :nth-child(2)'
 				)?.innerText;
-				dataJson.cadBuyTransfer = document.querySelector(
+				dataJson.cadBuyTransfer = $(
 					'#tyGiaCn table tbody :nth-child(10) :nth-child(3)'
 				)?.innerText;
-				dataJson.cadSell = document.querySelector(
+				dataJson.cadSell = $(
 					'#tyGiaCn table tbody :nth-child(10) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.nzdBuyCast = document.querySelector(
+				dataJson.nzdBuyCast = $(
 					'#tyGiaCn table tbody :nth-child(11) :nth-child(2)'
 				)?.innerText;
-				dataJson.nzdBuyTransfer = document.querySelector(
+				dataJson.nzdBuyTransfer = $(
 					'#tyGiaCn table tbody :nth-child(11) :nth-child(3)'
 				)?.innerText;
-				dataJson.nzdSell = document.querySelector(
+				dataJson.nzdSell = $(
 					'#tyGiaCn table tbody :nth-child(11) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.krwBuyCast = document.querySelector(
+				dataJson.krwBuyCast = $(
 					'#tyGiaCn table tbody :nth-child(12) :nth-child(2)'
 				)?.innerText;
-				dataJson.krwBuyTransfer = document.querySelector(
+				dataJson.krwBuyTransfer = $(
 					'#tyGiaCn table tbody :nth-child(12) :nth-child(3)'
 				)?.innerText;
-				dataJson.krwSell = document.querySelector(
+				dataJson.krwSell = $(
 					'#tyGiaCn table tbody :nth-child(12) :nth-child(4)'
 				)?.innerText;
 			} catch (err) {
@@ -534,7 +530,7 @@ const crawlAgribank = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(agribankData.symbol));
 
 		await browser.close();
@@ -557,6 +553,8 @@ const crawlVietcombank = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let vietcombankData = await page.evaluate(async () => {
+			const $ = document.querySelector.bind(document);
+
 			let dataJson = {};
 
 			try {
@@ -578,203 +576,203 @@ const crawlVietcombank = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				dataJson.audBuyCast = document.querySelector(
+				dataJson.audBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(3) :nth-child(3)'
 				)?.innerText;
-				dataJson.audBuyTransfer = document.querySelector(
+				dataJson.audBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(3) :nth-child(4)'
 				)?.innerText;
-				dataJson.audSell = document.querySelector(
+				dataJson.audSell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(3) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.cadBuyCast = document.querySelector(
+				dataJson.cadBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(4) :nth-child(3)'
 				)?.innerText;
-				dataJson.cadBuyTransfer = document.querySelector(
+				dataJson.cadBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(4) :nth-child(4)'
 				)?.innerText;
-				dataJson.cadSell = document.querySelector(
+				dataJson.cadSell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(4) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.chfBuyCast = document.querySelector(
+				dataJson.chfBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(5) :nth-child(3)'
 				)?.innerText;
-				dataJson.chfBuyTransfer = document.querySelector(
+				dataJson.chfBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(5) :nth-child(4)'
 				)?.innerText;
-				dataJson.chfSell = document.querySelector(
+				dataJson.chfSell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(5) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.cnyBuyCast = document.querySelector(
+				dataJson.cnyBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(6) :nth-child(3)'
 				)?.innerText;
-				dataJson.cnyBuyTransfer = document.querySelector(
+				dataJson.cnyBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(6) :nth-child(4)'
 				)?.innerText;
-				dataJson.cnySell = document.querySelector(
+				dataJson.cnySell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(6) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.dkkBuyCast = document.querySelector(
+				dataJson.dkkBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(7) :nth-child(3)'
 				)?.innerText;
-				dataJson.dkkBuyTransfer = document.querySelector(
+				dataJson.dkkBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(7) :nth-child(4)'
 				)?.innerText;
-				dataJson.dkkSell = document.querySelector(
+				dataJson.dkkSell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(7) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.eurBuyCast = document.querySelector(
+				dataJson.eurBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(8) :nth-child(3)'
 				)?.innerText;
-				dataJson.eurBuyTransfer = document.querySelector(
+				dataJson.eurBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(8) :nth-child(4)'
 				)?.innerText;
-				dataJson.eurSell = document.querySelector(
+				dataJson.eurSell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(8) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.gbpBuyCast = document.querySelector(
+				dataJson.gbpBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(9) :nth-child(3)'
 				)?.innerText;
-				dataJson.gbpBuyTransfer = document.querySelector(
+				dataJson.gbpBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(9) :nth-child(4)'
 				)?.innerText;
-				dataJson.gbpSell = document.querySelector(
+				dataJson.gbpSell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(9) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.hkdBuyCast = document.querySelector(
+				dataJson.hkdBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(10) :nth-child(3)'
 				)?.innerText;
-				dataJson.hkdBuyTransfer = document.querySelector(
+				dataJson.hkdBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(10) :nth-child(4)'
 				)?.innerText;
-				dataJson.hkdSell = document.querySelector(
+				dataJson.hkdSell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(10) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.inrBuyCast = document.querySelector(
+				dataJson.inrBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(11) :nth-child(3)'
 				)?.innerText;
-				dataJson.inrBuyTransfer = document.querySelector(
+				dataJson.inrBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(11) :nth-child(4)'
 				)?.innerText;
-				dataJson.inrSell = document.querySelector(
+				dataJson.inrSell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(11) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.jpyBuyCast = document.querySelector(
+				dataJson.jpyBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(12) :nth-child(3)'
 				)?.innerText;
-				dataJson.jpyBuyTransfer = document.querySelector(
+				dataJson.jpyBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(12) :nth-child(4)'
 				)?.innerText;
-				dataJson.jpySell = document.querySelector(
+				dataJson.jpySell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(12) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.krwBuyCast = document.querySelector(
+				dataJson.krwBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(13) :nth-child(3)'
 				)?.innerText;
-				dataJson.krwBuyTransfer = document.querySelector(
+				dataJson.krwBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(13) :nth-child(4)'
 				)?.innerText;
-				dataJson.krwSell = document.querySelector(
+				dataJson.krwSell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(13) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.kwdBuyCast = document.querySelector(
+				dataJson.kwdBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(14) :nth-child(3)'
 				)?.innerText;
-				dataJson.kwdBuyTransfer = document.querySelector(
+				dataJson.kwdBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(14) :nth-child(4)'
 				)?.innerText;
-				dataJson.kwdSell = document.querySelector(
+				dataJson.kwdSell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(14) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.myrBuyCast = document.querySelector(
+				dataJson.myrBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(15) :nth-child(3)'
 				)?.innerText;
-				dataJson.myrBuyTransfer = document.querySelector(
+				dataJson.myrBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(15) :nth-child(4)'
 				)?.innerText;
-				dataJson.myrSell = document.querySelector(
+				dataJson.myrSell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(15) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.nokBuyCast = document.querySelector(
+				dataJson.nokBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(16) :nth-child(3)'
 				)?.innerText;
-				dataJson.nokBuyTransfer = document.querySelector(
+				dataJson.nokBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(16) :nth-child(4)'
 				)?.innerText;
-				dataJson.nokSell = document.querySelector(
+				dataJson.nokSell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(16) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.rubBuyCast = document.querySelector(
+				dataJson.rubBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(17) :nth-child(3)'
 				)?.innerText;
-				dataJson.rubBuyTransfer = document.querySelector(
+				dataJson.rubBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(17) :nth-child(4)'
 				)?.innerText;
-				dataJson.rubSell = document.querySelector(
+				dataJson.rubSell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(17) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.sarBuyCast = document.querySelector(
+				dataJson.sarBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(18) :nth-child(3)'
 				)?.innerText;
-				dataJson.sarBuyTransfer = document.querySelector(
+				dataJson.sarBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(18) :nth-child(4)'
 				)?.innerText;
-				dataJson.sarSell = document.querySelector(
+				dataJson.sarSell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(18) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.sekBuyCast = document.querySelector(
+				dataJson.sekBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(19) :nth-child(3)'
 				)?.innerText;
-				dataJson.sekBuyTransfer = document.querySelector(
+				dataJson.sekBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(19) :nth-child(4)'
 				)?.innerText;
-				dataJson.sekSell = document.querySelector(
+				dataJson.sekSell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(19) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.sgdBuyCast = document.querySelector(
+				dataJson.sgdBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(20) :nth-child(3)'
 				)?.innerText;
-				dataJson.sgdBuyTransfer = document.querySelector(
+				dataJson.sgdBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(20) :nth-child(4)'
 				)?.innerText;
-				dataJson.sgdSell = document.querySelector(
+				dataJson.sgdSell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(20) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.thbBuyCast = document.querySelector(
+				dataJson.thbBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(21) :nth-child(3)'
 				)?.innerText;
-				dataJson.thbBuyTransfer = document.querySelector(
+				dataJson.thbBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(21) :nth-child(4)'
 				)?.innerText;
-				dataJson.thbSell = document.querySelector(
+				dataJson.thbSell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(21) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.usdBuyCast = document.querySelector(
+				dataJson.usdBuyCast = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(22) :nth-child(3)'
 				)?.innerText;
-				dataJson.usdBuyTransfer = document.querySelector(
+				dataJson.usdBuyTransfer = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(22) :nth-child(4)'
 				)?.innerText;
-				dataJson.usdSell = document.querySelector(
+				dataJson.usdSell = $(
 					'#ctl00_Content_ExrateView tbody :nth-child(22) :nth-child(5)'
 				)?.innerText;
 			} catch (err) {
@@ -874,7 +872,7 @@ const crawlVietcombank = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(vietcombankData.symbol));
 
 		await browser.close();
@@ -897,6 +895,8 @@ const crawlBidv = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let bidvData = await page.evaluate(async () => {
+			const $ = document.querySelector.bind(document);
+
 			let dataJson = {};
 
 			try {
@@ -918,203 +918,203 @@ const crawlBidv = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				dataJson.usdBuyCast = document.querySelector(
+				dataJson.usdBuyCast = $(
 					'table tbody :nth-child(1) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.usdBuyTransfer = document.querySelector(
+				dataJson.usdBuyTransfer = $(
 					'table tbody :nth-child(1) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.usdSell = document.querySelector(
+				dataJson.usdSell = $(
 					'table tbody :nth-child(1) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.gbpBuyCast = document.querySelector(
+				dataJson.gbpBuyCast = $(
 					'table tbody :nth-child(4) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.gbpBuyTransfer = document.querySelector(
+				dataJson.gbpBuyTransfer = $(
 					'table tbody :nth-child(4) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.gbpSell = document.querySelector(
+				dataJson.gbpSell = $(
 					'table tbody :nth-child(4) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.hkdBuyCast = document.querySelector(
+				dataJson.hkdBuyCast = $(
 					'table tbody :nth-child(5) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.hkdBuyTransfer = document.querySelector(
+				dataJson.hkdBuyTransfer = $(
 					'table tbody :nth-child(5) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.hkdSell = document.querySelector(
+				dataJson.hkdSell = $(
 					'table tbody :nth-child(5) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.chfBuyCast = document.querySelector(
+				dataJson.chfBuyCast = $(
 					'table tbody :nth-child(6) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.chfBuyTransfer = document.querySelector(
+				dataJson.chfBuyTransfer = $(
 					'table tbody :nth-child(6) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.chfSell = document.querySelector(
+				dataJson.chfSell = $(
 					'table tbody :nth-child(6) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.jpyBuyCast = document.querySelector(
+				dataJson.jpyBuyCast = $(
 					'table tbody :nth-child(7) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.jpyBuyTransfer = document.querySelector(
+				dataJson.jpyBuyTransfer = $(
 					'table tbody :nth-child(7) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.jpySell = document.querySelector(
+				dataJson.jpySell = $(
 					'table tbody :nth-child(7) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.thbBuyCast = document.querySelector(
+				dataJson.thbBuyCast = $(
 					'table tbody :nth-child(8) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.thbBuyTransfer = document.querySelector(
+				dataJson.thbBuyTransfer = $(
 					'table tbody :nth-child(8) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.thbSell = document.querySelector(
+				dataJson.thbSell = $(
 					'table tbody :nth-child(8) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.audBuyCast = document.querySelector(
+				dataJson.audBuyCast = $(
 					'table tbody :nth-child(9) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.audBuyTransfer = document.querySelector(
+				dataJson.audBuyTransfer = $(
 					'table tbody :nth-child(9) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.audSell = document.querySelector(
+				dataJson.audSell = $(
 					'table tbody :nth-child(9) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.cadBuyCast = document.querySelector(
+				dataJson.cadBuyCast = $(
 					'table tbody :nth-child(10) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.cadBuyTransfer = document.querySelector(
+				dataJson.cadBuyTransfer = $(
 					'table tbody :nth-child(10) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.cadSell = document.querySelector(
+				dataJson.cadSell = $(
 					'table tbody :nth-child(10) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.sgdBuyCast = document.querySelector(
+				dataJson.sgdBuyCast = $(
 					'table tbody :nth-child(11) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.sgdBuyTransfer = document.querySelector(
+				dataJson.sgdBuyTransfer = $(
 					'table tbody :nth-child(11) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.sgdSell = document.querySelector(
+				dataJson.sgdSell = $(
 					'table tbody :nth-child(11) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.sekBuyCast = document.querySelector(
+				dataJson.sekBuyCast = $(
 					'table tbody :nth-child(12) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.sekBuyTransfer = document.querySelector(
+				dataJson.sekBuyTransfer = $(
 					'table tbody :nth-child(12) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.sekSell = document.querySelector(
+				dataJson.sekSell = $(
 					'table tbody :nth-child(12) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.lakBuyCast = document.querySelector(
+				dataJson.lakBuyCast = $(
 					'table tbody :nth-child(13) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.lakBuyTransfer = document.querySelector(
+				dataJson.lakBuyTransfer = $(
 					'table tbody :nth-child(13) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.lakSell = document.querySelector(
+				dataJson.lakSell = $(
 					'table tbody :nth-child(13) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.dkkBuyCast = document.querySelector(
+				dataJson.dkkBuyCast = $(
 					'table tbody :nth-child(14) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.dkkBuyTransfer = document.querySelector(
+				dataJson.dkkBuyTransfer = $(
 					'table tbody :nth-child(14) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.dkkSell = document.querySelector(
+				dataJson.dkkSell = $(
 					'table tbody :nth-child(14) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.nokBuyCast = document.querySelector(
+				dataJson.nokBuyCast = $(
 					'table tbody :nth-child(15) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.nokBuyTransfer = document.querySelector(
+				dataJson.nokBuyTransfer = $(
 					'table tbody :nth-child(15) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.nokSell = document.querySelector(
+				dataJson.nokSell = $(
 					'table tbody :nth-child(15) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.cnyBuyCast = document.querySelector(
+				dataJson.cnyBuyCast = $(
 					'table tbody :nth-child(16) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.cnyBuyTransfer = document.querySelector(
+				dataJson.cnyBuyTransfer = $(
 					'table tbody :nth-child(16) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.cnySell = document.querySelector(
+				dataJson.cnySell = $(
 					'table tbody :nth-child(16) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.rubBuyCast = document.querySelector(
+				dataJson.rubBuyCast = $(
 					'table tbody :nth-child(17) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.rubBuyTransfer = document.querySelector(
+				dataJson.rubBuyTransfer = $(
 					'table tbody :nth-child(17) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.rubSell = document.querySelector(
+				dataJson.rubSell = $(
 					'table tbody :nth-child(17) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.nzdBuyCast = document.querySelector(
+				dataJson.nzdBuyCast = $(
 					'table tbody :nth-child(18) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.nzdBuyTransfer = document.querySelector(
+				dataJson.nzdBuyTransfer = $(
 					'table tbody :nth-child(18) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.nzdSell = document.querySelector(
+				dataJson.nzdSell = $(
 					'table tbody :nth-child(18) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.krwBuyCast = document.querySelector(
+				dataJson.krwBuyCast = $(
 					'table tbody :nth-child(19) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.krwBuyTransfer = document.querySelector(
+				dataJson.krwBuyTransfer = $(
 					'table tbody :nth-child(19) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.krwSell = document.querySelector(
+				dataJson.krwSell = $(
 					'table tbody :nth-child(19) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.eurBuyCast = document.querySelector(
+				dataJson.eurBuyCast = $(
 					'table tbody :nth-child(20) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.eurBuyTransfer = document.querySelector(
+				dataJson.eurBuyTransfer = $(
 					'table tbody :nth-child(20) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.eurSell = document.querySelector(
+				dataJson.eurSell = $(
 					'table tbody :nth-child(20) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.twdBuyCast = document.querySelector(
+				dataJson.twdBuyCast = $(
 					'table tbody :nth-child(21) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.twdBuyTransfer = document.querySelector(
+				dataJson.twdBuyTransfer = $(
 					'table tbody :nth-child(21) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.twdSell = document.querySelector(
+				dataJson.twdSell = $(
 					'table tbody :nth-child(21) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 
-				dataJson.myrBuyCast = document.querySelector(
+				dataJson.myrBuyCast = $(
 					'table tbody :nth-child(22) :nth-child(3) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.myrBuyTransfer = document.querySelector(
+				dataJson.myrBuyTransfer = $(
 					'table tbody :nth-child(22) :nth-child(4) :nth-child(2) :nth-child(2) '
 				)?.innerText;
-				dataJson.myrSell = document.querySelector(
+				dataJson.myrSell = $(
 					'table tbody :nth-child(22) :nth-child(5) :nth-child(2) :nth-child(2) '
 				)?.innerText;
 			} catch (err) {
@@ -1123,7 +1123,7 @@ const crawlBidv = asyncHandler(async () => {
 			return dataJson;
 		});
 
-		// console.log(bidvData)
+		// console.log(bidvData);
 
 		Bidv.findOneAndUpdate(
 			{ symbol: bidvData.symbol },
@@ -1214,7 +1214,7 @@ const crawlBidv = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(bidvData.symbol));
 
 		await browser.close();
@@ -1237,6 +1237,8 @@ const crawlTechcombank = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let techcombankData = await page.evaluate(async () => {
+			const $ = document.querySelector.bind(document);
+
 			let dataJson = {};
 
 			try {
@@ -1258,133 +1260,133 @@ const crawlTechcombank = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				dataJson.audBuyCast = document.querySelector(
+				dataJson.audBuyCast = $(
 					'#exchangeFilterContainer table tbody :nth-child(5) :nth-child(2) strong '
 				)?.innerText;
-				dataJson.audBuyTransfer = document.querySelector(
+				dataJson.audBuyTransfer = $(
 					'#exchangeFilterContainer table tbody :nth-child(5) :nth-child(3) strong '
 				)?.innerText;
-				dataJson.audSell = document.querySelector(
+				dataJson.audSell = $(
 					'#exchangeFilterContainer table tbody :nth-child(5) :nth-child(4) strong '
 				)?.innerText;
 
-				dataJson.cadBuyCast = document.querySelector(
+				dataJson.cadBuyCast = $(
 					'#exchangeFilterContainer table tbody :nth-child(7) :nth-child(2) strong '
 				)?.innerText;
-				dataJson.cadBuyTransfer = document.querySelector(
+				dataJson.cadBuyTransfer = $(
 					'#exchangeFilterContainer table tbody :nth-child(7) :nth-child(3) strong '
 				)?.innerText;
-				dataJson.cadSell = document.querySelector(
+				dataJson.cadSell = $(
 					'#exchangeFilterContainer table tbody :nth-child(7) :nth-child(4) strong '
 				)?.innerText;
 
-				dataJson.chfBuyCast = document.querySelector(
+				dataJson.chfBuyCast = $(
 					'#exchangeFilterContainer table tbody :nth-child(9) :nth-child(2) strong '
 				)?.innerText;
-				dataJson.chfBuyTransfer = document.querySelector(
+				dataJson.chfBuyTransfer = $(
 					'#exchangeFilterContainer table tbody :nth-child(9) :nth-child(3) strong '
 				)?.innerText;
-				dataJson.chfSell = document.querySelector(
+				dataJson.chfSell = $(
 					'#exchangeFilterContainer table tbody :nth-child(9) :nth-child(4) strong '
 				)?.innerText;
 
-				dataJson.cnyBuyCast = document.querySelector(
+				dataJson.cnyBuyCast = $(
 					'#exchangeFilterContainer table tbody :nth-child(11) :nth-child(2) strong '
 				)?.innerText;
-				dataJson.cnyBuyTransfer = document.querySelector(
+				dataJson.cnyBuyTransfer = $(
 					'#exchangeFilterContainer table tbody :nth-child(11) :nth-child(3) strong '
 				)?.innerText;
-				dataJson.cnySell = document.querySelector(
+				dataJson.cnySell = $(
 					'#exchangeFilterContainer table tbody :nth-child(11) :nth-child(4) strong '
 				)?.innerText;
 
-				dataJson.eurBuyCast = document.querySelector(
+				dataJson.eurBuyCast = $(
 					'#exchangeFilterContainer table tbody :nth-child(13) :nth-child(2) strong '
 				)?.innerText;
-				dataJson.eurBuyTransfer = document.querySelector(
+				dataJson.eurBuyTransfer = $(
 					'#exchangeFilterContainer table tbody :nth-child(13) :nth-child(3) strong '
 				)?.innerText;
-				dataJson.eurSell = document.querySelector(
+				dataJson.eurSell = $(
 					'#exchangeFilterContainer table tbody :nth-child(13) :nth-child(4) strong '
 				)?.innerText;
 
-				dataJson.gbpBuyCast = document.querySelector(
+				dataJson.gbpBuyCast = $(
 					'#exchangeFilterContainer table tbody :nth-child(15) :nth-child(2) strong '
 				)?.innerText;
-				dataJson.gbpBuyTransfer = document.querySelector(
+				dataJson.gbpBuyTransfer = $(
 					'#exchangeFilterContainer table tbody :nth-child(15) :nth-child(3) strong '
 				)?.innerText;
-				dataJson.gbpSell = document.querySelector(
+				dataJson.gbpSell = $(
 					'#exchangeFilterContainer table tbody :nth-child(15) :nth-child(4) strong '
 				)?.innerText;
 
-				dataJson.hkdBuyCast = document.querySelector(
+				dataJson.hkdBuyCast = $(
 					'#exchangeFilterContainer table tbody :nth-child(17) :nth-child(2) strong '
 				)?.innerText;
-				dataJson.hkdBuyTransfer = document.querySelector(
+				dataJson.hkdBuyTransfer = $(
 					'#exchangeFilterContainer table tbody :nth-child(17) :nth-child(3) strong '
 				)?.innerText;
-				dataJson.hkdSell = document.querySelector(
+				dataJson.hkdSell = $(
 					'#exchangeFilterContainer table tbody :nth-child(17) :nth-child(4) strong '
 				)?.innerText;
 
-				dataJson.jpyBuyCast = document.querySelector(
+				dataJson.jpyBuyCast = $(
 					'#exchangeFilterContainer table tbody :nth-child(19) :nth-child(2) strong '
 				)?.innerText;
-				dataJson.jpyBuyTransfer = document.querySelector(
+				dataJson.jpyBuyTransfer = $(
 					'#exchangeFilterContainer table tbody :nth-child(19) :nth-child(3) strong '
 				)?.innerText;
-				dataJson.jpySell = document.querySelector(
+				dataJson.jpySell = $(
 					'#exchangeFilterContainer table tbody :nth-child(19) :nth-child(4) strong '
 				)?.innerText;
 
-				dataJson.krwBuyCast = document.querySelector(
+				dataJson.krwBuyCast = $(
 					'#exchangeFilterContainer table tbody :nth-child(21) :nth-child(2) strong '
 				)?.innerText;
-				dataJson.krwBuyTransfer = document.querySelector(
+				dataJson.krwBuyTransfer = $(
 					'#exchangeFilterContainer table tbody :nth-child(21) :nth-child(3) strong '
 				)?.innerText;
-				dataJson.krwSell = document.querySelector(
+				dataJson.krwSell = $(
 					'#exchangeFilterContainer table tbody :nth-child(21) :nth-child(4) strong '
 				)?.innerText;
 
-				dataJson.myrBuyCast = document.querySelector(
+				dataJson.myrBuyCast = $(
 					'#exchangeFilterContainer table tbody :nth-child(23) :nth-child(2) strong '
 				)?.innerText;
-				dataJson.myrBuyTransfer = document.querySelector(
+				dataJson.myrBuyTransfer = $(
 					'#exchangeFilterContainer table tbody :nth-child(23) :nth-child(3) strong '
 				)?.innerText;
-				dataJson.myrSell = document.querySelector(
+				dataJson.myrSell = $(
 					'#exchangeFilterContainer table tbody :nth-child(23) :nth-child(4) strong '
 				)?.innerText;
 
-				dataJson.sgdBuyCast = document.querySelector(
+				dataJson.sgdBuyCast = $(
 					'#exchangeFilterContainer table tbody :nth-child(25) :nth-child(2) strong '
 				)?.innerText;
-				dataJson.sgdBuyTransfer = document.querySelector(
+				dataJson.sgdBuyTransfer = $(
 					'#exchangeFilterContainer table tbody :nth-child(25) :nth-child(3) strong '
 				)?.innerText;
-				dataJson.sgdSell = document.querySelector(
+				dataJson.sgdSell = $(
 					'#exchangeFilterContainer table tbody :nth-child(25) :nth-child(4) strong '
 				)?.innerText;
 
-				dataJson.thbBuyCast = document.querySelector(
+				dataJson.thbBuyCast = $(
 					'#exchangeFilterContainer table tbody :nth-child(27) :nth-child(2) strong '
 				)?.innerText;
-				dataJson.thbBuyTransfer = document.querySelector(
+				dataJson.thbBuyTransfer = $(
 					'#exchangeFilterContainer table tbody :nth-child(27) :nth-child(3) strong '
 				)?.innerText;
-				dataJson.thbSell = document.querySelector(
+				dataJson.thbSell = $(
 					'#exchangeFilterContainer table tbody :nth-child(27) :nth-child(4) strong '
 				)?.innerText;
 
-				dataJson.usdBuyCast = document.querySelector(
+				dataJson.usdBuyCast = $(
 					'#exchangeFilterContainer table tbody :nth-child(33) :nth-child(2) strong '
 				)?.innerText;
-				dataJson.usdBuyTransfer = document.querySelector(
+				dataJson.usdBuyTransfer = $(
 					'#exchangeFilterContainer table tbody :nth-child(33) :nth-child(3) strong '
 				)?.innerText;
-				dataJson.usdSell = document.querySelector(
+				dataJson.usdSell = $(
 					'#exchangeFilterContainer table tbody :nth-child(33) :nth-child(4) strong '
 				)?.innerText;
 			} catch (err) {
@@ -1456,7 +1458,7 @@ const crawlTechcombank = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(techcombankData.symbol));
 
 		await browser.close();
@@ -1479,6 +1481,8 @@ const crawlVietinbank = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let vietinbankData = await page.evaluate(async () => {
+			const $ = document.querySelector.bind(document);
+
 			let dataJson = {};
 
 			try {
@@ -1500,53 +1504,53 @@ const crawlVietinbank = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				dataJson.audBuyCast = document.querySelector(
+				dataJson.audBuyCast = $(
 					'#hor-ex-b tbody :nth-child(3) :nth-child(3)'
 				)?.innerText;
-				dataJson.audBuyTransfer = document.querySelector(
+				dataJson.audBuyTransfer = $(
 					'#hor-ex-b tbody :nth-child(3) :nth-child(4)'
 				)?.innerText;
-				dataJson.audSell = document.querySelector(
+				dataJson.audSell = $(
 					'#hor-ex-b tbody :nth-child(3) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.cadBuyCast = document.querySelector(
+				dataJson.cadBuyCast = $(
 					'#hor-ex-b tbody :nth-child(4) :nth-child(3)'
 				)?.innerText;
-				dataJson.cadBuyTransfer = document.querySelector(
+				dataJson.cadBuyTransfer = $(
 					'#hor-ex-b tbody :nth-child(4) :nth-child(4)'
 				)?.innerText;
-				dataJson.cadSell = document.querySelector(
+				dataJson.cadSell = $(
 					'#hor-ex-b tbody :nth-child(4) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.chfBuyCast = document.querySelector(
+				dataJson.chfBuyCast = $(
 					'#hor-ex-b tbody :nth-child(5) :nth-child(3)'
 				)?.innerText;
-				dataJson.chfBuyTransfer = document.querySelector(
+				dataJson.chfBuyTransfer = $(
 					'#hor-ex-b tbody :nth-child(5) :nth-child(4)'
 				)?.innerText;
-				dataJson.chfSell = document.querySelector(
+				dataJson.chfSell = $(
 					'#hor-ex-b tbody :nth-child(5) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.cnyBuyCast = document.querySelector(
+				dataJson.cnyBuyCast = $(
 					'#hor-ex-b tbody :nth-child(6) :nth-child(3)'
 				)?.innerText;
-				dataJson.cnyBuyTransfer = document.querySelector(
+				dataJson.cnyBuyTransfer = $(
 					'#hor-ex-b tbody :nth-child(6) :nth-child(4)'
 				)?.innerText;
-				dataJson.cnySell = document.querySelector(
+				dataJson.cnySell = $(
 					'#hor-ex-b tbody :nth-child(6) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.dkkBuyCast = document.querySelector(
+				dataJson.dkkBuyCast = $(
 					'#hor-ex-b tbody :nth-child(7) :nth-child(3)'
 				)?.innerText;
-				dataJson.dkkBuyTransfer = document.querySelector(
+				dataJson.dkkBuyTransfer = $(
 					'#hor-ex-b tbody :nth-child(7) :nth-child(4)'
 				)?.innerText;
-				dataJson.dkkSell = document.querySelector(
+				dataJson.dkkSell = $(
 					'#hor-ex-b tbody :nth-child(7) :nth-child(5)'
 				)?.innerText;
 
@@ -1555,110 +1559,110 @@ const crawlVietinbank = asyncHandler(async () => {
 						'#hor-ex-b tbody :nth-child(8) :nth-child(3)'
 					)
 					?.innerText.slice(1);
-				dataJson.eurBuyTransfer = document.querySelector(
+				dataJson.eurBuyTransfer = $(
 					'#hor-ex-b tbody :nth-child(8) :nth-child(4)'
 				)?.innerText;
-				dataJson.eurSell = document.querySelector(
+				dataJson.eurSell = $(
 					'#hor-ex-b tbody :nth-child(8) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.gbpBuyCast = document.querySelector(
+				dataJson.gbpBuyCast = $(
 					'#hor-ex-b tbody :nth-child(10) :nth-child(3)'
 				)?.innerText;
-				dataJson.gbpBuyTransfer = document.querySelector(
+				dataJson.gbpBuyTransfer = $(
 					'#hor-ex-b tbody :nth-child(10) :nth-child(4)'
 				)?.innerText;
-				dataJson.gbpSell = document.querySelector(
+				dataJson.gbpSell = $(
 					'#hor-ex-b tbody :nth-child(10) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.hkdBuyCast = document.querySelector(
+				dataJson.hkdBuyCast = $(
 					'#hor-ex-b tbody :nth-child(11) :nth-child(3)'
 				)?.innerText;
-				dataJson.hkdBuyTransfer = document.querySelector(
+				dataJson.hkdBuyTransfer = $(
 					'#hor-ex-b tbody :nth-child(11) :nth-child(4)'
 				)?.innerText;
-				dataJson.hkdSell = document.querySelector(
+				dataJson.hkdSell = $(
 					'#hor-ex-b tbody :nth-child(11) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.jpyBuyCast = document.querySelector(
+				dataJson.jpyBuyCast = $(
 					'#hor-ex-b tbody :nth-child(12) :nth-child(3)'
 				)?.innerText;
-				dataJson.jpyBuyTransfer = document.querySelector(
+				dataJson.jpyBuyTransfer = $(
 					'#hor-ex-b tbody :nth-child(12) :nth-child(4)'
 				)?.innerText;
-				dataJson.jpySell = document.querySelector(
+				dataJson.jpySell = $(
 					'#hor-ex-b tbody :nth-child(12) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.krwBuyCast = document.querySelector(
+				dataJson.krwBuyCast = $(
 					'#hor-ex-b tbody :nth-child(13) :nth-child(3)'
 				)?.innerText;
-				dataJson.krwBuyTransfer = document.querySelector(
+				dataJson.krwBuyTransfer = $(
 					'#hor-ex-b tbody :nth-child(13) :nth-child(4)'
 				)?.innerText;
-				dataJson.krwSell = document.querySelector(
+				dataJson.krwSell = $(
 					'#hor-ex-b tbody :nth-child(13) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.lakBuyCast = document.querySelector(
+				dataJson.lakBuyCast = $(
 					'#hor-ex-b tbody :nth-child(14) :nth-child(3)'
 				)?.innerText;
-				dataJson.lakBuyTransfer = document.querySelector(
+				dataJson.lakBuyTransfer = $(
 					'#hor-ex-b tbody :nth-child(14) :nth-child(4)'
 				)?.innerText;
-				dataJson.lakSell = document.querySelector(
+				dataJson.lakSell = $(
 					'#hor-ex-b tbody :nth-child(14) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.nokBuyCast = document.querySelector(
+				dataJson.nokBuyCast = $(
 					'#hor-ex-b tbody :nth-child(15) :nth-child(3)'
 				)?.innerText;
-				dataJson.nokBuyTransfer = document.querySelector(
+				dataJson.nokBuyTransfer = $(
 					'#hor-ex-b tbody :nth-child(15) :nth-child(4)'
 				)?.innerText;
-				dataJson.nokSell = document.querySelector(
+				dataJson.nokSell = $(
 					'#hor-ex-b tbody :nth-child(15) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.nzdBuyCast = document.querySelector(
+				dataJson.nzdBuyCast = $(
 					'#hor-ex-b tbody :nth-child(16) :nth-child(3)'
 				)?.innerText;
-				dataJson.nzdBuyTransfer = document.querySelector(
+				dataJson.nzdBuyTransfer = $(
 					'#hor-ex-b tbody :nth-child(16) :nth-child(4)'
 				)?.innerText;
-				dataJson.nzdSell = document.querySelector(
+				dataJson.nzdSell = $(
 					'#hor-ex-b tbody :nth-child(16) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.sekBuyCast = document.querySelector(
+				dataJson.sekBuyCast = $(
 					'#hor-ex-b tbody :nth-child(17) :nth-child(3)'
 				)?.innerText;
-				dataJson.sekBuyTransfer = document.querySelector(
+				dataJson.sekBuyTransfer = $(
 					'#hor-ex-b tbody :nth-child(17) :nth-child(4)'
 				)?.innerText;
-				dataJson.sekSell = document.querySelector(
+				dataJson.sekSell = $(
 					'#hor-ex-b tbody :nth-child(17) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.sgdBuyCast = document.querySelector(
+				dataJson.sgdBuyCast = $(
 					'#hor-ex-b tbody :nth-child(18) :nth-child(3)'
 				)?.innerText;
-				dataJson.sgdBuyTransfer = document.querySelector(
+				dataJson.sgdBuyTransfer = $(
 					'#hor-ex-b tbody :nth-child(18) :nth-child(4)'
 				)?.innerText;
-				dataJson.sgdSell = document.querySelector(
+				dataJson.sgdSell = $(
 					'#hor-ex-b tbody :nth-child(18) :nth-child(5)'
 				)?.innerText;
 
-				dataJson.thbBuyCast = document.querySelector(
+				dataJson.thbBuyCast = $(
 					'#hor-ex-b tbody :nth-child(19) :nth-child(3)'
 				)?.innerText;
-				dataJson.thbBuyTransfer = document.querySelector(
+				dataJson.thbBuyTransfer = $(
 					'#hor-ex-b tbody :nth-child(19) :nth-child(4)'
 				)?.innerText;
-				dataJson.thbSell = document.querySelector(
+				dataJson.thbSell = $(
 					'#hor-ex-b tbody :nth-child(19) :nth-child(5)'
 				)?.innerText;
 
@@ -1667,10 +1671,10 @@ const crawlVietinbank = asyncHandler(async () => {
 						'#hor-ex-b tbody :nth-child(20) :nth-child(3)'
 					)
 					?.innerText.slice(1);
-				dataJson.usdBuyTransfer = document.querySelector(
+				dataJson.usdBuyTransfer = $(
 					'#hor-ex-b tbody :nth-child(20) :nth-child(4)'
 				)?.innerText;
-				dataJson.usdSell = document.querySelector(
+				dataJson.usdSell = $(
 					'#hor-ex-b tbody :nth-child(20) :nth-child(5)'
 				)?.innerText;
 			} catch (err) {
@@ -1758,7 +1762,7 @@ const crawlVietinbank = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(vietinbankData.symbol));
 
 		await browser.close();
@@ -1781,6 +1785,8 @@ const crawlMbbank = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let mbbankData = await page.evaluate(async () => {
+			const $ = document.querySelector.bind(document);
+
 			let dataJson = {};
 
 			try {
@@ -1801,211 +1807,211 @@ const crawlMbbank = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				dataJson.usdBuyCast = document.querySelector(
+				dataJson.usdBuyCast = $(
 					'#main tbody :nth-child(1) :nth-child(3)'
 				)?.innerText;
-				dataJson.usdBuyTransfer = document.querySelector(
+				dataJson.usdBuyTransfer = $(
 					'#main tbody :nth-child(1) :nth-child(4)'
 				)?.innerText;
-				dataJson.usdSellCast = document.querySelector(
+				dataJson.usdSellCast = $(
 					'#main tbody :nth-child(1) :nth-child(5)'
 				)?.innerText;
-				dataJson.usdSellTransfer = document.querySelector(
+				dataJson.usdSellTransfer = $(
 					'#main tbody :nth-child(1) :nth-child(6)'
 				)?.innerText;
 
-				dataJson.eurBuyCast = document.querySelector(
+				dataJson.eurBuyCast = $(
 					'#main tbody :nth-child(4) :nth-child(3)'
 				)?.innerText;
-				dataJson.eurBuyTransfer = document.querySelector(
+				dataJson.eurBuyTransfer = $(
 					'#main tbody :nth-child(4) :nth-child(4)'
 				)?.innerText;
-				dataJson.eurSellCast = document.querySelector(
+				dataJson.eurSellCast = $(
 					'#main tbody :nth-child(4) :nth-child(5)'
 				)?.innerText;
-				dataJson.eurSellTransfer = document.querySelector(
+				dataJson.eurSellTransfer = $(
 					'#main tbody :nth-child(4) :nth-child(6)'
 				)?.innerText;
 
-				dataJson.audBuyCast = document.querySelector(
+				dataJson.audBuyCast = $(
 					'#main tbody :nth-child(5) :nth-child(3)'
 				)?.innerText;
-				dataJson.audBuyTransfer = document.querySelector(
+				dataJson.audBuyTransfer = $(
 					'#main tbody :nth-child(5) :nth-child(4)'
 				)?.innerText;
-				dataJson.audSellCast = document.querySelector(
+				dataJson.audSellCast = $(
 					'#main tbody :nth-child(5) :nth-child(5)'
 				)?.innerText;
-				dataJson.audSellTransfer = document.querySelector(
+				dataJson.audSellTransfer = $(
 					'#main tbody :nth-child(5) :nth-child(6)'
 				)?.innerText;
 
-				dataJson.cadBuyCast = document.querySelector(
+				dataJson.cadBuyCast = $(
 					'#main tbody :nth-child(6) :nth-child(3)'
 				)?.innerText;
-				dataJson.cadBuyTransfer = document.querySelector(
+				dataJson.cadBuyTransfer = $(
 					'#main tbody :nth-child(6) :nth-child(4)'
 				)?.innerText;
-				dataJson.cadSellCast = document.querySelector(
+				dataJson.cadSellCast = $(
 					'#main tbody :nth-child(6) :nth-child(5)'
 				)?.innerText;
-				dataJson.cadSellTransfer = document.querySelector(
+				dataJson.cadSellTransfer = $(
 					'#main tbody :nth-child(6) :nth-child(6)'
 				)?.innerText;
 
-				dataJson.chfBuyCast = document.querySelector(
+				dataJson.chfBuyCast = $(
 					'#main tbody :nth-child(7) :nth-child(3)'
 				)?.innerText;
-				dataJson.chfBuyTransfer = document.querySelector(
+				dataJson.chfBuyTransfer = $(
 					'#main tbody :nth-child(7) :nth-child(4)'
 				)?.innerText;
-				dataJson.chfSellCast = document.querySelector(
+				dataJson.chfSellCast = $(
 					'#main tbody :nth-child(7) :nth-child(5)'
 				)?.innerText;
-				dataJson.chfSellTransfer = document.querySelector(
+				dataJson.chfSellTransfer = $(
 					'#main tbody :nth-child(7) :nth-child(6)'
 				)?.innerText;
 
-				dataJson.cnyBuyCast = document.querySelector(
+				dataJson.cnyBuyCast = $(
 					'#main tbody :nth-child(8) :nth-child(3)'
 				)?.innerText;
-				dataJson.cnyBuyTransfer = document.querySelector(
+				dataJson.cnyBuyTransfer = $(
 					'#main tbody :nth-child(8) :nth-child(4)'
 				)?.innerText;
-				dataJson.cnySellCast = document.querySelector(
+				dataJson.cnySellCast = $(
 					'#main tbody :nth-child(8) :nth-child(5)'
 				)?.innerText;
-				dataJson.cnySellTransfer = document.querySelector(
+				dataJson.cnySellTransfer = $(
 					'#main tbody :nth-child(8) :nth-child(6)'
 				)?.innerText;
 
-				dataJson.gbpBuyCast = document.querySelector(
+				dataJson.gbpBuyCast = $(
 					'#main tbody :nth-child(9) :nth-child(3)'
 				)?.innerText;
-				dataJson.gbpBuyTransfer = document.querySelector(
+				dataJson.gbpBuyTransfer = $(
 					'#main tbody :nth-child(9) :nth-child(4)'
 				)?.innerText;
-				dataJson.gbpSellCast = document.querySelector(
+				dataJson.gbpSellCast = $(
 					'#main tbody :nth-child(9) :nth-child(5)'
 				)?.innerText;
-				dataJson.gbpSellTransfer = document.querySelector(
+				dataJson.gbpSellTransfer = $(
 					'#main tbody :nth-child(9) :nth-child(6)'
 				)?.innerText;
 
-				dataJson.hkdBuyCast = document.querySelector(
+				dataJson.hkdBuyCast = $(
 					'#main tbody :nth-child(10) :nth-child(3)'
 				)?.innerText;
-				dataJson.hkdBuyTransfer = document.querySelector(
+				dataJson.hkdBuyTransfer = $(
 					'#main tbody :nth-child(10) :nth-child(4)'
 				)?.innerText;
-				dataJson.hkdSellCast = document.querySelector(
+				dataJson.hkdSellCast = $(
 					'#main tbody :nth-child(10) :nth-child(5)'
 				)?.innerText;
-				dataJson.hkdSellTransfer = document.querySelector(
+				dataJson.hkdSellTransfer = $(
 					'#main tbody :nth-child(10) :nth-child(6)'
 				)?.innerText;
 
-				dataJson.jpyBuyCast = document.querySelector(
+				dataJson.jpyBuyCast = $(
 					'#main tbody :nth-child(11) :nth-child(3)'
 				)?.innerText;
-				dataJson.jpyBuyTransfer = document.querySelector(
+				dataJson.jpyBuyTransfer = $(
 					'#main tbody :nth-child(11) :nth-child(4)'
 				)?.innerText;
-				dataJson.jpySellCast = document.querySelector(
+				dataJson.jpySellCast = $(
 					'#main tbody :nth-child(11) :nth-child(5)'
 				)?.innerText;
-				dataJson.jpySellTransfer = document.querySelector(
+				dataJson.jpySellTransfer = $(
 					'#main tbody :nth-child(11) :nth-child(6)'
 				)?.innerText;
 
-				dataJson.khrBuyCast = document.querySelector(
+				dataJson.khrBuyCast = $(
 					'#main tbody :nth-child(12) :nth-child(3)'
 				)?.innerText;
-				dataJson.khrBuyTransfer = document.querySelector(
+				dataJson.khrBuyTransfer = $(
 					'#main tbody :nth-child(12) :nth-child(4)'
 				)?.innerText;
-				dataJson.khrSellCast = document.querySelector(
+				dataJson.khrSellCast = $(
 					'#main tbody :nth-child(12) :nth-child(5)'
 				)?.innerText;
-				dataJson.khrSellTransfer = document.querySelector(
+				dataJson.khrSellTransfer = $(
 					'#main tbody :nth-child(12) :nth-child(6)'
 				)?.innerText;
 
-				dataJson.krwBuyCast = document.querySelector(
+				dataJson.krwBuyCast = $(
 					'#main tbody :nth-child(13) :nth-child(3)'
 				)?.innerText;
-				dataJson.krwBuyTransfer = document.querySelector(
+				dataJson.krwBuyTransfer = $(
 					'#main tbody :nth-child(13) :nth-child(4)'
 				)?.innerText;
-				dataJson.krwSellCast = document.querySelector(
+				dataJson.krwSellCast = $(
 					'#main tbody :nth-child(13) :nth-child(5)'
 				)?.innerText;
-				dataJson.krwSellTransfer = document.querySelector(
+				dataJson.krwSellTransfer = $(
 					'#main tbody :nth-child(13) :nth-child(6)'
 				)?.innerText;
 
-				dataJson.lakBuyCast = document.querySelector(
+				dataJson.lakBuyCast = $(
 					'#main tbody :nth-child(14) :nth-child(3)'
 				)?.innerText;
-				dataJson.lakBuyTransfer = document.querySelector(
+				dataJson.lakBuyTransfer = $(
 					'#main tbody :nth-child(14) :nth-child(4)'
 				)?.innerText;
-				dataJson.lakSellCast = document.querySelector(
+				dataJson.lakSellCast = $(
 					'#main tbody :nth-child(14) :nth-child(5)'
 				)?.innerText;
-				dataJson.lakSellTransfer = document.querySelector(
+				dataJson.lakSellTransfer = $(
 					'#main tbody :nth-child(14) :nth-child(6)'
 				)?.innerText;
 
-				dataJson.nzdBuyCast = document.querySelector(
+				dataJson.nzdBuyCast = $(
 					'#main tbody :nth-child(15) :nth-child(3)'
 				)?.innerText;
-				dataJson.nzdBuyTransfer = document.querySelector(
+				dataJson.nzdBuyTransfer = $(
 					'#main tbody :nth-child(15) :nth-child(4)'
 				)?.innerText;
-				dataJson.nzdSellCast = document.querySelector(
+				dataJson.nzdSellCast = $(
 					'#main tbody :nth-child(15) :nth-child(5)'
 				)?.innerText;
-				dataJson.nzdSellTransfer = document.querySelector(
+				dataJson.nzdSellTransfer = $(
 					'#main tbody :nth-child(15) :nth-child(6)'
 				)?.innerText;
 
-				dataJson.sekBuyCast = document.querySelector(
+				dataJson.sekBuyCast = $(
 					'#main tbody :nth-child(16) :nth-child(3)'
 				)?.innerText;
-				dataJson.sekBuyTransfer = document.querySelector(
+				dataJson.sekBuyTransfer = $(
 					'#main tbody :nth-child(16) :nth-child(4)'
 				)?.innerText;
-				dataJson.sekSellCast = document.querySelector(
+				dataJson.sekSellCast = $(
 					'#main tbody :nth-child(16) :nth-child(5)'
 				)?.innerText;
-				dataJson.sekSellTransfer = document.querySelector(
+				dataJson.sekSellTransfer = $(
 					'#main tbody :nth-child(16) :nth-child(6)'
 				)?.innerText;
 
-				dataJson.sgdBuyCast = document.querySelector(
+				dataJson.sgdBuyCast = $(
 					'#main tbody :nth-child(17) :nth-child(3)'
 				)?.innerText;
-				dataJson.sgdBuyTransfer = document.querySelector(
+				dataJson.sgdBuyTransfer = $(
 					'#main tbody :nth-child(17) :nth-child(4)'
 				)?.innerText;
-				dataJson.sgdSellCast = document.querySelector(
+				dataJson.sgdSellCast = $(
 					'#main tbody :nth-child(17) :nth-child(5)'
 				)?.innerText;
-				dataJson.sgdSellTransfer = document.querySelector(
+				dataJson.sgdSellTransfer = $(
 					'#main tbody :nth-child(17) :nth-child(6)'
 				)?.innerText;
 
-				dataJson.thbBuyCast = document.querySelector(
+				dataJson.thbBuyCast = $(
 					'#main tbody :nth-child(18) :nth-child(3)'
 				)?.innerText;
-				dataJson.thbBuyTransfer = document.querySelector(
+				dataJson.thbBuyTransfer = $(
 					'#main tbody :nth-child(18) :nth-child(4)'
 				)?.innerText;
-				dataJson.thbSellCast = document.querySelector(
+				dataJson.thbSellCast = $(
 					'#main tbody :nth-child(18) :nth-child(5)'
 				)?.innerText;
-				dataJson.thbSellTransfer = document.querySelector(
+				dataJson.thbSellTransfer = $(
 					'#main tbody :nth-child(18) :nth-child(6)'
 				)?.innerText;
 			} catch (err) {
@@ -2014,7 +2020,7 @@ const crawlMbbank = asyncHandler(async () => {
 			return dataJson;
 		});
 
-		console.log(mbbankData);
+		// console.log(mbbankData);
 
 		Mbbank.findOneAndUpdate(
 			{ symbol: mbbankData.symbol },
@@ -2105,7 +2111,7 @@ const crawlMbbank = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(mbbankData.symbol));
 
 		await browser.close();

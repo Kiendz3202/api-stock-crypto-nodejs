@@ -90,15 +90,15 @@ const stockRunAll = async () => {
 
 		//----crawl all basic information stocks----
 		crawlHnx();
-		await delay(2000);
+		await delay(3000);
 		crawlHnx30();
-		await delay(2000);
+		await delay(3000);
 		crawlVn30();
-		await delay(2000);
+		await delay(3000);
 		crawlHose();
-		await delay(2000);
+		await delay(3000);
 		crawlUpcom();
-		await delay(10000);
+		await delay(20000);
 		// crawlAllInvesting();
 		//--------------------------------------
 
@@ -221,66 +221,50 @@ const stockRunAll = async () => {
 		};
 		//--------------------------
 
-		const crawlAllDetailAllInvesting = asyncHandler(async () => {
-			const list = await AllInvesting.find({}).limit(20);
+		// const crawlAllDetailAllInvesting = asyncHandler(async () => {
+		// 	const list = await AllInvesting.find({}).limit(20);
 
-			list.forEach(async (stock, index) => {
-				setTimeout(() => {
-					crawlDetailAllInvesting(
-						stock.id,
-						stock.name,
-						stock.hrefDetail
-					);
-				}, 2000 * index);
-			});
-		});
+		// 	list.forEach(async (stock, index) => {
+		// 		setTimeout(() => {
+		// 			crawlDetailAllInvesting(stock.id, stock.name, stock.hrefDetail);
+		// 		}, 2000 * index);
+		// 	});
+		// });
 
-		const crawlAllDetailChartHnx = asyncHandler(async () => {
-			const list = await Hnx.find({}).limit(10);
+		// const crawlAllDetailChartHnx = asyncHandler(async () => {
+		// 	const list = await Hnx.find({}).limit(10);
 
-			list.forEach(async (stock, index) => {
-				setTimeout(() => {
-					crawlDetailChartHnx(stock.symbol);
-				}, 2000 * index);
-			});
-		});
+		// 	list.forEach(async (stock, index) => {
+		// 		setTimeout(() => {
+		// 			crawlDetailChartHnx(stock.symbol);
+		// 		}, 2000 * index);
+		// 	});
+		// });
 
-		const crawlAllDetailReportChart = asyncHandler(async () => {
-			const list = await AllInvestingDetail.find({}).limit(10);
+		// const crawlAllDetailReportChart = asyncHandler(async () => {
+		// 	const list = await AllInvestingDetail.find({}).limit(10);
 
-			list.forEach(async (stock, index) => {
-				setTimeout(() => {
-					crawlDetailReportChartAll(stock.id, stock.symbol);
-				}, index * 2000);
-			});
-		});
+		// 	list.forEach(async (stock, index) => {
+		// 		setTimeout(() => {
+		// 			crawlDetailReportChartAll(stock.id, stock.symbol);
+		// 		}, index * 2000);
+		// 	});
+		// });
 
 		//---crawl detail information in particularly stock and update price to array in database to draw chart
-
-		crawlAllDetailHnx();
-		// if (hnxLength !== 0) {
-		// 	await delay(hnxLength * 2000 + 5000);
-		// } else {
-		// 	await delay(400 * 2000 + 5000);
-		// }
-		if (hnx30Length !== 0) {
-			await delay(5 * 2000 + 5000);
-		} else {
-			await delay(5 * 2000 + 5000);
-		}
-
+		console.log('start crawl detail');
 		crawlAllDetailHnx30();
 		//set delay for crwaling each exchange.When crawling first time, dont have data in database so we have to set default time delay,
-		//it is up to your caculating
+		//it depends on your caculating
 		// if (hnx30Length !== 0) {
 		// 	await delay(hnx30Length * 2000 + 5000);
 		// } else {
 		// 	await delay(30 * 2000 + 5000);
 		// }
 		if (hnx30Length !== 0) {
-			await delay(5 * 2000 + 5000);
+			await delay(5 * 2000);
 		} else {
-			await delay(5 * 2000 + 5000);
+			await delay(5 * 2000);
 		}
 
 		crawlAllDetailVn30();
@@ -290,9 +274,21 @@ const stockRunAll = async () => {
 		// 	await delay(30 * 2000 + 5000);
 		// }
 		if (hnx30Length !== 0) {
-			await delay(5 * 2000 + 5000);
+			await delay(5 * 2000);
 		} else {
-			await delay(5 * 2000 + 5000);
+			await delay(5 * 2000);
+		}
+
+		crawlAllDetailHnx();
+		// if (hnxLength !== 0) {
+		// 	await delay(hnxLength * 2000 + 5000);
+		// } else {
+		// 	await delay(400 * 2000 + 5000);
+		// }
+		if (hnx30Length !== 0) {
+			await delay(5 * 2000);
+		} else {
+			await delay(5 * 2000);
 		}
 
 		crawlAllDetailHose();
@@ -302,9 +298,9 @@ const stockRunAll = async () => {
 		// 	await delay(450 * 2000 + 5000);
 		// }
 		if (hnx30Length !== 0) {
-			await delay(5 * 2000 + 5000);
+			await delay(5 * 2000);
 		} else {
-			await delay(5 * 2000 + 5000);
+			await delay(5 * 2000);
 		}
 
 		crawlAllDetailUpcom();
@@ -314,10 +310,11 @@ const stockRunAll = async () => {
 		// 	await delay(900 * 2000 + 5000);
 		// }
 		if (hnx30Length !== 0) {
-			await delay(5 * 2000 + 5000);
+			await delay(5 * 2000);
 		} else {
-			await delay(5 * 2000 + 5000);
+			await delay(5 * 2000);
 		}
+		console.log('done crawl detail');
 
 		// crawlAllDetailAllInvesting();
 
@@ -406,8 +403,8 @@ const exchangeRateRunAll = async () => {
 		await delay(5000);
 		crawlVietcombank();
 		crawlBidv();
-		crawlTechcombank();
 		await delay(5000);
+		crawlTechcombank();
 		crawlVietinbank();
 		crawlMbbank();
 	});
@@ -420,9 +417,9 @@ const exchangeRateRunAll = async () => {
 
 const interestRateRunAll = async () => {
 	cron.schedule('*/2 * * * *', async () => {
-		crawlVietcombankInterestRate();
-		crawlVietinbankInterestRate();
-		crawlAgribankbankInterestRate();
+		crawlVietcombankInterestRate(); //
+		crawlVietinbankInterestRate(); //
+		crawlAgribankbankInterestRate(); //
 		await delay(5000);
 		crawlBidvInterestRate();
 		crawlScbInterestRate();

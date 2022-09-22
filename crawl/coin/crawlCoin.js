@@ -61,7 +61,7 @@ const crawlCoin = asyncHandler(async () => {
 					},
 					{ upsert: true }
 				)
-					.then((doc) => console.log(doc?.name))
+					// .then((doc) => console.log(doc?.name))
 					.catch((err) => console.log(err));
 
 				CoinChart.findOneAndUpdate(
@@ -75,7 +75,7 @@ const crawlCoin = asyncHandler(async () => {
 					},
 					{ upsert: true }
 				)
-					.then((doc) => console.log(doc?.symbol))
+					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => console.log(err));
 			});
 		})

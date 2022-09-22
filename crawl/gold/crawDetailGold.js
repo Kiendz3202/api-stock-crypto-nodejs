@@ -33,13 +33,7 @@ const crawlSjc = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let sjcDetailData = await page.evaluate(async () => {
-			// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-			// document.querySelector(`span[data-value=${symbol}]`).click()
-
-			// await delay(2000);
-
-			let stocks = [];
+			const $ = document.querySelector.bind(document);
 
 			let dataJson = {};
 
@@ -60,178 +54,178 @@ const crawlSjc = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				dataJson.sjc1l10lBuy = document.querySelector(
+				dataJson.sjc1l10lBuy = $(
 					'#price1 table tbody :nth-child(4) :nth-child(2)'
 				)?.innerText;
-				dataJson.sjc1l10lSell = document.querySelector(
+				dataJson.sjc1l10lSell = $(
 					'#price1 table tbody :nth-child(4) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.sjc5cBuy = document.querySelector(
+				dataJson.sjc5cBuy = $(
 					'#price1 table tbody :nth-child(5) :nth-child(2)'
 				)?.innerText;
-				dataJson.sjc5cSell = document.querySelector(
+				dataJson.sjc5cSell = $(
 					'#price1 table tbody :nth-child(5) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.sjc2c1c5phanBuy = document.querySelector(
+				dataJson.sjc2c1c5phanBuy = $(
 					'#price1 table tbody :nth-child(6) :nth-child(2)'
 				)?.innerText;
-				dataJson.sjc2c1c5phanSell = document.querySelector(
+				dataJson.sjc2c1c5phanSell = $(
 					'#price1 table tbody :nth-child(6) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.nhansjc99_991chi2chi5chiBuy = document.querySelector(
+				dataJson.nhansjc99_991chi2chi5chiBuy = $(
 					'#price1 table tbody :nth-child(7) :nth-child(2)'
 				)?.innerText;
-				dataJson.nhansjc99_991chi2chi5chiSell = document.querySelector(
+				dataJson.nhansjc99_991chi2chi5chiSell = $(
 					'#price1 table tbody :nth-child(7) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.nhansjc99_99_0_5chiBuy = document.querySelector(
+				dataJson.nhansjc99_99_0_5chiBuy = $(
 					'#price1 table tbody :nth-child(8) :nth-child(2)'
 				)?.innerText;
-				dataJson.nhansjc99_99_0_5chiSell = document.querySelector(
+				dataJson.nhansjc99_99_0_5chiSell = $(
 					'#price1 table tbody :nth-child(8) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.nutrang99_99percentBuy = document.querySelector(
+				dataJson.nutrang99_99percentBuy = $(
 					'#price1 table tbody :nth-child(9) :nth-child(2)'
 				)?.innerText;
-				dataJson.nutrang99_99percentSell = document.querySelector(
+				dataJson.nutrang99_99percentSell = $(
 					'#price1 table tbody :nth-child(9) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.nutrang99percentBuy = document.querySelector(
+				dataJson.nutrang99percentBuy = $(
 					'#price1 table tbody :nth-child(10) :nth-child(2)'
 				)?.innerText;
-				dataJson.nutrang99percentSell = document.querySelector(
+				dataJson.nutrang99percentSell = $(
 					'#price1 table tbody :nth-child(10) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.nutrang75percentBuy = document.querySelector(
+				dataJson.nutrang75percentBuy = $(
 					'#price1 table tbody :nth-child(11) :nth-child(2)'
 				)?.innerText;
-				dataJson.nutrang75percentSell = document.querySelector(
+				dataJson.nutrang75percentSell = $(
 					'#price1 table tbody :nth-child(11) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.nutrang58_3percentBuy = document.querySelector(
+				dataJson.nutrang58_3percentBuy = $(
 					'#price1 table tbody :nth-child(12) :nth-child(2)'
 				)?.innerText;
-				dataJson.nutrang58_3percentSell = document.querySelector(
+				dataJson.nutrang58_3percentSell = $(
 					'#price1 table tbody :nth-child(12) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.nutrang41_7percentBuy = document.querySelector(
+				dataJson.nutrang41_7percentBuy = $(
 					'#price1 table tbody :nth-child(13) :nth-child(2)'
 				)?.innerText;
-				dataJson.nutrang41_7percentSell = document.querySelector(
+				dataJson.nutrang41_7percentSell = $(
 					'#price1 table tbody :nth-child(13) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.sjc1l10lHaNoiBuy = document.querySelector(
+				dataJson.sjc1l10lHaNoiBuy = $(
 					'#price1 table tbody :nth-child(15) :nth-child(2)'
 				)?.innerText;
-				dataJson.sjc1l10lHaNoiSell = document.querySelector(
+				dataJson.sjc1l10lHaNoiSell = $(
 					'#price1 table tbody :nth-child(15) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.sjc1l10lDaNangBuy = document.querySelector(
+				dataJson.sjc1l10lDaNangBuy = $(
 					'#price1 table tbody :nth-child(17) :nth-child(2)'
 				)?.innerText;
-				dataJson.sjc1l10lDaNangSell = document.querySelector(
+				dataJson.sjc1l10lDaNangSell = $(
 					'#price1 table tbody :nth-child(17) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.sjc1l10lNhaTrangBuy = document.querySelector(
+				dataJson.sjc1l10lNhaTrangBuy = $(
 					'#price1 table tbody :nth-child(19) :nth-child(2)'
 				)?.innerText;
-				dataJson.sjc1l10lNhaTrangSell = document.querySelector(
+				dataJson.sjc1l10lNhaTrangSell = $(
 					'#price1 table tbody :nth-child(19) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.sjc1l10lCaMauBuy = document.querySelector(
+				dataJson.sjc1l10lCaMauBuy = $(
 					'#price1 table tbody :nth-child(21) :nth-child(2)'
 				)?.innerText;
-				dataJson.sjc1l10lCaMauSell = document.querySelector(
+				dataJson.sjc1l10lCaMauSell = $(
 					'#price1 table tbody :nth-child(21) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.sjc1l10lHueBuy = document.querySelector(
+				dataJson.sjc1l10lHueBuy = $(
 					'#price1 table tbody :nth-child(23) :nth-child(2)'
 				)?.innerText;
-				dataJson.sjc1l10lHueSell = document.querySelector(
+				dataJson.sjc1l10lHueSell = $(
 					'#price1 table tbody :nth-child(23) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.sjc1l10lBinhPhuocBuy = document.querySelector(
+				dataJson.sjc1l10lBinhPhuocBuy = $(
 					'#price1 table tbody :nth-child(25) :nth-child(2)'
 				)?.innerText;
-				dataJson.sjc1l10lBinhPhuocSell = document.querySelector(
+				dataJson.sjc1l10lBinhPhuocSell = $(
 					'#price1 table tbody :nth-child(25) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.sjc1l10lBienHoaBuy = document.querySelector(
+				dataJson.sjc1l10lBienHoaBuy = $(
 					'#price1 table tbody :nth-child(27) :nth-child(2)'
 				)?.innerText;
-				dataJson.sjc1l10lBienHoaSell = document.querySelector(
+				dataJson.sjc1l10lBienHoaSell = $(
 					'#price1 table tbody :nth-child(27) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.sjc1l10lMienTayBuy = document.querySelector(
+				dataJson.sjc1l10lMienTayBuy = $(
 					'#price1 table tbody :nth-child(29) :nth-child(2)'
 				)?.innerText;
-				dataJson.sjc1l10lMienTaySell = document.querySelector(
+				dataJson.sjc1l10lMienTaySell = $(
 					'#price1 table tbody :nth-child(29) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.sjc1l10lQuangNgaiBuy = document.querySelector(
+				dataJson.sjc1l10lQuangNgaiBuy = $(
 					'#price1 table tbody :nth-child(31) :nth-child(2)'
 				)?.innerText;
-				dataJson.sjc1l10lQuangNgaiSell = document.querySelector(
+				dataJson.sjc1l10lQuangNgaiSell = $(
 					'#price1 table tbody :nth-child(31) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.sjc1l10lLongXuyenBuy = document.querySelector(
+				dataJson.sjc1l10lLongXuyenBuy = $(
 					'#price1 table tbody :nth-child(33) :nth-child(2)'
 				)?.innerText;
-				dataJson.sjc1l10lLongXuyenSell = document.querySelector(
+				dataJson.sjc1l10lLongXuyenSell = $(
 					'#price1 table tbody :nth-child(33) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.sjc1l10lBacLieuBuy = document.querySelector(
+				dataJson.sjc1l10lBacLieuBuy = $(
 					'#price1 table tbody :nth-child(35) :nth-child(2)'
 				)?.innerText;
-				dataJson.sjc1l10lBacLieuSell = document.querySelector(
+				dataJson.sjc1l10lBacLieuSell = $(
 					'#price1 table tbody :nth-child(35) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.sjc1l10lQuyNhonBuy = document.querySelector(
+				dataJson.sjc1l10lQuyNhonBuy = $(
 					'#price1 table tbody :nth-child(37) :nth-child(2)'
 				)?.innerText;
-				dataJson.sjc1l10lQuyNhonSell = document.querySelector(
+				dataJson.sjc1l10lQuyNhonSell = $(
 					'#price1 table tbody :nth-child(37) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.sjc1l10lPhanRangBuy = document.querySelector(
+				dataJson.sjc1l10lPhanRangBuy = $(
 					'#price1 table tbody :nth-child(39) :nth-child(2)'
 				)?.innerText;
-				dataJson.sjc1l10lPhanRangSell = document.querySelector(
+				dataJson.sjc1l10lPhanRangSell = $(
 					'#price1 table tbody :nth-child(39) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.sjc1l10lHaLongBuy = document.querySelector(
+				dataJson.sjc1l10lHaLongBuy = $(
 					'#price1 table tbody :nth-child(41) :nth-child(2)'
 				)?.innerText;
-				dataJson.sjc1l10lHaLongSell = document.querySelector(
+				dataJson.sjc1l10lHaLongSell = $(
 					'#price1 table tbody :nth-child(41) :nth-child(3)'
 				)?.innerText;
 
-				dataJson.sjc1l10lQuangNamBuy = document.querySelector(
+				dataJson.sjc1l10lQuangNamBuy = $(
 					'#price1 table tbody :nth-child(43) :nth-child(2)'
 				)?.innerText;
-				dataJson.sjc1l10lQuangNamSell = document.querySelector(
+				dataJson.sjc1l10lQuangNamSell = $(
 					'#price1 table tbody :nth-child(43) :nth-child(3)'
 				)?.innerText;
 
@@ -320,7 +314,7 @@ const crawlSjc = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(sjcDetailData.name));
 
 		SjcChart.findOneAndUpdate(
@@ -334,7 +328,7 @@ const crawlSjc = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(err));
 
 		await browser.close();
@@ -358,13 +352,7 @@ const crawlPnj = asyncHandler(async (localtionNumber, index) => {
 
 		let pnjDetailData = await page.evaluate(
 			async (localtionNumber, index) => {
-				// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-				// document.querySelector(`span[data-value=${symbol}]`).click()
-
-				// await delay(2000);
-
-				let stocks = [];
+				const $ = document.querySelector.bind(document);
 
 				let dataJson = {};
 
@@ -388,87 +376,87 @@ const crawlPnj = asyncHandler(async (localtionNumber, index) => {
 						'/' +
 						date.getFullYear();
 
-					dataJson.vangmiengsjcBuy = document.querySelector(
+					dataJson.vangmiengsjcBuy = $(
 						'#content-price :nth-child(1) :nth-child(2) span'
 					)?.innerText;
-					dataJson.vangmiengsjcSell = document.querySelector(
+					dataJson.vangmiengsjcSell = $(
 						'#content-price :nth-child(1) :nth-child(3) span'
 					)?.innerText;
 
-					dataJson.nhantronpnjBuy = document.querySelector(
+					dataJson.nhantronpnjBuy = $(
 						'#content-price :nth-child(2) :nth-child(2) span'
 					)?.innerText;
-					dataJson.nhantronpnjSell = document.querySelector(
+					dataJson.nhantronpnjSell = $(
 						'#content-price :nth-child(2) :nth-child(3) span'
 					)?.innerText;
 
-					dataJson.vangkimbaoBuy = document.querySelector(
+					dataJson.vangkimbaoBuy = $(
 						'#content-price :nth-child(3) :nth-child(2) span'
 					)?.innerText;
-					dataJson.vangkimbaoSell = document.querySelector(
+					dataJson.vangkimbaoSell = $(
 						'#content-price :nth-child(3) :nth-child(3) span'
 					)?.innerText;
 
-					dataJson.vangphucloctaiBuy = document.querySelector(
+					dataJson.vangphucloctaiBuy = $(
 						'#content-price :nth-child(4) :nth-child(2) span'
 					)?.innerText;
-					dataJson.vangphucloctaiSell = document.querySelector(
+					dataJson.vangphucloctaiSell = $(
 						'#content-price :nth-child(4) :nth-child(3) span'
 					)?.innerText;
 
-					dataJson.vang24kBuy = document.querySelector(
+					dataJson.vang24kBuy = $(
 						'#content-price :nth-child(5) :nth-child(2) span'
 					)?.innerText;
-					dataJson.vang24kSell = document.querySelector(
+					dataJson.vang24kSell = $(
 						'#content-price :nth-child(5) :nth-child(3) span'
 					)?.innerText;
 
-					dataJson.vang750Buy = document.querySelector(
+					dataJson.vang750Buy = $(
 						'#content-price :nth-child(6) :nth-child(2) span'
 					)?.innerText;
-					dataJson.vang750Sell = document.querySelector(
+					dataJson.vang750Sell = $(
 						'#content-price :nth-child(6) :nth-child(3) span'
 					)?.innerText;
 
-					dataJson.vang585Buy = document.querySelector(
+					dataJson.vang585Buy = $(
 						'#content-price :nth-child(7) :nth-child(2) span'
 					)?.innerText;
-					dataJson.vang585Sell = document.querySelector(
+					dataJson.vang585Sell = $(
 						'#content-price :nth-child(7) :nth-child(3) span'
 					)?.innerText;
 
-					dataJson.vang416Buy = document.querySelector(
+					dataJson.vang416Buy = $(
 						'#content-price :nth-child(8) :nth-child(2) span'
 					)?.innerText;
-					dataJson.vang416Sell = document.querySelector(
+					dataJson.vang416Sell = $(
 						'#content-price :nth-child(8) :nth-child(3) span'
 					)?.innerText;
 
-					dataJson.vangmiengpnjBuy = document.querySelector(
+					dataJson.vangmiengpnjBuy = $(
 						'#content-price :nth-child(9) :nth-child(2) span'
 					)?.innerText;
-					dataJson.vangmiengpnjSell = document.querySelector(
+					dataJson.vangmiengpnjSell = $(
 						'#content-price :nth-child(9) :nth-child(3) span'
 					)?.innerText;
 
-					dataJson.vang916Buy = document.querySelector(
+					dataJson.vang916Buy = $(
 						'#content-price :nth-child(10) :nth-child(2) span'
 					)?.innerText;
-					dataJson.vang916Sell = document.querySelector(
+					dataJson.vang916Sell = $(
 						'#content-price :nth-child(10) :nth-child(3) span'
 					)?.innerText;
 
-					dataJson.vang680Buy = document.querySelector(
+					dataJson.vang680Buy = $(
 						'#content-price :nth-child(11) :nth-child(2) span'
 					)?.innerText;
-					dataJson.vang680Sell = document.querySelector(
+					dataJson.vang680Sell = $(
 						'#content-price :nth-child(11) :nth-child(3) span'
 					)?.innerText;
 
-					dataJson.vang650Buy = document.querySelector(
+					dataJson.vang650Buy = $(
 						'#content-price :nth-child(12) :nth-child(2) span'
 					)?.innerText;
-					dataJson.vang650Sell = document.querySelector(
+					dataJson.vang650Sell = $(
 						'#content-price :nth-child(12) :nth-child(3) span'
 					)?.innerText;
 				} catch (err) {
@@ -516,7 +504,7 @@ const crawlPnj = asyncHandler(async (localtionNumber, index) => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(pnjDetailData.name));
 
 		await browser.close();
@@ -539,13 +527,8 @@ const crawlDoji = asyncHandler(async (location) => {
 		await page.waitForTimeout(2000);
 
 		let dojiDetailData = await page.evaluate(async (localtion) => {
-			// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-			// document.querySelector(`span[data-value=${symbol}]`).click()
-
-			// await delay(2000);
-
-			let stocks = [];
+			const $ = document.querySelector.bind(document);
+			const $$ = document.querySelectorAll.bind(document);
 
 			let dataJson = {};
 
@@ -567,7 +550,7 @@ const crawlDoji = asyncHandler(async (location) => {
 					date.getFullYear();
 
 				//-----Ha Noi----------
-				const tableHN = document.querySelectorAll('._table')[1];
+				const tableHN = $$('._table')[1];
 				dataJson.sjcHNBuy = tableHN.querySelector(
 					'._content-tab ._buy :nth-child(2)'
 				)?.innerText;
@@ -811,7 +794,7 @@ const crawlDoji = asyncHandler(async (location) => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(dojiDetailData.name));
 
 		await browser.close();
@@ -834,13 +817,7 @@ const crawlPhuQuySjc = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let phuQuySjcDetailData = await page.evaluate(async () => {
-			// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-			// document.querySelector(`span[data-value=${symbol}]`).click()
-
-			// await delay(2000);
-
-			let stocks = [];
+			const $ = document.querySelector.bind(document);
 
 			let dataJson = {};
 
@@ -862,80 +839,80 @@ const crawlPhuQuySjc = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				dataJson.sjcBuy = document.querySelector(
+				dataJson.sjcBuy = $(
 					'table tbody :nth-child(1) :nth-child(3)'
 				)?.innerText;
-				dataJson.sjcSell = document.querySelector(
+				dataJson.sjcSell = $(
 					'table tbody :nth-child(1) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.sjnBuy = document.querySelector(
+				dataJson.sjnBuy = $(
 					'table tbody :nth-child(2) :nth-child(3)'
 				)?.innerText;
-				dataJson.sjnSell = document.querySelector(
+				dataJson.sjnSell = $(
 					'table tbody :nth-child(2) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.npqBuy = document.querySelector(
+				dataJson.npqBuy = $(
 					'table tbody :nth-child(3) :nth-child(3)'
 				)?.innerText;
-				dataJson.npqSell = document.querySelector(
+				dataJson.npqSell = $(
 					'table tbody :nth-child(3) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.tpqBuy = document.querySelector(
+				dataJson.tpqBuy = $(
 					'table tbody :nth-child(4) :nth-child(3)'
 				)?.innerText;
-				dataJson.tpqSell = document.querySelector(
+				dataJson.tpqSell = $(
 					'table tbody :nth-child(4) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.cngBuy = document.querySelector(
+				dataJson.cngBuy = $(
 					'table tbody :nth-child(5) :nth-child(3)'
 				)?.innerText;
-				dataJson.cngSell = document.querySelector(
+				dataJson.cngSell = $(
 					'table tbody :nth-child(5) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.vang24kBuy = document.querySelector(
+				dataJson.vang24kBuy = $(
 					'table tbody :nth-child(6) :nth-child(3)'
 				)?.innerText;
-				dataJson.vang24kSell = document.querySelector(
+				dataJson.vang24kSell = $(
 					'table tbody :nth-child(6) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.vang999Buy = document.querySelector(
+				dataJson.vang999Buy = $(
 					'table tbody :nth-child(7) :nth-child(3)'
 				)?.innerText;
-				dataJson.vang999Sell = document.querySelector(
+				dataJson.vang999Sell = $(
 					'table tbody :nth-child(7) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.vang099Buy = document.querySelector(
+				dataJson.vang099Buy = $(
 					'table tbody :nth-child(8) :nth-child(3)'
 				)?.innerText;
-				dataJson.vang099Sell = document.querySelector(
+				dataJson.vang099Sell = $(
 					'table tbody :nth-child(8) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.v99Buy = document.querySelector(
+				dataJson.v99Buy = $(
 					'table tbody :nth-child(10) :nth-child(3)'
 				)?.innerText;
-				dataJson.v99Sell = document.querySelector(
+				dataJson.v99Sell = $(
 					'table tbody :nth-child(10) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.v999Buy = document.querySelector(
+				dataJson.v999Buy = $(
 					'table tbody :nth-child(11) :nth-child(3)'
 				)?.innerText;
-				dataJson.v999Sell = document.querySelector(
+				dataJson.v999Sell = $(
 					'table tbody :nth-child(11) :nth-child(4)'
 				)?.innerText;
 
-				dataJson.v9999Buy = document.querySelector(
+				dataJson.v9999Buy = $(
 					'table tbody :nth-child(12) :nth-child(3)'
 				)?.innerText;
-				dataJson.v9999Sell = document.querySelector(
+				dataJson.v9999Sell = $(
 					'table tbody :nth-child(12) :nth-child(4)'
 				)?.innerText;
 			} catch (err) {
@@ -978,7 +955,7 @@ const crawlPhuQuySjc = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(phuQuySjcDetailData.name));
 
 		await browser.close();
@@ -1001,13 +978,7 @@ const crawlBaoTinMinhChau = asyncHandler(async () => {
 		await page.waitForTimeout(2000);
 
 		let baoTinMinhChauDetailData = await page.evaluate(async () => {
-			// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-			// document.querySelector(`span[data-value=${symbol}]`).click()
-
-			// await delay(2000);
-
-			let stocks = [];
+			const $ = document.querySelector.bind(document);
 
 			let dataJson = {};
 
@@ -1029,61 +1000,57 @@ const crawlBaoTinMinhChau = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				dataJson.vangMiengVRTLBuy = document.querySelector(
+				dataJson.vangMiengVRTLBuy = $(
 					'table tbody :nth-child(2) :nth-child(4) b '
 				)?.innerText;
-				dataJson.vangMiengVRTLSell = document.querySelector(
+				dataJson.vangMiengVRTLSell = $(
 					'table tbody :nth-child(2) :nth-child(5) b '
 				)?.innerText;
 
-				dataJson.nhanTronTronBuy = document.querySelector(
+				dataJson.nhanTronTronBuy = $(
 					'table tbody :nth-child(3) :nth-child(3) b '
 				)?.innerText;
-				dataJson.nhanTronTronSell = document.querySelector(
+				dataJson.nhanTronTronSell = $(
 					'table tbody :nth-child(3) :nth-child(4) b '
 				)?.innerText;
 
-				dataJson.quaMungBanViVangBuy = document.querySelector(
+				dataJson.quaMungBanViVangBuy = $(
 					'table tbody :nth-child(4) :nth-child(4) b '
 				)?.innerText;
-				dataJson.quaMungBanViVangSell = document.querySelector(
+				dataJson.quaMungBanViVangSell = $(
 					'table tbody :nth-child(4) :nth-child(5) b '
 				)?.innerText;
 
-				dataJson.vangMiengSjcBuy = document.querySelector(
+				dataJson.vangMiengSjcBuy = $(
 					'table tbody :nth-child(5) :nth-child(4) b '
 				)?.innerText;
-				dataJson.vangMiengSjcSell = document.querySelector(
+				dataJson.vangMiengSjcSell = $(
 					'table tbody :nth-child(5) :nth-child(5) b '
 				)?.innerText;
 
-				dataJson.trangSucBangVangRongThangLong9999Buy =
-					document.querySelector(
-						'table tbody :nth-child(6) :nth-child(4) b '
-					)?.innerText;
-				dataJson.trangSucBangVangRongThangLong9999Sell =
-					document.querySelector(
-						'table tbody :nth-child(6) :nth-child(5) b '
-					)?.innerText;
+				dataJson.trangSucBangVangRongThangLong9999Buy = $(
+					'table tbody :nth-child(6) :nth-child(4) b '
+				)?.innerText;
+				dataJson.trangSucBangVangRongThangLong9999Sell = $(
+					'table tbody :nth-child(6) :nth-child(5) b '
+				)?.innerText;
 
-				dataJson.trangSucBangVangRongThangLong999Buy =
-					document.querySelector(
-						'table tbody :nth-child(7) :nth-child(3) b '
-					)?.innerText;
-				dataJson.trangSucBangVangRongThangLong999Sell =
-					document.querySelector(
-						'table tbody :nth-child(7) :nth-child(4) b '
-					)?.innerText;
+				dataJson.trangSucBangVangRongThangLong999Buy = $(
+					'table tbody :nth-child(7) :nth-child(3) b '
+				)?.innerText;
+				dataJson.trangSucBangVangRongThangLong999Sell = $(
+					'table tbody :nth-child(7) :nth-child(4) b '
+				)?.innerText;
 
-				dataJson.vangHTBTBuy = document.querySelector(
+				dataJson.vangHTBTBuy = $(
 					'table tbody :nth-child(8) :nth-child(4) b '
 				)?.innerText;
-				// dataJson.vangHTBTSell = document.querySelector('table tbody :nth-child(8) :nth-child(5) b ')?.innerText
+				// dataJson.vangHTBTSell = $('table tbody :nth-child(8) :nth-child(5) b ')?.innerText
 
-				dataJson.vangNguyenLieuBuy = document.querySelector(
+				dataJson.vangNguyenLieuBuy = $(
 					'table tbody :nth-child(9) :nth-child(4) b '
 				)?.innerText;
-				// dataJson.vangNguyenLieuSell = document.querySelector('table tbody :nth-child(9) :nth-child(5) b ')?.innerText
+				// dataJson.vangNguyenLieuSell = $('table tbody :nth-child(9) :nth-child(5) b ')?.innerText
 			} catch (err) {
 				console.log(err);
 			}
@@ -1132,7 +1099,7 @@ const crawlBaoTinMinhChau = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(baoTinMinhChauDetailData.name));
 
 		await browser.close();
@@ -1176,13 +1143,7 @@ const crawlMiHong = asyncHandler(async () => {
 		// await page.waitForTimeout(2000);
 
 		let miHongDetailData = await page.evaluate(async () => {
-			// const delay = (m) => new Promise((r) => setTimeout(r, m));
-
-			// document.querySelector(`span[data-value=${symbol}]`).click()
-
-			// await delay(2000);
-
-			let stocks = [];
+			const $ = document.querySelector.bind(document);
 
 			let dataJson = {};
 
@@ -1204,59 +1165,59 @@ const crawlMiHong = asyncHandler(async () => {
 					'/' +
 					date.getFullYear();
 
-				dataJson.sjcBuy = document.querySelector(
+				dataJson.sjcBuy = $(
 					'#tblCurrentPrice tbody :nth-child(1) :nth-child(3) span '
 				)?.innerText;
-				dataJson.sjcSell = document.querySelector(
+				dataJson.sjcSell = $(
 					'#tblCurrentPrice tbody :nth-child(1) :nth-child(4) span '
 				)?.innerText;
 
-				dataJson.vang999Buy = document.querySelector(
+				dataJson.vang999Buy = $(
 					'#tblCurrentPrice tbody :nth-child(1) :nth-child(7) span '
 				)?.innerText;
-				dataJson.vang999Sell = document.querySelector(
+				dataJson.vang999Sell = $(
 					'#tblCurrentPrice tbody :nth-child(1) :nth-child(8) span '
 				)?.innerText;
 
-				dataJson.vang985Buy = document.querySelector(
+				dataJson.vang985Buy = $(
 					'#tblCurrentPrice tbody :nth-child(2) :nth-child(3) span '
 				)?.innerText;
-				dataJson.vang985Sell = document.querySelector(
+				dataJson.vang985Sell = $(
 					'#tblCurrentPrice tbody :nth-child(2) :nth-child(4) span '
 				)?.innerText;
 
-				dataJson.vang980Buy = document.querySelector(
+				dataJson.vang980Buy = $(
 					'#tblCurrentPrice tbody :nth-child(2) :nth-child(7) span '
 				)?.innerText;
-				dataJson.vang980Sell = document.querySelector(
+				dataJson.vang980Sell = $(
 					'#tblCurrentPrice tbody :nth-child(2) :nth-child(8) span '
 				)?.innerText;
 
-				dataJson.vang950Buy = document.querySelector(
+				dataJson.vang950Buy = $(
 					'#tblCurrentPrice tbody :nth-child(3) :nth-child(3) span '
 				)?.innerText;
-				dataJson.vang950Sell = document.querySelector(
+				dataJson.vang950Sell = $(
 					'#tblCurrentPrice tbody :nth-child(3) :nth-child(4) span '
 				)?.innerText;
 
-				dataJson.vang750Buy = document.querySelector(
+				dataJson.vang750Buy = $(
 					'#tblCurrentPrice tbody :nth-child(3) :nth-child(7) span '
 				)?.innerText;
-				dataJson.vang750Sell = document.querySelector(
+				dataJson.vang750Sell = $(
 					'#tblCurrentPrice tbody :nth-child(3) :nth-child(8) span '
 				)?.innerText;
 
-				dataJson.vang680Buy = document.querySelector(
+				dataJson.vang680Buy = $(
 					'#tblCurrentPrice tbody :nth-child(4) :nth-child(3) span '
 				)?.innerText;
-				dataJson.vang680Sell = document.querySelector(
+				dataJson.vang680Sell = $(
 					'#tblCurrentPrice tbody :nth-child(4) :nth-child(4) span '
 				)?.innerText;
 
-				dataJson.vang610Buy = document.querySelector(
+				dataJson.vang610Buy = $(
 					'#tblCurrentPrice tbody :nth-child(4) :nth-child(7) span '
 				)?.innerText;
-				dataJson.vang610Sell = document.querySelector(
+				dataJson.vang610Sell = $(
 					'#tblCurrentPrice tbody :nth-child(4) :nth-child(8) span '
 				)?.innerText;
 			} catch (err) {
@@ -1265,7 +1226,7 @@ const crawlMiHong = asyncHandler(async () => {
 			return dataJson;
 		});
 
-		console.log(miHongDetailData);
+		// console.log(miHongDetailData);
 
 		MiHong.findOneAndUpdate(
 			{ name: miHongDetailData.name },
@@ -1294,7 +1255,7 @@ const crawlMiHong = asyncHandler(async () => {
 			},
 			{ upsert: true }
 		)
-			.then((doc) => console.log(doc))
+			// .then((doc) => console.log(doc))
 			.catch((err) => console.log(miHongDetailData.name));
 
 		await browser.close();
