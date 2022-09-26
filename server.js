@@ -324,7 +324,7 @@ const stockRunAll = async () => {
 	});
 };
 
-// stockRunAll();
+stockRunAll();
 
 //---------------------------------------------------------------------------
 
@@ -343,7 +343,7 @@ const stockRunAll = async () => {
 // 		crawlChartDataMax(coin.nameId, coin.rank);
 // 	});
 // });
-// getallCoinsChart()
+getallCoinsChart();
 
 const coinRunAll = async () => {
 	cron.schedule('*/2 * * * *', async () => {
@@ -351,7 +351,7 @@ const coinRunAll = async () => {
 		// updateCurrentcy();
 	});
 };
-// coinRunAll();
+coinRunAll();
 
 // -----------------------------------------------
 
@@ -379,7 +379,7 @@ const goldRunAll = async () => {
 		crawlAllDetailPnj();
 	});
 };
-// goldRunAll();
+goldRunAll();
 
 //----------------------------
 
@@ -390,7 +390,7 @@ const petrolRunAll = async () => {
 		crawlPetrolimex();
 	});
 };
-// petrolRunAll();
+petrolRunAll();
 
 //-----------------------------
 
@@ -409,7 +409,7 @@ const exchangeRateRunAll = async () => {
 		crawlMbbank();
 	});
 };
-// exchangeRateRunAll();
+exchangeRateRunAll();
 
 //-----------------------------
 
@@ -430,7 +430,7 @@ const interestRateRunAll = async () => {
 		crawlVpbankInterestRate();
 	});
 };
-// interestRateRunAll();
+interestRateRunAll();
 
 //-----------------------------------
 
