@@ -343,7 +343,7 @@ stockRunAll();
 // 		crawlChartDataMax(coin.nameId, coin.rank);
 // 	});
 // });
-getallCoinsChart();
+// getallCoinsChart();
 
 const coinRunAll = async () => {
 	cron.schedule('*/2 * * * *', async () => {
