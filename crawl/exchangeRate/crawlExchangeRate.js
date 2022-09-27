@@ -23,7 +23,9 @@ const urlMbbank = 'https://webgia.com/ty-gia/mbbank/';
 const crawlAbBank = asyncHandler(async () => {
 	// cron.schedule('*/50 * * * * *', async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.setUserAgent(
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
@@ -313,7 +315,9 @@ const crawlAbBank = asyncHandler(async () => {
 const crawlAgribank = asyncHandler(async () => {
 	// cron.schedule('*/50 * * * * *', async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.setUserAgent(
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
@@ -543,7 +547,9 @@ const crawlAgribank = asyncHandler(async () => {
 const crawlVietcombank = asyncHandler(async () => {
 	// cron.schedule('*/50 * * * * *', async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.setUserAgent(
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
@@ -885,7 +891,9 @@ const crawlVietcombank = asyncHandler(async () => {
 const crawlBidv = asyncHandler(async () => {
 	// cron.schedule('*/50 * * * * *', async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.setUserAgent(
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
@@ -1227,7 +1235,9 @@ const crawlBidv = asyncHandler(async () => {
 const crawlTechcombank = asyncHandler(async () => {
 	// cron.schedule('*/50 * * * * *', async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.setUserAgent(
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
@@ -1471,7 +1481,9 @@ const crawlTechcombank = asyncHandler(async () => {
 const crawlVietinbank = asyncHandler(async () => {
 	// cron.schedule('*/50 * * * * *', async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.setUserAgent(
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
@@ -1775,7 +1787,9 @@ const crawlVietinbank = asyncHandler(async () => {
 const crawlMbbank = asyncHandler(async () => {
 	// cron.schedule('*/50 * * * * *', async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.setUserAgent(
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'

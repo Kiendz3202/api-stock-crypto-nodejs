@@ -40,7 +40,9 @@ const crawlDetailHnx30 = asyncHandler(
 		// let selector = `td[data-tooltip = ${name}]`
 
 		try {
-			const browser = await puppeteer.launch({ headless: true });
+			const browser = await puppeteer.launch({
+				args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+			});
 			const page = await browser.newPage();
 			let status = await page.goto(
 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
@@ -239,7 +241,9 @@ const crawlDetailHnx = asyncHandler(
 		turnOver
 	) => {
 		try {
-			const browser = await puppeteer.launch({ headless: true });
+			const browser = await puppeteer.launch({
+				args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+			});
 			const page = await browser.newPage();
 			let status = await page.goto(
 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
@@ -431,7 +435,9 @@ const crawlDetailVn30 = asyncHandler(
 		turnOver
 	) => {
 		try {
-			const browser = await puppeteer.launch({ headless: true });
+			const browser = await puppeteer.launch({
+				args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+			});
 			const page = await browser.newPage();
 			let status = await page.goto(
 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
@@ -626,7 +632,9 @@ const crawlDetailHose = asyncHandler(
 		// let selector = `td[data-tooltip = ${name}]`
 
 		try {
-			const browser = await puppeteer.launch({ headless: true });
+			const browser = await puppeteer.launch({
+				args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+			});
 			const page = await browser.newPage();
 			let status = await page.goto(
 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
@@ -830,7 +838,9 @@ const crawlDetailUpcom = asyncHandler(
 		// let selector = `td[data-tooltip = ${name}]`
 
 		try {
-			const browser = await puppeteer.launch({ headless: true });
+			const browser = await puppeteer.launch({
+				args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+			});
 			const page = await browser.newPage();
 			let status = await page.goto(
 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
@@ -1016,7 +1026,9 @@ const crawlDetailUpcom = asyncHandler(
 
 const crawlDetailAllInvesting = asyncHandler(async (id, name, hrefDetail) => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		let status = await page.goto(`https://vn.investing.com${hrefDetail}`, {
 			timeout: 0,

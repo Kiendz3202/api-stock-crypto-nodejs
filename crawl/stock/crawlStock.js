@@ -22,7 +22,9 @@ const urlInvesting = 'https://vn.investing.com/equities/vietnam';
 
 const crawlHnx30 = asyncHandler(async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.goto(urlHnx30, { timeout: 0 });
 
@@ -125,7 +127,9 @@ const crawlHnx30 = asyncHandler(async () => {
 
 const crawlHnx = asyncHandler(async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.goto(urlHnx, { waitUntil: 'load' });
 		// await page.select('#stocksFilter', 'HNX')
@@ -253,7 +257,9 @@ const crawlHnx = asyncHandler(async () => {
 
 const crawlVn30 = asyncHandler(async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.goto(urlVn30, { timeout: 0 });
 
@@ -356,7 +362,9 @@ const crawlVn30 = asyncHandler(async () => {
 
 const crawlHose = asyncHandler(async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.goto(urlHose, { waitUntil: 'load' });
 		// await page.select('#stocksFilter', 'VN Index')
@@ -483,7 +491,9 @@ const crawlHose = asyncHandler(async () => {
 
 const crawlUpcom = asyncHandler(async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.setUserAgent(
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
@@ -612,7 +622,9 @@ const crawlUpcom = asyncHandler(async () => {
 
 const crawlAllInvesting = asyncHandler(async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.setUserAgent(
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'

@@ -23,7 +23,9 @@ const urlMiHong = 'https://www.mihong.vn/vi/gia-vang-trong-nuoc';
 const crawlSjc = asyncHandler(async () => {
 	// cron.schedule('*/15 * * * *', async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.setUserAgent(
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
@@ -341,7 +343,9 @@ const crawlSjc = asyncHandler(async () => {
 const crawlPnj = asyncHandler(async (localtionNumber, index) => {
 	// cron.schedule('*/15 * * * *', async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.setUserAgent(
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
@@ -517,7 +521,9 @@ const crawlPnj = asyncHandler(async (localtionNumber, index) => {
 const crawlDoji = asyncHandler(async (location) => {
 	// cron.schedule('*/15 * * * *', async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.setUserAgent(
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
@@ -807,7 +813,9 @@ const crawlDoji = asyncHandler(async (location) => {
 const crawlPhuQuySjc = asyncHandler(async () => {
 	// cron.schedule('*/15 * * * *', async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.setUserAgent(
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
@@ -968,7 +976,9 @@ const crawlPhuQuySjc = asyncHandler(async () => {
 const crawlBaoTinMinhChau = asyncHandler(async () => {
 	// cron.schedule('*/15 * * * *', async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.setUserAgent(
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
@@ -1112,7 +1122,9 @@ const crawlBaoTinMinhChau = asyncHandler(async () => {
 const crawlMiHong = asyncHandler(async () => {
 	// cron.schedule('*/15 * * * *', async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		// await page.setUserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36")
 		await page.goto(urlMiHong, { timeout: 0 });

@@ -11,7 +11,7 @@ const crawlPetrolimex = asyncHandler(async () => {
 	// cron.schedule('*/60 * * * *', async () => {
 	try {
 		const browser = await puppeteer.launch({
-			// headless: false,
+			// headless: true,
 			// executablePath: '/usr/bin/chromium-browser',
 			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
 		});
