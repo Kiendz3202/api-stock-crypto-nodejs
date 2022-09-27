@@ -23,11 +23,7 @@ const urlMbbank = 'https://webgia.com/ty-gia/mbbank/';
 const collectDataAbBank = async (url) => {
 	try {
 		const browser = await puppeteer.launch({
-			args: [
-				'--no-sandbox',
-				'--disabled-setupid-sandbox',
-				'--proxy-server=http://14.160.23.254:5678',
-			],
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
 		});
 		const page = await browser.newPage();
 		// await page.setUserAgent(
@@ -209,7 +205,7 @@ const collectDataAbBank = async (url) => {
 			return dataJson;
 		});
 	} catch (error) {
-		console.log(error);
+		console.log('co loi o day' + error);
 		return false;
 	}
 };
