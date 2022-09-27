@@ -26,10 +26,13 @@ const collectDataAbBank = async (url) => {
 			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
 		});
 		const page = await browser.newPage();
+		// await page.setUserAgent(
+		// 	'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
+		// );
 		await page.setUserAgent(
-			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
+			'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3419.0 Safari/537.36'
 		);
-		await page.goto(url, { waitUntil: 'load', timeout: 0 });
+		await page.goto(url, { waitUntil: 'networkidle2' });
 
 		return page.evaluate(async () => {
 			const $ = document.querySelector.bind(document);
