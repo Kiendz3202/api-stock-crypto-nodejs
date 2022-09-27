@@ -23,8 +23,11 @@ const urlMbbank = 'https://webgia.com/ty-gia/mbbank/';
 const collectDataAbBank = async (url) => {
 	try {
 		const browser = await puppeteer.launch({
-			headless: false,
-			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+			args: [
+				'--no-sandbox',
+				'--disabled-setupid-sandbox',
+				'--proxy-server=http://14.160.23.254:5678',
+			],
 		});
 		const page = await browser.newPage();
 		// await page.setUserAgent(
@@ -33,7 +36,7 @@ const collectDataAbBank = async (url) => {
 		await page.setUserAgent(
 			'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3419.0 Safari/537.36'
 		);
-		await page.goto(url, { waitUntil: 'networkidle2' });
+		await page.goto(url, { waitUntil: 'load' });
 
 		return page.evaluate(async () => {
 			const $ = document.querySelector.bind(document);
