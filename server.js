@@ -372,9 +372,10 @@ const goldRunAll = async () => {
 
 		crawlSjc();
 		crawlDoji();
-		crawlPhuQuySjc();
 		await delay(5000);
+		crawlPhuQuySjc();
 		crawlBaoTinMinhChau();
+		await delay(5000);
 		crawlMiHong();
 		crawlAllDetailPnj();
 	});
@@ -406,6 +407,7 @@ const exchangeRateRunAll = async () => {
 		await delay(5000);
 		crawlTechcombank();
 		crawlVietinbank();
+		await delay(5000);
 		crawlMbbank();
 	});
 };
@@ -419,14 +421,16 @@ const interestRateRunAll = async () => {
 	cron.schedule('*/2 * * * *', async () => {
 		crawlVietcombankInterestRate(); //
 		crawlVietinbankInterestRate(); //
-		crawlAgribankbankInterestRate(); //
 		await delay(5000);
+		crawlAgribankbankInterestRate(); //
 		crawlBidvInterestRate();
+		await delay(5000);
 		crawlScbInterestRate();
 		crawlMbbankInterestRate();
 		await delay(5000);
 		crawlVibInterestRate();
 		crawlTpbankInterestRate();
+		await delay(5000);
 		crawlVpbankInterestRate();
 	});
 };
