@@ -23,6 +23,7 @@ const urlMbbank = 'https://webgia.com/ty-gia/mbbank/';
 const collectDataAbBank = async (url) => {
 	try {
 		const browser = await puppeteer.launch({
+			headless: false,
 			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
 		});
 		const page = await browser.newPage();
