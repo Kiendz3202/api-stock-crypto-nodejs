@@ -398,18 +398,18 @@ const petrolRunAll = async () => {
 //---------exchangRate--------
 
 const exchangeRateRunAll = async () => {
-	cron.schedule('*/2 * * * *', async () => {
-		crawlAbBank();
-		crawlAgribank();
-		await delay(2000);
-		crawlVietcombank();
-		crawlBidv();
-		await delay(2000);
-		crawlTechcombank();
-		crawlVietinbank();
-		await delay(2000);
-		crawlMbbank();
-	});
+	// cron.schedule('*/2 * * * *', async () => {
+	crawlAbBank();
+	crawlAgribank();
+	await delay(2000);
+	crawlVietcombank();
+	crawlBidv();
+	await delay(2000);
+	crawlTechcombank();
+	crawlVietinbank();
+	await delay(2000);
+	crawlMbbank();
+	// });
 };
 exchangeRateRunAll();
 
@@ -434,7 +434,7 @@ const interestRateRunAll = async () => {
 		crawlVpbankInterestRate();
 	});
 };
-interestRateRunAll();
+// interestRateRunAll();
 
 //-----------------------------------
 

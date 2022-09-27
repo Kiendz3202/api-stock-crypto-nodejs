@@ -20,8 +20,7 @@ const urlTechcombank =
 const urlVietinbank = 'https://www.vietinbank.vn/web/home/vn/ty-gia/';
 const urlMbbank = 'https://webgia.com/ty-gia/mbbank/';
 
-const crawlAbBank = asyncHandler(async () => {
-	// cron.schedule('*/50 * * * * *', async () => {
+const collectDataAbBank = async (url) => {
 	try {
 		const browser = await puppeteer.launch({
 			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
@@ -30,256 +29,536 @@ const crawlAbBank = asyncHandler(async () => {
 		await page.setUserAgent(
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
 		);
-		await page.goto(urlAbBank, { waitUntil: 'networkidle2' });
+		await page.goto(url, { timeout: 0 });
 
 		await page.waitForTimeout(2000);
 
-		let abBankData = await page.evaluate(async () => {
+		return page.evaluate(async () => {
 			const $ = document.querySelector.bind(document);
 
 			let dataJson = {};
 
-			try {
-				dataJson.name = 'Ngân hàng TMCP An Bình';
-				dataJson.symbol = 'ABBank';
+			// try {
+			dataJson.name = 'Ngân hàng TMCP An Bình';
+			dataJson.symbol = 'ABBank';
 
-				let date = new Date();
-				dataJson.timeUpdate =
-					date.getHours() +
-					':' +
-					date.getMinutes() +
-					':' +
-					date.getSeconds() +
-					' ' +
-					date.getDate() +
-					'/' +
-					(date.getMonth() + 1) +
-					'/' +
-					date.getFullYear();
+			let date = new Date();
+			dataJson.timeUpdate =
+				date.getHours() +
+				':' +
+				date.getMinutes() +
+				':' +
+				date.getSeconds() +
+				' ' +
+				date.getDate() +
+				'/' +
+				(date.getMonth() + 1) +
+				'/' +
+				date.getFullYear();
 
-				dataJson.usdBuyCast = $(
-					'table tbody :nth-child(17) :nth-child(2) span'
-				)?.innerText;
-				dataJson.usdBuyTransfer = $(
-					'table tbody :nth-child(17) :nth-child(3) span'
-				)?.innerText;
-				dataJson.usdSellTransfer = $(
-					'table tbody :nth-child(17) :nth-child(4) span'
-				)?.innerText;
-				dataJson.usdSellCast = $(
-					'table tbody :nth-child(17) :nth-child(5) span'
-				)?.innerText;
+			dataJson.usdBuyCast = $(
+				'table tbody :nth-child(17) :nth-child(2) span'
+			)?.innerText;
+			dataJson.usdBuyTransfer = $(
+				'table tbody :nth-child(17) :nth-child(3) span'
+			)?.innerText;
+			dataJson.usdSellTransfer = $(
+				'table tbody :nth-child(17) :nth-child(4) span'
+			)?.innerText;
+			dataJson.usdSellCast = $(
+				'table tbody :nth-child(17) :nth-child(5) span'
+			)?.innerText;
 
-				dataJson.eurBuyCast = $(
-					'table tbody :nth-child(19) :nth-child(2) span'
-				)?.innerText;
-				dataJson.eurBuyTransfer = $(
-					'table tbody :nth-child(19) :nth-child(3) span'
-				)?.innerText;
-				dataJson.eurSellTransfer = $(
-					'table tbody :nth-child(19) :nth-child(4) span'
-				)?.innerText;
-				dataJson.eurSellCast = $(
-					'table tbody :nth-child(19) :nth-child(5) span'
-				)?.innerText;
+			dataJson.eurBuyCast = $(
+				'table tbody :nth-child(19) :nth-child(2) span'
+			)?.innerText;
+			dataJson.eurBuyTransfer = $(
+				'table tbody :nth-child(19) :nth-child(3) span'
+			)?.innerText;
+			dataJson.eurSellTransfer = $(
+				'table tbody :nth-child(19) :nth-child(4) span'
+			)?.innerText;
+			dataJson.eurSellCast = $(
+				'table tbody :nth-child(19) :nth-child(5) span'
+			)?.innerText;
 
-				dataJson.gbpBuyCast = $(
-					'table tbody :nth-child(20) :nth-child(2) span'
-				)?.innerText;
-				dataJson.gbpBuyTransfer = $(
-					'table tbody :nth-child(20) :nth-child(3) span'
-				)?.innerText;
-				dataJson.gbpSellTransfer = $(
-					'table tbody :nth-child(20) :nth-child(4) span'
-				)?.innerText;
-				dataJson.gbpSellCast = $(
-					'table tbody :nth-child(20) :nth-child(5) span'
-				)?.innerText;
+			dataJson.gbpBuyCast = $(
+				'table tbody :nth-child(20) :nth-child(2) span'
+			)?.innerText;
+			dataJson.gbpBuyTransfer = $(
+				'table tbody :nth-child(20) :nth-child(3) span'
+			)?.innerText;
+			dataJson.gbpSellTransfer = $(
+				'table tbody :nth-child(20) :nth-child(4) span'
+			)?.innerText;
+			dataJson.gbpSellCast = $(
+				'table tbody :nth-child(20) :nth-child(5) span'
+			)?.innerText;
 
-				dataJson.jpyBuyCast = $(
-					'table tbody :nth-child(21) :nth-child(2) span'
-				)?.innerText;
-				dataJson.jpyBuyTransfer = $(
-					'table tbody :nth-child(21) :nth-child(3) span'
-				)?.innerText;
-				dataJson.jpySellTransfer = $(
-					'table tbody :nth-child(21) :nth-child(4) span'
-				)?.innerText;
-				dataJson.jpySellCast = $(
-					'table tbody :nth-child(21) :nth-child(5) span'
-				)?.innerText;
+			dataJson.jpyBuyCast = $(
+				'table tbody :nth-child(21) :nth-child(2) span'
+			)?.innerText;
+			dataJson.jpyBuyTransfer = $(
+				'table tbody :nth-child(21) :nth-child(3) span'
+			)?.innerText;
+			dataJson.jpySellTransfer = $(
+				'table tbody :nth-child(21) :nth-child(4) span'
+			)?.innerText;
+			dataJson.jpySellCast = $(
+				'table tbody :nth-child(21) :nth-child(5) span'
+			)?.innerText;
 
-				dataJson.audBuyCast = $(
-					'table tbody :nth-child(22) :nth-child(2) span'
-				)?.innerText;
-				dataJson.audBuyTransfer = $(
-					'table tbody :nth-child(22) :nth-child(3) span'
-				)?.innerText;
-				dataJson.audSellTransfer = $(
-					'table tbody :nth-child(22) :nth-child(4) span'
-				)?.innerText;
-				dataJson.audSellCast = $(
-					'table tbody :nth-child(22) :nth-child(5) span'
-				)?.innerText;
+			dataJson.audBuyCast = $(
+				'table tbody :nth-child(22) :nth-child(2) span'
+			)?.innerText;
+			dataJson.audBuyTransfer = $(
+				'table tbody :nth-child(22) :nth-child(3) span'
+			)?.innerText;
+			dataJson.audSellTransfer = $(
+				'table tbody :nth-child(22) :nth-child(4) span'
+			)?.innerText;
+			dataJson.audSellCast = $(
+				'table tbody :nth-child(22) :nth-child(5) span'
+			)?.innerText;
 
-				dataJson.cadBuyCast = $(
-					'table tbody :nth-child(23) :nth-child(2) span'
-				)?.innerText;
-				dataJson.cadBuyTransfer = $(
-					'table tbody :nth-child(23) :nth-child(3) span'
-				)?.innerText;
-				dataJson.cadSellTransfer = $(
-					'table tbody :nth-child(23) :nth-child(4) span'
-				)?.innerText;
-				dataJson.cadSellCast = $(
-					'table tbody :nth-child(23) :nth-child(5) span'
-				)?.innerText;
+			dataJson.cadBuyCast = $(
+				'table tbody :nth-child(23) :nth-child(2) span'
+			)?.innerText;
+			dataJson.cadBuyTransfer = $(
+				'table tbody :nth-child(23) :nth-child(3) span'
+			)?.innerText;
+			dataJson.cadSellTransfer = $(
+				'table tbody :nth-child(23) :nth-child(4) span'
+			)?.innerText;
+			dataJson.cadSellCast = $(
+				'table tbody :nth-child(23) :nth-child(5) span'
+			)?.innerText;
 
-				dataJson.nzdBuyCast = $(
-					'table tbody :nth-child(24) :nth-child(2) span'
-				)?.innerText;
-				dataJson.nzdBuyTransfer = $(
-					'table tbody :nth-child(24) :nth-child(3) span'
-				)?.innerText;
-				dataJson.nzdSellTransfer = $(
-					'table tbody :nth-child(24) :nth-child(4) span'
-				)?.innerText;
-				dataJson.nzdSellCast = $(
-					'table tbody :nth-child(24) :nth-child(5) span'
-				)?.innerText;
+			dataJson.nzdBuyCast = $(
+				'table tbody :nth-child(24) :nth-child(2) span'
+			)?.innerText;
+			dataJson.nzdBuyTransfer = $(
+				'table tbody :nth-child(24) :nth-child(3) span'
+			)?.innerText;
+			dataJson.nzdSellTransfer = $(
+				'table tbody :nth-child(24) :nth-child(4) span'
+			)?.innerText;
+			dataJson.nzdSellCast = $(
+				'table tbody :nth-child(24) :nth-child(5) span'
+			)?.innerText;
 
-				dataJson.sgdBuyCast = $(
-					'table tbody :nth-child(25) :nth-child(2) span'
-				)?.innerText;
-				dataJson.sgdBuyTransfer = $(
-					'table tbody :nth-child(25) :nth-child(3) span'
-				)?.innerText;
-				dataJson.sgdSellTransfer = $(
-					'table tbody :nth-child(25) :nth-child(4) span'
-				)?.innerText;
-				dataJson.sgdSellCast = $(
-					'table tbody :nth-child(25) :nth-child(5) span'
-				)?.innerText;
+			dataJson.sgdBuyCast = $(
+				'table tbody :nth-child(25) :nth-child(2) span'
+			)?.innerText;
+			dataJson.sgdBuyTransfer = $(
+				'table tbody :nth-child(25) :nth-child(3) span'
+			)?.innerText;
+			dataJson.sgdSellTransfer = $(
+				'table tbody :nth-child(25) :nth-child(4) span'
+			)?.innerText;
+			dataJson.sgdSellCast = $(
+				'table tbody :nth-child(25) :nth-child(5) span'
+			)?.innerText;
 
-				dataJson.chfBuyCast = $(
-					'table tbody :nth-child(26) :nth-child(2) span'
-				)?.innerText;
-				dataJson.chfBuyTransfer = $(
-					'table tbody :nth-child(26) :nth-child(3) span'
-				)?.innerText;
-				dataJson.chfSellTransfer = $(
-					'table tbody :nth-child(26) :nth-child(4) span'
-				)?.innerText;
-				dataJson.chfSellCast = $(
-					'table tbody :nth-child(26) :nth-child(5) span'
-				)?.innerText;
+			dataJson.chfBuyCast = $(
+				'table tbody :nth-child(26) :nth-child(2) span'
+			)?.innerText;
+			dataJson.chfBuyTransfer = $(
+				'table tbody :nth-child(26) :nth-child(3) span'
+			)?.innerText;
+			dataJson.chfSellTransfer = $(
+				'table tbody :nth-child(26) :nth-child(4) span'
+			)?.innerText;
+			dataJson.chfSellCast = $(
+				'table tbody :nth-child(26) :nth-child(5) span'
+			)?.innerText;
 
-				dataJson.hkdBuyCast = $(
-					'table tbody :nth-child(27) :nth-child(2) span'
-				)?.innerText;
-				dataJson.hkdBuyTransfer = $(
-					'table tbody :nth-child(27) :nth-child(3) span'
-				)?.innerText;
-				dataJson.hkdSellTransfer = $(
-					'table tbody :nth-child(27) :nth-child(4) span'
-				)?.innerText;
-				dataJson.hkdSellCast = $(
-					'table tbody :nth-child(27) :nth-child(5) span'
-				)?.innerText;
+			dataJson.hkdBuyCast = $(
+				'table tbody :nth-child(27) :nth-child(2) span'
+			)?.innerText;
+			dataJson.hkdBuyTransfer = $(
+				'table tbody :nth-child(27) :nth-child(3) span'
+			)?.innerText;
+			dataJson.hkdSellTransfer = $(
+				'table tbody :nth-child(27) :nth-child(4) span'
+			)?.innerText;
+			dataJson.hkdSellCast = $(
+				'table tbody :nth-child(27) :nth-child(5) span'
+			)?.innerText;
 
-				dataJson.krwBuyCast = $(
-					'table tbody :nth-child(28) :nth-child(2) span'
-				)?.innerText;
-				dataJson.krwBuyTransfer = $(
-					'table tbody :nth-child(28) :nth-child(3) span'
-				)?.innerText;
-				dataJson.krwSellTransfer = $(
-					'table tbody :nth-child(28) :nth-child(4) span'
-				)?.innerText;
-				dataJson.krwSellCast = $(
-					'table tbody :nth-child(28) :nth-child(5) span'
-				)?.innerText;
-			} catch (err) {
-				console.log(err);
-			}
+			dataJson.krwBuyCast = $(
+				'table tbody :nth-child(28) :nth-child(2) span'
+			)?.innerText;
+			dataJson.krwBuyTransfer = $(
+				'table tbody :nth-child(28) :nth-child(3) span'
+			)?.innerText;
+			dataJson.krwSellTransfer = $(
+				'table tbody :nth-child(28) :nth-child(4) span'
+			)?.innerText;
+			dataJson.krwSellCast = $(
+				'table tbody :nth-child(28) :nth-child(5) span'
+			)?.innerText;
+			// } catch (err) {
+			// 	console.log(err);
+			// }
 			return dataJson;
 		});
-
-		// console.log(abBankData)
-
-		AbBank.findOneAndUpdate(
-			{ symbol: abBankData.symbol },
-			{
-				name: abBankData.name,
-				symbol: abBankData.symbol,
-				timeUpdate: abBankData.timeUpdate,
-
-				usdBuyCast: abBankData.usdBuyCast,
-				usdBuyTransfer: abBankData.usdBuyTransfer,
-				usdSellTransfer: abBankData.usdSellTransfer,
-				usdSellCast: abBankData.usdSellCast,
-
-				eurBuyCast: abBankData.eurBuyCast,
-				eurBuyTransfer: abBankData.eurBuyTransfer,
-				eurSellTransfer: abBankData.eurSellTransfer,
-				eurSellCast: abBankData.eurSellCast,
-
-				gbpBuyCast: abBankData.gbpBuyCast,
-				gbpBuyTransfer: abBankData.gbpBuyTransfer,
-				gbpSellTransfer: abBankData.gbpSellTransfer,
-				gbpSellCast: abBankData.gbpSellCast,
-
-				jpyBuyCast: abBankData.jpyBuyCast,
-				jpyBuyTransfer: abBankData.jpyBuyTransfer,
-				jpySellTransfer: abBankData.jpySellTransfer,
-				jpySellCast: abBankData.jpySellCast,
-
-				audBuyCast: abBankData.audBuyCast,
-				audBuyTransfer: abBankData.audBuyTransfer,
-				audSellTransfer: abBankData.audSellTransfer,
-				audSellCast: abBankData.audSellCast,
-
-				cadBuyCast: abBankData.cadBuyCast,
-				cadBuyTransfer: abBankData.cadBuyTransfer,
-				cadSellTransfer: abBankData.cadSellTransfer,
-				cadSellCast: abBankData.cadSellCast,
-
-				nzdBuyCast: abBankData.nzdBuyCast,
-				nzdBuyTransfer: abBankData.nzdBuyTransfer,
-				nzdSellTransfer: abBankData.nzdSellTransfer,
-				nzdSellCast: abBankData.nzdSellCast,
-
-				sgdBuyCast: abBankData.sgdBuyCast,
-				sgdBuyTransfer: abBankData.sgdBuyTransfer,
-				sgdSellTransfer: abBankData.sgdSellTransfer,
-				sgdSellCast: abBankData.sgdSellCast,
-
-				chfBuyCast: abBankData.chfBuyCast,
-				chfBuyTransfer: abBankData.chfBuyTransfer,
-				chfSellTransfer: abBankData.chfSellTransfer,
-				chfSellCast: abBankData.chfSellCast,
-
-				hkdBuyCast: abBankData.hkdBuyCast,
-				hkdBuyTransfer: abBankData.hkdBuyTransfer,
-				hkdSellTransfer: abBankData.hkdSellTransfer,
-				hkdSellCast: abBankData.hkdSellCast,
-
-				krwBuyCast: abBankData.krwBuyCast,
-				krwBuyTransfer: abBankData.krwBuyTransfer,
-				krwSellTransfer: abBankData.krwSellTransfer,
-				krwSellCast: abBankData.krwSellCast,
-			},
-			{ upsert: true }
-		)
-			// .then((doc) => console.log(doc))
-			.catch((err) => console.log(abBankData.symbol));
-
-		await browser.close();
 	} catch (error) {
 		console.log(error);
+		return false;
 	}
-	// })
+};
+
+const crawlAbBank = asyncHandler(async () => {
+	console.log('start crawl abbank');
+	let data = false;
+	let attemps = 0;
+	//retry request until it gets data or tries 3 times
+	while (data == false && attemps < 3) {
+		console.log('loop' + attemps);
+		data = await collectDataAbBank(urlAbBank);
+		attemps++;
+
+		if (data) {
+			console.log(data);
+			AbBank.findOneAndUpdate(
+				{ symbol: data.symbol },
+				{
+					name: data.name,
+					symbol: data.symbol,
+					timeUpdate: data.timeUpdate,
+
+					usdBuyCast: data.usdBuyCast,
+					usdBuyTransfer: data.usdBuyTransfer,
+					usdSellTransfer: data.usdSellTransfer,
+					usdSellCast: data.usdSellCast,
+
+					eurBuyCast: data.eurBuyCast,
+					eurBuyTransfer: data.eurBuyTransfer,
+					eurSellTransfer: data.eurSellTransfer,
+					eurSellCast: data.eurSellCast,
+
+					gbpBuyCast: data.gbpBuyCast,
+					gbpBuyTransfer: data.gbpBuyTransfer,
+					gbpSellTransfer: data.gbpSellTransfer,
+					gbpSellCast: data.gbpSellCast,
+
+					jpyBuyCast: data.jpyBuyCast,
+					jpyBuyTransfer: data.jpyBuyTransfer,
+					jpySellTransfer: data.jpySellTransfer,
+					jpySellCast: data.jpySellCast,
+
+					audBuyCast: data.audBuyCast,
+					audBuyTransfer: data.audBuyTransfer,
+					audSellTransfer: data.audSellTransfer,
+					audSellCast: data.audSellCast,
+
+					cadBuyCast: data.cadBuyCast,
+					cadBuyTransfer: data.cadBuyTransfer,
+					cadSellTransfer: data.cadSellTransfer,
+					cadSellCast: data.cadSellCast,
+
+					nzdBuyCast: data.nzdBuyCast,
+					nzdBuyTransfer: data.nzdBuyTransfer,
+					nzdSellTransfer: data.nzdSellTransfer,
+					nzdSellCast: data.nzdSellCast,
+
+					sgdBuyCast: data.sgdBuyCast,
+					sgdBuyTransfer: data.sgdBuyTransfer,
+					sgdSellTransfer: data.sgdSellTransfer,
+					sgdSellCast: data.sgdSellCast,
+
+					chfBuyCast: data.chfBuyCast,
+					chfBuyTransfer: data.chfBuyTransfer,
+					chfSellTransfer: data.chfSellTransfer,
+					chfSellCast: data.chfSellCast,
+
+					hkdBuyCast: data.hkdBuyCast,
+					hkdBuyTransfer: data.hkdBuyTransfer,
+					hkdSellTransfer: data.hkdSellTransfer,
+					hkdSellCast: data.hkdSellCast,
+
+					krwBuyCast: data.krwBuyCast,
+					krwBuyTransfer: data.krwBuyTransfer,
+					krwSellTransfer: data.krwSellTransfer,
+					krwSellCast: data.krwSellCast,
+				},
+				{ upsert: true }
+			)
+				// .then((doc) => console.log(doc))
+				.catch((err) => console.log(data.symbol));
+
+			// await browser.close();
+		}
+
+		if (data === false) {
+			//wait a few second, also a good idea to swap proxy here
+			console.log('Recrawl........' + attemps);
+			await new Promise((resolve) => setTimeout(resolve, 3000));
+		}
+	}
 });
+
+// const crawlAbBank = asyncHandler(async () => {
+// 	// cron.schedule('*/50 * * * * *', async () => {
+// 	try {
+// 		const browser = await puppeteer.launch({
+// 			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+// 		});
+// 		const page = await browser.newPage();
+// 		await page.setUserAgent(
+// 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
+// 		);
+// 		await page.goto(urlAbBank, { waitUntil: 'networkidle2' });
+
+// 		await page.waitForTimeout(2000);
+
+// 		let abBankData = await page.evaluate(async () => {
+// 			const $ = document.querySelector.bind(document);
+
+// 			let dataJson = {};
+
+// 			try {
+// 				dataJson.name = 'Ngân hàng TMCP An Bình';
+// 				dataJson.symbol = 'ABBank';
+
+// 				let date = new Date();
+// 				dataJson.timeUpdate =
+// 					date.getHours() +
+// 					':' +
+// 					date.getMinutes() +
+// 					':' +
+// 					date.getSeconds() +
+// 					' ' +
+// 					date.getDate() +
+// 					'/' +
+// 					(date.getMonth() + 1) +
+// 					'/' +
+// 					date.getFullYear();
+
+// 				dataJson.usdBuyCast = $(
+// 					'table tbody :nth-child(17) :nth-child(2) span'
+// 				)?.innerText;
+// 				dataJson.usdBuyTransfer = $(
+// 					'table tbody :nth-child(17) :nth-child(3) span'
+// 				)?.innerText;
+// 				dataJson.usdSellTransfer = $(
+// 					'table tbody :nth-child(17) :nth-child(4) span'
+// 				)?.innerText;
+// 				dataJson.usdSellCast = $(
+// 					'table tbody :nth-child(17) :nth-child(5) span'
+// 				)?.innerText;
+
+// 				dataJson.eurBuyCast = $(
+// 					'table tbody :nth-child(19) :nth-child(2) span'
+// 				)?.innerText;
+// 				dataJson.eurBuyTransfer = $(
+// 					'table tbody :nth-child(19) :nth-child(3) span'
+// 				)?.innerText;
+// 				dataJson.eurSellTransfer = $(
+// 					'table tbody :nth-child(19) :nth-child(4) span'
+// 				)?.innerText;
+// 				dataJson.eurSellCast = $(
+// 					'table tbody :nth-child(19) :nth-child(5) span'
+// 				)?.innerText;
+
+// 				dataJson.gbpBuyCast = $(
+// 					'table tbody :nth-child(20) :nth-child(2) span'
+// 				)?.innerText;
+// 				dataJson.gbpBuyTransfer = $(
+// 					'table tbody :nth-child(20) :nth-child(3) span'
+// 				)?.innerText;
+// 				dataJson.gbpSellTransfer = $(
+// 					'table tbody :nth-child(20) :nth-child(4) span'
+// 				)?.innerText;
+// 				dataJson.gbpSellCast = $(
+// 					'table tbody :nth-child(20) :nth-child(5) span'
+// 				)?.innerText;
+
+// 				dataJson.jpyBuyCast = $(
+// 					'table tbody :nth-child(21) :nth-child(2) span'
+// 				)?.innerText;
+// 				dataJson.jpyBuyTransfer = $(
+// 					'table tbody :nth-child(21) :nth-child(3) span'
+// 				)?.innerText;
+// 				dataJson.jpySellTransfer = $(
+// 					'table tbody :nth-child(21) :nth-child(4) span'
+// 				)?.innerText;
+// 				dataJson.jpySellCast = $(
+// 					'table tbody :nth-child(21) :nth-child(5) span'
+// 				)?.innerText;
+
+// 				dataJson.audBuyCast = $(
+// 					'table tbody :nth-child(22) :nth-child(2) span'
+// 				)?.innerText;
+// 				dataJson.audBuyTransfer = $(
+// 					'table tbody :nth-child(22) :nth-child(3) span'
+// 				)?.innerText;
+// 				dataJson.audSellTransfer = $(
+// 					'table tbody :nth-child(22) :nth-child(4) span'
+// 				)?.innerText;
+// 				dataJson.audSellCast = $(
+// 					'table tbody :nth-child(22) :nth-child(5) span'
+// 				)?.innerText;
+
+// 				dataJson.cadBuyCast = $(
+// 					'table tbody :nth-child(23) :nth-child(2) span'
+// 				)?.innerText;
+// 				dataJson.cadBuyTransfer = $(
+// 					'table tbody :nth-child(23) :nth-child(3) span'
+// 				)?.innerText;
+// 				dataJson.cadSellTransfer = $(
+// 					'table tbody :nth-child(23) :nth-child(4) span'
+// 				)?.innerText;
+// 				dataJson.cadSellCast = $(
+// 					'table tbody :nth-child(23) :nth-child(5) span'
+// 				)?.innerText;
+
+// 				dataJson.nzdBuyCast = $(
+// 					'table tbody :nth-child(24) :nth-child(2) span'
+// 				)?.innerText;
+// 				dataJson.nzdBuyTransfer = $(
+// 					'table tbody :nth-child(24) :nth-child(3) span'
+// 				)?.innerText;
+// 				dataJson.nzdSellTransfer = $(
+// 					'table tbody :nth-child(24) :nth-child(4) span'
+// 				)?.innerText;
+// 				dataJson.nzdSellCast = $(
+// 					'table tbody :nth-child(24) :nth-child(5) span'
+// 				)?.innerText;
+
+// 				dataJson.sgdBuyCast = $(
+// 					'table tbody :nth-child(25) :nth-child(2) span'
+// 				)?.innerText;
+// 				dataJson.sgdBuyTransfer = $(
+// 					'table tbody :nth-child(25) :nth-child(3) span'
+// 				)?.innerText;
+// 				dataJson.sgdSellTransfer = $(
+// 					'table tbody :nth-child(25) :nth-child(4) span'
+// 				)?.innerText;
+// 				dataJson.sgdSellCast = $(
+// 					'table tbody :nth-child(25) :nth-child(5) span'
+// 				)?.innerText;
+
+// 				dataJson.chfBuyCast = $(
+// 					'table tbody :nth-child(26) :nth-child(2) span'
+// 				)?.innerText;
+// 				dataJson.chfBuyTransfer = $(
+// 					'table tbody :nth-child(26) :nth-child(3) span'
+// 				)?.innerText;
+// 				dataJson.chfSellTransfer = $(
+// 					'table tbody :nth-child(26) :nth-child(4) span'
+// 				)?.innerText;
+// 				dataJson.chfSellCast = $(
+// 					'table tbody :nth-child(26) :nth-child(5) span'
+// 				)?.innerText;
+
+// 				dataJson.hkdBuyCast = $(
+// 					'table tbody :nth-child(27) :nth-child(2) span'
+// 				)?.innerText;
+// 				dataJson.hkdBuyTransfer = $(
+// 					'table tbody :nth-child(27) :nth-child(3) span'
+// 				)?.innerText;
+// 				dataJson.hkdSellTransfer = $(
+// 					'table tbody :nth-child(27) :nth-child(4) span'
+// 				)?.innerText;
+// 				dataJson.hkdSellCast = $(
+// 					'table tbody :nth-child(27) :nth-child(5) span'
+// 				)?.innerText;
+
+// 				dataJson.krwBuyCast = $(
+// 					'table tbody :nth-child(28) :nth-child(2) span'
+// 				)?.innerText;
+// 				dataJson.krwBuyTransfer = $(
+// 					'table tbody :nth-child(28) :nth-child(3) span'
+// 				)?.innerText;
+// 				dataJson.krwSellTransfer = $(
+// 					'table tbody :nth-child(28) :nth-child(4) span'
+// 				)?.innerText;
+// 				dataJson.krwSellCast = $(
+// 					'table tbody :nth-child(28) :nth-child(5) span'
+// 				)?.innerText;
+// 			} catch (err) {
+// 				console.log(err);
+// 			}
+// 			return dataJson;
+// 		});
+
+// 		// console.log(abBankData)
+
+// 		AbBank.findOneAndUpdate(
+// 			{ symbol: abBankData.symbol },
+// 			{
+// 				name: abBankData.name,
+// 				symbol: abBankData.symbol,
+// 				timeUpdate: abBankData.timeUpdate,
+
+// 				usdBuyCast: abBankData.usdBuyCast,
+// 				usdBuyTransfer: abBankData.usdBuyTransfer,
+// 				usdSellTransfer: abBankData.usdSellTransfer,
+// 				usdSellCast: abBankData.usdSellCast,
+
+// 				eurBuyCast: abBankData.eurBuyCast,
+// 				eurBuyTransfer: abBankData.eurBuyTransfer,
+// 				eurSellTransfer: abBankData.eurSellTransfer,
+// 				eurSellCast: abBankData.eurSellCast,
+
+// 				gbpBuyCast: abBankData.gbpBuyCast,
+// 				gbpBuyTransfer: abBankData.gbpBuyTransfer,
+// 				gbpSellTransfer: abBankData.gbpSellTransfer,
+// 				gbpSellCast: abBankData.gbpSellCast,
+
+// 				jpyBuyCast: abBankData.jpyBuyCast,
+// 				jpyBuyTransfer: abBankData.jpyBuyTransfer,
+// 				jpySellTransfer: abBankData.jpySellTransfer,
+// 				jpySellCast: abBankData.jpySellCast,
+
+// 				audBuyCast: abBankData.audBuyCast,
+// 				audBuyTransfer: abBankData.audBuyTransfer,
+// 				audSellTransfer: abBankData.audSellTransfer,
+// 				audSellCast: abBankData.audSellCast,
+
+// 				cadBuyCast: abBankData.cadBuyCast,
+// 				cadBuyTransfer: abBankData.cadBuyTransfer,
+// 				cadSellTransfer: abBankData.cadSellTransfer,
+// 				cadSellCast: abBankData.cadSellCast,
+
+// 				nzdBuyCast: abBankData.nzdBuyCast,
+// 				nzdBuyTransfer: abBankData.nzdBuyTransfer,
+// 				nzdSellTransfer: abBankData.nzdSellTransfer,
+// 				nzdSellCast: abBankData.nzdSellCast,
+
+// 				sgdBuyCast: abBankData.sgdBuyCast,
+// 				sgdBuyTransfer: abBankData.sgdBuyTransfer,
+// 				sgdSellTransfer: abBankData.sgdSellTransfer,
+// 				sgdSellCast: abBankData.sgdSellCast,
+
+// 				chfBuyCast: abBankData.chfBuyCast,
+// 				chfBuyTransfer: abBankData.chfBuyTransfer,
+// 				chfSellTransfer: abBankData.chfSellTransfer,
+// 				chfSellCast: abBankData.chfSellCast,
+
+// 				hkdBuyCast: abBankData.hkdBuyCast,
+// 				hkdBuyTransfer: abBankData.hkdBuyTransfer,
+// 				hkdSellTransfer: abBankData.hkdSellTransfer,
+// 				hkdSellCast: abBankData.hkdSellCast,
+
+// 				krwBuyCast: abBankData.krwBuyCast,
+// 				krwBuyTransfer: abBankData.krwBuyTransfer,
+// 				krwSellTransfer: abBankData.krwSellTransfer,
+// 				krwSellCast: abBankData.krwSellCast,
+// 			},
+// 			{ upsert: true }
+// 		)
+// 			// .then((doc) => console.log(doc))
+// 			.catch((err) => console.log(abBankData.symbol));
+
+// 		await browser.close();
+// 	} catch (error) {
+// 		console.log(error);
+// 	}
+// 	// })
+// });
 
 const crawlAgribank = asyncHandler(async () => {
 	// cron.schedule('*/50 * * * * *', async () => {
