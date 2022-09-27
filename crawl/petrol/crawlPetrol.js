@@ -10,7 +10,11 @@ const urlPetrolimex =
 const crawlPetrolimex = asyncHandler(async () => {
 	// cron.schedule('*/60 * * * *', async () => {
 	try {
-		const browser = await puppeteer.launch({ headless: true });
+		const browser = await puppeteer.launch({
+			headless: false,
+			executablePath: '/usr/bin/chromium-browser',
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
 		const page = await browser.newPage();
 		await page.goto(urlPetrolimex, { timeout: 0 });
 		// await page.click('[data-tooltip = "CTCP Xi măng Bỉm Sơn"]')

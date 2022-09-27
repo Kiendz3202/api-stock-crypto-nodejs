@@ -324,7 +324,7 @@ const stockRunAll = async () => {
 	});
 };
 
-stockRunAll();
+// stockRunAll();
 
 //---------------------------------------------------------------------------
 
@@ -379,7 +379,7 @@ const goldRunAll = async () => {
 		crawlAllDetailPnj();
 	});
 };
-goldRunAll();
+// goldRunAll();
 
 //----------------------------
 
@@ -409,7 +409,7 @@ const exchangeRateRunAll = async () => {
 		crawlMbbank();
 	});
 };
-exchangeRateRunAll();
+// exchangeRateRunAll();
 
 //-----------------------------
 
@@ -430,7 +430,7 @@ const interestRateRunAll = async () => {
 		crawlVpbankInterestRate();
 	});
 };
-interestRateRunAll();
+// interestRateRunAll();
 
 //-----------------------------------
 
