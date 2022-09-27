@@ -29,7 +29,7 @@ const collectDataAbBank = async (url) => {
 		await page.setUserAgent(
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
 		);
-		await page.goto(url, { timeout: 0 });
+		await page.goto(url, { waitUntil: 'load' });
 
 		await page.waitForTimeout(2000);
 
@@ -217,6 +217,7 @@ const crawlAbBank = asyncHandler(async () => {
 	while (data == false && attemps < 3) {
 		console.log('loop' + attemps);
 		data = await collectDataAbBank(urlAbBank);
+		console.log('loop' + data);
 		attemps++;
 
 		if (data) {
