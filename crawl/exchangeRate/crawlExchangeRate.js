@@ -30,41 +30,10 @@ const crawlAbBank = asyncHandler(async () => {
 		await page.setUserAgent(
 			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
 		);
-		await page.goto(urlAbBank, { timeout: 0 });
-		// await page.click('[data-tooltip = "CTCP Xi măng Bỉm Sơn"]')
-		// await page.click(`[data-value = ${symbol}]`)
-		// const selector = await page.$(`#sym-328`)
-		// await page.waitForSelector(`span[data-value=${symbol}]`)
-		// await page.click('#sym-328')
+		await page.goto(urlAbBank, { waitUntil: 'networkidle2' });
+
 		await page.waitForTimeout(2000);
-		// await page.click(`[data-value=${symbol}]`)
-		// await page.waitForSelector('#symbol-detail-popup', { visible: true })
 
-		// await page.evaluate(selector, (selector) => selector.click())
-		// await page.waitForTimeout(3000)
-
-		// const bodyHandle = await page.$('body');
-		// const { height } = await bodyHandle.boundingBox();
-		// await bodyHandle.dispose();
-
-		// // Scroll one viewport at a time, pausing to let content load
-		// const viewportHeight = page.viewport().height;
-		// let viewportIncr = 0;
-		// while (viewportIncr + viewportHeight < height) {
-		//     await page.evaluate(_viewportHeight => {
-		//         window.scrollBy(0, _viewportHeight);
-		//     }, viewportHeight);
-		//     await page.waitForTimeout(2000);
-		//     viewportIncr = viewportIncr + viewportHeight;
-		// }
-
-		// // Scroll back to top
-		// await page.evaluate(_ => {
-		//     window.scrollTo(0, 0);
-		// });
-
-		// // Some extra delay to let all data load
-		// await page.waitForTimeout(1000);
 		let abBankData = await page.evaluate(async () => {
 			const $ = document.querySelector.bind(document);
 
