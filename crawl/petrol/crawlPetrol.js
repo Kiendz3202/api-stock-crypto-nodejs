@@ -12,7 +12,7 @@ const crawlPetrolimex = asyncHandler(async () => {
 	try {
 		const browser = await puppeteer.launch({
 			headless: false,
-			executablePath: '/usr/bin/chromium-browser',
+			// executablePath: '/usr/bin/chromium-browser',
 			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
 		});
 		const page = await browser.newPage();
