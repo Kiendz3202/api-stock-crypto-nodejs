@@ -209,7 +209,7 @@ const collectDataAbBank = async (url) => {
 			return dataJson;
 		});
 	} catch (error) {
-		console.log('throw err:' + error);
+		console.log(error);
 		return false;
 	}
 };
