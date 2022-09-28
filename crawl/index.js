@@ -46,7 +46,6 @@ const {
 const { crawlPetrolimex } = require('./petrol/crawlPetrol');
 
 const {
-	crawlAbBank,
 	crawlAgribank,
 	crawlVietcombank,
 	crawlBidv,
@@ -98,7 +97,6 @@ module.exports = {
 	crawlBaoTinMinhChau,
 	crawlMiHong,
 	crawlPetrolimex,
-	crawlAbBank,
 	crawlAgribank,
 	crawlVietcombank,
 	crawlBidv,

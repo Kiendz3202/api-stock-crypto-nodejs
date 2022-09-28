@@ -1,24 +1,11 @@
 const asyncHandler = require('express-async-handler');
 
-const AbBank = require('../../../model/exchangeRate/abBankModel');
 const Agribank = require('../../../model/exchangeRate/agribankModel');
 const Bidv = require('../../../model/exchangeRate/bidvModel');
 const Mbbank = require('../../../model/exchangeRate/mbbankModel');
 const Techcombank = require('../../../model/exchangeRate/techcombankModel');
 const Vietcombank = require('../../../model/exchangeRate/vietcombankModel');
 const VietinBank = require('../../../model/exchangeRate/vietinbankModel');
-
-const abbankController = asyncHandler(async (req, res, next) => {
-	try {
-		const data = await AbBank.find().select(
-			'-_id -createdAt -updatedAt -__v'
-		);
-		res.status(200).json(data);
-	} catch (error) {
-		res.status(400);
-		throw new Error(error.message);
-	}
-});
 
 const agribankController = asyncHandler(async (req, res, next) => {
 	try {
@@ -93,7 +80,6 @@ const vietinbankController = asyncHandler(async (req, res, next) => {
 });
 
 module.exports = {
-	abbankController,
 	agribankController,
 	bidvController,
 	mbbankController,
