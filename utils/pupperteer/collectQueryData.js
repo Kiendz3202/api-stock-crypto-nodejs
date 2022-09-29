@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 
-const collectQueryData = async (url, pageEvaluateFunc) => {
+const collectQueryData = async (url, pageEvaluateFunc, props) => {
 	try {
 		const browser = await puppeteer.launch({
 			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
@@ -15,14 +15,18 @@ const collectQueryData = async (url, pageEvaluateFunc) => {
 		await page.goto(url, { waitUntil: 'load', timeout: 0 });
 		await page.waitForTimeout(2000);
 
-		return page.evaluate(pageEvaluateFunc);
+		if (props) {
+			return page.evaluate(pageEvaluateFunc, ...props);
+		} else {
+			return page.evaluate(pageEvaluateFunc);
+		}
 	} catch (error) {
 		console.log('co loi o day' + error);
 		return false;
 	}
 };
 
-const collectQueryDataHeightScroll = async (url, pageEvaluateFunc) => {
+const collectQueryDataHeightScroll = async (url, pageEvaluateFunc, props) => {
 	try {
 		const browser = await puppeteer.launch({
 			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
@@ -59,7 +63,11 @@ const collectQueryDataHeightScroll = async (url, pageEvaluateFunc) => {
 		// Some extra delay to let all data load
 		await page.waitForTimeout(1000);
 
-		return page.evaluate(pageEvaluateFunc);
+		if (props) {
+			return page.evaluate(pageEvaluateFunc, ...props);
+		} else {
+			return page.evaluate(pageEvaluateFunc);
+		}
 	} catch (error) {
 		console.log('co loi o day' + error);
 		return false;

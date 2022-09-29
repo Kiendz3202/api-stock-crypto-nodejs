@@ -343,473 +343,477 @@ const crawlSjc = asyncHandler(async () => {
 });
 
 const crawlPnj = asyncHandler(async (localtionNumber, index) => {
-	// cron.schedule('*/15 * * * *', async () => {
-	try {
-		const browser = await puppeteer.launch({
-			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
-		});
-		const page = await browser.newPage();
-		await page.setUserAgent(
-			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
+	const pageEvaluateFunc = async (localtionNumber, index) => {
+		const $ = document.querySelector.bind(document);
+
+		let dataJson = {};
+
+		try {
+			dataJson.name = 'PNJ';
+			dataJson.location = document.querySelector(
+				`#select_gold_area :nth-child(${index})`
+			)?.innerText;
+
+			let date = new Date();
+			dataJson.timeUpdate =
+				date.getHours() +
+				':' +
+				date.getMinutes() +
+				':' +
+				date.getSeconds() +
+				' ' +
+				date.getDate() +
+				'/' +
+				(date.getMonth() + 1) +
+				'/' +
+				date.getFullYear();
+
+			dataJson.vangmiengsjcBuy = $(
+				'#content-price :nth-child(1) :nth-child(2) span'
+			)?.innerText;
+			dataJson.vangmiengsjcSell = $(
+				'#content-price :nth-child(1) :nth-child(3) span'
+			)?.innerText;
+
+			dataJson.nhantronpnjBuy = $(
+				'#content-price :nth-child(2) :nth-child(2) span'
+			)?.innerText;
+			dataJson.nhantronpnjSell = $(
+				'#content-price :nth-child(2) :nth-child(3) span'
+			)?.innerText;
+
+			dataJson.vangkimbaoBuy = $(
+				'#content-price :nth-child(3) :nth-child(2) span'
+			)?.innerText;
+			dataJson.vangkimbaoSell = $(
+				'#content-price :nth-child(3) :nth-child(3) span'
+			)?.innerText;
+
+			dataJson.vangphucloctaiBuy = $(
+				'#content-price :nth-child(4) :nth-child(2) span'
+			)?.innerText;
+			dataJson.vangphucloctaiSell = $(
+				'#content-price :nth-child(4) :nth-child(3) span'
+			)?.innerText;
+
+			dataJson.vang24kBuy = $(
+				'#content-price :nth-child(5) :nth-child(2) span'
+			)?.innerText;
+			dataJson.vang24kSell = $(
+				'#content-price :nth-child(5) :nth-child(3) span'
+			)?.innerText;
+
+			dataJson.vang750Buy = $(
+				'#content-price :nth-child(6) :nth-child(2) span'
+			)?.innerText;
+			dataJson.vang750Sell = $(
+				'#content-price :nth-child(6) :nth-child(3) span'
+			)?.innerText;
+
+			dataJson.vang585Buy = $(
+				'#content-price :nth-child(7) :nth-child(2) span'
+			)?.innerText;
+			dataJson.vang585Sell = $(
+				'#content-price :nth-child(7) :nth-child(3) span'
+			)?.innerText;
+
+			dataJson.vang416Buy = $(
+				'#content-price :nth-child(8) :nth-child(2) span'
+			)?.innerText;
+			dataJson.vang416Sell = $(
+				'#content-price :nth-child(8) :nth-child(3) span'
+			)?.innerText;
+
+			dataJson.vangmiengpnjBuy = $(
+				'#content-price :nth-child(9) :nth-child(2) span'
+			)?.innerText;
+			dataJson.vangmiengpnjSell = $(
+				'#content-price :nth-child(9) :nth-child(3) span'
+			)?.innerText;
+
+			dataJson.vang916Buy = $(
+				'#content-price :nth-child(10) :nth-child(2) span'
+			)?.innerText;
+			dataJson.vang916Sell = $(
+				'#content-price :nth-child(10) :nth-child(3) span'
+			)?.innerText;
+
+			dataJson.vang680Buy = $(
+				'#content-price :nth-child(11) :nth-child(2) span'
+			)?.innerText;
+			dataJson.vang680Sell = $(
+				'#content-price :nth-child(11) :nth-child(3) span'
+			)?.innerText;
+
+			dataJson.vang650Buy = $(
+				'#content-price :nth-child(12) :nth-child(2) span'
+			)?.innerText;
+			dataJson.vang650Sell = $(
+				'#content-price :nth-child(12) :nth-child(3) span'
+			)?.innerText;
+		} catch (err) {
+			console.log(err);
+		}
+		return dataJson;
+	};
+
+	const props = [localtionNumber, index];
+
+	let data = false;
+	let attemps = 0;
+	//retry request until it gets data or tries 3 times
+	while (data == false && attemps < 3) {
+		console.log('loop' + attemps);
+		data = await collectQueryData(
+			`${urlPnj}${localtionNumber}`,
+			pageEvaluateFunc,
+			props
 		);
-		await page.goto(`${urlPnj}${localtionNumber}`, { timeout: 0 });
+		console.log('loop' + data);
+		attemps++;
 
-		await page.waitForTimeout(2000);
+		if (data) {
+			console.log(data);
+			Pnj.findOneAndUpdate(
+				{ location: data.location },
+				{
+					name: data.name,
+					location: data.location,
+					timeUpdate: data.timeUpdate,
+					vangmiengsjcBuy: data.vangmiengpnjBuy,
+					nhantronpnjBuy: data.nhantronpnjBuy,
+					vangkimbaoBuy: data.vangkimbaoBuy,
+					vangphucloctaiBuy: data.vangphucloctaiBuy,
+					vang24kBuy: data.vang24kBuy,
+					vang750Buy: data.vang750Buy,
+					vang585Buy: data.vang585Buy,
+					vang416Buy: data.vang416Buy,
+					vangmiengpnjBuy: data.vangmiengpnjBuy,
+					vang916Buy: data.vang916Buy,
+					vang680Buy: data.vang680Buy,
+					vang650Buy: data.vang650Buy,
 
-		let pnjDetailData = await page.evaluate(
-			async (localtionNumber, index) => {
-				const $ = document.querySelector.bind(document);
+					vangmiengsjcSell: data.vangmiengpnjSell,
+					nhantronpnjSell: data.nhantronpnjSell,
+					vangkimbaoSell: data.vangkimbaoSell,
+					vangphucloctaiSell: data.vangphucloctaiSell,
+					vang24kSell: data.vang24kSell,
+					vang750Sell: data.vang750Sell,
+					vang585Sell: data.vang585Sell,
+					vang416Sell: data.vang416Sell,
+					vangmiengpnjSell: data.vangmiengpnjSell,
+					vang916Sell: data.vang916Sell,
+					vang680Sell: data.vang680Sell,
+					vang650Sell: data.vang650Sell,
+				},
+				{ upsert: true }
+			)
+				// .then((doc) => console.log(doc))
+				.catch((err) => console.log(data.name));
 
-				let dataJson = {};
+			// await browser.close();
+		}
 
-				try {
-					dataJson.name = 'PNJ';
-					dataJson.location = document.querySelector(
-						`#select_gold_area :nth-child(${index})`
-					)?.innerText;
-
-					let date = new Date();
-					dataJson.timeUpdate =
-						date.getHours() +
-						':' +
-						date.getMinutes() +
-						':' +
-						date.getSeconds() +
-						' ' +
-						date.getDate() +
-						'/' +
-						(date.getMonth() + 1) +
-						'/' +
-						date.getFullYear();
-
-					dataJson.vangmiengsjcBuy = $(
-						'#content-price :nth-child(1) :nth-child(2) span'
-					)?.innerText;
-					dataJson.vangmiengsjcSell = $(
-						'#content-price :nth-child(1) :nth-child(3) span'
-					)?.innerText;
-
-					dataJson.nhantronpnjBuy = $(
-						'#content-price :nth-child(2) :nth-child(2) span'
-					)?.innerText;
-					dataJson.nhantronpnjSell = $(
-						'#content-price :nth-child(2) :nth-child(3) span'
-					)?.innerText;
-
-					dataJson.vangkimbaoBuy = $(
-						'#content-price :nth-child(3) :nth-child(2) span'
-					)?.innerText;
-					dataJson.vangkimbaoSell = $(
-						'#content-price :nth-child(3) :nth-child(3) span'
-					)?.innerText;
-
-					dataJson.vangphucloctaiBuy = $(
-						'#content-price :nth-child(4) :nth-child(2) span'
-					)?.innerText;
-					dataJson.vangphucloctaiSell = $(
-						'#content-price :nth-child(4) :nth-child(3) span'
-					)?.innerText;
-
-					dataJson.vang24kBuy = $(
-						'#content-price :nth-child(5) :nth-child(2) span'
-					)?.innerText;
-					dataJson.vang24kSell = $(
-						'#content-price :nth-child(5) :nth-child(3) span'
-					)?.innerText;
-
-					dataJson.vang750Buy = $(
-						'#content-price :nth-child(6) :nth-child(2) span'
-					)?.innerText;
-					dataJson.vang750Sell = $(
-						'#content-price :nth-child(6) :nth-child(3) span'
-					)?.innerText;
-
-					dataJson.vang585Buy = $(
-						'#content-price :nth-child(7) :nth-child(2) span'
-					)?.innerText;
-					dataJson.vang585Sell = $(
-						'#content-price :nth-child(7) :nth-child(3) span'
-					)?.innerText;
-
-					dataJson.vang416Buy = $(
-						'#content-price :nth-child(8) :nth-child(2) span'
-					)?.innerText;
-					dataJson.vang416Sell = $(
-						'#content-price :nth-child(8) :nth-child(3) span'
-					)?.innerText;
-
-					dataJson.vangmiengpnjBuy = $(
-						'#content-price :nth-child(9) :nth-child(2) span'
-					)?.innerText;
-					dataJson.vangmiengpnjSell = $(
-						'#content-price :nth-child(9) :nth-child(3) span'
-					)?.innerText;
-
-					dataJson.vang916Buy = $(
-						'#content-price :nth-child(10) :nth-child(2) span'
-					)?.innerText;
-					dataJson.vang916Sell = $(
-						'#content-price :nth-child(10) :nth-child(3) span'
-					)?.innerText;
-
-					dataJson.vang680Buy = $(
-						'#content-price :nth-child(11) :nth-child(2) span'
-					)?.innerText;
-					dataJson.vang680Sell = $(
-						'#content-price :nth-child(11) :nth-child(3) span'
-					)?.innerText;
-
-					dataJson.vang650Buy = $(
-						'#content-price :nth-child(12) :nth-child(2) span'
-					)?.innerText;
-					dataJson.vang650Sell = $(
-						'#content-price :nth-child(12) :nth-child(3) span'
-					)?.innerText;
-				} catch (err) {
-					console.log(err);
-				}
-				return dataJson;
-			},
-			localtionNumber,
-			index
-		);
-
-		// console.log(pnjDetailData)
-
-		Pnj.findOneAndUpdate(
-			{ name: pnjDetailData.location },
-			{
-				name: pnjDetailData.name,
-				location: pnjDetailData.location,
-				timeUpdate: pnjDetailData.timeUpdate,
-				vangmiengsjcBuy: pnjDetailData.vangmiengpnjBuy,
-				nhantronpnjBuy: pnjDetailData.nhantronpnjBuy,
-				vangkimbaoBuy: pnjDetailData.vangkimbaoBuy,
-				vangphucloctaiBuy: pnjDetailData.vangphucloctaiBuy,
-				vang24kBuy: pnjDetailData.vang24kBuy,
-				vang750Buy: pnjDetailData.vang750Buy,
-				vang585Buy: pnjDetailData.vang585Buy,
-				vang416Buy: pnjDetailData.vang416Buy,
-				vangmiengpnjBuy: pnjDetailData.vangmiengpnjBuy,
-				vang916Buy: pnjDetailData.vang916Buy,
-				vang680Buy: pnjDetailData.vang680Buy,
-				vang650Buy: pnjDetailData.vang650Buy,
-
-				vangmiengsjcSell: pnjDetailData.vangmiengpnjSell,
-				nhantronpnjSell: pnjDetailData.nhantronpnjSell,
-				vangkimbaoSell: pnjDetailData.vangkimbaoSell,
-				vangphucloctaiSell: pnjDetailData.vangphucloctaiSell,
-				vang24kSell: pnjDetailData.vang24kSell,
-				vang750Sell: pnjDetailData.vang750Sell,
-				vang585Sell: pnjDetailData.vang585Sell,
-				vang416Sell: pnjDetailData.vang416Sell,
-				vangmiengpnjSell: pnjDetailData.vangmiengpnjSell,
-				vang916Sell: pnjDetailData.vang916Sell,
-				vang680Sell: pnjDetailData.vang680Sell,
-				vang650Sell: pnjDetailData.vang650Sell,
-			},
-			{ upsert: true }
-		)
-			// .then((doc) => console.log(doc))
-			.catch((err) => console.log(pnjDetailData.name));
-
-		await browser.close();
-	} catch (error) {
-		console.log(error);
+		if (data === false) {
+			//wait a few second, also a good idea to swap proxy here
+			console.log('Recrawl........' + attemps);
+			await new Promise((resolve) => setTimeout(resolve, 3000));
+		}
 	}
-	// })
 });
 
 const crawlDoji = asyncHandler(async (location) => {
-	// cron.schedule('*/15 * * * *', async () => {
-	try {
-		const browser = await puppeteer.launch({
-			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
-		});
-		const page = await browser.newPage();
-		await page.setUserAgent(
-			'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.75 Safari/537.36'
-		);
-		await page.goto(urlDoji, { timeout: 0 });
+	const pageEvaluateFunc = async (localtion) => {
+		const $ = document.querySelector.bind(document);
+		const $$ = document.querySelectorAll.bind(document);
 
-		await page.waitForTimeout(2000);
+		let dataJson = {};
 
-		let dojiDetailData = await page.evaluate(async (localtion) => {
-			const $ = document.querySelector.bind(document);
-			const $$ = document.querySelectorAll.bind(document);
+		try {
+			dataJson.name = 'DOJI';
 
-			let dataJson = {};
+			let date = new Date();
+			dataJson.timeUpdate =
+				date.getHours() +
+				':' +
+				date.getMinutes() +
+				':' +
+				date.getSeconds() +
+				' ' +
+				date.getDate() +
+				'/' +
+				(date.getMonth() + 1) +
+				'/' +
+				date.getFullYear();
 
-			try {
-				dataJson.name = 'DOJI';
+			//-----Ha Noi----------
+			const tableHN = $$('._table')[1];
+			dataJson.sjcHNBuy = tableHN.querySelector(
+				'._content-tab ._buy :nth-child(2)'
+			)?.innerText;
+			dataJson.AVPLHNBuy = tableHN.querySelector(
+				'._content-tab ._buy :nth-child(3)'
+			)?.innerText;
+			dataJson.nhanHTVHNBuy = tableHN.querySelector(
+				'._content-tab ._buy :nth-child(4)'
+			)?.innerText;
+			dataJson.KTTKimGiapHNBuy = tableHN.querySelector(
+				'._content-tab ._buy :nth-child(5)'
+			)?.innerText;
+			dataJson.phiSjcHNBuy = tableHN.querySelector(
+				'._content-tab ._buy :nth-child(6)'
+			)?.innerText;
+			dataJson.nuTrang9999HNBuy = tableHN.querySelector(
+				'._content-tab ._buy :nth-child(7)'
+			)?.innerText;
+			dataJson.nuTrang999HNBuy = tableHN.querySelector(
+				'._content-tab ._buy :nth-child(8)'
+			)?.innerText;
+			dataJson.nuTrang99HNBuy = tableHN.querySelector(
+				'._content-tab ._buy :nth-child(9)'
+			)?.innerText;
+			dataJson.nuTrang18kHNBuy = tableHN.querySelector(
+				'._content-tab ._buy :nth-child(10)'
+			)?.innerText;
+			dataJson.nuTrang14kHNBuy = tableHN.querySelector(
+				'._content-tab ._buy :nth-child(11)'
+			)?.innerText;
+			dataJson.nuTrang10kHNBuy = tableHN.querySelector(
+				'._content-tab ._buy :nth-child(12)'
+			)?.innerText;
 
-				let date = new Date();
-				dataJson.timeUpdate =
-					date.getHours() +
-					':' +
-					date.getMinutes() +
-					':' +
-					date.getSeconds() +
-					' ' +
-					date.getDate() +
-					'/' +
-					(date.getMonth() + 1) +
-					'/' +
-					date.getFullYear();
+			dataJson.sjcHNSell = tableHN.querySelector(
+				'._content-tab ._Sell :nth-child(2)'
+			)?.innerText;
+			dataJson.AVPLHNSell = tableHN.querySelector(
+				'._content-tab ._Sell :nth-child(3)'
+			)?.innerText;
+			dataJson.nhanHTVHNSell = tableHN.querySelector(
+				'._content-tab ._Sell :nth-child(4)'
+			)?.innerText;
+			dataJson.KTTKimGiapHNSell = tableHN.querySelector(
+				'._content-tab ._Sell :nth-child(5)'
+			)?.innerText;
+			dataJson.phiSjcHNSell = tableHN.querySelector(
+				'._content-tab ._Sell :nth-child(6)'
+			)?.innerText;
+			dataJson.nuTrang9999HNSell = tableHN.querySelector(
+				'._content-tab ._Sell :nth-child(7)'
+			)?.innerText;
+			dataJson.nuTrang999HNSell = tableHN.querySelector(
+				'._content-tab ._Sell :nth-child(8)'
+			)?.innerText;
+			dataJson.nuTrang99HNSell = tableHN.querySelector(
+				'._content-tab ._Sell :nth-child(9)'
+			)?.innerText;
+			dataJson.nuTrang18kHNSell = tableHN.querySelector(
+				'._content-tab ._Sell :nth-child(10)'
+			)?.innerText;
+			dataJson.nuTrang14kHNSell = tableHN.querySelector(
+				'._content-tab ._Sell :nth-child(11)'
+			)?.innerText;
+			dataJson.nuTrang10kHNSell = tableHN.querySelector(
+				'._content-tab ._Sell :nth-child(12)'
+			)?.innerText;
 
-				//-----Ha Noi----------
-				const tableHN = $$('._table')[1];
-				dataJson.sjcHNBuy = tableHN.querySelector(
-					'._content-tab ._buy :nth-child(2)'
-				)?.innerText;
-				dataJson.AVPLHNBuy = tableHN.querySelector(
-					'._content-tab ._buy :nth-child(3)'
-				)?.innerText;
-				dataJson.nhanHTVHNBuy = tableHN.querySelector(
-					'._content-tab ._buy :nth-child(4)'
-				)?.innerText;
-				dataJson.KTTKimGiapHNBuy = tableHN.querySelector(
-					'._content-tab ._buy :nth-child(5)'
-				)?.innerText;
-				dataJson.phiSjcHNBuy = tableHN.querySelector(
-					'._content-tab ._buy :nth-child(6)'
-				)?.innerText;
-				dataJson.nuTrang9999HNBuy = tableHN.querySelector(
-					'._content-tab ._buy :nth-child(7)'
-				)?.innerText;
-				dataJson.nuTrang999HNBuy = tableHN.querySelector(
-					'._content-tab ._buy :nth-child(8)'
-				)?.innerText;
-				dataJson.nuTrang99HNBuy = tableHN.querySelector(
-					'._content-tab ._buy :nth-child(9)'
-				)?.innerText;
-				dataJson.nuTrang18kHNBuy = tableHN.querySelector(
-					'._content-tab ._buy :nth-child(10)'
-				)?.innerText;
-				dataJson.nuTrang14kHNBuy = tableHN.querySelector(
-					'._content-tab ._buy :nth-child(11)'
-				)?.innerText;
-				dataJson.nuTrang10kHNBuy = tableHN.querySelector(
-					'._content-tab ._buy :nth-child(12)'
-				)?.innerText;
+			//--------Ho Chi Minh----------
+			const tableHCM = document.querySelectorAll('._table')[2];
+			dataJson.sjcHCMBuy = tableHCM.querySelector(
+				'._content-tab ._buy :nth-child(2)'
+			)?.innerText;
+			dataJson.AVPLHCMBuy = tableHCM.querySelector(
+				'._content-tab ._buy :nth-child(3)'
+			)?.innerText;
+			dataJson.KNTKTTKimGiapHCMBuy = tableHCM.querySelector(
+				'._content-tab ._buy :nth-child(4)'
+			)?.innerText;
+			dataJson.nhanHTVHCMBuy = tableHCM.querySelector(
+				'._content-tab ._buy :nth-child(5)'
+			)?.innerText;
+			dataJson.nuTrang9999HCMBuy = tableHCM.querySelector(
+				'._content-tab ._buy :nth-child(6)'
+			)?.innerText;
+			dataJson.nuTrang999HCMBuy = tableHCM.querySelector(
+				'._content-tab ._buy :nth-child(7)'
+			)?.innerText;
+			dataJson.nuTrang99HCMBuy = tableHCM.querySelector(
+				'._content-tab ._buy :nth-child(8)'
+			)?.innerText;
+			dataJson.nuTrang75HCMBuy = tableHCM.querySelector(
+				'._content-tab ._buy :nth-child(9)'
+			)?.innerText;
 
-				dataJson.sjcHNSell = tableHN.querySelector(
-					'._content-tab ._Sell :nth-child(2)'
-				)?.innerText;
-				dataJson.AVPLHNSell = tableHN.querySelector(
-					'._content-tab ._Sell :nth-child(3)'
-				)?.innerText;
-				dataJson.nhanHTVHNSell = tableHN.querySelector(
-					'._content-tab ._Sell :nth-child(4)'
-				)?.innerText;
-				dataJson.KTTKimGiapHNSell = tableHN.querySelector(
-					'._content-tab ._Sell :nth-child(5)'
-				)?.innerText;
-				dataJson.phiSjcHNSell = tableHN.querySelector(
-					'._content-tab ._Sell :nth-child(6)'
-				)?.innerText;
-				dataJson.nuTrang9999HNSell = tableHN.querySelector(
-					'._content-tab ._Sell :nth-child(7)'
-				)?.innerText;
-				dataJson.nuTrang999HNSell = tableHN.querySelector(
-					'._content-tab ._Sell :nth-child(8)'
-				)?.innerText;
-				dataJson.nuTrang99HNSell = tableHN.querySelector(
-					'._content-tab ._Sell :nth-child(9)'
-				)?.innerText;
-				dataJson.nuTrang18kHNSell = tableHN.querySelector(
-					'._content-tab ._Sell :nth-child(10)'
-				)?.innerText;
-				dataJson.nuTrang14kHNSell = tableHN.querySelector(
-					'._content-tab ._Sell :nth-child(11)'
-				)?.innerText;
-				dataJson.nuTrang10kHNSell = tableHN.querySelector(
-					'._content-tab ._Sell :nth-child(12)'
-				)?.innerText;
+			dataJson.sjcHCMSell = tableHCM.querySelector(
+				'._content-tab ._Sell :nth-child(2)'
+			)?.innerText;
+			dataJson.AVPLHCMSell = tableHCM.querySelector(
+				'._content-tab ._Sell :nth-child(3)'
+			)?.innerText;
+			dataJson.KNTKTTKimGiapHCMSell = tableHCM.querySelector(
+				'._content-tab ._Sell :nth-child(4)'
+			)?.innerText;
+			dataJson.nhanHTVHCMSell = tableHCM.querySelector(
+				'._content-tab ._Sell :nth-child(5)'
+			)?.innerText;
+			dataJson.nuTrang9999HCMSell = tableHCM.querySelector(
+				'._content-tab ._Sell :nth-child(6)'
+			)?.innerText;
+			dataJson.nuTrang999HCMSell = tableHCM.querySelector(
+				'._content-tab ._Sell :nth-child(7)'
+			)?.innerText;
+			dataJson.nuTrang99HCMSell = tableHCM.querySelector(
+				'._content-tab ._Sell :nth-child(8)'
+			)?.innerText;
+			dataJson.nuTrang75HCMSell = tableHCM.querySelector(
+				'._content-tab ._Sell :nth-child(9)'
+			)?.innerText;
 
-				//--------Ho Chi Minh----------
-				const tableHCM = document.querySelectorAll('._table')[2];
-				dataJson.sjcHCMBuy = tableHCM.querySelector(
-					'._content-tab ._buy :nth-child(2)'
-				)?.innerText;
-				dataJson.AVPLHCMBuy = tableHCM.querySelector(
-					'._content-tab ._buy :nth-child(3)'
-				)?.innerText;
-				dataJson.KNTKTTKimGiapHCMBuy = tableHCM.querySelector(
-					'._content-tab ._buy :nth-child(4)'
-				)?.innerText;
-				dataJson.nhanHTVHCMBuy = tableHCM.querySelector(
-					'._content-tab ._buy :nth-child(5)'
-				)?.innerText;
-				dataJson.nuTrang9999HCMBuy = tableHCM.querySelector(
-					'._content-tab ._buy :nth-child(6)'
-				)?.innerText;
-				dataJson.nuTrang999HCMBuy = tableHCM.querySelector(
-					'._content-tab ._buy :nth-child(7)'
-				)?.innerText;
-				dataJson.nuTrang99HCMBuy = tableHCM.querySelector(
-					'._content-tab ._buy :nth-child(8)'
-				)?.innerText;
-				dataJson.nuTrang75HCMBuy = tableHCM.querySelector(
-					'._content-tab ._buy :nth-child(9)'
-				)?.innerText;
+			//--------Da Nang--------------
+			const tableDN = document.querySelectorAll('._table')[3];
+			dataJson.sjcDNBuy = tableDN.querySelector(
+				'._content-tab ._buy :nth-child(2)'
+			)?.innerText;
+			dataJson.AVPLDNBuy = tableDN.querySelector(
+				'._content-tab ._buy :nth-child(3)'
+			)?.innerText;
+			dataJson.KNTKTTKimGiapDNBuy = tableDN.querySelector(
+				'._content-tab ._buy :nth-child(4)'
+			)?.innerText;
+			dataJson.nhanHTVDNBuy = tableDN.querySelector(
+				'._content-tab ._buy :nth-child(5)'
+			)?.innerText;
+			dataJson.nuTrang9999DNBuy = tableDN.querySelector(
+				'._content-tab ._buy :nth-child(6)'
+			)?.innerText;
+			dataJson.nuTrang75DNBuy = tableDN.querySelector(
+				'._content-tab ._buy :nth-child(7)'
+			)?.innerText;
+			dataJson.nuTrang68DNBuy = tableDN.querySelector(
+				'._content-tab ._buy :nth-child(8)'
+			)?.innerText;
+			dataJson.nuTrang58_3DNBuy = tableDN.querySelector(
+				'._content-tab ._buy :nth-child(9)'
+			)?.innerText;
 
-				dataJson.sjcHCMSell = tableHCM.querySelector(
-					'._content-tab ._Sell :nth-child(2)'
-				)?.innerText;
-				dataJson.AVPLHCMSell = tableHCM.querySelector(
-					'._content-tab ._Sell :nth-child(3)'
-				)?.innerText;
-				dataJson.KNTKTTKimGiapHCMSell = tableHCM.querySelector(
-					'._content-tab ._Sell :nth-child(4)'
-				)?.innerText;
-				dataJson.nhanHTVHCMSell = tableHCM.querySelector(
-					'._content-tab ._Sell :nth-child(5)'
-				)?.innerText;
-				dataJson.nuTrang9999HCMSell = tableHCM.querySelector(
-					'._content-tab ._Sell :nth-child(6)'
-				)?.innerText;
-				dataJson.nuTrang999HCMSell = tableHCM.querySelector(
-					'._content-tab ._Sell :nth-child(7)'
-				)?.innerText;
-				dataJson.nuTrang99HCMSell = tableHCM.querySelector(
-					'._content-tab ._Sell :nth-child(8)'
-				)?.innerText;
-				dataJson.nuTrang75HCMSell = tableHCM.querySelector(
-					'._content-tab ._Sell :nth-child(9)'
-				)?.innerText;
+			dataJson.sjcDNSell = tableDN.querySelector(
+				'._content-tab ._Sell :nth-child(2)'
+			)?.innerText;
+			dataJson.AVPLDNSell = tableDN.querySelector(
+				'._content-tab ._Sell :nth-child(3)'
+			)?.innerText;
+			dataJson.KNTKTTKimGiapDNSell = tableDN.querySelector(
+				'._content-tab ._Sell :nth-child(4)'
+			)?.innerText;
+			dataJson.nhanHTVDNSell = tableDN.querySelector(
+				'._content-tab ._Sell :nth-child(5)'
+			)?.innerText;
+			dataJson.nuTrang9999DNSell = tableDN.querySelector(
+				'._content-tab ._Sell :nth-child(6)'
+			)?.innerText;
+			dataJson.nuTrang75DNSell = tableDN.querySelector(
+				'._content-tab ._Sell :nth-child(7)'
+			)?.innerText;
+			dataJson.nuTrang68DNSell = tableDN.querySelector(
+				'._content-tab ._Sell :nth-child(8)'
+			)?.innerText;
+			dataJson.nuTrang58_3DNSell = tableDN.querySelector(
+				'._content-tab ._Sell :nth-child(9)'
+			)?.innerText;
+		} catch (err) {
+			console.log(err);
+		}
+		return dataJson;
+	};
 
-				//--------Da Nang--------------
-				const tableDN = document.querySelectorAll('._table')[3];
-				dataJson.sjcDNBuy = tableDN.querySelector(
-					'._content-tab ._buy :nth-child(2)'
-				)?.innerText;
-				dataJson.AVPLDNBuy = tableDN.querySelector(
-					'._content-tab ._buy :nth-child(3)'
-				)?.innerText;
-				dataJson.KNTKTTKimGiapDNBuy = tableDN.querySelector(
-					'._content-tab ._buy :nth-child(4)'
-				)?.innerText;
-				dataJson.nhanHTVDNBuy = tableDN.querySelector(
-					'._content-tab ._buy :nth-child(5)'
-				)?.innerText;
-				dataJson.nuTrang9999DNBuy = tableDN.querySelector(
-					'._content-tab ._buy :nth-child(6)'
-				)?.innerText;
-				dataJson.nuTrang75DNBuy = tableDN.querySelector(
-					'._content-tab ._buy :nth-child(7)'
-				)?.innerText;
-				dataJson.nuTrang68DNBuy = tableDN.querySelector(
-					'._content-tab ._buy :nth-child(8)'
-				)?.innerText;
-				dataJson.nuTrang58_3DNBuy = tableDN.querySelector(
-					'._content-tab ._buy :nth-child(9)'
-				)?.innerText;
+	const props = [location];
 
-				dataJson.sjcDNSell = tableDN.querySelector(
-					'._content-tab ._Sell :nth-child(2)'
-				)?.innerText;
-				dataJson.AVPLDNSell = tableDN.querySelector(
-					'._content-tab ._Sell :nth-child(3)'
-				)?.innerText;
-				dataJson.KNTKTTKimGiapDNSell = tableDN.querySelector(
-					'._content-tab ._Sell :nth-child(4)'
-				)?.innerText;
-				dataJson.nhanHTVDNSell = tableDN.querySelector(
-					'._content-tab ._Sell :nth-child(5)'
-				)?.innerText;
-				dataJson.nuTrang9999DNSell = tableDN.querySelector(
-					'._content-tab ._Sell :nth-child(6)'
-				)?.innerText;
-				dataJson.nuTrang75DNSell = tableDN.querySelector(
-					'._content-tab ._Sell :nth-child(7)'
-				)?.innerText;
-				dataJson.nuTrang68DNSell = tableDN.querySelector(
-					'._content-tab ._Sell :nth-child(8)'
-				)?.innerText;
-				dataJson.nuTrang58_3DNSell = tableDN.querySelector(
-					'._content-tab ._Sell :nth-child(9)'
-				)?.innerText;
-			} catch (err) {
-				console.log(err);
-			}
-			return dataJson;
-		}, location);
+	let data = false;
+	let attemps = 0;
+	//retry request until it gets data or tries 3 times
+	while (data == false && attemps < 3) {
+		console.log('loop' + attemps);
+		data = await collectQueryData(urlDoji, pageEvaluateFunc, props);
+		console.log('loop' + data);
+		attemps++;
 
-		// console.log(dojiDetailData)
+		if (data) {
+			console.log(data);
+			Doji.findOneAndUpdate(
+				{ name: data.name },
+				{
+					name: data.name,
+					timeUpdate: data.timeUpdate,
+					sjcHNBuy: data.sjcHNBuy,
+					sjcHNSell: data.sjcHNSell,
+					AVPLHNBuy: data.AVPLHNBuy,
+					AVPLHNSell: data.AVPLHNSell,
+					nhanHTVHNBuy: data.nhanHTVHNBuy,
+					nhanHTVHNSell: data.nhanHTVHNSell,
+					KTTKimGiapHNBuy: data.KTTKimGiapHNBuy,
+					KTTKimGiapHNSell: data.KTTKimGiapHNSell,
+					phiSjcHNBuy: data.phiSjcHNBuy,
+					phiSjcHNSell: data.phiSjcHNSell,
+					nuTrang9999HNBuy: data.nuTrang9999HNBuy,
+					nuTrang9999HNSell: data.nuTrang9999HNSell,
+					nuTrang999HNBuy: data.nuTrang999HNBuy,
+					nuTrang999HNSell: data.nuTrang999HNSell,
+					nuTrang99HNBuy: data.nuTrang99HNBuy,
+					nuTrang99HNSell: data.nuTrang99HNSell,
+					nuTrang18kHNBuy: data.nuTrang18kHNBuy,
+					nuTrang18kHNSell: data.nuTrang18kHNSell,
+					nuTrang14kHNBuy: data.nuTrang14kHNBuy,
+					nuTrang14kHNSell: data.nuTrang14kHNSell,
+					nuTrang10kHNBuy: data.nuTrang10kHNBuy,
+					nuTrang10kHNSell: data.nuTrang10kHNSell,
 
-		Doji.findOneAndUpdate(
-			{ name: dojiDetailData.name },
-			{
-				name: dojiDetailData.name,
-				timeUpdate: dojiDetailData.timeUpdate,
-				sjcHNBuy: dojiDetailData.sjcHNBuy,
-				sjcHNSell: dojiDetailData.sjcHNSell,
-				AVPLHNBuy: dojiDetailData.AVPLHNBuy,
-				AVPLHNSell: dojiDetailData.AVPLHNSell,
-				nhanHTVHNBuy: dojiDetailData.nhanHTVHNBuy,
-				nhanHTVHNSell: dojiDetailData.nhanHTVHNSell,
-				KTTKimGiapHNBuy: dojiDetailData.KTTKimGiapHNBuy,
-				KTTKimGiapHNSell: dojiDetailData.KTTKimGiapHNSell,
-				phiSjcHNBuy: dojiDetailData.phiSjcHNBuy,
-				phiSjcHNSell: dojiDetailData.phiSjcHNSell,
-				nuTrang9999HNBuy: dojiDetailData.nuTrang9999HNBuy,
-				nuTrang9999HNSell: dojiDetailData.nuTrang9999HNSell,
-				nuTrang999HNBuy: dojiDetailData.nuTrang999HNBuy,
-				nuTrang999HNSell: dojiDetailData.nuTrang999HNSell,
-				nuTrang99HNBuy: dojiDetailData.nuTrang99HNBuy,
-				nuTrang99HNSell: dojiDetailData.nuTrang99HNSell,
-				nuTrang18kHNBuy: dojiDetailData.nuTrang18kHNBuy,
-				nuTrang18kHNSell: dojiDetailData.nuTrang18kHNSell,
-				nuTrang14kHNBuy: dojiDetailData.nuTrang14kHNBuy,
-				nuTrang14kHNSell: dojiDetailData.nuTrang14kHNSell,
-				nuTrang10kHNBuy: dojiDetailData.nuTrang10kHNBuy,
-				nuTrang10kHNSell: dojiDetailData.nuTrang10kHNSell,
+					sjcHCMBuy: data.sjcHCMBuy,
+					sjcHCMSell: data.sjcHCMSell,
+					AVPLHCMBuy: data.AVPLHCMBuy,
+					AVPLHCMSell: data.AVPLHCMSell,
+					KNTKTTKimGiapHCMBuy: data.KNTKTTKimGiapHCMBuy,
+					KNTKTTKimGiapHCMSell: data.KNTKTTKimGiapHCMSell,
+					nhanHTVHCMBuy: data.nhanHTVHCMBuy,
+					nhanHTVHCMSell: data.nhanHTVHCMSell,
+					nuTrang9999HCMBuy: data.nuTrang9999HCMBuy,
+					nuTrang9999HCMSell: data.nuTrang9999HCMSell,
+					nuTrang999HCMBuy: data.nuTrang999HCMBuy,
+					nuTrang999HCMSell: data.nuTrang999HCMSell,
+					nuTrang99HCMBuy: data.nuTrang99HCMBuy,
+					nuTrang99HCMSell: data.nuTrang99HCMSell,
+					nuTrang75HCMBuy: data.nuTrang75HCMBuy,
+					nuTrang75HCMSell: data.nuTrang75HCMSell,
 
-				sjcHCMBuy: dojiDetailData.sjcHCMBuy,
-				sjcHCMSell: dojiDetailData.sjcHCMSell,
-				AVPLHCMBuy: dojiDetailData.AVPLHCMBuy,
-				AVPLHCMSell: dojiDetailData.AVPLHCMSell,
-				KNTKTTKimGiapHCMBuy: dojiDetailData.KNTKTTKimGiapHCMBuy,
-				KNTKTTKimGiapHCMSell: dojiDetailData.KNTKTTKimGiapHCMSell,
-				nhanHTVHCMBuy: dojiDetailData.nhanHTVHCMBuy,
-				nhanHTVHCMSell: dojiDetailData.nhanHTVHCMSell,
-				nuTrang9999HCMBuy: dojiDetailData.nuTrang9999HCMBuy,
-				nuTrang9999HCMSell: dojiDetailData.nuTrang9999HCMSell,
-				nuTrang999HCMBuy: dojiDetailData.nuTrang999HCMBuy,
-				nuTrang999HCMSell: dojiDetailData.nuTrang999HCMSell,
-				nuTrang99HCMBuy: dojiDetailData.nuTrang99HCMBuy,
-				nuTrang99HCMSell: dojiDetailData.nuTrang99HCMSell,
-				nuTrang75HCMBuy: dojiDetailData.nuTrang75HCMBuy,
-				nuTrang75HCMSell: dojiDetailData.nuTrang75HCMSell,
+					sjcDNBuy: data.sjcDNBuy,
+					sjcDNSell: data.sjcDNSell,
+					AVPLDNBuy: data.AVPLDNBuy,
+					AVPLDNSell: data.AVPLDNSell,
+					KNTKTTKimGiapDNBuy: data.KNTKTTKimGiapDNBuy,
+					KNTKTTKimGiapDNSell: data.KNTKTTKimGiapDNSell,
+					nhanHTVDNBuy: data.nhanHTVDNBuy,
+					nhanHTVDNSell: data.nhanHTVDNSell,
+					nuTrang9999DNBuy: data.nuTrang9999DNBuy,
+					nuTrang9999DNSell: data.nuTrang9999DNSell,
+					nuTrang75DNBuy: data.nuTrang75DNBuy,
+					nuTrang75DNSell: data.nuTrang75DNSell,
+					nuTrang68DNBuy: data.nuTrang68DNBuy,
+					nuTrang68DNSell: data.nuTrang68DNSell,
+					nuTrang58_3DNBuy: data.nuTrang58_3DNBuy,
+					nuTrang58_3DNSell: data.nuTrang58_3DNSell,
+				},
+				{ upsert: true }
+			)
+				// .then((doc) => console.log(doc))
+				.catch((err) => console.log(data.name));
 
-				sjcDNBuy: dojiDetailData.sjcDNBuy,
-				sjcDNSell: dojiDetailData.sjcDNSell,
-				AVPLDNBuy: dojiDetailData.AVPLDNBuy,
-				AVPLDNSell: dojiDetailData.AVPLDNSell,
-				KNTKTTKimGiapDNBuy: dojiDetailData.KNTKTTKimGiapDNBuy,
-				KNTKTTKimGiapDNSell: dojiDetailData.KNTKTTKimGiapDNSell,
-				nhanHTVDNBuy: dojiDetailData.nhanHTVDNBuy,
-				nhanHTVDNSell: dojiDetailData.nhanHTVDNSell,
-				nuTrang9999DNBuy: dojiDetailData.nuTrang9999DNBuy,
-				nuTrang9999DNSell: dojiDetailData.nuTrang9999DNSell,
-				nuTrang75DNBuy: dojiDetailData.nuTrang75DNBuy,
-				nuTrang75DNSell: dojiDetailData.nuTrang75DNSell,
-				nuTrang68DNBuy: dojiDetailData.nuTrang68DNBuy,
-				nuTrang68DNSell: dojiDetailData.nuTrang68DNSell,
-				nuTrang58_3DNBuy: dojiDetailData.nuTrang58_3DNBuy,
-				nuTrang58_3DNSell: dojiDetailData.nuTrang58_3DNSell,
-			},
-			{ upsert: true }
-		)
-			// .then((doc) => console.log(doc))
-			.catch((err) => console.log(dojiDetailData.name));
+			// await browser.close();
+		}
 
-		await browser.close();
-	} catch (error) {
-		console.log(error);
+		if (data === false) {
+			//wait a few second, also a good idea to swap proxy here
+			console.log('Recrawl........' + attemps);
+			await new Promise((resolve) => setTimeout(resolve, 3000));
+		}
 	}
-	// })
 });
 
 const crawlPhuQuySjc = asyncHandler(async () => {
@@ -1715,7 +1719,7 @@ module.exports = {
 // 		// console.log(pnjDetailData)
 
 // 		Pnj.findOneAndUpdate(
-// 			{ name: pnjDetailData.location },
+// 			{ location: pnjDetailData.location },
 // 			{
 // 				name: pnjDetailData.name,
 // 				location: pnjDetailData.location,
