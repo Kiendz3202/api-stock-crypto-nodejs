@@ -2,7 +2,10 @@ const asyncHandler = require('express-async-handler');
 const cron = require('node-cron');
 const puppeteer = require('puppeteer');
 
-const { collectQueryData } = require('../../utils/pupperteer/collectQueryData');
+const {
+	collectQueryData,
+	collectQueryDataHeightScroll,
+} = require('../../utils/pupperteer/collectQueryData');
 
 const Agribank = require('../../model/exchangeRate/agribankModel');
 const Vietcombank = require('../../model/exchangeRate/vietcombankModel');
@@ -1111,7 +1114,10 @@ const crawlTechcombank = asyncHandler(async () => {
 	//retry request until it gets data or tries 3 times
 	while (data == false && attemps < 3) {
 		console.log('loop' + attemps);
-		data = await collectQueryData(urlTechcombank, pageEvaluateFunc);
+		data = await collectQueryDataHeightScroll(
+			urlTechcombank,
+			pageEvaluateFunc
+		);
 		console.log('loop' + data);
 		attemps++;
 
