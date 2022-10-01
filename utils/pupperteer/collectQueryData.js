@@ -13,7 +13,7 @@ const collectQueryData = async (url, pageEvaluateFunc, props) => {
 			'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3419.0 Safari/537.36'
 		);
 		await page.goto(url, { waitUntil: 'load', timeout: 0 });
-		await page.waitForTimeout(5000);
+		await page.waitForTimeout(2000);
 
 		if (props) {
 			return page.evaluate(pageEvaluateFunc, ...props);
@@ -61,7 +61,7 @@ const collectQueryDataHeightScroll = async (url, pageEvaluateFunc, props) => {
 		});
 
 		// Some extra delay to let all data load
-		await page.waitForTimeout(3000);
+		await page.waitForTimeout(1000);
 
 		if (props) {
 			return page.evaluate(pageEvaluateFunc, ...props);
