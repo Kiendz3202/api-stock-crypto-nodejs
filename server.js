@@ -369,10 +369,10 @@ const goldRunAll = async () => {
 
 		crawlSjc();
 		crawlDoji();
-		await delay(2000);
+		await delay(10000);
 		crawlPhuQuySjc();
 		crawlBaoTinMinhChau();
-		await delay(2000);
+		await delay(10000);
 		crawlMiHong();
 		crawlAllDetailPnj();
 	});
@@ -398,12 +398,12 @@ const exchangeRateRunAll = async () => {
 	cron.schedule('*/2 * * * *', async () => {
 		crawlAgribank();
 		crawlVietcombank();
-		await delay(2000);
+		await delay(10000);
 		crawlBidv();
 		crawlTechcombank();
-		await delay(2000);
+		await delay(10000);
 		crawlVietinbank();
-		await delay(2000);
+		await delay(10000);
 		crawlMbbank();
 	});
 };
