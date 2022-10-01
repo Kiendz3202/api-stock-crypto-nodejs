@@ -1117,7 +1117,10 @@ const crawlTechcombank = asyncHandler(async () => {
 	while (data == false && attemps < 3) {
 		console.log('loop' + attemps);
 		console.time('techcom');
-		data = await collectQueryData(urlTechcombank, pageEvaluateFunc);
+		data = await collectQueryDataHeightScroll(
+			urlTechcombank,
+			pageEvaluateFunc
+		);
 		console.timeEnd('techcom');
 		console.log(data);
 		attemps++;
