@@ -396,7 +396,7 @@ const petrolRunAll = async () => {
 
 const exchangeRateRunAll = async () => {
 	// cron.schedule('*/2 * * * *', async () => {
-	// crawlAgribank();
+	crawlAgribank();
 	// await delay(10000);
 	// crawlVietcombank();
 	// await delay(10000);

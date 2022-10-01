@@ -178,8 +178,10 @@ const crawlAgribank = asyncHandler(async () => {
 	//retry request until it gets data or tries 3 times
 	while (data == false && attemps < 3) {
 		console.log('loop' + attemps);
+		console.time('agri');
 		data = await collectQueryData(urlAgribank, pageEvaluateFunc);
-		console.log('loop' + data);
+		console.timeEnd('agri');
+		console.log(data);
 		attemps++;
 
 		if (data) {
@@ -1114,9 +1116,9 @@ const crawlTechcombank = asyncHandler(async () => {
 	//retry request until it gets data or tries 3 times
 	while (data == false && attemps < 3) {
 		console.log('loop' + attemps);
-		console.time();
+		console.time('techcom');
 		data = await collectQueryData(urlTechcombank, pageEvaluateFunc);
-		console.timeEnd();
+		console.timeEnd('techcom');
 		console.log(data);
 		attemps++;
 
