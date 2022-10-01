@@ -349,7 +349,7 @@ const coinRunAll = async () => {
 		// updateCurrentcy();
 	});
 };
-coinRunAll();
+// coinRunAll();
 
 // -----------------------------------------------
 
@@ -377,7 +377,7 @@ const goldRunAll = async () => {
 		crawlAllDetailPnj();
 	});
 };
-goldRunAll();
+// goldRunAll();
 
 //----------------------------
 
@@ -397,9 +397,11 @@ const petrolRunAll = async () => {
 const exchangeRateRunAll = async () => {
 	cron.schedule('*/2 * * * *', async () => {
 		crawlAgribank();
+		await delay(10000);
 		crawlVietcombank();
 		await delay(10000);
 		crawlBidv();
+		await delay(10000);
 		crawlTechcombank();
 		await delay(10000);
 		crawlVietinbank();
