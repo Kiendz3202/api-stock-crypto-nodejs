@@ -1114,10 +1114,7 @@ const crawlTechcombank = asyncHandler(async () => {
 	//retry request until it gets data or tries 3 times
 	while (data == false && attemps < 3) {
 		console.log('loop' + attemps);
-		data = await collectQueryDataHeightScroll(
-			urlTechcombank,
-			pageEvaluateFunc
-		);
+		data = await collectQueryData(urlTechcombank, pageEvaluateFunc);
 		console.log('loop' + data);
 		attemps++;
 
