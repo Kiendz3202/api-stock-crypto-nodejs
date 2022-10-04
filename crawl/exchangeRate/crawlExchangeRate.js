@@ -1177,7 +1177,7 @@ const crawlTechcombank = asyncHandler(async () => {
 				// .then((doc) => console.log(doc))
 				.catch((err) => console.log(data.symbol));
 
-			await browser.close();
+			// await browser.close();
 		}
 
 		if (data === false) {
