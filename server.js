@@ -344,97 +344,119 @@ const stockRunAll = async () => {
 // getallCoinsChart();
 
 const coinRunAll = async () => {
-	cron.schedule('*/2 * * * *', async () => {
-		crawlCoin();
-		// updateCurrentcy();
-	});
+	// cron.schedule('*/3 * * * *', async () => {
+	crawlCoin();
+	// updateCurrentcy();
+	// });
 };
-coinRunAll();
+// coinRunAll();
 
 // -----------------------------------------------
 
 //--------Gold--------------
 
 const goldRunAll = async () => {
-	cron.schedule('*/2 * * * *', async () => {
-		const crawlAllDetailPnj = asyncHandler(async () => {
-			const arr = ['00', '07', '11', '13', '14', '21'];
+	// cron.schedule('*/3 * * * *', async () => {
+	const crawlAllDetailPnj = asyncHandler(async () => {
+		const arr = ['00', '07', '11', '13', '14', '21'];
 
-			arr.forEach((gold, index) => {
-				setTimeout(() => {
-					crawlPnj(gold, index + 1);
-				}, 2000 * index);
-			});
+		arr.forEach((gold, index) => {
+			setTimeout(() => {
+				crawlPnj(gold, index + 1);
+			}, 2000 * index);
 		});
-
-		crawlSjc();
-		crawlDoji();
-		await delay(10000);
-		crawlPhuQuySjc();
-		crawlBaoTinMinhChau();
-		await delay(10000);
-		crawlMiHong();
-		crawlAllDetailPnj();
 	});
+
+	crawlSjc();
+	await delay(3000);
+	crawlDoji();
+	await delay(3000);
+	crawlPhuQuySjc();
+	await delay(3000);
+	crawlBaoTinMinhChau();
+	await delay(3000);
+	crawlMiHong();
+	await delay(3000);
+	crawlAllDetailPnj();
+	// });
 };
-goldRunAll();
+// goldRunAll();
 
 //----------------------------
 
 //----------Petrol---------------
 
 const petrolRunAll = async () => {
-	cron.schedule('*/2 * * * *', async () => {
-		crawlPetrolimex();
-	});
+	// cron.schedule('*/3 * * * *', async () => {
+	crawlPetrolimex();
+	// });
 };
-petrolRunAll();
+// petrolRunAll();
 
 //-----------------------------
 
 //---------exchangRate--------
 
 const exchangeRateRunAll = async () => {
-	cron.schedule('*/2 * * * *', async () => {
-		crawlAgribank();
-		await delay(5000);
-		crawlVietcombank();
-		await delay(5000);
-		crawlBidv();
-		await delay(5000);
-		crawlTechcombank();
-		await delay(5000);
-		crawlVietinbank();
-		await delay(5000);
-		crawlMbbank();
-	});
+	// cron.schedule('*/3 * * * *', async () => {
+	crawlAgribank();
+	await delay(3000);
+	crawlVietcombank();
+	await delay(3000);
+	crawlBidv();
+	await delay(3000);
+	crawlTechcombank();
+	await delay(3000);
+	crawlVietinbank();
+	await delay(3000);
+	crawlMbbank();
+	// });
 };
-exchangeRateRunAll();
+// exchangeRateRunAll();
 
 //-----------------------------
 
 //----------interestRate-----------
 
 const interestRateRunAll = async () => {
-	cron.schedule('*/2 * * * *', async () => {
-		crawlVietcombankInterestRate(); //
-		crawlVietinbankInterestRate(); //
-		await delay(2000);
-		crawlAgribankbankInterestRate(); //
-		crawlBidvInterestRate();
-		await delay(2000);
-		crawlScbInterestRate();
-		crawlMbbankInterestRate();
-		await delay(2000);
-		crawlVibInterestRate();
-		crawlTpbankInterestRate();
-		await delay(2000);
-		crawlVpbankInterestRate();
-	});
+	// cron.schedule('*/3 * * * *', async () => {
+	crawlVietcombankInterestRate();
+	await delay(3000);
+	crawlVietinbankInterestRate();
+	await delay(3000);
+	crawlAgribankbankInterestRate();
+	await delay(3000);
+	crawlBidvInterestRate();
+	await delay(3000);
+	crawlScbInterestRate();
+	await delay(3000);
+	crawlMbbankInterestRate();
+	await delay(3000);
+	crawlVibInterestRate();
+	await delay(3000);
+	crawlTpbankInterestRate();
+	await delay(3000);
+	crawlVpbankInterestRate();
+	// });
 };
-interestRateRunAll();
+// interestRateRunAll();
 
 //-----------------------------------
+
+const funcTest = async () => {
+	cron.schedule('*/4 * * * *', async () => {
+		coinRunAll();
+		await delay(5000);
+		goldRunAll();
+		await delay(5000);
+		petrolRunAll();
+		await delay(5000);
+		exchangeRateRunAll();
+		await delay(5000);
+		interestRateRunAll();
+	});
+};
+funcTest();
 
 // -----------------------------------------------
 
