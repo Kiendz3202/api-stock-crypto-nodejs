@@ -349,7 +349,7 @@ const coinRunAll = async () => {
 		// updateCurrentcy();
 	});
 };
-// coinRunAll();
+coinRunAll();
 
 // -----------------------------------------------
 
@@ -377,7 +377,7 @@ const goldRunAll = async () => {
 		crawlAllDetailPnj();
 	});
 };
-// goldRunAll();
+goldRunAll();
 
 //----------------------------
 
@@ -388,7 +388,7 @@ const petrolRunAll = async () => {
 		crawlPetrolimex();
 	});
 };
-// petrolRunAll();
+petrolRunAll();
 
 //-----------------------------
 
@@ -432,7 +432,7 @@ const interestRateRunAll = async () => {
 		crawlVpbankInterestRate();
 	});
 };
-// interestRateRunAll();
+interestRateRunAll();
 
 //-----------------------------------
 

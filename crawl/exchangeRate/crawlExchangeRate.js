@@ -958,22 +958,22 @@ const crawlTechcombank = asyncHandler(async () => {
 		let dataJson = {};
 
 		try {
-			// dataJson.name = 'Ngân hàng Thương mại cổ phần Kỹ Thương Việt Nam';
-			// dataJson.symbol = 'Techcombank';
+			dataJson.name = 'Ngân hàng Thương mại cổ phần Kỹ Thương Việt Nam';
+			dataJson.symbol = 'Techcombank';
 
-			// let date = new Date();
-			// dataJson.timeUpdate =
-			// 	date.getHours() +
-			// 	':' +
-			// 	date.getMinutes() +
-			// 	':' +
-			// 	date.getSeconds() +
-			// 	' ' +
-			// 	date.getDate() +
-			// 	'/' +
-			// 	(date.getMonth() + 1) +
-			// 	'/' +
-			// 	date.getFullYear();
+			let date = new Date();
+			dataJson.timeUpdate =
+				date.getHours() +
+				':' +
+				date.getMinutes() +
+				':' +
+				date.getSeconds() +
+				' ' +
+				date.getDate() +
+				'/' +
+				(date.getMonth() + 1) +
+				'/' +
+				date.getFullYear();
 
 			dataJson.usdBuyCast = $(
 				'table tbody :nth-child(1) :nth-child(2)'
@@ -1113,71 +1113,71 @@ const crawlTechcombank = asyncHandler(async () => {
 
 		if (data) {
 			console.log(data);
-			// Techcombank.findOneAndUpdate(
-			// 	{ symbol: data.symbol },
-			// 	{
-			// 		name: data.name,
-			// 		symbol: data.symbol,
-			// 		timeUpdate: data.timeUpdate,
+			Techcombank.findOneAndUpdate(
+				{ symbol: data.symbol },
+				{
+					name: data.name,
+					symbol: data.symbol,
+					timeUpdate: data.timeUpdate,
 
-			// 		audBuyCast: data.audBuyCast,
-			// 		audBuyTransfer: data.audBuyTransfer,
-			// 		audSell: data.audSell,
+					audBuyCast: data.audBuyCast,
+					audBuyTransfer: data.audBuyTransfer,
+					audSell: data.audSell,
 
-			// 		cadBuyCast: data.cadBuyCast,
-			// 		cadBuyTransfer: data.cadBuyTransfer,
-			// 		cadSell: data.cadSell,
+					cadBuyCast: data.cadBuyCast,
+					cadBuyTransfer: data.cadBuyTransfer,
+					cadSell: data.cadSell,
 
-			// 		chfBuyCast: data.chfBuyCast,
-			// 		chfBuyTransfer: data.chfBuyTransfer,
-			// 		chfSell: data.chfSell,
+					chfBuyCast: data.chfBuyCast,
+					chfBuyTransfer: data.chfBuyTransfer,
+					chfSell: data.chfSell,
 
-			// 		cnyBuyCast: data.cnyBuyCast,
-			// 		cnyBuyTransfer: data.cnyBuyTransfer,
-			// 		cnySell: data.cnySell,
+					cnyBuyCast: data.cnyBuyCast,
+					cnyBuyTransfer: data.cnyBuyTransfer,
+					cnySell: data.cnySell,
 
-			// 		eurBuyCast: data.eurBuyCast,
-			// 		eurBuyTransfer: data.eurBuyTransfer,
-			// 		eurSell: data.eurSell,
+					eurBuyCast: data.eurBuyCast,
+					eurBuyTransfer: data.eurBuyTransfer,
+					eurSell: data.eurSell,
 
-			// 		gbpBuyCast: data.gbpBuyCast,
-			// 		gbpBuyTransfer: data.gbpBuyTransfer,
-			// 		gbpSell: data.gbpSell,
+					gbpBuyCast: data.gbpBuyCast,
+					gbpBuyTransfer: data.gbpBuyTransfer,
+					gbpSell: data.gbpSell,
 
-			// 		hkdBuyCast: data.hkdBuyCast,
-			// 		hkdBuyTransfer: data.hkdBuyTransfer,
-			// 		hkdSell: data.hkdSell,
+					hkdBuyCast: data.hkdBuyCast,
+					hkdBuyTransfer: data.hkdBuyTransfer,
+					hkdSell: data.hkdSell,
 
-			// 		jpyBuyCast: data.jpyBuyCast,
-			// 		jpyBuyTransfer: data.jpyBuyTransfer,
-			// 		jpySell: data.jpySell,
+					jpyBuyCast: data.jpyBuyCast,
+					jpyBuyTransfer: data.jpyBuyTransfer,
+					jpySell: data.jpySell,
 
-			// 		krwBuyCast: data.krwBuyCast,
-			// 		krwBuyTransfer: data.krwBuyTransfer,
-			// 		krwSell: data.krwSell,
+					krwBuyCast: data.krwBuyCast,
+					krwBuyTransfer: data.krwBuyTransfer,
+					krwSell: data.krwSell,
 
-			// 		myrBuyCast: data.myrBuyCast,
-			// 		myrBuyTransfer: data.myrBuyTransfer,
-			// 		myrSell: data.myrSell,
+					myrBuyCast: data.myrBuyCast,
+					myrBuyTransfer: data.myrBuyTransfer,
+					myrSell: data.myrSell,
 
-			// 		sgdBuyCast: data.sgdBuyCast,
-			// 		sgdBuyTransfer: data.sgdBuyTransfer,
-			// 		sgdSell: data.sgdSell,
+					sgdBuyCast: data.sgdBuyCast,
+					sgdBuyTransfer: data.sgdBuyTransfer,
+					sgdSell: data.sgdSell,
 
-			// 		thbBuyCast: data.thbBuyCast,
-			// 		thbBuyTransfer: data.thbBuyTransfer,
-			// 		thbSell: data.thbSell,
+					thbBuyCast: data.thbBuyCast,
+					thbBuyTransfer: data.thbBuyTransfer,
+					thbSell: data.thbSell,
 
-			// 		usdBuyCast: data.usdBuyCast,
-			// 		usdBuyTransfer: data.usdBuyTransfer,
-			// 		usdSell: data.usdSell,
-			// 	},
-			// 	{ upsert: true }
-			// )
-			// 	// .then((doc) => console.log(doc))
-			// 	.catch((err) => console.log(data.symbol));
+					usdBuyCast: data.usdBuyCast,
+					usdBuyTransfer: data.usdBuyTransfer,
+					usdSell: data.usdSell,
+				},
+				{ upsert: true }
+			)
+				// .then((doc) => console.log(doc))
+				.catch((err) => console.log(data.symbol));
 
-			// await browser.close();
+			await browser.close();
 		}
 
 		if (data === false) {
