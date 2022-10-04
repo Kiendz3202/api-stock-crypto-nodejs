@@ -18,8 +18,7 @@ const urlAgribank = 'https://www.agribank.com.vn/vn/ty-gia';
 const urlVietcombank =
 	'https://portal.vietcombank.com.vn/Personal/TG/Pages/ty-gia.aspx?devicechannel=default';
 const urlBidv = 'https://www.bidv.com.vn/vn/ty-gia-ngoai-te';
-const urlTechcombank =
-	'https://www.techcombank.com.vn/cong-cu-tien-ich/ti-gia/ti-gia-hoi-doai';
+const urlTechcombank = 'https://chogia.vn/ty-gia/techcombank/';
 const urlVietinbank = 'https://www.vietinbank.vn/web/home/vn/ty-gia/';
 const urlMbbank = 'https://webgia.com/ty-gia/mbbank/';
 
@@ -250,7 +249,7 @@ const crawlAgribank = asyncHandler(async () => {
 				},
 				{ upsert: true }
 			)
-				// .then((doc) => console.log(doc))
+				.then((doc) => console.log(doc))
 				.catch((err) => console.log(data.symbol));
 
 			// await browser.close();
@@ -976,134 +975,124 @@ const crawlTechcombank = asyncHandler(async () => {
 			// 	'/' +
 			// 	date.getFullYear();
 
-			dataJson.audBuyCast = $(
-				'#exchangeFilterContainer table tbody :nth-child(5) :nth-child(2) strong '
+			dataJson.usdBuyCast = $(
+				'table tbody :nth-child(1) :nth-child(2)'
 			)?.innerText;
-			dataJson.audBuyTransfer = $(
-				'#exchangeFilterContainer table tbody :nth-child(5) :nth-child(3) strong '
+			dataJson.usdBuyTransfer = $(
+				'table tbody :nth-child(1) :nth-child(4)'
 			)?.innerText;
-			dataJson.audSell = $(
-				'#exchangeFilterContainer table tbody :nth-child(5) :nth-child(4) strong '
-			)?.innerText;
-
-			dataJson.cadBuyCast = $(
-				'#exchangeFilterContainer table tbody :nth-child(7) :nth-child(2) strong '
-			)?.innerText;
-			dataJson.cadBuyTransfer = $(
-				'#exchangeFilterContainer table tbody :nth-child(7) :nth-child(3) strong '
-			)?.innerText;
-			dataJson.cadSell = $(
-				'#exchangeFilterContainer table tbody :nth-child(7) :nth-child(4) strong '
-			)?.innerText;
-
-			dataJson.chfBuyCast = $(
-				'#exchangeFilterContainer table tbody :nth-child(9) :nth-child(2) strong '
-			)?.innerText;
-			dataJson.chfBuyTransfer = $(
-				'#exchangeFilterContainer table tbody :nth-child(9) :nth-child(3) strong '
-			)?.innerText;
-			dataJson.chfSell = $(
-				'#exchangeFilterContainer table tbody :nth-child(9) :nth-child(4) strong '
-			)?.innerText;
-
-			dataJson.cnyBuyCast = $(
-				'#exchangeFilterContainer table tbody :nth-child(11) :nth-child(2) strong '
-			)?.innerText;
-			dataJson.cnyBuyTransfer = $(
-				'#exchangeFilterContainer table tbody :nth-child(11) :nth-child(3) strong '
-			)?.innerText;
-			dataJson.cnySell = $(
-				'#exchangeFilterContainer table tbody :nth-child(11) :nth-child(4) strong '
+			dataJson.usdSell = $(
+				'table tbody :nth-child(1) :nth-child(3)'
 			)?.innerText;
 
 			dataJson.eurBuyCast = $(
-				'#exchangeFilterContainer table tbody :nth-child(13) :nth-child(2) strong '
+				'table tbody :nth-child(4) :nth-child(2)'
 			)?.innerText;
 			dataJson.eurBuyTransfer = $(
-				'#exchangeFilterContainer table tbody :nth-child(13) :nth-child(3) strong '
+				'table tbody :nth-child(4) :nth-child(4)'
 			)?.innerText;
 			dataJson.eurSell = $(
-				'#exchangeFilterContainer table tbody :nth-child(13) :nth-child(4) strong '
+				'table tbody :nth-child(4) :nth-child(3)'
+			)?.innerText;
+
+			dataJson.audBuyCast = $(
+				'table tbody :nth-child(5) :nth-child(2)'
+			)?.innerText;
+			dataJson.audBuyTransfer = $(
+				'table tbody :nth-child(5) :nth-child(4)'
+			)?.innerText;
+			dataJson.audSell = $(
+				'table tbody :nth-child(5) :nth-child(3)'
+			)?.innerText;
+
+			dataJson.cadBuyCast = $(
+				'table tbody :nth-child(6) :nth-child(2)'
+			)?.innerText;
+			dataJson.cadBuyTransfer = $(
+				'table tbody :nth-child(6) :nth-child(4)'
+			)?.innerText;
+			dataJson.cadSell = $(
+				'table tbody :nth-child(6) :nth-child(3)'
+			)?.innerText;
+
+			dataJson.chfBuyCast = $(
+				'table tbody :nth-child(7) :nth-child(2)'
+			)?.innerText;
+			dataJson.chfBuyTransfer = $(
+				'table tbody :nth-child(7) :nth-child(4)'
+			)?.innerText;
+			dataJson.chfSell = $(
+				'table tbody :nth-child(7) :nth-child(3)'
+			)?.innerText;
+
+			dataJson.cnyBuyCast = $(
+				'table tbody :nth-child(8) :nth-child(2)'
+			)?.innerText;
+			dataJson.cnyBuyTransfer = $(
+				'table tbody :nth-child(8) :nth-child(4)'
+			)?.innerText;
+			dataJson.cnySell = $(
+				'table tbody :nth-child(8) :nth-child(3)'
 			)?.innerText;
 
 			dataJson.gbpBuyCast = $(
-				'#exchangeFilterContainer table tbody :nth-child(15) :nth-child(2) strong '
+				'table tbody :nth-child(9) :nth-child(2)'
 			)?.innerText;
 			dataJson.gbpBuyTransfer = $(
-				'#exchangeFilterContainer table tbody :nth-child(15) :nth-child(3) strong '
+				'table tbody :nth-child(9) :nth-child(4)'
 			)?.innerText;
 			dataJson.gbpSell = $(
-				'#exchangeFilterContainer table tbody :nth-child(15) :nth-child(4) strong '
+				'table tbody :nth-child(9) :nth-child(3)'
 			)?.innerText;
 
 			dataJson.hkdBuyCast = $(
-				'#exchangeFilterContainer table tbody :nth-child(17) :nth-child(2) strong '
+				'table tbody :nth-child(10) :nth-child(2)'
 			)?.innerText;
 			dataJson.hkdBuyTransfer = $(
-				'#exchangeFilterContainer table tbody :nth-child(17) :nth-child(3) strong '
+				'table tbody :nth-child(10) :nth-child(4)'
 			)?.innerText;
 			dataJson.hkdSell = $(
-				'#exchangeFilterContainer table tbody :nth-child(17) :nth-child(4) strong '
+				'table tbody :nth-child(10) :nth-child(3)'
 			)?.innerText;
-
+			//
 			dataJson.jpyBuyCast = $(
-				'#exchangeFilterContainer table tbody :nth-child(19) :nth-child(2) strong '
+				'table tbody :nth-child(11) :nth-child(2)'
 			)?.innerText;
 			dataJson.jpyBuyTransfer = $(
-				'#exchangeFilterContainer table tbody :nth-child(19) :nth-child(3) strong '
+				'table tbody :nth-child(11) :nth-child(4)'
 			)?.innerText;
 			dataJson.jpySell = $(
-				'#exchangeFilterContainer table tbody :nth-child(19) :nth-child(4) strong '
+				'table tbody :nth-child(11) :nth-child(3)'
 			)?.innerText;
 
 			dataJson.krwBuyCast = $(
-				'#exchangeFilterContainer table tbody :nth-child(21) :nth-child(2) strong '
+				'table tbody :nth-child(12) :nth-child(2)'
 			)?.innerText;
 			dataJson.krwBuyTransfer = $(
-				'#exchangeFilterContainer table tbody :nth-child(21) :nth-child(3) strong '
+				'table tbody :nth-child(12) :nth-child(4)'
 			)?.innerText;
 			dataJson.krwSell = $(
-				'#exchangeFilterContainer table tbody :nth-child(21) :nth-child(4) strong '
-			)?.innerText;
-
-			dataJson.myrBuyCast = $(
-				'#exchangeFilterContainer table tbody :nth-child(23) :nth-child(2) strong '
-			)?.innerText;
-			dataJson.myrBuyTransfer = $(
-				'#exchangeFilterContainer table tbody :nth-child(23) :nth-child(3) strong '
-			)?.innerText;
-			dataJson.myrSell = $(
-				'#exchangeFilterContainer table tbody :nth-child(23) :nth-child(4) strong '
+				'table tbody :nth-child(12) :nth-child(3)'
 			)?.innerText;
 
 			dataJson.sgdBuyCast = $(
-				'#exchangeFilterContainer table tbody :nth-child(25) :nth-child(2) strong '
+				'table tbody :nth-child(13) :nth-child(2)'
 			)?.innerText;
 			dataJson.sgdBuyTransfer = $(
-				'#exchangeFilterContainer table tbody :nth-child(25) :nth-child(3) strong '
+				'table tbody :nth-child(13) :nth-child(4)'
 			)?.innerText;
 			dataJson.sgdSell = $(
-				'#exchangeFilterContainer table tbody :nth-child(25) :nth-child(4) strong '
+				'table tbody :nth-child(13) :nth-child(3)'
 			)?.innerText;
 
 			dataJson.thbBuyCast = $(
-				'#exchangeFilterContainer table tbody :nth-child(27) :nth-child(2) strong '
+				'table tbody :nth-child(14) :nth-child(2)'
 			)?.innerText;
 			dataJson.thbBuyTransfer = $(
-				'#exchangeFilterContainer table tbody :nth-child(27) :nth-child(3) strong '
+				'table tbody :nth-child(14) :nth-child(4)'
 			)?.innerText;
 			dataJson.thbSell = $(
-				'#exchangeFilterContainer table tbody :nth-child(27) :nth-child(4) strong '
-			)?.innerText;
-
-			dataJson.usdBuyCast = $(
-				'#exchangeFilterContainer table tbody :nth-child(33) :nth-child(2) strong '
-			)?.innerText;
-			dataJson.usdBuyTransfer = $(
-				'#exchangeFilterContainer table tbody :nth-child(33) :nth-child(3) strong '
-			)?.innerText;
-			dataJson.usdSell = $(
-				'#exchangeFilterContainer table tbody :nth-child(33) :nth-child(4) strong '
+				'table tbody :nth-child(14) :nth-child(3)'
 			)?.innerText;
 		} catch (err) {
 			console.log(err);
@@ -1117,10 +1106,7 @@ const crawlTechcombank = asyncHandler(async () => {
 	while (data == false && attemps < 3) {
 		console.log('loop' + attemps);
 		console.time('techcom');
-		data = await collectQueryDataHeightScroll(
-			urlTechcombank,
-			pageEvaluateFunc
-		);
+		data = await collectQueryData(urlTechcombank, pageEvaluateFunc);
 		console.timeEnd('techcom');
 		console.log(data);
 		attemps++;
