@@ -107,9 +107,8 @@ const crawlVietcombankInterestRate = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlVietcombank, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			VietcombankInterestRate.findOneAndUpdate(
 				{ symbol: data.symbol },
 				{
@@ -315,9 +314,8 @@ const crawlVietinbankInterestRate = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlVietinbank, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			VietinbankInterestRate.findOneAndUpdate(
 				{ symbol: data.symbol },
 				{
@@ -530,9 +528,8 @@ const crawlAgribankbankInterestRate = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlAgribank, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			AgribankbankInterestRate.findOneAndUpdate(
 				{ symbol: data.symbol },
 				{
@@ -670,9 +667,8 @@ const crawlBidvInterestRate = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlBidv, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			BidvInterestRate.findOneAndUpdate(
 				{ symbol: data.symbol },
 				{
@@ -1085,9 +1081,8 @@ const crawlScbInterestRate = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlScb, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			ScbInterestRate.findOneAndUpdate(
 				{ symbol: data.symbol },
 				{
@@ -1365,9 +1360,8 @@ const crawlMbbankInterestRate = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlMbbank, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			MbbankInterestRate.findOneAndUpdate(
 				{ symbol: data.symbol },
 				{
@@ -1593,9 +1587,8 @@ const crawlVibInterestRate = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlVib, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			VibInterestRate.findOneAndUpdate(
 				{ symbol: data.symbol },
 				{
@@ -1750,9 +1743,8 @@ const crawlTpbankInterestRate = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlTpbank, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			TpbankInterestRate.findOneAndUpdate(
 				{ symbol: data.symbol },
 				{
@@ -1892,9 +1884,8 @@ const crawlVpbankInterestRate = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlVpbank, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			VpbankInterestRate.findOneAndUpdate(
 				{ symbol: data.symbol },
 				{

@@ -234,9 +234,8 @@ const crawlSjc = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlSjc, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			Sjc.findOneAndUpdate(
 				{ name: data.name },
 				{
@@ -469,9 +468,8 @@ const crawlPnj = asyncHandler(async (localtionNumber, index) => {
 			props
 		);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			Pnj.findOneAndUpdate(
 				{ location: data.location },
 				{
@@ -732,9 +730,8 @@ const crawlDoji = asyncHandler(async (location) => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlDoji, pageEvaluateFunc, props);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			Doji.findOneAndUpdate(
 				{ name: data.name },
 				{
@@ -926,9 +923,8 @@ const crawlPhuQuySjc = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlPhuQuySjc, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			PhuQuySjc.findOneAndUpdate(
 				{ name: data.name },
 				{
@@ -1063,9 +1059,8 @@ const crawlBaoTinMinhChau = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(ulrBaoTinMinhChau, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			BaoTinMinhChau.findOneAndUpdate(
 				{ name: data.name },
 				{
@@ -1205,9 +1200,8 @@ const crawlMiHong = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlMiHong, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			MiHong.findOneAndUpdate(
 				{ name: data.name },
 				{

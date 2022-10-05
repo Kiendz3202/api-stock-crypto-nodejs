@@ -149,11 +149,10 @@ const crawlDetailHnx30 = asyncHandler(
 				pageEvaluateFunc,
 				props
 			);
-			console.log('loop' + data);
+			console.log(data);
 			attemps++;
 
 			if (data) {
-				console.log(data);
 				Hnx30Detail.findOneAndUpdate(
 					{ symbol: data.symbol },
 					{
@@ -344,11 +343,10 @@ const crawlDetailHnx = asyncHandler(
 				pageEvaluateFunc,
 				props
 			);
-			console.log('loop' + data);
+			console.log(data);
 			attemps++;
 
 			if (data) {
-				console.log(data);
 				HnxDetail.findOneAndUpdate(
 					{ symbol: data.symbol },
 					{
@@ -539,11 +537,10 @@ const crawlDetailVn30 = asyncHandler(
 				pageEvaluateFunc,
 				props
 			);
-			console.log('loop' + data);
+			console.log(data);
 			attemps++;
 
 			if (data) {
-				console.log(data);
 				Vn30Detail.findOneAndUpdate(
 					{ symbol: data.symbol },
 					{
@@ -734,11 +731,10 @@ const crawlDetailHose = asyncHandler(
 				pageEvaluateFunc,
 				props
 			);
-			console.log('loop' + data);
+			console.log(data);
 			attemps++;
 
 			if (data) {
-				console.log(data);
 				HoseDetail.findOneAndUpdate(
 					{ symbol: data.symbol },
 					{
@@ -929,11 +925,10 @@ const crawlDetailUpcom = asyncHandler(
 				pageEvaluateFunc,
 				props
 			);
-			console.log('loop' + data);
+			console.log(data);
 			attemps++;
 
 			if (data) {
-				console.log(data);
 				UpcomDetail.findOneAndUpdate(
 					{ symbol: data.symbol },
 					{
@@ -1041,11 +1036,10 @@ const crawlDetailAllInvesting = asyncHandler(async (id, name, hrefDetail) => {
 			pageEvaluateFunc,
 			props
 		);
-		console.log('loop' + data);
+		console.log(data);
 		attemps++;
 
 		if (data) {
-			console.log(data);
 			AllInvestingDetail.findOneAndUpdate(
 				{ symbol: allInvestingDetailData.symbol },
 				{

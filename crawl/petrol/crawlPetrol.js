@@ -93,9 +93,8 @@ const crawlPetrolimex = asyncHandler(async () => {
 			pageEvaluateFunc
 		);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			Petrolimex.findOneAndUpdate(
 				{ name: data.name },
 				{

@@ -179,9 +179,8 @@ const crawlAgribank = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlAgribank, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			Agribank.findOneAndUpdate(
 				{ symbol: data.symbol },
 				{
@@ -497,9 +496,8 @@ const crawlVietcombank = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlVietcombank, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			Vietcombank.findOneAndUpdate(
 				{ symbol: data.symbol },
 				{
@@ -840,9 +838,8 @@ const crawlBidv = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlBidv, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			Bidv.findOneAndUpdate(
 				{ symbol: data.symbol },
 				{
@@ -1102,9 +1099,8 @@ const crawlTechcombank = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlTechcombank, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			Techcombank.findOneAndUpdate(
 				{ symbol: data.symbol },
 				{
@@ -1386,9 +1382,8 @@ const crawlVietinbank = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlVietinbank, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			Vietinbank.findOneAndUpdate(
 				{ symbol: data.symbol },
 				{
@@ -1724,9 +1719,8 @@ const crawlMbbank = asyncHandler(async () => {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlMbbank, pageEvaluateFunc);
 		attemps++;
-
+		console.log(data);
 		if (data) {
-			console.log(data);
 			Mbbank.findOneAndUpdate(
 				{ symbol: data.symbol },
 				{
