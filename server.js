@@ -367,6 +367,8 @@ const goldRunAll = async () => {
 		});
 	});
 
+	crawlAllDetailPnj();
+	await delay(30000);
 	crawlSjc();
 	await delay(15000);
 	crawlDoji();
@@ -376,8 +378,6 @@ const goldRunAll = async () => {
 	crawlBaoTinMinhChau();
 	await delay(30000);
 	crawlMiHong();
-	await delay(15000);
-	crawlAllDetailPnj();
 	// });
 };
 // goldRunAll();
