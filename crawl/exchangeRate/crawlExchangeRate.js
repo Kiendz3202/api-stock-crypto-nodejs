@@ -177,10 +177,7 @@ const crawlAgribank = asyncHandler(async () => {
 	//retry request until it gets data or tries 3 times
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
-		console.time('agri');
 		data = await collectQueryData(urlAgribank, pageEvaluateFunc);
-		console.timeEnd('agri');
-		console.log(data);
 		attemps++;
 
 		if (data) {
@@ -499,7 +496,6 @@ const crawlVietcombank = asyncHandler(async () => {
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlVietcombank, pageEvaluateFunc);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {
@@ -843,7 +839,6 @@ const crawlBidv = asyncHandler(async () => {
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlBidv, pageEvaluateFunc);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {
@@ -1105,10 +1100,7 @@ const crawlTechcombank = asyncHandler(async () => {
 	//retry request until it gets data or tries 3 times
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
-		console.time('techcom');
 		data = await collectQueryData(urlTechcombank, pageEvaluateFunc);
-		console.timeEnd('techcom');
-		console.log(data);
 		attemps++;
 
 		if (data) {
@@ -1393,7 +1385,6 @@ const crawlVietinbank = asyncHandler(async () => {
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlVietinbank, pageEvaluateFunc);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {
@@ -1732,7 +1723,6 @@ const crawlMbbank = asyncHandler(async () => {
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlMbbank, pageEvaluateFunc);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {

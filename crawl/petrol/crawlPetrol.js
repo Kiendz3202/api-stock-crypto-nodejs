@@ -92,7 +92,6 @@ const crawlPetrolimex = asyncHandler(async () => {
 			urlPetrolimex,
 			pageEvaluateFunc
 		);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {

@@ -444,17 +444,17 @@ const interestRateRunAll = async () => {
 //-----------------------------------
 
 const funcTest = async () => {
-	// cron.schedule('*/10 * * * *', async () => {
-	coinRunAll();
-	await delay(60000);
-	goldRunAll();
-	await delay(60000);
-	petrolRunAll();
-	await delay(60000);
-	exchangeRateRunAll();
-	await delay(60000);
-	interestRateRunAll();
-	// });
+	cron.schedule('*/10 * * * *', async () => {
+		coinRunAll();
+		await delay(60000);
+		goldRunAll();
+		await delay(60000);
+		petrolRunAll();
+		await delay(60000);
+		exchangeRateRunAll();
+		await delay(60000);
+		interestRateRunAll();
+	});
 };
 funcTest();
 

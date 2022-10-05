@@ -22,7 +22,7 @@ const urlVietcombank =
 const urlVietinbank = 'https://www.vietinbank.vn/web/home/vn/lai-suat';
 const urlAgribank = 'https://www.agribank.com.vn/vn/lai-suat';
 const urlBidv = 'https://www.bidv.com.vn/vn/tra-cuu-lai-suat';
-const urlScb = 'https://www.scb.com.vn/vie/lai-suat';
+const urlScb = 'https://webgia.com/lai-suat/scb/';
 const urlMbbank = 'https://webgia.com/lai-suat/mbbank/';
 const urlVib =
 	'https://www.vib.com.vn/vn/tiet-kiem/bieu-lai-suat-tiet-kiem-tai-quay';
@@ -106,7 +106,6 @@ const crawlVietcombankInterestRate = asyncHandler(async () => {
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlVietcombank, pageEvaluateFunc);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {
@@ -315,7 +314,6 @@ const crawlVietinbankInterestRate = asyncHandler(async () => {
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlVietinbank, pageEvaluateFunc);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {
@@ -531,7 +529,6 @@ const crawlAgribankbankInterestRate = asyncHandler(async () => {
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlAgribank, pageEvaluateFunc);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {
@@ -672,7 +669,6 @@ const crawlBidvInterestRate = asyncHandler(async () => {
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlBidv, pageEvaluateFunc);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {
@@ -739,342 +735,342 @@ const crawlScbInterestRate = asyncHandler(async () => {
 
 			dataJson.khongkyhan = {};
 			dataJson.khongkyhan.cuoiky = $(
-				'.content-table table tbody :nth-child(1) :nth-child(2)'
+				'table tbody :nth-child(1) :nth-child(2)'
 			)?.innerText;
 			dataJson.khongkyhan.hangnam = $(
-				'.content-table table tbody :nth-child(1) :nth-child(3)'
+				'table tbody :nth-child(1) :nth-child(3)'
 			)?.innerText;
 			dataJson.khongkyhan.hang6thang = $(
-				'.content-table table tbody :nth-child(1) :nth-child(4)'
+				'table tbody :nth-child(1) :nth-child(4)'
 			)?.innerText;
 			dataJson.khongkyhan.hangquy = $(
-				'.content-table table tbody :nth-child(1) :nth-child(5)'
+				'table tbody :nth-child(1) :nth-child(5)'
 			)?.innerText;
 			dataJson.khongkyhan.hangthang = $(
-				'.content-table table tbody :nth-child(1) :nth-child(6)'
+				'table tbody :nth-child(1) :nth-child(6)'
 			)?.innerText;
 			dataJson.khongkyhan.truoc = $(
-				'.content-table table tbody :nth-child(1) :nth-child(7)'
+				'table tbody :nth-child(1) :nth-child(7)'
 			)?.innerText;
 
 			dataJson.month1 = {};
 			dataJson.month1.cuoiky = $(
-				'.content-table table tbody :nth-child(2) :nth-child(2)'
+				'table tbody :nth-child(2) :nth-child(2)'
 			)?.innerText;
 			dataJson.month1.hangnam = $(
-				'.content-table table tbody :nth-child(2) :nth-child(3)'
+				'table tbody :nth-child(2) :nth-child(3)'
 			)?.innerText;
 			dataJson.month1.hang6thang = $(
-				'.content-table table tbody :nth-child(2) :nth-child(4)'
+				'table tbody :nth-child(2) :nth-child(4)'
 			)?.innerText;
 			dataJson.month1.hangquy = $(
-				'.content-table table tbody :nth-child(2) :nth-child(5)'
+				'table tbody :nth-child(2) :nth-child(5)'
 			)?.innerText;
 			dataJson.month1.hangthang = $(
-				'.content-table table tbody :nth-child(2) :nth-child(6)'
+				'table tbody :nth-child(2) :nth-child(6)'
 			)?.innerText;
 			dataJson.month1.truoc = $(
-				'.content-table table tbody :nth-child(2) :nth-child(7)'
+				'table tbody :nth-child(2) :nth-child(7)'
 			)?.innerText;
 
 			dataJson.month2 = {};
 			dataJson.month2.cuoiky = $(
-				'.content-table table tbody :nth-child(3) :nth-child(2)'
+				'table tbody :nth-child(3) :nth-child(2)'
 			)?.innerText;
 			dataJson.month2.hangnam = $(
-				'.content-table table tbody :nth-child(3) :nth-child(3)'
+				'table tbody :nth-child(3) :nth-child(3)'
 			)?.innerText;
 			dataJson.month2.hang6thang = $(
-				'.content-table table tbody :nth-child(3) :nth-child(4)'
+				'table tbody :nth-child(3) :nth-child(4)'
 			)?.innerText;
 			dataJson.month2.hangquy = $(
-				'.content-table table tbody :nth-child(3) :nth-child(5)'
+				'table tbody :nth-child(3) :nth-child(5)'
 			)?.innerText;
 			dataJson.month2.hangthang = $(
-				'.content-table table tbody :nth-child(3) :nth-child(6)'
+				'table tbody :nth-child(3) :nth-child(6)'
 			)?.innerText;
 			dataJson.month2.truoc = $(
-				'.content-table table tbody :nth-child(3) :nth-child(7)'
+				'table tbody :nth-child(3) :nth-child(7)'
 			)?.innerText;
 
 			dataJson.month3 = {};
 			dataJson.month3.cuoiky = $(
-				'.content-table table tbody :nth-child(4) :nth-child(2)'
+				'table tbody :nth-child(4) :nth-child(2)'
 			)?.innerText;
 			dataJson.month3.hangnam = $(
-				'.content-table table tbody :nth-child(4) :nth-child(3)'
+				'table tbody :nth-child(4) :nth-child(3)'
 			)?.innerText;
 			dataJson.month3.hang6thang = $(
-				'.content-table table tbody :nth-child(4) :nth-child(4)'
+				'table tbody :nth-child(4) :nth-child(4)'
 			)?.innerText;
 			dataJson.month3.hangquy = $(
-				'.content-table table tbody :nth-child(4) :nth-child(5)'
+				'table tbody :nth-child(4) :nth-child(5)'
 			)?.innerText;
 			dataJson.month3.hangthang = $(
-				'.content-table table tbody :nth-child(4) :nth-child(6)'
+				'table tbody :nth-child(4) :nth-child(6)'
 			)?.innerText;
 			dataJson.month3.truoc = $(
-				'.content-table table tbody :nth-child(4) :nth-child(7)'
+				'table tbody :nth-child(4) :nth-child(7)'
 			)?.innerText;
 
 			dataJson.month4 = {};
 			dataJson.month4.cuoiky = $(
-				'.content-table table tbody :nth-child(5) :nth-child(2)'
+				'table tbody :nth-child(5) :nth-child(2)'
 			)?.innerText;
 			dataJson.month4.hangnam = $(
-				'.content-table table tbody :nth-child(5) :nth-child(3)'
+				'table tbody :nth-child(5) :nth-child(3)'
 			)?.innerText;
 			dataJson.month4.hang6thang = $(
-				'.content-table table tbody :nth-child(5) :nth-child(4)'
+				'table tbody :nth-child(5) :nth-child(4)'
 			)?.innerText;
 			dataJson.month4.hangquy = $(
-				'.content-table table tbody :nth-child(5) :nth-child(5)'
+				'table tbody :nth-child(5) :nth-child(5)'
 			)?.innerText;
 			dataJson.month4.hangthang = $(
-				'.content-table table tbody :nth-child(5) :nth-child(6)'
+				'table tbody :nth-child(5) :nth-child(6)'
 			)?.innerText;
 			dataJson.month4.truoc = $(
-				'.content-table table tbody :nth-child(5) :nth-child(7)'
+				'table tbody :nth-child(5) :nth-child(7)'
 			)?.innerText;
 
 			dataJson.month5 = {};
 			dataJson.month5.cuoiky = $(
-				'.content-table table tbody :nth-child(6) :nth-child(2)'
+				'table tbody :nth-child(6) :nth-child(2)'
 			)?.innerText;
 			dataJson.month5.hangnam = $(
-				'.content-table table tbody :nth-child(6) :nth-child(3)'
+				'table tbody :nth-child(6) :nth-child(3)'
 			)?.innerText;
 			dataJson.month5.hang6thang = $(
-				'.content-table table tbody :nth-child(6) :nth-child(4)'
+				'table tbody :nth-child(6) :nth-child(4)'
 			)?.innerText;
 			dataJson.month5.hangquy = $(
-				'.content-table table tbody :nth-child(6) :nth-child(5)'
+				'table tbody :nth-child(6) :nth-child(5)'
 			)?.innerText;
 			dataJson.month5.hangthang = $(
-				'.content-table table tbody :nth-child(6) :nth-child(6)'
+				'table tbody :nth-child(6) :nth-child(6)'
 			)?.innerText;
 			dataJson.month5.truoc = $(
-				'.content-table table tbody :nth-child(6) :nth-child(7)'
+				'table tbody :nth-child(6) :nth-child(7)'
 			)?.innerText;
 
 			dataJson.month6 = {};
 			dataJson.month6.cuoiky = $(
-				'.content-table table tbody :nth-child(7) :nth-child(2)'
+				'table tbody :nth-child(7) :nth-child(2)'
 			)?.innerText;
 			dataJson.month6.hangnam = $(
-				'.content-table table tbody :nth-child(7) :nth-child(3)'
+				'table tbody :nth-child(7) :nth-child(3)'
 			)?.innerText;
 			dataJson.month6.hang6thang = $(
-				'.content-table table tbody :nth-child(7) :nth-child(4)'
+				'table tbody :nth-child(7) :nth-child(4)'
 			)?.innerText;
 			dataJson.month6.hangquy = $(
-				'.content-table table tbody :nth-child(7) :nth-child(5)'
+				'table tbody :nth-child(7) :nth-child(5)'
 			)?.innerText;
 			dataJson.month6.hangthang = $(
-				'.content-table table tbody :nth-child(7) :nth-child(6)'
+				'table tbody :nth-child(7) :nth-child(6)'
 			)?.innerText;
 			dataJson.month6.truoc = $(
-				'.content-table table tbody :nth-child(7) :nth-child(7)'
+				'table tbody :nth-child(7) :nth-child(7)'
 			)?.innerText;
 
 			dataJson.month7 = {};
 			dataJson.month7.cuoiky = $(
-				'.content-table table tbody :nth-child(8) :nth-child(2)'
+				'table tbody :nth-child(8) :nth-child(2)'
 			)?.innerText;
 			dataJson.month7.hangnam = $(
-				'.content-table table tbody :nth-child(8) :nth-child(3)'
+				'table tbody :nth-child(8) :nth-child(3)'
 			)?.innerText;
 			dataJson.month7.hang6thang = $(
-				'.content-table table tbody :nth-child(8) :nth-child(4)'
+				'table tbody :nth-child(8) :nth-child(4)'
 			)?.innerText;
 			dataJson.month7.hangquy = $(
-				'.content-table table tbody :nth-child(8) :nth-child(5)'
+				'table tbody :nth-child(8) :nth-child(5)'
 			)?.innerText;
 			dataJson.month7.hangthang = $(
-				'.content-table table tbody :nth-child(8) :nth-child(6)'
+				'table tbody :nth-child(8) :nth-child(6)'
 			)?.innerText;
 			dataJson.month7.truoc = $(
-				'.content-table table tbody :nth-child(8) :nth-child(7)'
+				'table tbody :nth-child(8) :nth-child(7)'
 			)?.innerText;
 
 			dataJson.month8 = {};
 			dataJson.month8.cuoiky = $(
-				'.content-table table tbody :nth-child(9) :nth-child(2)'
+				'table tbody :nth-child(9) :nth-child(2)'
 			)?.innerText;
 			dataJson.month8.hangnam = $(
-				'.content-table table tbody :nth-child(9) :nth-child(3)'
+				'table tbody :nth-child(9) :nth-child(3)'
 			)?.innerText;
 			dataJson.month8.hang6thang = $(
-				'.content-table table tbody :nth-child(9) :nth-child(4)'
+				'table tbody :nth-child(9) :nth-child(4)'
 			)?.innerText;
 			dataJson.month8.hangquy = $(
-				'.content-table table tbody :nth-child(9) :nth-child(5)'
+				'table tbody :nth-child(9) :nth-child(5)'
 			)?.innerText;
 			dataJson.month8.hangthang = $(
-				'.content-table table tbody :nth-child(9) :nth-child(6)'
+				'table tbody :nth-child(9) :nth-child(6)'
 			)?.innerText;
 			dataJson.month8.truoc = $(
-				'.content-table table tbody :nth-child(9) :nth-child(7)'
+				'table tbody :nth-child(9) :nth-child(7)'
 			)?.innerText;
 
 			dataJson.month9 = {};
 			dataJson.month9.cuoiky = $(
-				'.content-table table tbody :nth-child(10) :nth-child(2)'
+				'table tbody :nth-child(10) :nth-child(2)'
 			)?.innerText;
 			dataJson.month9.hangnam = $(
-				'.content-table table tbody :nth-child(10) :nth-child(3)'
+				'table tbody :nth-child(10) :nth-child(3)'
 			)?.innerText;
 			dataJson.month9.hang6thang = $(
-				'.content-table table tbody :nth-child(10) :nth-child(4)'
+				'table tbody :nth-child(10) :nth-child(4)'
 			)?.innerText;
 			dataJson.month9.hangquy = $(
-				'.content-table table tbody :nth-child(10) :nth-child(5)'
+				'table tbody :nth-child(10) :nth-child(5)'
 			)?.innerText;
 			dataJson.month9.hangthang = $(
-				'.content-table table tbody :nth-child(10) :nth-child(6)'
+				'table tbody :nth-child(10) :nth-child(6)'
 			)?.innerText;
 			dataJson.month9.truoc = $(
-				'.content-table table tbody :nth-child(10) :nth-child(7)'
+				'table tbody :nth-child(10) :nth-child(7)'
 			)?.innerText;
 
 			dataJson.month10 = {};
 			dataJson.month10.cuoiky = $(
-				'.content-table table tbody :nth-child(11) :nth-child(2)'
+				'table tbody :nth-child(11) :nth-child(2)'
 			)?.innerText;
 			dataJson.month10.hangnam = $(
-				'.content-table table tbody :nth-child(11) :nth-child(3)'
+				'table tbody :nth-child(11) :nth-child(3)'
 			)?.innerText;
 			dataJson.month10.hang6thang = $(
-				'.content-table table tbody :nth-child(11) :nth-child(4)'
+				'table tbody :nth-child(11) :nth-child(4)'
 			)?.innerText;
 			dataJson.month10.hangquy = $(
-				'.content-table table tbody :nth-child(11) :nth-child(5)'
+				'table tbody :nth-child(11) :nth-child(5)'
 			)?.innerText;
 			dataJson.month10.hangthang = $(
-				'.content-table table tbody :nth-child(11) :nth-child(6)'
+				'table tbody :nth-child(11) :nth-child(6)'
 			)?.innerText;
 			dataJson.month10.truoc = $(
-				'.content-table table tbody :nth-child(11) :nth-child(7)'
+				'table tbody :nth-child(11) :nth-child(7)'
 			)?.innerText;
 
 			dataJson.month11 = {};
 			dataJson.month11.cuoiky = $(
-				'.content-table table tbody :nth-child(12) :nth-child(2)'
+				'table tbody :nth-child(12) :nth-child(2)'
 			)?.innerText;
 			dataJson.month11.hangnam = $(
-				'.content-table table tbody :nth-child(12) :nth-child(3)'
+				'table tbody :nth-child(12) :nth-child(3)'
 			)?.innerText;
 			dataJson.month11.hang6thang = $(
-				'.content-table table tbody :nth-child(12) :nth-child(4)'
+				'table tbody :nth-child(12) :nth-child(4)'
 			)?.innerText;
 			dataJson.month11.hangquy = $(
-				'.content-table table tbody :nth-child(12) :nth-child(5)'
+				'table tbody :nth-child(12) :nth-child(5)'
 			)?.innerText;
 			dataJson.month11.hangthang = $(
-				'.content-table table tbody :nth-child(12) :nth-child(6)'
+				'table tbody :nth-child(12) :nth-child(6)'
 			)?.innerText;
 			dataJson.month11.truoc = $(
-				'.content-table table tbody :nth-child(12) :nth-child(7)'
+				'table tbody :nth-child(12) :nth-child(7)'
 			)?.innerText;
 
 			dataJson.month12 = {};
 			dataJson.month12.cuoiky = $(
-				'.content-table table tbody :nth-child(13) :nth-child(2)'
+				'table tbody :nth-child(13) :nth-child(2)'
 			)?.innerText;
 			dataJson.month12.hangnam = $(
-				'.content-table table tbody :nth-child(13) :nth-child(3)'
+				'table tbody :nth-child(13) :nth-child(3)'
 			)?.innerText;
 			dataJson.month12.hang6thang = $(
-				'.content-table table tbody :nth-child(13) :nth-child(4)'
+				'table tbody :nth-child(13) :nth-child(4)'
 			)?.innerText;
 			dataJson.month12.hangquy = $(
-				'.content-table table tbody :nth-child(13) :nth-child(5)'
+				'table tbody :nth-child(13) :nth-child(5)'
 			)?.innerText;
 			dataJson.month12.hangthang = $(
-				'.content-table table tbody :nth-child(13) :nth-child(6)'
+				'table tbody :nth-child(13) :nth-child(6)'
 			)?.innerText;
 			dataJson.month12.truoc = $(
-				'.content-table table tbody :nth-child(13) :nth-child(7)'
+				'table tbody :nth-child(13) :nth-child(7)'
 			)?.innerText;
 
 			dataJson.month15 = {};
 			dataJson.month15.cuoiky = $(
-				'.content-table table tbody :nth-child(14) :nth-child(2)'
+				'table tbody :nth-child(14) :nth-child(2)'
 			)?.innerText;
 			dataJson.month15.hangnam = $(
-				'.content-table table tbody :nth-child(14) :nth-child(3)'
+				'table tbody :nth-child(14) :nth-child(3)'
 			)?.innerText;
 			dataJson.month15.hang6thang = $(
-				'.content-table table tbody :nth-child(14) :nth-child(4)'
+				'table tbody :nth-child(14) :nth-child(4)'
 			)?.innerText;
 			dataJson.month15.hangquy = $(
-				'.content-table table tbody :nth-child(14) :nth-child(5)'
+				'table tbody :nth-child(14) :nth-child(5)'
 			)?.innerText;
 			dataJson.month15.hangthang = $(
-				'.content-table table tbody :nth-child(14) :nth-child(6)'
+				'table tbody :nth-child(14) :nth-child(6)'
 			)?.innerText;
 			dataJson.month15.truoc = $(
-				'.content-table table tbody :nth-child(14) :nth-child(7)'
+				'table tbody :nth-child(14) :nth-child(7)'
 			)?.innerText;
 
 			dataJson.month18 = {};
 			dataJson.month18.cuoiky = $(
-				'.content-table table tbody :nth-child(15) :nth-child(2)'
+				'table tbody :nth-child(15) :nth-child(2)'
 			)?.innerText;
 			dataJson.month18.hangnam = $(
-				'.content-table table tbody :nth-child(15) :nth-child(3)'
+				'table tbody :nth-child(15) :nth-child(3)'
 			)?.innerText;
 			dataJson.month18.hang6thang = $(
-				'.content-table table tbody :nth-child(15) :nth-child(4)'
+				'table tbody :nth-child(15) :nth-child(4)'
 			)?.innerText;
 			dataJson.month18.hangquy = $(
-				'.content-table table tbody :nth-child(15) :nth-child(5)'
+				'table tbody :nth-child(15) :nth-child(5)'
 			)?.innerText;
 			dataJson.month18.hangthang = $(
-				'.content-table table tbody :nth-child(15) :nth-child(6)'
+				'table tbody :nth-child(15) :nth-child(6)'
 			)?.innerText;
 			dataJson.month18.truoc = $(
-				'.content-table table tbody :nth-child(15) :nth-child(7)'
+				'table tbody :nth-child(15) :nth-child(7)'
 			)?.innerText;
 
 			dataJson.month24 = {};
 			dataJson.month24.cuoiky = $(
-				'.content-table table tbody :nth-child(16) :nth-child(2)'
+				'table tbody :nth-child(16) :nth-child(2)'
 			)?.innerText;
 			dataJson.month24.hangnam = $(
-				'.content-table table tbody :nth-child(16) :nth-child(3)'
+				'table tbody :nth-child(16) :nth-child(3)'
 			)?.innerText;
 			dataJson.month24.hang6thang = $(
-				'.content-table table tbody :nth-child(16) :nth-child(4)'
+				'table tbody :nth-child(16) :nth-child(4)'
 			)?.innerText;
 			dataJson.month24.hangquy = $(
-				'.content-table table tbody :nth-child(16) :nth-child(5)'
+				'table tbody :nth-child(16) :nth-child(5)'
 			)?.innerText;
 			dataJson.month24.hangthang = $(
-				'.content-table table tbody :nth-child(16) :nth-child(6)'
+				'table tbody :nth-child(16) :nth-child(6)'
 			)?.innerText;
 			dataJson.month24.truoc = $(
-				'.content-table table tbody :nth-child(16) :nth-child(7)'
+				'table tbody :nth-child(16) :nth-child(7)'
 			)?.innerText;
 
 			dataJson.month36 = {};
 			dataJson.month36.cuoiky = $(
-				'.content-table table tbody :nth-child(17) :nth-child(2)'
+				'table tbody :nth-child(17) :nth-child(2)'
 			)?.innerText;
 			dataJson.month36.hangnam = $(
-				'.content-table table tbody :nth-child(17) :nth-child(3)'
+				'table tbody :nth-child(17) :nth-child(3)'
 			)?.innerText;
 			dataJson.month36.hang6thang = $(
-				'.content-table table tbody :nth-child(17) :nth-child(4)'
+				'table tbody :nth-child(17) :nth-child(4)'
 			)?.innerText;
 			dataJson.month36.hangquy = $(
-				'.content-table table tbody :nth-child(17) :nth-child(5)'
+				'table tbody :nth-child(17) :nth-child(5)'
 			)?.innerText;
 			dataJson.month36.hangthang = $(
-				'.content-table table tbody :nth-child(17) :nth-child(6)'
+				'table tbody :nth-child(17) :nth-child(6)'
 			)?.innerText;
 			dataJson.month36.truoc = $(
-				'.content-table table tbody :nth-child(17) :nth-child(7)'
+				'table tbody :nth-child(17) :nth-child(7)'
 			)?.innerText;
 		} catch (err) {
 			console.log(err);
@@ -1087,8 +1083,7 @@ const crawlScbInterestRate = asyncHandler(async () => {
 	//retry request until it gets data or tries 3 times
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
-		data = await collectQueryDataHeightScroll(urlScb, pageEvaluateFunc);
-		console.log('loop' + data);
+		data = await collectQueryData(urlScb, pageEvaluateFunc);
 		attemps++;
 
 		if (data) {
@@ -1369,7 +1364,6 @@ const crawlMbbankInterestRate = asyncHandler(async () => {
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlMbbank, pageEvaluateFunc);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {
@@ -1598,7 +1592,6 @@ const crawlVibInterestRate = asyncHandler(async () => {
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlVib, pageEvaluateFunc);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {
@@ -1756,7 +1749,6 @@ const crawlTpbankInterestRate = asyncHandler(async () => {
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlTpbank, pageEvaluateFunc);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {
@@ -1899,7 +1891,6 @@ const crawlVpbankInterestRate = asyncHandler(async () => {
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlVpbank, pageEvaluateFunc);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {

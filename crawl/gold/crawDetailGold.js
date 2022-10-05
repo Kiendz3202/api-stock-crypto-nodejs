@@ -233,7 +233,6 @@ const crawlSjc = asyncHandler(async () => {
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlSjc, pageEvaluateFunc);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {
@@ -469,7 +468,6 @@ const crawlPnj = asyncHandler(async (localtionNumber, index) => {
 			pageEvaluateFunc,
 			props
 		);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {
@@ -733,7 +731,6 @@ const crawlDoji = asyncHandler(async (location) => {
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlDoji, pageEvaluateFunc, props);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {
@@ -928,7 +925,6 @@ const crawlPhuQuySjc = asyncHandler(async () => {
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlPhuQuySjc, pageEvaluateFunc);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {
@@ -1066,7 +1062,6 @@ const crawlBaoTinMinhChau = asyncHandler(async () => {
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(ulrBaoTinMinhChau, pageEvaluateFunc);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {
@@ -1209,7 +1204,6 @@ const crawlMiHong = asyncHandler(async () => {
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlMiHong, pageEvaluateFunc);
-		console.log('loop' + data);
 		attemps++;
 
 		if (data) {
