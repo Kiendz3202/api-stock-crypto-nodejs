@@ -4,6 +4,7 @@ const puppeteer = require('puppeteer');
 
 const {
 	collectQueryData,
+	collectQueryDataHeightScroll,
 } = require('../../../utils/pupperteer/collectQueryData');
 
 const VietcombankInterestRate = require('../../../model/interestRate/vietcombankInterestRateModel');
@@ -1086,7 +1087,7 @@ const crawlScbInterestRate = asyncHandler(async () => {
 	//retry request until it gets data or tries 3 times
 	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
-		data = await collectQueryData(urlScb, pageEvaluateFunc);
+		data = await collectQueryDataHeightScroll(urlScb, pageEvaluateFunc);
 		console.log('loop' + data);
 		attemps++;
 
