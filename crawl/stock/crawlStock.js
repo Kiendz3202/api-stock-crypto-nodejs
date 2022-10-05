@@ -94,7 +94,7 @@ const crawlHnx30 = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		data = await collectQueryData(urlHnx30, pageEvaluateFunc);
 
 		attemps++;
@@ -202,7 +202,7 @@ const crawlHnx = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		data = await collectQueryDataHeightScroll(urlHnx, pageEvaluateFunc);
 
 		attemps++;
@@ -310,7 +310,7 @@ const crawlVn30 = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		data = await collectQueryData(urlVn30, pageEvaluateFunc);
 
 		attemps++;
@@ -418,7 +418,7 @@ const crawlHose = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		data = await collectQueryData(urlHose, pageEvaluateFunc);
 
 		attemps++;
@@ -525,7 +525,7 @@ const crawlUpcom = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		data = await collectQueryData(urlUpcom, pageEvaluateFunc);
 
 		attemps++;

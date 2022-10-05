@@ -230,7 +230,7 @@ const crawlSjc = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlSjc, pageEvaluateFunc);
 		console.log('loop' + data);
@@ -462,7 +462,7 @@ const crawlPnj = asyncHandler(async (localtionNumber, index) => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(
 			`${urlPnj}${localtionNumber}`,
@@ -730,7 +730,7 @@ const crawlDoji = asyncHandler(async (location) => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlDoji, pageEvaluateFunc, props);
 		console.log('loop' + data);
@@ -925,7 +925,7 @@ const crawlPhuQuySjc = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlPhuQuySjc, pageEvaluateFunc);
 		console.log('loop' + data);
@@ -1063,7 +1063,7 @@ const crawlBaoTinMinhChau = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(ulrBaoTinMinhChau, pageEvaluateFunc);
 		console.log('loop' + data);
@@ -1206,7 +1206,7 @@ const crawlMiHong = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlMiHong, pageEvaluateFunc);
 		console.log('loop' + data);

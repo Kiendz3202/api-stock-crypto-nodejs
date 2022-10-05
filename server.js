@@ -368,15 +368,15 @@ const goldRunAll = async () => {
 	});
 
 	crawlSjc();
-	await delay(3000);
+	await delay(15000);
 	crawlDoji();
-	await delay(3000);
+	await delay(15000);
 	crawlPhuQuySjc();
-	await delay(3000);
+	await delay(15000);
 	crawlBaoTinMinhChau();
-	await delay(3000);
+	await delay(15000);
 	crawlMiHong();
-	await delay(3000);
+	await delay(15000);
 	crawlAllDetailPnj();
 	// });
 };
@@ -400,15 +400,15 @@ const petrolRunAll = async () => {
 const exchangeRateRunAll = async () => {
 	// cron.schedule('*/3 * * * *', async () => {
 	crawlAgribank();
-	await delay(3000);
+	await delay(15000);
 	crawlVietcombank();
-	await delay(3000);
+	await delay(15000);
 	crawlBidv();
-	await delay(3000);
+	await delay(15000);
 	crawlTechcombank();
-	await delay(3000);
+	await delay(15000);
 	crawlVietinbank();
-	await delay(3000);
+	await delay(15000);
 	crawlMbbank();
 	// });
 };
@@ -421,21 +421,21 @@ const exchangeRateRunAll = async () => {
 const interestRateRunAll = async () => {
 	// cron.schedule('*/3 * * * *', async () => {
 	crawlVietcombankInterestRate();
-	await delay(3000);
+	await delay(15000);
 	crawlVietinbankInterestRate();
-	await delay(3000);
+	await delay(15000);
 	crawlAgribankbankInterestRate();
-	await delay(3000);
+	await delay(15000);
 	crawlBidvInterestRate();
-	await delay(3000);
+	await delay(15000);
 	crawlScbInterestRate();
-	await delay(3000);
+	await delay(15000);
 	crawlMbbankInterestRate();
-	await delay(3000);
+	await delay(15000);
 	crawlVibInterestRate();
-	await delay(3000);
+	await delay(15000);
 	crawlTpbankInterestRate();
-	await delay(3000);
+	await delay(15000);
 	crawlVpbankInterestRate();
 	// });
 };
@@ -444,15 +444,15 @@ const interestRateRunAll = async () => {
 //-----------------------------------
 
 const funcTest = async () => {
-	cron.schedule('*/4 * * * *', async () => {
+	cron.schedule('*/10 * * * *', async () => {
 		coinRunAll();
-		await delay(5000);
+		await delay(60000);
 		goldRunAll();
-		await delay(5000);
+		await delay(60000);
 		petrolRunAll();
-		await delay(5000);
+		await delay(60000);
 		exchangeRateRunAll();
-		await delay(5000);
+		await delay(60000);
 		interestRateRunAll();
 	});
 };

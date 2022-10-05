@@ -86,7 +86,7 @@ const crawlPetrolimex = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryDataHeightScroll(
 			urlPetrolimex,

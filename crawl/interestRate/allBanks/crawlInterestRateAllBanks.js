@@ -102,7 +102,7 @@ const crawlVietcombankInterestRate = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlVietcombank, pageEvaluateFunc);
 		console.log('loop' + data);
@@ -311,7 +311,7 @@ const crawlVietinbankInterestRate = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlVietinbank, pageEvaluateFunc);
 		console.log('loop' + data);
@@ -527,7 +527,7 @@ const crawlAgribankbankInterestRate = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlAgribank, pageEvaluateFunc);
 		console.log('loop' + data);
@@ -668,7 +668,7 @@ const crawlBidvInterestRate = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlBidv, pageEvaluateFunc);
 		console.log('loop' + data);
@@ -1084,7 +1084,7 @@ const crawlScbInterestRate = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlScb, pageEvaluateFunc);
 		console.log('loop' + data);
@@ -1365,7 +1365,7 @@ const crawlMbbankInterestRate = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlMbbank, pageEvaluateFunc);
 		console.log('loop' + data);
@@ -1594,7 +1594,7 @@ const crawlVibInterestRate = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlVib, pageEvaluateFunc);
 		console.log('loop' + data);
@@ -1752,7 +1752,7 @@ const crawlTpbankInterestRate = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlTpbank, pageEvaluateFunc);
 		console.log('loop' + data);
@@ -1895,7 +1895,7 @@ const crawlVpbankInterestRate = asyncHandler(async () => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(urlVpbank, pageEvaluateFunc);
 		console.log('loop' + data);

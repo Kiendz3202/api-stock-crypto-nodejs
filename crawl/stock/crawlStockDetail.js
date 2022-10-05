@@ -142,7 +142,7 @@ const crawlDetailHnx30 = asyncHandler(
 		let data = false;
 		let attemps = 0;
 		//retry request until it gets data or tries 3 times
-		while (data == false && attemps < 3) {
+		while (data == false && attemps < 2) {
 			console.log('loop' + attemps);
 			data = await collectQueryData(
 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
@@ -337,7 +337,7 @@ const crawlDetailHnx = asyncHandler(
 		let data = false;
 		let attemps = 0;
 		//retry request until it gets data or tries 3 times
-		while (data == false && attemps < 3) {
+		while (data == false && attemps < 2) {
 			console.log('loop' + attemps);
 			data = await collectQueryData(
 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
@@ -532,7 +532,7 @@ const crawlDetailVn30 = asyncHandler(
 		let data = false;
 		let attemps = 0;
 		//retry request until it gets data or tries 3 times
-		while (data == false && attemps < 3) {
+		while (data == false && attemps < 2) {
 			console.log('loop' + attemps);
 			data = await collectQueryData(
 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
@@ -727,7 +727,7 @@ const crawlDetailHose = asyncHandler(
 		let data = false;
 		let attemps = 0;
 		//retry request until it gets data or tries 3 times
-		while (data == false && attemps < 3) {
+		while (data == false && attemps < 2) {
 			console.log('loop' + attemps);
 			data = await collectQueryData(
 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
@@ -922,7 +922,7 @@ const crawlDetailUpcom = asyncHandler(
 		let data = false;
 		let attemps = 0;
 		//retry request until it gets data or tries 3 times
-		while (data == false && attemps < 3) {
+		while (data == false && attemps < 2) {
 			console.log('loop' + attemps);
 			data = await collectQueryData(
 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
@@ -1034,7 +1034,7 @@ const crawlDetailAllInvesting = asyncHandler(async (id, name, hrefDetail) => {
 	let data = false;
 	let attemps = 0;
 	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 3) {
+	while (data == false && attemps < 2) {
 		console.log('loop' + attemps);
 		data = await collectQueryData(
 			`https://vn.investing.com${hrefDetail}`,
