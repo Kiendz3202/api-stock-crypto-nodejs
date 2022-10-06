@@ -370,13 +370,13 @@ const goldRunAll = async () => {
 	crawlAllDetailPnj();
 	await delay(30000);
 	crawlSjc();
-	await delay(15000);
+	await delay(20000);
 	crawlDoji();
-	await delay(15000);
+	await delay(20000);
 	crawlPhuQuySjc();
-	await delay(30000);
+	await delay(20000);
 	crawlBaoTinMinhChau();
-	await delay(30000);
+	await delay(20000);
 	crawlMiHong();
 	// });
 };
@@ -446,13 +446,13 @@ const interestRateRunAll = async () => {
 const funcTest = async () => {
 	// cron.schedule('*/10 * * * *', async () => {
 	coinRunAll();
-	await delay(60000);
+	await delay(20000);
 	goldRunAll();
-	await delay(120000);
+	await delay(130000);
 	petrolRunAll();
-	await delay(30000);
+	await delay(10000);
 	exchangeRateRunAll();
-	await delay(120000);
+	await delay(100000);
 	interestRateRunAll();
 	// });
 };
