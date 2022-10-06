@@ -80,247 +80,247 @@ const Coin = require('./model/coin/coinModel');
 //-----------------------------Stock----------------------------------------------------------
 const stockRunAll = async () => {
 	//----Length of collection to caculate time delay each crawlingFunction executes
-	cron.schedule('*/2 * * * *', async () => {
-		const hnxLength = await Hnx.find().count();
-		const hnx30Length = await Hnx30.find().count();
-		const vn30Length = await Vn30.find().count();
-		const hoseLength = await Hose.find().count();
-		const upcomLength = await Upcom.find().count();
+	// cron.schedule('*/2 * * * *', async () => {
+	const hnxLength = await Hnx.find().count();
+	const hnx30Length = await Hnx30.find().count();
+	const vn30Length = await Vn30.find().count();
+	const hoseLength = await Hose.find().count();
+	const upcomLength = await Upcom.find().count();
 
-		//----crawl all basic information stocks----
-		crawlHnx();
-		await delay(3000);
-		crawlHnx30();
-		await delay(3000);
-		crawlVn30();
-		await delay(3000);
-		crawlHose();
-		await delay(3000);
-		crawlUpcom();
-		await delay(20000);
-		// crawlAllInvesting();
-		//--------------------------------------
+	//----crawl all basic information stocks----
+	crawlHnx();
+	await delay(15000);
+	crawlHnx30();
+	await delay(5000);
+	crawlVn30();
+	await delay(5000);
+	crawlHose();
+	await delay(15000);
+	crawlUpcom();
+	await delay(15000);
+	// crawlAllInvesting();
+	//--------------------------------------
 
-		//---crawlAllDetail Stock---
+	//---crawlAllDetail Stock---
 
-		const crawlAllDetailHnx30 = async () => {
-			// cron.schedule('*/30 8-16 * * *', async () => {
-			const list = await Hnx30.find({}).limit(5);
+	const crawlAllDetailHnx30 = async () => {
+		// cron.schedule('*/30 8-16 * * *', async () => {
+		const list = await Hnx30.find({}).limit(30);
 
-			list.forEach(async (stock, index) => {
-				setTimeout(() => {
-					crawlDetailHnx30(
-						stock.name,
-						stock.symbol,
-						stock.reference,
-						stock.ceil,
-						stock.floor,
-						stock.currentPrice,
-						stock.high,
-						stock.low,
-						stock.change,
-						stock.changePercent,
-						stock.turnOver
-					);
-				}, 2000 * index);
-			});
-			// });
-		};
-
-		const crawlAllDetailHnx = async () => {
-			// cron.schedule('*/35 * * * *', async () => {
-			const list = await Hnx.find({}).limit(5);
-
-			list.forEach(async (stock, index) => {
-				setTimeout(() => {
-					crawlDetailHnx(
-						stock.name,
-						stock.symbol,
-						stock.reference,
-						stock.ceil,
-						stock.floor,
-						stock.currentPrice,
-						stock.high,
-						stock.low,
-						stock.change,
-						stock.changePercent,
-						stock.turnOver
-					);
-				}, 2000 * index);
-			});
-			// });
-		};
-
-		const crawlAllDetailVn30 = async () => {
-			const list = await Vn30.find({}).limit(5);
-
-			list.forEach(async (stock, index) => {
-				setTimeout(() => {
-					crawlDetailVn30(
-						stock.name,
-						stock.symbol,
-						stock.reference,
-						stock.ceil,
-						stock.floor,
-						stock.currentPrice,
-						stock.high,
-						stock.low,
-						stock.change,
-						stock.changePercent,
-						stock.turnOver
-					);
-				}, 2000 * index);
-			});
-		};
-
-		const crawlAllDetailHose = async () => {
-			// cron.schedule('14 * * * *', async () => {
-			const list = await Hose.find({}).limit(5);
-
-			list.forEach(async (stock, index) => {
-				setTimeout(() => {
-					crawlDetailHose(
-						stock.name,
-						stock.symbol,
-						stock.reference,
-						stock.ceil,
-						stock.floor,
-						stock.currentPrice,
-						stock.high,
-						stock.low,
-						stock.change,
-						stock.changePercent,
-						stock.turnOver
-					);
-				}, 2000 * index);
-			});
-			// })
-		};
-
-		const crawlAllDetailUpcom = async () => {
-			const list = await Upcom.find({}).limit(5);
-
-			list.forEach(async (stock, index) => {
-				setTimeout(() => {
-					crawlDetailUpcom(
-						stock.name,
-						stock.symbol,
-						stock.reference,
-						stock.ceil,
-						stock.floor,
-						stock.currentPrice,
-						stock.high,
-						stock.low,
-						stock.change,
-						stock.changePercent,
-						stock.turnOver
-					);
-				}, 2000 * index);
-			});
-		};
-		//--------------------------
-
-		// const crawlAllDetailAllInvesting = asyncHandler(async () => {
-		// 	const list = await AllInvesting.find({}).limit(20);
-
-		// 	list.forEach(async (stock, index) => {
-		// 		setTimeout(() => {
-		// 			crawlDetailAllInvesting(stock.id, stock.name, stock.hrefDetail);
-		// 		}, 2000 * index);
-		// 	});
+		list.forEach(async (stock, index) => {
+			setTimeout(() => {
+				crawlDetailHnx30(
+					stock.name,
+					stock.symbol,
+					stock.reference,
+					stock.ceil,
+					stock.floor,
+					stock.currentPrice,
+					stock.high,
+					stock.low,
+					stock.change,
+					stock.changePercent,
+					stock.turnOver
+				);
+			}, 2000 * index);
+		});
 		// });
+	};
 
-		// const crawlAllDetailChartHnx = asyncHandler(async () => {
-		// 	const list = await Hnx.find({}).limit(10);
+	const crawlAllDetailHnx = async () => {
+		// cron.schedule('*/35 * * * *', async () => {
+		const list = await Hnx.find({}).limit(30);
 
-		// 	list.forEach(async (stock, index) => {
-		// 		setTimeout(() => {
-		// 			crawlDetailChartHnx(stock.symbol);
-		// 		}, 2000 * index);
-		// 	});
+		list.forEach(async (stock, index) => {
+			setTimeout(() => {
+				crawlDetailHnx(
+					stock.name,
+					stock.symbol,
+					stock.reference,
+					stock.ceil,
+					stock.floor,
+					stock.currentPrice,
+					stock.high,
+					stock.low,
+					stock.change,
+					stock.changePercent,
+					stock.turnOver
+				);
+			}, 2000 * index);
+		});
 		// });
+	};
 
-		// const crawlAllDetailReportChart = asyncHandler(async () => {
-		// 	const list = await AllInvestingDetail.find({}).limit(10);
+	const crawlAllDetailVn30 = async () => {
+		const list = await Vn30.find({}).limit(30);
 
-		// 	list.forEach(async (stock, index) => {
-		// 		setTimeout(() => {
-		// 			crawlDetailReportChartAll(stock.id, stock.symbol);
-		// 		}, index * 2000);
-		// 	});
-		// });
+		list.forEach(async (stock, index) => {
+			setTimeout(() => {
+				crawlDetailVn30(
+					stock.name,
+					stock.symbol,
+					stock.reference,
+					stock.ceil,
+					stock.floor,
+					stock.currentPrice,
+					stock.high,
+					stock.low,
+					stock.change,
+					stock.changePercent,
+					stock.turnOver
+				);
+			}, 2000 * index);
+		});
+	};
 
-		//---crawl detail information in particularly stock and update price to array in database to draw chart
-		console.log('start crawl detail');
-		crawlAllDetailHnx30();
-		//set delay for crwaling each exchange.When crawling first time, dont have data in database so we have to set default time delay,
-		//it depends on your caculating
-		// if (hnx30Length !== 0) {
-		// 	await delay(hnx30Length * 2000 + 5000);
-		// } else {
-		// 	await delay(30 * 2000 + 5000);
-		// }
-		if (hnx30Length !== 0) {
-			await delay(5 * 2000);
-		} else {
-			await delay(5 * 2000);
-		}
+	const crawlAllDetailHose = async () => {
+		// cron.schedule('14 * * * *', async () => {
+		const list = await Hose.find({}).limit(30);
 
-		crawlAllDetailVn30();
-		// if (vn30Length !== 0) {
-		// 	await delay(vn30Length * 2000 + 5000);
-		// } else {
-		// 	await delay(30 * 2000 + 5000);
-		// }
-		if (hnx30Length !== 0) {
-			await delay(5 * 2000);
-		} else {
-			await delay(5 * 2000);
-		}
+		list.forEach(async (stock, index) => {
+			setTimeout(() => {
+				crawlDetailHose(
+					stock.name,
+					stock.symbol,
+					stock.reference,
+					stock.ceil,
+					stock.floor,
+					stock.currentPrice,
+					stock.high,
+					stock.low,
+					stock.change,
+					stock.changePercent,
+					stock.turnOver
+				);
+			}, 2000 * index);
+		});
+		// })
+	};
 
-		crawlAllDetailHnx();
-		// if (hnxLength !== 0) {
-		// 	await delay(hnxLength * 2000 + 5000);
-		// } else {
-		// 	await delay(400 * 2000 + 5000);
-		// }
-		if (hnx30Length !== 0) {
-			await delay(5 * 2000);
-		} else {
-			await delay(5 * 2000);
-		}
+	const crawlAllDetailUpcom = async () => {
+		const list = await Upcom.find({}).limit(30);
 
-		crawlAllDetailHose();
-		// if (hoseLength !== 0) {
-		// 	await delay(hoseLength * 2000 + 5000);
-		// } else {
-		// 	await delay(450 * 2000 + 5000);
-		// }
-		if (hnx30Length !== 0) {
-			await delay(5 * 2000);
-		} else {
-			await delay(5 * 2000);
-		}
+		list.forEach(async (stock, index) => {
+			setTimeout(() => {
+				crawlDetailUpcom(
+					stock.name,
+					stock.symbol,
+					stock.reference,
+					stock.ceil,
+					stock.floor,
+					stock.currentPrice,
+					stock.high,
+					stock.low,
+					stock.change,
+					stock.changePercent,
+					stock.turnOver
+				);
+			}, 2000 * index);
+		});
+	};
+	//--------------------------
 
-		crawlAllDetailUpcom();
-		// if (upcomLength !== 0) {
-		// 	await delay(upcomLength * 2000 + 5000);
-		// } else {
-		// 	await delay(900 * 2000 + 5000);
-		// }
-		if (hnx30Length !== 0) {
-			await delay(5 * 2000);
-		} else {
-			await delay(5 * 2000);
-		}
-		console.log('done crawl detail');
+	// const crawlAllDetailAllInvesting = asyncHandler(async () => {
+	// 	const list = await AllInvesting.find({}).limit(20);
 
-		// crawlAllDetailAllInvesting();
+	// 	list.forEach(async (stock, index) => {
+	// 		setTimeout(() => {
+	// 			crawlDetailAllInvesting(stock.id, stock.name, stock.hrefDetail);
+	// 		}, 2000 * index);
+	// 	});
+	// });
 
-		// crawlAllDetailChartHnx(); ham nay la goi api cua ho de lay data,gio khong can nua
+	// const crawlAllDetailChartHnx = asyncHandler(async () => {
+	// 	const list = await Hnx.find({}).limit(10);
 
-		// crawlAllDetailReportChart();
-	});
+	// 	list.forEach(async (stock, index) => {
+	// 		setTimeout(() => {
+	// 			crawlDetailChartHnx(stock.symbol);
+	// 		}, 2000 * index);
+	// 	});
+	// });
+
+	// const crawlAllDetailReportChart = asyncHandler(async () => {
+	// 	const list = await AllInvestingDetail.find({}).limit(10);
+
+	// 	list.forEach(async (stock, index) => {
+	// 		setTimeout(() => {
+	// 			crawlDetailReportChartAll(stock.id, stock.symbol);
+	// 		}, index * 2000);
+	// 	});
+	// });
+
+	//---crawl detail information in particularly stock and update price to array in database to draw chart
+	console.log('start crawl detail');
+	crawlAllDetailHnx30();
+	//set delay for crwaling each exchange.When crawling first time, dont have data in database so we have to set default time delay,
+	//it depends on your caculating
+	// if (hnx30Length !== 0) {
+	// 	await delay(hnx30Length * 2000 + 5000);
+	// } else {
+	// 	await delay(30 * 2000 + 5000);
+	// }
+	if (hnx30Length !== 0) {
+		await delay(30 * 2000);
+	} else {
+		await delay(30 * 2000);
+	}
+
+	crawlAllDetailVn30();
+	// if (vn30Length !== 0) {
+	// 	await delay(vn30Length * 2000 + 5000);
+	// } else {
+	// 	await delay(30 * 2000 + 5000);
+	// }
+	if (hnx30Length !== 0) {
+		await delay(30 * 2000);
+	} else {
+		await delay(30 * 2000);
+	}
+
+	crawlAllDetailHnx();
+	// if (hnxLength !== 0) {
+	// 	await delay(hnxLength * 2000 + 5000);
+	// } else {
+	// 	await delay(400 * 2000 + 5000);
+	// }
+	if (hnx30Length !== 0) {
+		await delay(30 * 2000);
+	} else {
+		await delay(30 * 2000);
+	}
+
+	crawlAllDetailHose();
+	// if (hoseLength !== 0) {
+	// 	await delay(hoseLength * 2000 + 5000);
+	// } else {
+	// 	await delay(450 * 2000 + 5000);
+	// }
+	if (hnx30Length !== 0) {
+		await delay(30 * 2000);
+	} else {
+		await delay(30 * 2000);
+	}
+
+	crawlAllDetailUpcom();
+	// if (upcomLength !== 0) {
+	// 	await delay(upcomLength * 2000 + 5000);
+	// } else {
+	// 	await delay(900 * 2000 + 5000);
+	// }
+	if (hnx30Length !== 0) {
+		await delay(30 * 2000);
+	} else {
+		await delay(30 * 2000);
+	}
+	console.log('done crawl detail');
+
+	// crawlAllDetailAllInvesting();
+
+	// crawlAllDetailChartHnx(); ham nay la goi api cua ho de lay data,gio khong can nua
+
+	// crawlAllDetailReportChart();
+	// });
 };
 // stockRunAll();
 
@@ -445,15 +445,16 @@ const interestRateRunAll = async () => {
 
 const funcTest = async () => {
 	// cron.schedule('*/10 * * * *', async () => {
-	coinRunAll();
-	await delay(20000);
-	goldRunAll();
-	await delay(130000);
-	petrolRunAll();
-	await delay(10000);
-	exchangeRateRunAll();
-	await delay(100000);
-	interestRateRunAll();
+	stockRunAll();
+	// coinRunAll();
+	// await delay(20000);
+	// goldRunAll();
+	// await delay(130000);
+	// petrolRunAll();
+	// await delay(10000);
+	// exchangeRateRunAll();
+	// await delay(100000);
+	// interestRateRunAll();
 	// });
 };
 funcTest();
