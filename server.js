@@ -122,7 +122,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 15000 * index);
+			}, 20000 * index);
 		});
 		// });
 	};
@@ -146,7 +146,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 15000 * index);
+			}, 20000 * index);
 		});
 		// });
 	};
@@ -169,7 +169,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 15000 * index);
+			}, 20000 * index);
 		});
 	};
 
@@ -192,7 +192,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 15000 * index);
+			}, 20000 * index);
 		});
 		// })
 	};
@@ -215,7 +215,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 15000 * index);
+			}, 20000 * index);
 		});
 	};
 	//--------------------------
