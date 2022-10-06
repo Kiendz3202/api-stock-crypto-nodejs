@@ -445,15 +445,15 @@ const interestRateRunAll = async () => {
 
 const funcTest = async () => {
 	// cron.schedule('*/10 * * * *', async () => {
-	// coinRunAll();
-	// await delay(20000);
+	coinRunAll();
+	await delay(20000);
 	goldRunAll();
-	// await delay(130000);
-	// petrolRunAll();
-	// await delay(10000);
-	// exchangeRateRunAll();
-	// await delay(100000);
-	// interestRateRunAll();
+	await delay(130000);
+	petrolRunAll();
+	await delay(10000);
+	exchangeRateRunAll();
+	await delay(100000);
+	interestRateRunAll();
 	// });
 };
 funcTest();
