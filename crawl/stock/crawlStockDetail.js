@@ -144,13 +144,13 @@ const crawlDetailHnx30 = asyncHandler(
 		//retry request until it gets data or tries 3 times
 		while (data == false && attemps < 2) {
 			console.log('loop' + attemps);
-			console.time('hnx30detail');
+			console.time();
 			data = await collectQueryData(
 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
 				pageEvaluateFunc,
 				props
 			);
-			console.timeEnd('hnx30detail');
+			console.timeEnd();
 			console.log(data);
 			attemps++;
 
