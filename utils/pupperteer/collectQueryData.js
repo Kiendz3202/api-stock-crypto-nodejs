@@ -3,6 +3,7 @@ const puppeteer = require('puppeteer');
 const collectQueryData = async (url, pageEvaluateFunc, props) => {
 	try {
 		const browser = await puppeteer.launch({
+			headless: true,
 			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
 		});
 		const page = await browser.newPage();
@@ -29,6 +30,7 @@ const collectQueryData = async (url, pageEvaluateFunc, props) => {
 const collectQueryDataHeightScroll = async (url, pageEvaluateFunc, props) => {
 	try {
 		const browser = await puppeteer.launch({
+			headless: true,
 			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
 		});
 		const page = await browser.newPage();
