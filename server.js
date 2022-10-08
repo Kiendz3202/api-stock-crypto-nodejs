@@ -122,14 +122,14 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 20000 * index);
+			}, 15000 * index);
 		});
 		// });
 	};
 
 	const crawlAllDetailHnx = async () => {
 		// cron.schedule('*/35 * * * *', async () => {
-		const list = await Hnx.find({}).limit(50);
+		const list = await Hnx.find({}).limit(30);
 
 		list.forEach(async (stock, index) => {
 			setTimeout(() => {
@@ -146,7 +146,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 10000 * index);
+			}, 15000 * index);
 		});
 		// });
 	};
@@ -169,7 +169,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 20000 * index);
+			}, 15000 * index);
 		});
 	};
 
@@ -192,7 +192,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 20000 * index);
+			}, 15000 * index);
 		});
 		// })
 	};
@@ -215,7 +215,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 20000 * index);
+			}, 15000 * index);
 		});
 	};
 	//--------------------------
@@ -261,9 +261,9 @@ const stockRunAll = async () => {
 	// 	await delay(30 * 2000 + 5000);
 	// }
 	if (hnx30Length !== 0) {
-		await delay(30 * 2000);
+		await delay(30 * 15000);
 	} else {
-		await delay(30 * 2000);
+		await delay(30 * 15000);
 	}
 
 	crawlAllDetailVn30();
@@ -273,9 +273,9 @@ const stockRunAll = async () => {
 	// 	await delay(30 * 2000 + 5000);
 	// }
 	if (hnx30Length !== 0) {
-		await delay(30 * 2000);
+		await delay(30 * 15000);
 	} else {
-		await delay(30 * 2000);
+		await delay(30 * 15000);
 	}
 
 	crawlAllDetailHnx();
@@ -285,9 +285,9 @@ const stockRunAll = async () => {
 	// 	await delay(400 * 2000 + 5000);
 	// }
 	if (hnx30Length !== 0) {
-		await delay(30 * 2000);
+		await delay(30 * 15000);
 	} else {
-		await delay(30 * 2000);
+		await delay(30 * 15000);
 	}
 
 	crawlAllDetailHose();
@@ -297,9 +297,9 @@ const stockRunAll = async () => {
 	// 	await delay(450 * 2000 + 5000);
 	// }
 	if (hnx30Length !== 0) {
-		await delay(30 * 2000);
+		await delay(30 * 15000);
 	} else {
-		await delay(30 * 2000);
+		await delay(30 * 15000);
 	}
 
 	crawlAllDetailUpcom();
@@ -309,9 +309,9 @@ const stockRunAll = async () => {
 	// 	await delay(900 * 2000 + 5000);
 	// }
 	if (hnx30Length !== 0) {
-		await delay(30 * 2000);
+		await delay(30 * 15000);
 	} else {
-		await delay(30 * 2000);
+		await delay(30 * 15000);
 	}
 	console.log('done crawl detail');
 
@@ -322,7 +322,7 @@ const stockRunAll = async () => {
 	// crawlAllDetailReportChart();
 	// });
 };
-// stockRunAll();
+stockRunAll();
 
 //---------------------------------------------------------------------------
 
@@ -457,7 +457,7 @@ const funcTest = async () => {
 	interestRateRunAll();
 	// });
 };
-funcTest();
+// funcTest();
 
 // -----------------------------------------------
 

@@ -144,13 +144,13 @@ const crawlDetailHnx30 = asyncHandler(
 		//retry request until it gets data or tries 3 times
 		while (data == false && attemps < 2) {
 			console.log('loop' + attemps);
-			console.time();
+			console.time(symbol);
 			data = await collectQueryData(
 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
 				pageEvaluateFunc,
 				props
 			);
-			console.timeEnd();
+			console.timeEnd(symbol);
 			console.log(data);
 			attemps++;
 
@@ -536,11 +536,13 @@ const crawlDetailVn30 = asyncHandler(
 		//retry request until it gets data or tries 3 times
 		while (data == false && attemps < 2) {
 			console.log('loop' + attemps);
+			console.time(symbol);
 			data = await collectQueryData(
 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
 				pageEvaluateFunc,
 				props
 			);
+			console.timeEnd(symbol);
 			console.log(data);
 			attemps++;
 
@@ -730,11 +732,13 @@ const crawlDetailHose = asyncHandler(
 		//retry request until it gets data or tries 3 times
 		while (data == false && attemps < 2) {
 			console.log('loop' + attemps);
+			console.time(symbol);
 			data = await collectQueryData(
 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
 				pageEvaluateFunc,
 				props
 			);
+			console.timeEnd(symbol);
 			console.log(data);
 			attemps++;
 
@@ -924,11 +928,13 @@ const crawlDetailUpcom = asyncHandler(
 		//retry request until it gets data or tries 3 times
 		while (data == false && attemps < 2) {
 			console.log('loop' + attemps);
+			console.time(symbol);
 			data = await collectQueryData(
 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
 				pageEvaluateFunc,
 				props
 			);
+			console.timeEnd(symbol);
 			console.log(data);
 			attemps++;
 
