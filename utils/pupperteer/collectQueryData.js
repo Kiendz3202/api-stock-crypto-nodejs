@@ -17,11 +17,11 @@ const collectQueryData = async (url, pageEvaluateFunc, props) => {
 		await page.waitForTimeout(2000);
 
 		if (props) {
-			return page
-				.evaluate(pageEvaluateFunc, ...props)
-				.then(() => browser.close());
+			return page.evaluate(pageEvaluateFunc, ...props);
+			// .then(() => browser.close());
 		} else {
-			return page.evaluate(pageEvaluateFunc).then(() => browser.close());
+			return page.evaluate(pageEvaluateFunc);
+			// .then(() => browser.close());
 		}
 	} catch (error) {
 		console.log('co loi o day' + error);
@@ -68,11 +68,11 @@ const collectQueryDataHeightScroll = async (url, pageEvaluateFunc, props) => {
 		await page.waitForTimeout(1000);
 
 		if (props) {
-			return page
-				.evaluate(pageEvaluateFunc, ...props)
-				.then(() => browser.close());
+			return page.evaluate(pageEvaluateFunc, ...props);
+			// .then(() => browser.close());
 		} else {
-			return page.evaluate(pageEvaluateFunc).then(() => browser.close());
+			return page.evaluate(pageEvaluateFunc);
+			// .then(() => browser.close());
 		}
 	} catch (error) {
 		console.log('co loi o day' + error);
