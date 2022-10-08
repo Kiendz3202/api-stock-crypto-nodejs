@@ -322,7 +322,7 @@ const stockRunAll = async () => {
 	// crawlAllDetailReportChart();
 	// });
 };
-stockRunAll();
+// stockRunAll();
 
 //---------------------------------------------------------------------------
 
@@ -457,7 +457,7 @@ const funcTest = async () => {
 	interestRateRunAll();
 	// });
 };
-// funcTest();
+funcTest();
 
 // -----------------------------------------------
 
