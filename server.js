@@ -435,7 +435,7 @@ const funcTest = async () => {
 		// interestRateRunAll();
 	});
 };
-// funcTest();
+funcTest();
 
 // -----------------------------------------------
 
