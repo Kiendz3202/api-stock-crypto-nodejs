@@ -78,30 +78,6 @@ const Coin = require('./model/coin/coinModel');
 //--------------------------------------------Main Body------------------------------------------------------------------
 
 //-----------------------------Stock----------------------------------------------------------
-const crawlAllDetailHnx = async () => {
-	// cron.schedule('*/35 * * * *', async () => {
-	const list = await Hnx.find({}).limit(50);
-
-	list.forEach(async (stock, index) => {
-		setTimeout(() => {
-			crawlDetailHnx(
-				stock.name,
-				stock.symbol,
-				stock.reference,
-				stock.ceil,
-				stock.floor,
-				stock.currentPrice,
-				stock.high,
-				stock.low,
-				stock.change,
-				stock.changePercent,
-				stock.turnOver
-			);
-		}, 20000 * index);
-	});
-	// });
-};
-crawlAllDetailHnx();
 const stockRunAll = async () => {
 	//----Length of collection to caculate time delay each crawlingFunction executes
 	// cron.schedule('*/2 * * * *', async () => {
@@ -481,7 +457,7 @@ const funcTest = async () => {
 	interestRateRunAll();
 	// });
 };
-// funcTest();
+funcTest();
 
 // -----------------------------------------------
 
