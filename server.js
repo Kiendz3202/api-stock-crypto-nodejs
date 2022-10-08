@@ -89,15 +89,15 @@ const stockRunAll = async () => {
 
 	//----crawl all basic information stocks----
 	crawlHnx();
-	await delay(15000);
+	await delay(20000);
 	crawlHnx30();
-	await delay(5000);
+	await delay(10000);
 	crawlVn30();
-	await delay(5000);
+	await delay(10000);
 	crawlHose();
-	await delay(15000);
+	await delay(20000);
 	crawlUpcom();
-	await delay(15000);
+	await delay(20000);
 	// crawlAllInvesting();
 	//--------------------------------------
 
@@ -322,7 +322,7 @@ const stockRunAll = async () => {
 	// crawlAllDetailReportChart();
 	// });
 };
-// stockRunAll();
+stockRunAll();
 
 //---------------------------------------------------------------------------
 
@@ -457,7 +457,7 @@ const funcTest = async () => {
 		interestRateRunAll();
 	});
 };
-funcTest();
+// funcTest();
 
 // -----------------------------------------------
 
