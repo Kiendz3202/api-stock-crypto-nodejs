@@ -122,7 +122,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 15000 * index);
+			}, 10000 * index);
 		});
 		// });
 	};
@@ -146,7 +146,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 15000 * index);
+			}, 10000 * index);
 		});
 		// });
 	};
@@ -169,7 +169,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 15000 * index);
+			}, 10000 * index);
 		});
 	};
 
@@ -192,7 +192,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 15000 * index);
+			}, 10000 * index);
 		});
 		// })
 	};
@@ -215,7 +215,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 15000 * index);
+			}, 10000 * index);
 		});
 	};
 	//--------------------------
@@ -260,11 +260,7 @@ const stockRunAll = async () => {
 	// } else {
 	// 	await delay(30 * 2000 + 5000);
 	// }
-	if (hnx30Length !== 0) {
-		await delay(30 * 15000);
-	} else {
-		await delay(30 * 15000);
-	}
+	await delay(30 * 10000);
 
 	crawlAllDetailVn30();
 	// if (vn30Length !== 0) {
@@ -272,11 +268,7 @@ const stockRunAll = async () => {
 	// } else {
 	// 	await delay(30 * 2000 + 5000);
 	// }
-	if (hnx30Length !== 0) {
-		await delay(30 * 15000);
-	} else {
-		await delay(30 * 15000);
-	}
+	await delay(30 * 10000);
 
 	crawlAllDetailHnx();
 	// if (hnxLength !== 0) {
@@ -284,11 +276,7 @@ const stockRunAll = async () => {
 	// } else {
 	// 	await delay(400 * 2000 + 5000);
 	// }
-	if (hnx30Length !== 0) {
-		await delay(30 * 15000);
-	} else {
-		await delay(30 * 15000);
-	}
+	await delay(30 * 10000);
 
 	crawlAllDetailHose();
 	// if (hoseLength !== 0) {
@@ -296,11 +284,7 @@ const stockRunAll = async () => {
 	// } else {
 	// 	await delay(450 * 2000 + 5000);
 	// }
-	if (hnx30Length !== 0) {
-		await delay(30 * 15000);
-	} else {
-		await delay(30 * 15000);
-	}
+	await delay(30 * 10000);
 
 	crawlAllDetailUpcom();
 	// if (upcomLength !== 0) {
@@ -308,12 +292,6 @@ const stockRunAll = async () => {
 	// } else {
 	// 	await delay(900 * 2000 + 5000);
 	// }
-	if (hnx30Length !== 0) {
-		await delay(30 * 15000);
-	} else {
-		await delay(30 * 15000);
-	}
-	console.log('done crawl detail');
 
 	// crawlAllDetailAllInvesting();
 
@@ -322,7 +300,7 @@ const stockRunAll = async () => {
 	// crawlAllDetailReportChart();
 	// });
 };
-stockRunAll();
+// stockRunAll();
 
 //---------------------------------------------------------------------------
 
@@ -444,17 +422,17 @@ const interestRateRunAll = async () => {
 //-----------------------------------
 
 const funcTest = async () => {
-	cron.schedule('*/10 * * * *', async () => {
-		// stockRunAll();
-		coinRunAll();
-		await delay(20000);
-		goldRunAll();
-		await delay(150000);
-		petrolRunAll();
-		await delay(10000);
-		exchangeRateRunAll();
-		await delay(150000);
-		interestRateRunAll();
+	cron.schedule('*/30 * * * *', async () => {
+		stockRunAll();
+		// coinRunAll();
+		// await delay(20000);
+		// goldRunAll();
+		// await delay(150000);
+		// petrolRunAll();
+		// await delay(10000);
+		// exchangeRateRunAll();
+		// await delay(150000);
+		// interestRateRunAll();
 	});
 };
 // funcTest();
