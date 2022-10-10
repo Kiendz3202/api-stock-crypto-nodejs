@@ -4,6 +4,7 @@ const hnx30DetailSchema = mongoose.Schema(
 	{
 		name: { type: 'String' },
 		symbol: { type: 'String' },
+		timeUpdate: { type: 'String' },
 		reference: { type: 'String' },
 		ceil: { type: 'String' },
 		floor: { type: 'String' },

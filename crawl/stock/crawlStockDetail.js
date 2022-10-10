@@ -58,6 +58,21 @@ const crawlDetailHnx30 = asyncHandler(
 			try {
 				dataJson.name = name;
 				dataJson.symbol = symbol;
+
+				let date = new Date();
+				dataJson.timeUpdate =
+					date.getHours() +
+					':' +
+					date.getMinutes() +
+					':' +
+					date.getSeconds() +
+					' ' +
+					date.getDate() +
+					'/' +
+					(date.getMonth() + 1) +
+					'/' +
+					date.getFullYear();
+
 				dataJson.reference = reference;
 				dataJson.ceil = ceil;
 				dataJson.floor = floor;
@@ -160,6 +175,7 @@ const crawlDetailHnx30 = asyncHandler(
 					{
 						name: data.name,
 						symbol: data.symbol,
+						timeUpdate: data.timeUpdate,
 						reference: data.reference,
 						ceil: data.ceil,
 						floor: data.floor,
@@ -254,6 +270,21 @@ const crawlDetailHnx = asyncHandler(
 			try {
 				dataJson.name = name;
 				dataJson.symbol = symbol;
+
+				let date = new Date();
+				dataJson.timeUpdate =
+					date.getHours() +
+					':' +
+					date.getMinutes() +
+					':' +
+					date.getSeconds() +
+					' ' +
+					date.getDate() +
+					'/' +
+					(date.getMonth() + 1) +
+					'/' +
+					date.getFullYear();
+
 				dataJson.reference = reference;
 				dataJson.ceil = ceil;
 				dataJson.floor = floor;
@@ -356,6 +387,7 @@ const crawlDetailHnx = asyncHandler(
 					{
 						name: data.name,
 						symbol: data.symbol,
+						timeUpdate: data.timeUpdate,
 						reference: data.reference,
 						ceil: data.ceil,
 						floor: data.floor,
@@ -450,6 +482,21 @@ const crawlDetailVn30 = asyncHandler(
 			try {
 				dataJson.name = name;
 				dataJson.symbol = symbol;
+
+				let date = new Date();
+				dataJson.timeUpdate =
+					date.getHours() +
+					':' +
+					date.getMinutes() +
+					':' +
+					date.getSeconds() +
+					' ' +
+					date.getDate() +
+					'/' +
+					(date.getMonth() + 1) +
+					'/' +
+					date.getFullYear();
+
 				dataJson.reference = reference;
 				dataJson.ceil = ceil;
 				dataJson.floor = floor;
@@ -552,6 +599,7 @@ const crawlDetailVn30 = asyncHandler(
 					{
 						name: data.name,
 						symbol: data.symbol,
+						timeUpdate: data.timeUpdate,
 						reference: data.reference,
 						ceil: data.ceil,
 						floor: data.floor,
@@ -646,6 +694,21 @@ const crawlDetailHose = asyncHandler(
 			try {
 				dataJson.name = name;
 				dataJson.symbol = symbol;
+
+				let date = new Date();
+				dataJson.timeUpdate =
+					date.getHours() +
+					':' +
+					date.getMinutes() +
+					':' +
+					date.getSeconds() +
+					' ' +
+					date.getDate() +
+					'/' +
+					(date.getMonth() + 1) +
+					'/' +
+					date.getFullYear();
+
 				dataJson.reference = reference;
 				dataJson.ceil = ceil;
 				dataJson.floor = floor;
@@ -748,6 +811,7 @@ const crawlDetailHose = asyncHandler(
 					{
 						name: data.name,
 						symbol: data.symbol,
+						timeUpdate: data.timeUpdate,
 						reference: data.reference,
 						ceil: data.ceil,
 						floor: data.floor,
@@ -842,6 +906,21 @@ const crawlDetailUpcom = asyncHandler(
 			try {
 				dataJson.name = name;
 				dataJson.symbol = symbol;
+
+				let date = new Date();
+				dataJson.timeUpdate =
+					date.getHours() +
+					':' +
+					date.getMinutes() +
+					':' +
+					date.getSeconds() +
+					' ' +
+					date.getDate() +
+					'/' +
+					(date.getMonth() + 1) +
+					'/' +
+					date.getFullYear();
+
 				dataJson.reference = reference;
 				dataJson.ceil = ceil;
 				dataJson.floor = floor;
@@ -944,6 +1023,7 @@ const crawlDetailUpcom = asyncHandler(
 					{
 						name: data.name,
 						symbol: data.symbol,
+						timeUpdate: data.timeUpdate,
 						reference: data.reference,
 						ceil: data.ceil,
 						floor: data.floor,

@@ -38,6 +38,7 @@ const crawlHnx30 = asyncHandler(async () => {
 			try {
 				dataJson.name =
 					stock.getElementsByTagName('td')[0]?.dataset.tooltip;
+
 				let symbolCrawl =
 					stock.getElementsByTagName('span')[0]?.innerText;
 				if (symbolCrawl.includes('*')) {
@@ -50,6 +51,20 @@ const crawlHnx30 = asyncHandler(async () => {
 				} else {
 					dataJson.symbol = symbolCrawl;
 				}
+
+				let date = new Date();
+				dataJson.timeUpdate =
+					date.getHours() +
+					':' +
+					date.getMinutes() +
+					':' +
+					date.getSeconds() +
+					' ' +
+					date.getDate() +
+					'/' +
+					(date.getMonth() + 1) +
+					'/' +
+					date.getFullYear();
 
 				dataJson.reference = stock.getElementsByClassName(
 					'cell-body-highlight'
@@ -106,6 +121,7 @@ const crawlHnx30 = asyncHandler(async () => {
 					{
 						name: stock.name,
 						symbol: stock.symbol,
+						timeUpdate: stock.timeUpdate,
 						reference: stock.reference,
 						ceil: stock.ceil,
 						floor: stock.floor,
@@ -157,6 +173,20 @@ const crawlHnx = asyncHandler(async () => {
 				} else {
 					dataJson.symbol = symbolCrawl;
 				}
+
+				let date = new Date();
+				dataJson.timeUpdate =
+					date.getHours() +
+					':' +
+					date.getMinutes() +
+					':' +
+					date.getSeconds() +
+					' ' +
+					date.getDate() +
+					'/' +
+					(date.getMonth() + 1) +
+					'/' +
+					date.getFullYear();
 
 				dataJson.reference = stock.getElementsByClassName(
 					'cell-body-highlight'
@@ -214,6 +244,7 @@ const crawlHnx = asyncHandler(async () => {
 					{
 						name: stock.name,
 						symbol: stock.symbol,
+						timeUpdate: stock.timeUpdate,
 						reference: stock.reference,
 						ceil: stock.ceil,
 						floor: stock.floor,
@@ -265,6 +296,20 @@ const crawlVn30 = asyncHandler(async () => {
 				} else {
 					dataJson.symbol = symbolCrawl;
 				}
+
+				let date = new Date();
+				dataJson.timeUpdate =
+					date.getHours() +
+					':' +
+					date.getMinutes() +
+					':' +
+					date.getSeconds() +
+					' ' +
+					date.getDate() +
+					'/' +
+					(date.getMonth() + 1) +
+					'/' +
+					date.getFullYear();
 
 				dataJson.reference = stock.getElementsByClassName(
 					'cell-body-highlight'
@@ -322,6 +367,7 @@ const crawlVn30 = asyncHandler(async () => {
 					{
 						name: stock.name,
 						symbol: stock.symbol,
+						timeUpdate: stock.timeUpdate,
 						reference: stock.reference,
 						ceil: stock.ceil,
 						floor: stock.floor,
@@ -373,6 +419,20 @@ const crawlHose = asyncHandler(async () => {
 				} else {
 					dataJson.symbol = symbolCrawl;
 				}
+
+				let date = new Date();
+				dataJson.timeUpdate =
+					date.getHours() +
+					':' +
+					date.getMinutes() +
+					':' +
+					date.getSeconds() +
+					' ' +
+					date.getDate() +
+					'/' +
+					(date.getMonth() + 1) +
+					'/' +
+					date.getFullYear();
 
 				dataJson.reference = stock.getElementsByClassName(
 					'cell-body-highlight'
@@ -430,6 +490,7 @@ const crawlHose = asyncHandler(async () => {
 					{
 						name: stock.name,
 						symbol: stock.symbol,
+						timeUpdate: stock.timeUpdate,
 						reference: stock.reference,
 						ceil: stock.ceil,
 						floor: stock.floor,
@@ -481,6 +542,20 @@ const crawlUpcom = asyncHandler(async () => {
 				} else {
 					dataJson.symbol = symbolCrawl;
 				}
+
+				let date = new Date();
+				dataJson.timeUpdate =
+					date.getHours() +
+					':' +
+					date.getMinutes() +
+					':' +
+					date.getSeconds() +
+					' ' +
+					date.getDate() +
+					'/' +
+					(date.getMonth() + 1) +
+					'/' +
+					date.getFullYear();
 
 				dataJson.reference = stock.getElementsByClassName(
 					'cell-body-highlight'
@@ -537,6 +612,7 @@ const crawlUpcom = asyncHandler(async () => {
 					{
 						name: stock.name,
 						symbol: stock.symbol,
+						timeUpdate: stock.timeUpdate,
 						reference: stock.reference,
 						ceil: stock.ceil,
 						floor: stock.floor,
