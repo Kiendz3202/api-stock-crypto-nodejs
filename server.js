@@ -85,7 +85,7 @@ const stockRunAll = async () => {
 	const hnx30Length = await Hnx30.find().count();
 	const vn30Length = await Vn30.find().count();
 	const hoseLength = await Hose.find().count();
-	const upcomLength = await Upcom.find().count();
+	// const upcomLength = await Upcom.find().count();
 
 	//----crawl all basic information stocks----
 	crawlHnx();
@@ -96,8 +96,8 @@ const stockRunAll = async () => {
 	await delay(10000);
 	crawlHose();
 	await delay(20000);
-	crawlUpcom();
-	await delay(20000);
+	// crawlUpcom();
+	// await delay(20000);
 	// crawlAllInvesting();
 	//--------------------------------------
 
@@ -122,7 +122,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 10000 * index);
+			}, 8000 * index);
 		});
 		// });
 	};
@@ -146,7 +146,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 10000 * index);
+			}, 8000 * index);
 		});
 		// });
 	};
@@ -169,7 +169,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 10000 * index);
+			}, 8000 * index);
 		});
 	};
 
@@ -192,7 +192,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 10000 * index);
+			}, 8000 * index);
 		});
 		// })
 	};
@@ -215,7 +215,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 10000 * index);
+			}, 8000 * index);
 		});
 	};
 	//--------------------------
@@ -226,16 +226,6 @@ const stockRunAll = async () => {
 	// 	list.forEach(async (stock, index) => {
 	// 		setTimeout(() => {
 	// 			crawlDetailAllInvesting(stock.id, stock.name, stock.hrefDetail);
-	// 		}, 2000 * index);
-	// 	});
-	// });
-
-	// const crawlAllDetailChartHnx = asyncHandler(async () => {
-	// 	const list = await Hnx.find({}).limit(10);
-
-	// 	list.forEach(async (stock, index) => {
-	// 		setTimeout(() => {
-	// 			crawlDetailChartHnx(stock.symbol);
 	// 		}, 2000 * index);
 	// 	});
 	// });
@@ -256,41 +246,40 @@ const stockRunAll = async () => {
 	//set delay for crwaling each exchange.When crawling first time, dont have data in database so we have to set default time delay,
 	//it depends on your caculating
 	// if (hnx30Length !== 0) {
-	// 	await delay(hnx30Length * 2000 + 5000);
+	// 	await delay(hnx30Length * 8000);
 	// } else {
-	// 	await delay(30 * 2000 + 5000);
+	// 	await delay(30 * 8000);
 	// }
-	await delay(30 * 10000);
+	await delay(30 * 8000);
 
 	crawlAllDetailVn30();
 	// if (vn30Length !== 0) {
-	// 	await delay(vn30Length * 2000 + 5000);
+	// 	await delay(vn30Length * 8000);
 	// } else {
-	// 	await delay(30 * 2000 + 5000);
+	// 	await delay(30 * 8000);
 	// }
-	await delay(30 * 10000);
+	await delay(30 * 8000);
 
 	crawlAllDetailHnx();
 	// if (hnxLength !== 0) {
-	// 	await delay(hnxLength * 2000 + 5000);
+	// 	await delay(hnxLength * 8000);
 	// } else {
-	// 	await delay(400 * 2000 + 5000);
+	// 	await delay(338 * 8000);
 	// }
-	await delay(30 * 10000);
+	await delay(30 * 8000);
 
 	crawlAllDetailHose();
 	// if (hoseLength !== 0) {
-	// 	await delay(hoseLength * 2000 + 5000);
+	// 	await delay(hoseLength * 8000);
 	// } else {
-	// 	await delay(450 * 2000 + 5000);
+	// 	await delay(415 * 8000);
 	// }
-	await delay(30 * 10000);
 
-	crawlAllDetailUpcom();
+	// crawlAllDetailUpcom();
 	// if (upcomLength !== 0) {
-	// 	await delay(upcomLength * 2000 + 5000);
+	// 	await delay(upcomLength * 8000);
 	// } else {
-	// 	await delay(900 * 2000 + 5000);
+	// 	await delay(900 * 8000);
 	// }
 
 	// crawlAllDetailAllInvesting();
@@ -300,7 +289,6 @@ const stockRunAll = async () => {
 	// crawlAllDetailReportChart();
 	// });
 };
-// stockRunAll();
 
 //---------------------------------------------------------------------------
 
@@ -421,21 +409,29 @@ const interestRateRunAll = async () => {
 
 //-----------------------------------
 
-const funcTest = async () => {
-	cron.schedule('*/12 * * * *', async () => {
-		// stockRunAll();
-		coinRunAll();
-		await delay(20000);
-		goldRunAll();
-		await delay(150000);
-		petrolRunAll();
-		await delay(10000);
-		exchangeRateRunAll();
-		await delay(150000);
-		interestRateRunAll();
-	});
+const runAllWithoutStock = async () => {
+	// cron.schedule('*/12 * * * *', async () => {
+	coinRunAll();
+	await delay(20000);
+	goldRunAll();
+	await delay(180000);
+	petrolRunAll();
+	await delay(20000);
+	exchangeRateRunAll();
+	await delay(180000);
+	interestRateRunAll();
+	// await delay(270000);
+	// });
 };
-funcTest();
+
+const runAllStock = async () => {
+	// cron.schedule('0 */2 * * *', async () => {
+	stockRunAll();
+	// });
+};
+
+runAllStock();
+runAllWithoutStock();
 
 // -----------------------------------------------
 
