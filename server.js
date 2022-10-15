@@ -122,7 +122,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 8000 * index);
+			}, 7000 * index);
 		});
 		// });
 	};
@@ -146,7 +146,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 8000 * index);
+			}, 7000 * index);
 		});
 		// });
 	};
@@ -169,7 +169,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 8000 * index);
+			}, 7000 * index);
 		});
 	};
 
@@ -192,7 +192,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 8000 * index);
+			}, 7000 * index);
 		});
 		// })
 	};
@@ -215,7 +215,7 @@ const stockRunAll = async () => {
 					stock.changePercent,
 					stock.turnOver
 				);
-			}, 8000 * index);
+			}, 7000 * index);
 		});
 	};
 	//--------------------------
@@ -246,40 +246,40 @@ const stockRunAll = async () => {
 	//set delay for crwaling each exchange.When crawling first time, dont have data in database so we have to set default time delay,
 	//it depends on your caculating
 	// if (hnx30Length !== 0) {
-	// 	await delay(hnx30Length * 8000);
+	// 	await delay(hnx30Length * 7000);
 	// } else {
-	// 	await delay(30 * 8000);
+	// 	await delay(30 * 7000);
 	// }
-	await delay(30 * 8000);
+	await delay(30 * 7000);
 
 	crawlAllDetailVn30();
 	// if (vn30Length !== 0) {
-	// 	await delay(vn30Length * 8000);
+	// 	await delay(vn30Length * 7000);
 	// } else {
-	// 	await delay(30 * 8000);
+	// 	await delay(30 * 7000);
 	// }
-	await delay(30 * 8000);
+	await delay(30 * 7000);
 
 	crawlAllDetailHnx();
 	// if (hnxLength !== 0) {
-	// 	await delay(hnxLength * 8000);
+	// 	await delay(hnxLength * 7000);
 	// } else {
-	// 	await delay(338 * 8000);
+	// 	await delay(338 * 7000);
 	// }
-	await delay(30 * 8000);
+	await delay(30 * 7000);
 
 	crawlAllDetailHose();
 	// if (hoseLength !== 0) {
-	// 	await delay(hoseLength * 8000);
+	// 	await delay(hoseLength * 7000);
 	// } else {
-	// 	await delay(415 * 8000);
+	// 	await delay(415 * 7000);
 	// }
 
 	// crawlAllDetailUpcom();
 	// if (upcomLength !== 0) {
-	// 	await delay(upcomLength * 8000);
+	// 	await delay(upcomLength * 7000);
 	// } else {
-	// 	await delay(900 * 8000);
+	// 	await delay(900 * 7000);
 	// }
 
 	// crawlAllDetailAllInvesting();
