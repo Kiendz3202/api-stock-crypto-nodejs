@@ -25,31 +25,13 @@ const UpcomChart = require('../../model/stock/chartStock/chart/upcomChartModel')
 //----------------------main body-------------------------------------
 
 const crawlDetailHnx30 = asyncHandler(
-	async (
-		name,
-		symbol,
-		reference,
-		ceil,
-		floor,
-		currentPrice,
-		high,
-		low,
-		change,
-		changePercent,
-		turnOver
-	) => {
+	async (name, symbol, reference, ceil, floor) => {
 		const pageEvaluateFunc = async (
 			name,
 			symbol,
 			reference,
 			ceil,
-			floor,
-			currentPrice,
-			high,
-			low,
-			change,
-			changePercent,
-			turnOver
+			floor
 		) => {
 			const $ = document.querySelector.bind(document);
 
@@ -76,14 +58,24 @@ const crawlDetailHnx30 = asyncHandler(
 				dataJson.reference = reference;
 				dataJson.ceil = ceil;
 				dataJson.floor = floor;
-				dataJson.currentPrice = currentPrice;
-				dataJson.high = high;
-				dataJson.low = low;
-				dataJson.change = change;
-				dataJson.changePercent = changePercent;
+				dataJson.currentPrice = $(
+					'#stockprice .price'
+				)?.innerText.replace(/,/g, '.');
+				dataJson.high = $('#highestprice')?.innerText;
+				dataJson.low = $('#lowestprice')?.innerText;
+
+				const changeInfo = $('#stockchange')?.innerText.split(' ');
+
+				const changeByNumber = changeInfo[0];
+				const changeByPercent = changeInfo[1].replace(/[\])}[{(]/g, '');
+				dataJson.change = changeByNumber;
+				dataJson.changePercent = changeByPercent;
+
 				dataJson.openPrice =
 					document.getElementById('openprice')?.innerText;
-				dataJson.turnOver = turnOver;
+				dataJson.turnOver = $(
+					'.stock-price-info :nth-child(2) :nth-child(4) b'
+				)?.innerText;
 				dataJson.marketcap = $(
 					'.stock-price-info :nth-child(2) :nth-child(5) b'
 				)?.innerText;
@@ -140,19 +132,7 @@ const crawlDetailHnx30 = asyncHandler(
 			return dataJson;
 		};
 
-		const props = [
-			name,
-			symbol,
-			reference,
-			ceil,
-			floor,
-			currentPrice,
-			high,
-			low,
-			change,
-			changePercent,
-			turnOver,
-		];
+		const props = [name, symbol, reference, ceil, floor];
 
 		let data = false;
 		let attemps = 0;
@@ -237,31 +217,13 @@ const crawlDetailHnx30 = asyncHandler(
 );
 
 const crawlDetailHnx = asyncHandler(
-	async (
-		name,
-		symbol,
-		reference,
-		ceil,
-		floor,
-		currentPrice,
-		high,
-		low,
-		change,
-		changePercent,
-		turnOver
-	) => {
+	async (name, symbol, reference, ceil, floor) => {
 		const pageEvaluateFunc = async (
 			name,
 			symbol,
 			reference,
 			ceil,
-			floor,
-			currentPrice,
-			high,
-			low,
-			change,
-			changePercent,
-			turnOver
+			floor
 		) => {
 			const $ = document.querySelector.bind(document);
 
@@ -288,14 +250,24 @@ const crawlDetailHnx = asyncHandler(
 				dataJson.reference = reference;
 				dataJson.ceil = ceil;
 				dataJson.floor = floor;
-				dataJson.currentPrice = currentPrice;
-				dataJson.high = high;
-				dataJson.low = low;
-				dataJson.change = change;
-				dataJson.changePercent = changePercent;
+				dataJson.currentPrice = $(
+					'#stockprice .price'
+				)?.innerText.replace(/,/g, '.');
+				dataJson.high = $('#highestprice')?.innerText;
+				dataJson.low = $('#lowestprice')?.innerText;
+
+				const changeInfo = $('#stockchange')?.innerText.split(' ');
+
+				const changeByNumber = changeInfo[0];
+				const changeByPercent = changeInfo[1].replace(/[\])}[{(]/g, '');
+				dataJson.change = changeByNumber;
+				dataJson.changePercent = changeByPercent;
+
 				dataJson.openPrice =
 					document.getElementById('openprice')?.innerText;
-				dataJson.turnOver = turnOver;
+				dataJson.turnOver = $(
+					'.stock-price-info :nth-child(2) :nth-child(4) b'
+				)?.innerText;
 				dataJson.marketcap = $(
 					'.stock-price-info :nth-child(2) :nth-child(5) b'
 				)?.innerText;
@@ -352,19 +324,7 @@ const crawlDetailHnx = asyncHandler(
 			return dataJson;
 		};
 
-		const props = [
-			name,
-			symbol,
-			reference,
-			ceil,
-			floor,
-			currentPrice,
-			high,
-			low,
-			change,
-			changePercent,
-			turnOver,
-		];
+		const props = [name, symbol, reference, ceil, floor];
 
 		let data = false;
 		let attemps = 0;
@@ -449,31 +409,13 @@ const crawlDetailHnx = asyncHandler(
 );
 
 const crawlDetailVn30 = asyncHandler(
-	async (
-		name,
-		symbol,
-		reference,
-		ceil,
-		floor,
-		currentPrice,
-		high,
-		low,
-		change,
-		changePercent,
-		turnOver
-	) => {
+	async (name, symbol, reference, ceil, floor) => {
 		const pageEvaluateFunc = async (
 			name,
 			symbol,
 			reference,
 			ceil,
-			floor,
-			currentPrice,
-			high,
-			low,
-			change,
-			changePercent,
-			turnOver
+			floor
 		) => {
 			const $ = document.querySelector.bind(document);
 
@@ -500,14 +442,24 @@ const crawlDetailVn30 = asyncHandler(
 				dataJson.reference = reference;
 				dataJson.ceil = ceil;
 				dataJson.floor = floor;
-				dataJson.currentPrice = currentPrice;
-				dataJson.high = high;
-				dataJson.low = low;
-				dataJson.change = change;
-				dataJson.changePercent = changePercent;
+				dataJson.currentPrice = $(
+					'#stockprice .price'
+				)?.innerText.replace(/,/g, '.');
+				dataJson.high = $('#highestprice')?.innerText;
+				dataJson.low = $('#lowestprice')?.innerText;
+
+				const changeInfo = $('#stockchange')?.innerText.split(' ');
+
+				const changeByNumber = changeInfo[0];
+				const changeByPercent = changeInfo[1].replace(/[\])}[{(]/g, '');
+				dataJson.change = changeByNumber;
+				dataJson.changePercent = changeByPercent;
+
 				dataJson.openPrice =
 					document.getElementById('openprice')?.innerText;
-				dataJson.turnOver = turnOver;
+				dataJson.turnOver = $(
+					'.stock-price-info :nth-child(2) :nth-child(4) b'
+				)?.innerText;
 				dataJson.marketcap = $(
 					'.stock-price-info :nth-child(2) :nth-child(5) b'
 				)?.innerText;
@@ -564,19 +516,7 @@ const crawlDetailVn30 = asyncHandler(
 			return dataJson;
 		};
 
-		const props = [
-			name,
-			symbol,
-			reference,
-			ceil,
-			floor,
-			currentPrice,
-			high,
-			low,
-			change,
-			changePercent,
-			turnOver,
-		];
+		const props = [name, symbol, reference, ceil, floor];
 
 		let data = false;
 		let attemps = 0;
@@ -661,31 +601,13 @@ const crawlDetailVn30 = asyncHandler(
 );
 
 const crawlDetailHose = asyncHandler(
-	async (
-		name,
-		symbol,
-		reference,
-		ceil,
-		floor,
-		currentPrice,
-		high,
-		low,
-		change,
-		changePercent,
-		turnOver
-	) => {
+	async (name, symbol, reference, ceil, floor) => {
 		const pageEvaluateFunc = async (
 			name,
 			symbol,
 			reference,
 			ceil,
-			floor,
-			currentPrice,
-			high,
-			low,
-			change,
-			changePercent,
-			turnOver
+			floor
 		) => {
 			const $ = document.querySelector.bind(document);
 
@@ -712,14 +634,24 @@ const crawlDetailHose = asyncHandler(
 				dataJson.reference = reference;
 				dataJson.ceil = ceil;
 				dataJson.floor = floor;
-				dataJson.currentPrice = currentPrice;
-				dataJson.high = high;
-				dataJson.low = low;
-				dataJson.change = change;
-				dataJson.changePercent = changePercent;
+				dataJson.currentPrice = $(
+					'#stockprice .price'
+				)?.innerText.replace(/,/g, '.');
+				dataJson.high = $('#highestprice')?.innerText;
+				dataJson.low = $('#lowestprice')?.innerText;
+
+				const changeInfo = $('#stockchange')?.innerText.split(' ');
+
+				const changeByNumber = changeInfo[0];
+				const changeByPercent = changeInfo[1].replace(/[\])}[{(]/g, '');
+				dataJson.change = changeByNumber;
+				dataJson.changePercent = changeByPercent;
+
 				dataJson.openPrice =
 					document.getElementById('openprice')?.innerText;
-				dataJson.turnOver = turnOver;
+				dataJson.turnOver = $(
+					'.stock-price-info :nth-child(2) :nth-child(4) b'
+				)?.innerText;
 				dataJson.marketcap = $(
 					'.stock-price-info :nth-child(2) :nth-child(5) b'
 				)?.innerText;
@@ -776,19 +708,7 @@ const crawlDetailHose = asyncHandler(
 			return dataJson;
 		};
 
-		const props = [
-			name,
-			symbol,
-			reference,
-			ceil,
-			floor,
-			currentPrice,
-			high,
-			low,
-			change,
-			changePercent,
-			turnOver,
-		];
+		const props = [name, symbol, reference, ceil, floor];
 
 		let data = false;
 		let attemps = 0;
@@ -873,31 +793,13 @@ const crawlDetailHose = asyncHandler(
 );
 
 const crawlDetailUpcom = asyncHandler(
-	async (
-		name,
-		symbol,
-		reference,
-		ceil,
-		floor,
-		currentPrice,
-		high,
-		low,
-		change,
-		changePercent,
-		turnOver
-	) => {
+	async (name, symbol, reference, ceil, floor) => {
 		const pageEvaluateFunc = async (
 			name,
 			symbol,
 			reference,
 			ceil,
-			floor,
-			currentPrice,
-			high,
-			low,
-			change,
-			changePercent,
-			turnOver
+			floor
 		) => {
 			const $ = document.querySelector.bind(document);
 
@@ -924,14 +826,24 @@ const crawlDetailUpcom = asyncHandler(
 				dataJson.reference = reference;
 				dataJson.ceil = ceil;
 				dataJson.floor = floor;
-				dataJson.currentPrice = currentPrice;
-				dataJson.high = high;
-				dataJson.low = low;
-				dataJson.change = change;
-				dataJson.changePercent = changePercent;
+				dataJson.currentPrice = $(
+					'#stockprice .price'
+				)?.innerText.replace(/,/g, '.');
+				dataJson.high = $('#highestprice')?.innerText;
+				dataJson.low = $('#lowestprice')?.innerText;
+
+				const changeInfo = $('#stockchange')?.innerText.split(' ');
+
+				const changeByNumber = changeInfo[0];
+				const changeByPercent = changeInfo[1].replace(/[\])}[{(]/g, '');
+				dataJson.change = changeByNumber;
+				dataJson.changePercent = changeByPercent;
+
 				dataJson.openPrice =
 					document.getElementById('openprice')?.innerText;
-				dataJson.turnOver = turnOver;
+				dataJson.turnOver = $(
+					'.stock-price-info :nth-child(2) :nth-child(4) b'
+				)?.innerText;
 				dataJson.marketcap = $(
 					'.stock-price-info :nth-child(2) :nth-child(5) b'
 				)?.innerText;
@@ -988,19 +900,7 @@ const crawlDetailUpcom = asyncHandler(
 			return dataJson;
 		};
 
-		const props = [
-			name,
-			symbol,
-			reference,
-			ceil,
-			floor,
-			currentPrice,
-			high,
-			low,
-			change,
-			changePercent,
-			turnOver,
-		];
+		const props = [name, symbol, reference, ceil, floor];
 
 		let data = false;
 		let attemps = 0;

@@ -1,8 +1,8 @@
 const asyncHandler = require('express-async-handler');
-const request = require('request');
 const Coin = require('../../model/coin/coinModel');
 const CoinChart = require('../../model/coin/chartCoin/chartCoinModel');
 
+//change request to axios or fetch
 // const autoAddTredingCoin = (req, res, next) => {
 //     // request.get('https://api.coingecko.com/api/v3/search/trending', (error, response, body) => {
 //     //     let json = JSON.parse(body)

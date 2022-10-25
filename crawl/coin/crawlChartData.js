@@ -19,7 +19,7 @@ const crawlChartData1d = asyncHandler(async (nameId, rank) => {
 				Chart1d.findOneAndUpdate(
 					{ name: nameId },
 					{
-						data: response.data.prices,
+						data: response.data?.prices,
 						rank: rank,
 					},
 					{ upsert: true }
