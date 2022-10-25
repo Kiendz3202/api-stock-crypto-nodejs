@@ -40,6 +40,7 @@ const signRefreshToken = async (userId) => {
 	});
 };
 
+//middleware sẽ cho ở trước tất cả các request cần access token
 const verifytoken = (req, res, next) => {
 	if (!req.headers['authorization']) {
 		return next(createError.Unauthorized());

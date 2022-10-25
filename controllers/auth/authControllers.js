@@ -1,5 +1,3 @@
-const express = require('express');
-const axios = require('axios');
 const createError = require('http-errors');
 const User = require('../../model/user/userModel');
 const { userValidate } = require('../../utils/validation/userValidate');
@@ -9,7 +7,6 @@ const {
 	verifytoken,
 	verifyRefreshToken,
 } = require('../../utils/jwt-service/jwt_service');
-const { config } = require('dotenv');
 
 const register = async (req, res, next) => {
 	try {

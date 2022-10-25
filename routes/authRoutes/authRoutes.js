@@ -1,14 +1,5 @@
 const express = require('express');
 const route = express.Router();
-const createError = require('http-errors');
-const User = require('../../model/user/userModel');
-const { userValidate } = require('../../utils/validation/userValidate');
-const {
-	signAccessToken,
-	signRefreshToken,
-	verifytoken,
-	verifyRefreshToken,
-} = require('../../utils/jwt-service/jwt_service');
 
 const {
 	register,
