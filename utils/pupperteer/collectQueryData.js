@@ -11,8 +11,6 @@ const collectQueryData = async (url, pageEvaluateFunc, props) => {
 				'--disable-accelerated-2d-canvas',
 				'--no-first-run',
 				'--no-zygote',
-				'--single-process',
-				'--disable-gpu',
 			],
 		});
 		const page = await browser.newPage();
@@ -53,6 +51,8 @@ const collectQueryDataHeightScroll = async (url, pageEvaluateFunc, props) => {
 				'--disable-accelerated-2d-canvas',
 				'--no-first-run',
 				'--no-zygote',
+				'--single-process',
+				'--disable-gpu',
 			],
 		});
 		const page = await browser.newPage();
