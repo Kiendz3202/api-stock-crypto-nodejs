@@ -12,7 +12,6 @@ const { delay } = require('../utils/promise/delayTime/delay');
 const runCrawlCoin = async () => {
 	cron.schedule('*/5 * * * *', async () => {
 		coinRunAll();
-		await delay(100000);
 	});
 };
 
