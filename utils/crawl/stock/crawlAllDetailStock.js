@@ -1,5 +1,5 @@
 const crawlAllDetailStock = async (model, crawlDetailCallback) => {
-	const list = await model.find({}).limit(30);
+	const list = await model.find({});
 
 	list.forEach(async (stock, index) => {
 		setTimeout(() => {

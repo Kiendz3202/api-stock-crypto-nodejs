@@ -4,10 +4,8 @@ const createError = require('http-errors');
 const cors = require('cors');
 const env = require('dotenv');
 const helmet = require('helmet');
-const cron = require('node-cron');
-const axios = require('axios');
-const cookieParser = require('cookie-parser');
-const EventEmitter = require('events');
+// const cookieParser = require('cookie-parser');
+// const EventEmitter = require('events');
 
 //import connect DB
 const connectDB = require('./config/db');

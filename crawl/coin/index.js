@@ -29,10 +29,9 @@ const getallCoinsChart = async () => {
 };
 
 const coinRunAll = async () => {
-	// cron.schedule('*/2 * * * *', async () => {
 	//crawl 200 coins * 4 pages = 1000 coins
 	const coinListLength = Coin.find({});
-	const arr = [0, 1, 2];
+	const arr = [0, 1, 2, 3];
 
 	if (coinListLength) {
 		arr.forEach(async (coin, index) => {
@@ -48,7 +47,7 @@ const coinRunAll = async () => {
 			}, 3000 * index);
 		});
 
-		await delay(6000);
+		await delay(12000);
 
 		arr.forEach(async (coin, index) => {
 			setTimeout(() => {
@@ -56,7 +55,6 @@ const coinRunAll = async () => {
 			}, 3000 * index);
 		});
 	}
-	// });
 };
 
 module.exports = { getallCoinsChart, coinRunAll };
