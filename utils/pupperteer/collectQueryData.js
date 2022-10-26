@@ -53,7 +53,6 @@ const collectQueryDataHeightScroll = async (url, pageEvaluateFunc, props) => {
 				'--disable-accelerated-2d-canvas',
 				'--no-first-run',
 				'--no-zygote',
-				'--disable-gpu',
 			],
 		});
 		const page = await browser.newPage();
