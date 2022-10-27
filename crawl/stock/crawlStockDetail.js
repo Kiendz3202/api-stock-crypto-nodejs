@@ -37,8 +37,6 @@ const crawlDetailHnx30 = async () => {
 				'--disable-accelerated-2d-canvas',
 				'--no-first-run',
 				'--no-zygote',
-				'--single-process',
-				'--disable-gpu',
 			],
 		});
 		const hnx30All = await Hnx30.find();
