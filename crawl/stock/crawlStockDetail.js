@@ -29,7 +29,7 @@ const { delay } = require('../../utils/promise/delayTime/delay');
 const crawlDetailHnx30 = asyncHandler(async () => {
 	try {
 		const browser = await puppeteer.launch({
-			headless: false,
+			headless: true,
 			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
 		});
 		const hnx30All = await Hnx30.find();
