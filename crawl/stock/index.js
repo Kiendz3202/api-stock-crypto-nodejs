@@ -75,37 +75,37 @@ const stockRunAll = async () => {
 	//set delay for crwaling each exchange.When crawling first time, dont have data in database so we have to set default time delay,
 	//it depends on your caculating
 	if (hnx30Length !== 0) {
-		await delay(hnx30Length * 7000);
+		await delay(hnx30Length * 4300);
 	} else {
-		await delay(30 * 7000);
+		await delay(30 * 4300);
 	}
 
 	crawlDetailVn30();
 	if (vn30Length !== 0) {
-		await delay(vn30Length * 7000);
+		await delay(vn30Length * 4300);
 	} else {
-		await delay(30 * 7000);
+		await delay(30 * 4300);
 	}
 
 	crawlDetailHnx();
 	if (hnxLength !== 0) {
-		await delay(hnxLength * 7000);
+		await delay(hnxLength * 4300);
 	} else {
-		await delay(337 * 7000);
+		await delay(337 * 4300);
 	}
 
 	crawlDetailHose();
 	if (hoseLength !== 0) {
-		await delay(hoseLength * 7000);
+		await delay(hoseLength * 4300);
 	} else {
-		await delay(413 * 7000);
+		await delay(413 * 4300);
 	}
 
 	// crawlAllDetailStock(Upcom, crawlDetailUpcom);
 	// if (upcomLength !== 0) {
-	// 	await delay(upcomLength * 7000);
+	// 	await delay(upcomLength * 4300);
 	// } else {
-	// 	await delay(900 * 7000);
+	// 	await delay(900 * 4300);
 	// }
 
 	// crawlAllDetailAllInvesting();
