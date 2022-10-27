@@ -16,12 +16,12 @@ const runCrawlCoin = async () => {
 };
 
 const runCrawlStock = async () => {
-	cron.schedule('*/5 * * * *', async () => {
-		stockRunList();
-	});
+	// cron.schedule('*/5 * * * *', async () => {
+	stockRunList();
+	// });
 
 	// cron.schedule('* */2 * * *', async () => {
-	stockRunAll();
+	// stockRunAll();
 	// });
 };
 
