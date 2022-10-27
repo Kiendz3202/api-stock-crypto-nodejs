@@ -36,14 +36,14 @@ const stockRunAll = async () => {
 	// const upcomLength = await Upcom.find().count();
 
 	//----crawl all basic information stocks----
-	crawlHnx();
-	await delay(20000);
-	crawlHnx30();
-	await delay(10000);
-	crawlVn30();
-	await delay(10000);
-	crawlHose();
-	await delay(20000);
+	// crawlHnx();
+	// await delay(20000);
+	// crawlHnx30();
+	// await delay(10000);
+	// crawlVn30();
+	// await delay(10000);
+	// crawlHose();
+	// await delay(20000);
 	// crawlUpcom();
 	// await delay(20000);
 	// crawlAllInvesting();
@@ -75,37 +75,37 @@ const stockRunAll = async () => {
 	//set delay for crwaling each exchange.When crawling first time, dont have data in database so we have to set default time delay,
 	//it depends on your caculating
 	if (hnx30Length !== 0) {
-		await delay(hnx30Length * 4300);
+		await delay(hnx30Length * 7000);
 	} else {
-		await delay(30 * 4300);
+		await delay(30 * 7000);
 	}
 
 	crawlDetailVn30();
 	if (vn30Length !== 0) {
-		await delay(vn30Length * 4300);
+		await delay(vn30Length * 7000);
 	} else {
-		await delay(30 * 4300);
+		await delay(30 * 7000);
 	}
 
 	crawlDetailHnx();
 	if (hnxLength !== 0) {
-		await delay(hnxLength * 4300);
+		await delay(hnxLength * 7000);
 	} else {
-		await delay(337 * 4300);
+		await delay(337 * 7000);
 	}
 
 	crawlDetailHose();
 	if (hoseLength !== 0) {
-		await delay(hoseLength * 4300);
+		await delay(hoseLength * 7000);
 	} else {
-		await delay(413 * 4300);
+		await delay(413 * 7000);
 	}
 
 	// crawlAllDetailStock(Upcom, crawlDetailUpcom);
 	// if (upcomLength !== 0) {
-	// 	await delay(upcomLength * 4300);
+	// 	await delay(upcomLength * 7000);
 	// } else {
-	// 	await delay(900 * 4300);
+	// 	await delay(900 * 7000);
 	// }
 
 	// crawlAllDetailAllInvesting();
@@ -115,4 +115,15 @@ const stockRunAll = async () => {
 	// crawlAllDetailReportChart();
 };
 
-module.exports = stockRunAll;
+const stockRunList = async () => {
+	crawlHnx();
+	await delay(20000);
+	crawlHnx30();
+	await delay(10000);
+	crawlVn30();
+	await delay(10000);
+	crawlHose();
+	await delay(20000);
+};
+
+module.exports = { stockRunAll, stockRunList };
