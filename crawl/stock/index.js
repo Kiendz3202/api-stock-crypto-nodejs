@@ -27,10 +27,6 @@ const {
 	crawlDetailChartHnx,
 } = require('../index');
 
-const {
-	crawlAllDetailStock,
-} = require('../../utils/crawl/stock/crawlAllDetailStock');
-
 const stockRunAll = async () => {
 	//----Length of collection to caculate time delay each crawlingFunction executes
 	const hnxLength = await Hnx.find().count();
