@@ -87,19 +87,19 @@ const stockRunAll = async () => {
 		await delay(30 * 7000);
 	}
 
-	crawlDetailHnx();
-	if (hnxLength !== 0) {
-		await delay(hnxLength * 7000);
-	} else {
-		await delay(337 * 7000);
-	}
+	// crawlDetailHnx();
+	// if (hnxLength !== 0) {
+	// 	await delay(hnxLength * 7000);
+	// } else {
+	// 	await delay(337 * 7000);
+	// }
 
-	crawlDetailHose();
-	if (hoseLength !== 0) {
-		await delay(hoseLength * 7000);
-	} else {
-		await delay(413 * 7000);
-	}
+	// crawlDetailHose();
+	// if (hoseLength !== 0) {
+	// 	await delay(hoseLength * 7000);
+	// } else {
+	// 	await delay(413 * 7000);
+	// }
 
 	// crawlAllDetailStock(Upcom, crawlDetailUpcom);
 	// if (upcomLength !== 0) {
