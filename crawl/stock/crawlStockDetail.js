@@ -30,7 +30,16 @@ const crawlDetailHnx30 = async () => {
 	try {
 		const browser = await puppeteer.launch({
 			headless: true,
-			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+			args: [
+				'--no-sandbox',
+				'--disabled-setupid-sandbox',
+				'--disable-dev-shm-usage',
+				'--disable-accelerated-2d-canvas',
+				'--no-first-run',
+				'--no-zygote',
+				'--single-process',
+				'--disable-gpu',
+			],
 		});
 		const hnx30All = await Hnx30.find();
 
