@@ -37,6 +37,7 @@ const { authRoutes } = require('./routes/authRoutes/index');
 const {
 	runCrawlGoldPetrolExchangerateInterestRate,
 	runCrawlStock,
+	runCrawlStockList,
 	runCrawlCoin,
 } = require('./crawl/finalCombine');
 //---------------------------------------------------
@@ -47,6 +48,7 @@ const {
 //--------------------------------------------Main Body------------------------------------------------------------------
 runCrawlCoin();
 // runCrawlGoldPetrolExchangerateInterestRate();
+runCrawlStockList();
 runCrawlStock();
 
 // -----------------------------------------------

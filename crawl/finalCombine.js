@@ -16,12 +16,14 @@ const runCrawlCoin = async () => {
 };
 
 const runCrawlStock = async () => {
-	cron.schedule('*/5 * * * *', async () => {
-		stockRunList();
-	});
-
 	cron.schedule('* */2 * * *', async () => {
 		stockRunAll();
+	});
+};
+
+const runCrawlStockList = async () => {
+	cron.schedule('*/5 * * * *', async () => {
+		stockRunList();
 	});
 };
 
@@ -40,5 +42,6 @@ const runCrawlGoldPetrolExchangerateInterestRate = async () => {
 module.exports = {
 	runCrawlGoldPetrolExchangerateInterestRate,
 	runCrawlStock,
+	runCrawlStockList,
 	runCrawlCoin,
 };
