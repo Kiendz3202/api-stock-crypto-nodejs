@@ -75,7 +75,7 @@ const stockRunAll = async () => {
 
 	//---crawl detail information in particularly stock and update price to array in database to draw chart
 	console.log('start crawl detail');
-	crawlAllDetailStock(Hnx30, crawlDetailHnx30);
+	crawlDetailHnx30();
 	//set delay for crwaling each exchange.When crawling first time, dont have data in database so we have to set default time delay,
 	//it depends on your caculating
 	if (hnx30Length !== 0) {
@@ -84,21 +84,21 @@ const stockRunAll = async () => {
 		await delay(30 * 7000);
 	}
 
-	crawlAllDetailStock(Vn30, crawlDetailVn30);
+	crawlDetailVn30();
 	if (vn30Length !== 0) {
 		await delay(vn30Length * 7000);
 	} else {
 		await delay(30 * 7000);
 	}
 
-	crawlAllDetailStock(Hnx, crawlDetailHnx);
+	crawlDetailHnx();
 	if (hnxLength !== 0) {
 		await delay(hnxLength * 7000);
 	} else {
 		await delay(337 * 7000);
 	}
 
-	crawlAllDetailStock(Hose, crawlDetailHose);
+	crawlDetailHose();
 	if (hoseLength !== 0) {
 		await delay(hoseLength * 7000);
 	} else {
