@@ -20,9 +20,9 @@ const runCrawlStock = async () => {
 		stockRunList();
 	});
 
-	cron.schedule('* */2 * * *', async () => {
-		stockRunAll();
-	});
+	// cron.schedule('* */2 * * *', async () => {
+	stockRunAll();
+	// });
 };
 
 const runCrawlGoldPetrolExchangerateInterestRate = async () => {

@@ -45,7 +45,7 @@ const crawlDetailHnx30 = async () => {
 		const hnx30All = await Hnx30.find();
 
 		//start loop
-		console.log('starting...............');
+		console.log('starting HNX30...............');
 		hnx30All.map(async (stock, index) => {
 			setTimeout(async () => {
 				const page = await browser.newPage();
@@ -159,7 +159,7 @@ const crawlDetailHnx30 = async () => {
 
 				await page.close();
 
-				console.log(hnx30DetailData.symbol);
+				console.log(hnx30DetailData.symbol + ' HNX30');
 
 				Hnx30Detail.findOneAndUpdate(
 					{ symbol: hnx30DetailData.symbol },
@@ -218,7 +218,7 @@ const crawlDetailHnx30 = async () => {
 			}, 7000 * index);
 		});
 		await delay(hnx30All.length * 7000);
-		console.log('end.............');
+		console.log('end HNX30.............');
 
 		await browser.close();
 	} catch (error) {
@@ -243,7 +243,7 @@ const crawlDetailHnx = asyncHandler(async () => {
 		const hnxAll = await Hnx.find();
 
 		//start loop
-		console.log('starting...............');
+		console.log('starting HNX...............');
 		hnxAll.map(async (stock, index) => {
 			setTimeout(async () => {
 				const page = await browser.newPage();
@@ -360,7 +360,7 @@ const crawlDetailHnx = asyncHandler(async () => {
 
 				await page.close();
 
-				console.log(hnxDetailData.symbol);
+				console.log(hnxDetailData.symbol + ' HNX');
 
 				// console.log(hnxDetailData);
 
@@ -421,7 +421,7 @@ const crawlDetailHnx = asyncHandler(async () => {
 			}, 7000 * index);
 		});
 		await delay(hnxAll.length * 7000);
-		console.log('end.............');
+		console.log('end HNX.............');
 
 		await browser.close();
 	} catch (error) {
@@ -446,7 +446,7 @@ const crawlDetailVn30 = asyncHandler(async () => {
 		const vn30All = await Vn30.find();
 
 		//start loop
-		console.log('starting...............');
+		console.log('starting VN30...............');
 		vn30All.map(async (stock, index) => {
 			setTimeout(async () => {
 				const page = await browser.newPage();
@@ -561,7 +561,7 @@ const crawlDetailVn30 = asyncHandler(async () => {
 
 				await page.close();
 
-				console.log(vn30DetailData.symbol);
+				console.log(vn30DetailData.symbol + ' VN30');
 
 				// console.log(vn30DetailData);
 
@@ -622,7 +622,7 @@ const crawlDetailVn30 = asyncHandler(async () => {
 			}, 7000 * index);
 		});
 		await delay(vn30All.length * 7000);
-		console.log('end.............');
+		console.log('end VN30.............');
 
 		await browser.close();
 	} catch (error) {
@@ -646,7 +646,7 @@ const crawlDetailHose = asyncHandler(async () => {
 		const hoseAll = await Hose.find();
 
 		//start loop
-		console.log('starting...............');
+		console.log('starting HOSE...............');
 		hoseAll.map(async (stock, index) => {
 			setTimeout(async () => {
 				const page = await browser.newPage();
@@ -761,7 +761,7 @@ const crawlDetailHose = asyncHandler(async () => {
 
 				await page.close();
 
-				console.log(hoseDetailData.symbol);
+				console.log(hoseDetailData.symbol + ' HOSE');
 
 				// console.log(hoseDetailData);
 
@@ -822,7 +822,7 @@ const crawlDetailHose = asyncHandler(async () => {
 			}, 7000 * index);
 		});
 		await delay(hoseAll.length * 7000);
-		console.log('end.............');
+		console.log('end HOSE.............');
 
 		await browser.close();
 	} catch (error) {
