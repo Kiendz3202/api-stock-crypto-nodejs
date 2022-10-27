@@ -45,10 +45,13 @@ const {
 // myEmitter.setMaxListeners(0);
 
 //--------------------------------------------Main Body------------------------------------------------------------------
-
-runCrawlCoin();
-runCrawlGoldPetrolExchangerateInterestRate();
-runCrawlStock();
+const { crawlDetailHnx30 } = require('./crawl/stock/crawlStockDetail');
+const { crawlHnx30 } = require('./crawl/stock/crawlStock');
+// crawlHnx30();
+crawlDetailHnx30();
+// runCrawlCoin();
+// runCrawlGoldPetrolExchangerateInterestRate();
+// runCrawlStock();
 
 // -----------------------------------------------
 

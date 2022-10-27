@@ -21,169 +21,145 @@ const Hnx30Chart = require('../../model/stock/chartStock/chart/hnx30ChartModel')
 const HoseChart = require('../../model/stock/chartStock/chart/hoseChartModel');
 const Vn30Chart = require('../../model/stock/chartStock/chart/vn30ChartModel');
 const UpcomChart = require('../../model/stock/chartStock/chart/upcomChartModel');
+const Hnx30 = require('../../model/stock/stockList/hnx30Model');
+const { delay } = require('../../utils/promise/delayTime/delay');
 
 //----------------------main body-------------------------------------
 
-const crawlDetailHnx30 = asyncHandler(
-	async (name, symbol, reference, ceil, floor) => {
-		const pageEvaluateFunc = async (
-			name,
-			symbol,
-			reference,
-			ceil,
-			floor
-		) => {
-			const $ = document.querySelector.bind(document);
+const crawlDetailHnx30 = asyncHandler(async () => {
+	try {
+		const browser = await puppeteer.launch({
+			headless: false,
+			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+		});
+		const hnx30All = await Hnx30.find();
 
-			let dataJson = {};
+		//start loop
+		console.log('starting...............');
+		hnx30All.map(async (stock, index) => {
+			setTimeout(async () => {
+				const page = await browser.newPage();
+				await page.goto(
+					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
+					{ waitUntil: 'load' }
+				);
+				await page.waitForTimeout(2000);
 
-			try {
-				dataJson.name = name;
-				dataJson.symbol = symbol;
+				let hnx30DetailData = await page.evaluate(async (index) => {
+					const $ = document.querySelector.bind(document);
 
-				let date = new Date();
-				dataJson.timeUpdate =
-					date.getHours() +
-					':' +
-					date.getMinutes() +
-					':' +
-					date.getSeconds() +
-					' ' +
-					date.getDate() +
-					'/' +
-					(date.getMonth() + 1) +
-					'/' +
-					date.getFullYear();
+					let dataJson = {};
 
-				dataJson.reference = reference;
-				dataJson.ceil = ceil;
-				dataJson.floor = floor;
-				dataJson.currentPrice = $(
-					'#stockprice .price'
-				)?.innerText.replace(/,/g, '.');
-				dataJson.high = $('#highestprice')?.innerText;
-				dataJson.low = $('#lowestprice')?.innerText;
+					try {
+						dataJson.name = 'name';
+						dataJson.symbol = `symbol${index}`;
+						dataJson.reference = '123';
+						dataJson.ceil = '123';
+						dataJson.floor = '123';
+						dataJson.currentPrice = '123';
+						dataJson.high = '123';
+						dataJson.low = '123';
+						dataJson.change = '123';
+						dataJson.changePercent = '123%';
+						dataJson.openPrice =
+							document.getElementById('openprice')?.innerText;
+						dataJson.turnOver = '123';
+						dataJson.marketcap = $(
+							'.stock-price-info :nth-child(2) :nth-child(5) b'
+						)?.innerText;
+						dataJson.overBought = $(
+							'.stock-price-info :nth-child(3) :nth-child(1) b'
+						)?.innerText;
+						dataJson.overSold = $(
+							'.stock-price-info :nth-child(3) :nth-child(2) b'
+						)?.innerText;
+						dataJson.high52Week = $(
+							'.stock-price-info :nth-child(3) :nth-child(3) b'
+						)?.innerText;
+						dataJson.low52Week = $(
+							'.stock-price-info :nth-child(3) :nth-child(4) b'
+						)?.innerText;
+						dataJson.turnOver52WeekAverage = $(
+							'.stock-price-info :nth-child(3) :nth-child(5) b'
+						)?.innerText;
+						dataJson.foreignBuy = $(
+							'.stock-price-info :nth-child(4) :nth-child(1) b'
+						)?.innerText;
+						dataJson.ownedRatio = $(
+							'.stock-price-info :nth-child(4) :nth-child(2) b'
+						)?.innerText;
+						dataJson.dividendCast = $(
+							'.stock-price-info :nth-child(4) :nth-child(3) b'
+						)?.innerText;
+						dataJson.dividendYield = $(
+							'.stock-price-info :nth-child(4) :nth-child(4) b'
+						)?.innerText;
+						dataJson.beta = $(
+							'.stock-price-info :nth-child(4) :nth-child(5) b'
+						)?.innerText;
+						dataJson.eps = $(
+							'.stock-price-info :nth-child(5) :nth-child(1) b'
+						)?.innerText;
+						dataJson.pe = $(
+							'.stock-price-info :nth-child(5) :nth-child(2) b'
+						)?.innerText;
+						dataJson.fpe = $(
+							'.stock-price-info :nth-child(5) :nth-child(3) b'
+						)?.innerText;
+						dataJson.bvps = $(
+							'.stock-price-info :nth-child(5) :nth-child(4) b'
+						)?.innerText;
+						dataJson.pb = $(
+							'.stock-price-info :nth-child(5) :nth-child(5) b'
+						)?.innerText;
 
-				const changeInfo = $('#stockchange')?.innerText.split(' ');
+						dataJson.currentTimestamp = Math.floor(
+							Date.now() / 1000
+						);
+					} catch (err) {
+						console.log('crawldetail hnx30' + err);
+					}
+					return dataJson;
+				}, index);
 
-				const changeByNumber = changeInfo[0];
-				const changeByPercent = changeInfo[1].replace(/[\])}[{(]/g, '');
-				dataJson.change = changeByNumber;
-				dataJson.changePercent = changeByPercent;
+				await page.close();
 
-				dataJson.openPrice =
-					document.getElementById('openprice')?.innerText;
-				dataJson.turnOver = $(
-					'.stock-price-info :nth-child(2) :nth-child(4) b'
-				)?.innerText;
-				dataJson.marketcap = $(
-					'.stock-price-info :nth-child(2) :nth-child(5) b'
-				)?.innerText;
-				dataJson.overBought = $(
-					'.stock-price-info :nth-child(3) :nth-child(1) b'
-				)?.innerText;
-				dataJson.overSold = $(
-					'.stock-price-info :nth-child(3) :nth-child(2) b'
-				)?.innerText;
-				dataJson.high52Week = $(
-					'.stock-price-info :nth-child(3) :nth-child(3) b'
-				)?.innerText;
-				dataJson.low52Week = $(
-					'.stock-price-info :nth-child(3) :nth-child(4) b'
-				)?.innerText;
-				dataJson.turnOver52WeekAverage = $(
-					'.stock-price-info :nth-child(3) :nth-child(5) b'
-				)?.innerText;
-				dataJson.foreignBuy = $(
-					'.stock-price-info :nth-child(4) :nth-child(1) b'
-				)?.innerText;
-				dataJson.ownedRatio = $(
-					'.stock-price-info :nth-child(4) :nth-child(2) b'
-				)?.innerText;
-				dataJson.dividendCast = $(
-					'.stock-price-info :nth-child(4) :nth-child(3) b'
-				)?.innerText;
-				dataJson.dividendYield = $(
-					'.stock-price-info :nth-child(4) :nth-child(4) b'
-				)?.innerText;
-				dataJson.beta = $(
-					'.stock-price-info :nth-child(4) :nth-child(5) b'
-				)?.innerText;
-				dataJson.eps = $(
-					'.stock-price-info :nth-child(5) :nth-child(1) b'
-				)?.innerText;
-				dataJson.pe = $(
-					'.stock-price-info :nth-child(5) :nth-child(2) b'
-				)?.innerText;
-				dataJson.fpe = $(
-					'.stock-price-info :nth-child(5) :nth-child(3) b'
-				)?.innerText;
-				dataJson.bvps = $(
-					'.stock-price-info :nth-child(5) :nth-child(4) b'
-				)?.innerText;
-				dataJson.pb = $(
-					'.stock-price-info :nth-child(5) :nth-child(5) b'
-				)?.innerText;
+				console.log(hnx30DetailData.name);
 
-				dataJson.currentTimestamp = Math.floor(Date.now() / 1000);
-			} catch (err) {
-				console.log('crawldetail hnx30' + err);
-			}
-			return dataJson;
-		};
-
-		const props = [name, symbol, reference, ceil, floor];
-
-		let data = false;
-		let attemps = 0;
-		//retry request until it gets data or tries 3 times
-		while (data == false && attemps < 2) {
-			console.log('loop' + attemps);
-			console.time(symbol);
-			data = await collectQueryData(
-				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
-				pageEvaluateFunc,
-				props
-			);
-			console.timeEnd(symbol);
-			console.log(data);
-			attemps++;
-
-			if (data) {
 				Hnx30Detail.findOneAndUpdate(
-					{ symbol: data.symbol },
+					{ symbol: hnx30DetailData.symbol },
 					{
-						name: data.name,
-						symbol: data.symbol,
-						timeUpdate: data.timeUpdate,
-						reference: data.reference,
-						ceil: data.ceil,
-						floor: data.floor,
-						currentPrice: data.currentPrice,
-						change: data.change,
-						changePercent: data.changePercent,
-						openPrice: data.openPrice,
-						high: data.high,
-						low: data.low,
-						turnOver: data.turnOver,
+						name: hnx30DetailData.name,
+						symbol: hnx30DetailData.symbol,
+						reference: hnx30DetailData.reference,
+						ceil: hnx30DetailData.ceil,
+						floor: hnx30DetailData.floor,
+						currentPrice: hnx30DetailData.currentPrice,
+						change: hnx30DetailData.change,
+						changePercent: hnx30DetailData.changePercent,
+						openPrice: hnx30DetailData.openPrice,
+						high: hnx30DetailData.high,
+						low: hnx30DetailData.low,
+						turnOver: hnx30DetailData.turnOver,
 
-						marketcap: data.marketcap,
-						overBought: data.overBought,
-						overSold: data.overSold,
-						high52Week: data.high52Week,
-						low52Week: data.low52Week,
-						turnOver52WeekAverage: data.turnOver52WeekAverage,
-						foreignBuy: data.foreignBuy,
-						ownedRatio: data.ownedRatio,
-						dividendCast: data.dividendCast, //cổ tức tiền mặt
-						dividendYield: data.dividendYield, // tỷ lệ cổ tức
-						beta: data.beta,
-						eps: data.eps,
-						pe: data.pe,
-						fpe: data.fpe, // F P/e
-						bvps: data.bvps, //book value per share
-						pb: data.pb,
-						companyInfo: data.symbol,
+						marketcap: hnx30DetailData.marketcap,
+						overBought: hnx30DetailData.overBought,
+						overSold: hnx30DetailData.overSold,
+						high52Week: hnx30DetailData.high52Week,
+						low52Week: hnx30DetailData.low52Week,
+						turnOver52WeekAverage:
+							hnx30DetailData.turnOver52WeekAverage,
+						foreignBuy: hnx30DetailData.foreignBuy,
+						ownedRatio: hnx30DetailData.ownedRatio,
+						dividendCast: hnx30DetailData.dividendCast, //cổ tức tiền mặt
+						dividendYield: hnx30DetailData.dividendYield, // tỷ lệ cổ tức
+						beta: hnx30DetailData.beta,
+						eps: hnx30DetailData.eps,
+						pe: hnx30DetailData.pe,
+						fpe: hnx30DetailData.fpe, // F P/e
+						bvps: hnx30DetailData.bvps, //book value per share
+						pb: hnx30DetailData.pb,
+						companyInfo: hnx30DetailData.symbol,
 					},
 					{ upsert: true }
 				)
@@ -191,30 +167,222 @@ const crawlDetailHnx30 = asyncHandler(
 					.catch((err) => console.log('crawldetail hnx30' + err));
 
 				Hnx30Chart.findOneAndUpdate(
-					{ symbol: data.symbol },
+					{ symbol: hnx30DetailData.symbol },
 					{
-						symbol: data.symbol,
+						symbol: hnx30DetailData.symbol,
 						$push: {
-							t: data.currentTimestamp,
-							price: data.currentPrice,
+							t: hnx30DetailData.currentTimestamp,
+							price: hnx30DetailData.currentPrice,
 						},
 					},
 					{ upsert: true }
 				)
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => console.log('crawldetail hnx30' + err));
+				// return hnx30DetailData
+			}, 7000 * index);
+		});
+		await delay(hnx30All * 7000);
+		console.log('end.............');
 
-				// await browser.close();
-			}
-
-			if (data === false) {
-				//wait a few second, also a good idea to swap proxy here
-				console.log('Recrawl........' + attemps);
-				await new Promise((resolve) => setTimeout(resolve, 3000));
-			}
-		}
+		await browser.close();
+	} catch (error) {
+		console.log('crawldetail hnx30' + error);
 	}
-);
+	// })
+});
+
+// const crawlDetailHnx30 = asyncHandler(
+// 	async (name, symbol, reference, ceil, floor) => {
+// 		const pageEvaluateFunc = async (
+// 			name,
+// 			symbol,
+// 			reference,
+// 			ceil,
+// 			floor
+// 		) => {
+// 			const $ = document.querySelector.bind(document);
+
+// 			let dataJson = {};
+
+// 			try {
+// 				dataJson.name = name;
+// 				dataJson.symbol = symbol;
+
+// 				let date = new Date();
+// 				dataJson.timeUpdate =
+// 					date.getHours() +
+// 					':' +
+// 					date.getMinutes() +
+// 					':' +
+// 					date.getSeconds() +
+// 					' ' +
+// 					date.getDate() +
+// 					'/' +
+// 					(date.getMonth() + 1) +
+// 					'/' +
+// 					date.getFullYear();
+
+// 				dataJson.reference = reference;
+// 				dataJson.ceil = ceil;
+// 				dataJson.floor = floor;
+// 				dataJson.currentPrice = $(
+// 					'#stockprice .price'
+// 				)?.innerText.replace(/,/g, '.');
+// 				dataJson.high = $('#highestprice')?.innerText;
+// 				dataJson.low = $('#lowestprice')?.innerText;
+
+// 				const changeInfo = $('#stockchange')?.innerText.split(' ');
+
+// 				const changeByNumber = changeInfo[0];
+// 				const changeByPercent = changeInfo[1].replace(/[\])}[{(]/g, '');
+// 				dataJson.change = changeByNumber;
+// 				dataJson.changePercent = changeByPercent;
+
+// 				dataJson.openPrice =
+// 					document.getElementById('openprice')?.innerText;
+// 				dataJson.turnOver = $(
+// 					'.stock-price-info :nth-child(2) :nth-child(4) b'
+// 				)?.innerText;
+// 				dataJson.marketcap = $(
+// 					'.stock-price-info :nth-child(2) :nth-child(5) b'
+// 				)?.innerText;
+// 				dataJson.overBought = $(
+// 					'.stock-price-info :nth-child(3) :nth-child(1) b'
+// 				)?.innerText;
+// 				dataJson.overSold = $(
+// 					'.stock-price-info :nth-child(3) :nth-child(2) b'
+// 				)?.innerText;
+// 				dataJson.high52Week = $(
+// 					'.stock-price-info :nth-child(3) :nth-child(3) b'
+// 				)?.innerText;
+// 				dataJson.low52Week = $(
+// 					'.stock-price-info :nth-child(3) :nth-child(4) b'
+// 				)?.innerText;
+// 				dataJson.turnOver52WeekAverage = $(
+// 					'.stock-price-info :nth-child(3) :nth-child(5) b'
+// 				)?.innerText;
+// 				dataJson.foreignBuy = $(
+// 					'.stock-price-info :nth-child(4) :nth-child(1) b'
+// 				)?.innerText;
+// 				dataJson.ownedRatio = $(
+// 					'.stock-price-info :nth-child(4) :nth-child(2) b'
+// 				)?.innerText;
+// 				dataJson.dividendCast = $(
+// 					'.stock-price-info :nth-child(4) :nth-child(3) b'
+// 				)?.innerText;
+// 				dataJson.dividendYield = $(
+// 					'.stock-price-info :nth-child(4) :nth-child(4) b'
+// 				)?.innerText;
+// 				dataJson.beta = $(
+// 					'.stock-price-info :nth-child(4) :nth-child(5) b'
+// 				)?.innerText;
+// 				dataJson.eps = $(
+// 					'.stock-price-info :nth-child(5) :nth-child(1) b'
+// 				)?.innerText;
+// 				dataJson.pe = $(
+// 					'.stock-price-info :nth-child(5) :nth-child(2) b'
+// 				)?.innerText;
+// 				dataJson.fpe = $(
+// 					'.stock-price-info :nth-child(5) :nth-child(3) b'
+// 				)?.innerText;
+// 				dataJson.bvps = $(
+// 					'.stock-price-info :nth-child(5) :nth-child(4) b'
+// 				)?.innerText;
+// 				dataJson.pb = $(
+// 					'.stock-price-info :nth-child(5) :nth-child(5) b'
+// 				)?.innerText;
+
+// 				dataJson.currentTimestamp = Math.floor(Date.now() / 1000);
+// 			} catch (err) {
+// 				console.log('crawldetail hnx30' + err);
+// 			}
+// 			return dataJson;
+// 		};
+
+// 		const props = [name, symbol, reference, ceil, floor];
+
+// 		let data = false;
+// 		let attemps = 0;
+// 		//retry request until it gets data or tries 3 times
+// 		while (data == false && attemps < 2) {
+// 			console.log('loop' + attemps);
+// 			console.time(symbol);
+// 			data = await collectQueryData(
+// 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
+// 				pageEvaluateFunc,
+// 				props
+// 			);
+// 			console.timeEnd(symbol);
+// 			console.log(data);
+// 			attemps++;
+
+// 			if (data) {
+// 				Hnx30Detail.findOneAndUpdate(
+// 					{ symbol: data.symbol },
+// 					{
+// 						name: data.name,
+// 						symbol: data.symbol,
+// 						timeUpdate: data.timeUpdate,
+// 						reference: data.reference,
+// 						ceil: data.ceil,
+// 						floor: data.floor,
+// 						currentPrice: data.currentPrice,
+// 						change: data.change,
+// 						changePercent: data.changePercent,
+// 						openPrice: data.openPrice,
+// 						high: data.high,
+// 						low: data.low,
+// 						turnOver: data.turnOver,
+
+// 						marketcap: data.marketcap,
+// 						overBought: data.overBought,
+// 						overSold: data.overSold,
+// 						high52Week: data.high52Week,
+// 						low52Week: data.low52Week,
+// 						turnOver52WeekAverage: data.turnOver52WeekAverage,
+// 						foreignBuy: data.foreignBuy,
+// 						ownedRatio: data.ownedRatio,
+// 						dividendCast: data.dividendCast, //cổ tức tiền mặt
+// 						dividendYield: data.dividendYield, // tỷ lệ cổ tức
+// 						beta: data.beta,
+// 						eps: data.eps,
+// 						pe: data.pe,
+// 						fpe: data.fpe, // F P/e
+// 						bvps: data.bvps, //book value per share
+// 						pb: data.pb,
+// 						companyInfo: data.symbol,
+// 					},
+// 					{ upsert: true }
+// 				)
+// 					// .then((doc) => console.log(doc?.symbol))
+// 					.catch((err) => console.log('crawldetail hnx30' + err));
+
+// 				Hnx30Chart.findOneAndUpdate(
+// 					{ symbol: data.symbol },
+// 					{
+// 						symbol: data.symbol,
+// 						$push: {
+// 							t: data.currentTimestamp,
+// 							price: data.currentPrice,
+// 						},
+// 					},
+// 					{ upsert: true }
+// 				)
+// 					// .then((doc) => console.log(doc?.symbol))
+// 					.catch((err) => console.log('crawldetail hnx30' + err));
+
+// 				// await browser.close();
+// 			}
+
+// 			if (data === false) {
+// 				//wait a few second, also a good idea to swap proxy here
+// 				console.log('Recrawl........' + attemps);
+// 				await new Promise((resolve) => setTimeout(resolve, 3000));
+// 			}
+// 		}
+// 	}
+// );
 
 const crawlDetailHnx = asyncHandler(
 	async (name, symbol, reference, ceil, floor) => {
@@ -1067,78 +1235,43 @@ module.exports = {
 	crawlDetailAllInvesting,
 };
 
-// const crawlDetailHnx30 = asyncHandler(
-// 	async (
-// 		name,
-// 		symbol,
-// 		reference,
-// 		ceil,
-// 		floor,
-// 		currentPrice,
-// 		high,
-// 		low,
-// 		change,
-// 		changePercent,
-// 		turnOver
-// 	) => {
-// 		// cron.schedule('*/20 * * * * *', async () =>{
+// const crawlDetailHnx30 = asyncHandler(async () => {
+// 	try {
+// 		const browser = await puppeteer.launch({
+// 			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
+// 		});
+// 		const hnx30All = await Hnx30.find();
 
-// 		// const hnx30List = await Hnx30.find({}).sort({ symbol: 'asc' })
+// 		//start loop
+// 		console.log('starting...............');
+// 		hnx30All.map(async (stock, index) => {
+// 			setTimeout(async () => {
+// 				const page = await browser.newPage();
+// 				await page.goto(
+// 					`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
+// 					{ waitUntil: 'load' }
+// 				);
+// 				await page.waitForTimeout(2000);
 
-// 		// let selector = `td[data-tooltip = ${name}]`
-
-// 		try {
-// 			const browser = await puppeteer.launch({
-// 				args: ['--no-sandbox', '--disabled-setupid-sandbox'],
-// 			});
-// 			const page = await browser.newPage();
-// 			let status = await page.goto(
-// 				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
-// 				{ timeout: 0 }
-// 			);
-// 			// await page.click('[data-tooltip = "CTCP Xi măng Bỉm Sơn"]')
-// 			// await page.click(`[data-value = ${symbol}]`)
-// 			// const selector = await page.$(`#sym-328`)
-// 			// await page.waitForSelector(`span[data-value=${symbol}]`)
-// 			// await page.click('#sym-328')
-// 			await page.waitForTimeout(2000);
-// 			// await page.click(`[data-value=${symbol}]`)
-// 			// await page.waitForSelector('#symbol-detail-popup', { visible: true })
-
-// 			// await page.evaluate(selector, (selector) => selector.click())
-// 			// await page.waitForTimeout(3000)
-// 			let hnx30DetailData = await page.evaluate(
-// 				async (
-// 					name,
-// 					symbol,
-// 					reference,
-// 					ceil,
-// 					floor,
-// 					currentPrice,
-// 					high,
-// 					low,
-// 					change,
-// 					changePercent,
-// 					turnOver
-// 				) => {
+// 				let hnx30DetailData = await page.evaluate(async () => {
 // 					const $ = document.querySelector.bind(document);
 
 // 					let dataJson = {};
 
 // 					try {
-// 						dataJson.name = name;
-// 						dataJson.symbol = symbol;
-// 						dataJson.reference = reference;
-// 						dataJson.ceil = ceil;
-// 						dataJson.floor = floor;
-// 						dataJson.currentPrice = currentPrice;
-// 						dataJson.high = high;
-// 						dataJson.low = low;
-// 						dataJson.change = change;
-// 						dataJson.changePercent = changePercent;
+// 						dataJson.name = 'name';
+// 						dataJson.symbol = 'symbol';
+// 						dataJson.reference = 'reference';
+// 						dataJson.ceil = 'ceil';
+// 						dataJson.floor = 'floor';
+// 						dataJson.currentPrice = 'currentPrice';
+// 						dataJson.high = 'high';
+// 						dataJson.low = 'low';
+// 						dataJson.change = 'change';
+// 						dataJson.changePercent = 'changePercent';
 // 						dataJson.openPrice =
 // 							document.getElementById('openprice')?.innerText;
-// 						dataJson.turnOver = turnOver;
+// 						dataJson.turnOver = 'turnOver';
 // 						dataJson.marketcap = $(
 // 							'.stock-price-info :nth-child(2) :nth-child(5) b'
 // 						)?.innerText;
@@ -1195,84 +1328,76 @@ module.exports = {
 // 						console.log('crawldetail hnx30' + err);
 // 					}
 // 					return dataJson;
-// 				},
-// 				name,
-// 				symbol,
-// 				reference,
-// 				ceil,
-// 				floor,
-// 				currentPrice,
-// 				high,
-// 				low,
-// 				change,
-// 				changePercent,
-// 				turnOver
-// 			);
+// 				});
 
-// 			// console.log(hnx30DetailData);
+// 				await page.close();
 
-// 			Hnx30Detail.findOneAndUpdate(
-// 				{ symbol: hnx30DetailData.symbol },
-// 				{
-// 					name: hnx30DetailData.name,
-// 					symbol: hnx30DetailData.symbol,
-// 					reference: hnx30DetailData.reference,
-// 					ceil: hnx30DetailData.ceil,
-// 					floor: hnx30DetailData.floor,
-// 					currentPrice: hnx30DetailData.currentPrice,
-// 					change: hnx30DetailData.change,
-// 					changePercent: hnx30DetailData.changePercent,
-// 					openPrice: hnx30DetailData.openPrice,
-// 					high: hnx30DetailData.high,
-// 					low: hnx30DetailData.low,
-// 					turnOver: hnx30DetailData.turnOver,
+// 				console.log(hnx30DetailData.name);
 
-// 					marketcap: hnx30DetailData.marketcap,
-// 					overBought: hnx30DetailData.overBought,
-// 					overSold: hnx30DetailData.overSold,
-// 					high52Week: hnx30DetailData.high52Week,
-// 					low52Week: hnx30DetailData.low52Week,
-// 					turnOver52WeekAverage:
-// 						hnx30DetailData.turnOver52WeekAverage,
-// 					foreignBuy: hnx30DetailData.foreignBuy,
-// 					ownedRatio: hnx30DetailData.ownedRatio,
-// 					dividendCast: hnx30DetailData.dividendCast, //cổ tức tiền mặt
-// 					dividendYield: hnx30DetailData.dividendYield, // tỷ lệ cổ tức
-// 					beta: hnx30DetailData.beta,
-// 					eps: hnx30DetailData.eps,
-// 					pe: hnx30DetailData.pe,
-// 					fpe: hnx30DetailData.fpe, // F P/e
-// 					bvps: hnx30DetailData.bvps, //book value per share
-// 					pb: hnx30DetailData.pb,
-// 					companyInfo: hnx30DetailData.symbol,
-// 				},
-// 				{ upsert: true }
-// 			)
-// 				// .then((doc) => console.log(doc?.symbol))
-// 				.catch((err) => console.log('crawldetail hnx30' + err));
+// 				Hnx30Detail.findOneAndUpdate(
+// 					{ symbol: hnx30DetailData.symbol },
+// 					{
+// 						name: hnx30DetailData.name,
+// 						symbol: hnx30DetailData.symbol,
+// 						reference: hnx30DetailData.reference,
+// 						ceil: hnx30DetailData.ceil,
+// 						floor: hnx30DetailData.floor,
+// 						currentPrice: hnx30DetailData.currentPrice,
+// 						change: hnx30DetailData.change,
+// 						changePercent: hnx30DetailData.changePercent,
+// 						openPrice: hnx30DetailData.openPrice,
+// 						high: hnx30DetailData.high,
+// 						low: hnx30DetailData.low,
+// 						turnOver: hnx30DetailData.turnOver,
 
-// 			Hnx30Chart.findOneAndUpdate(
-// 				{ symbol: hnx30DetailData.symbol },
-// 				{
-// 					symbol: hnx30DetailData.symbol,
-// 					$push: {
-// 						t: hnx30DetailData.currentTimestamp,
-// 						price: hnx30DetailData.currentPrice,
+// 						marketcap: hnx30DetailData.marketcap,
+// 						overBought: hnx30DetailData.overBought,
+// 						overSold: hnx30DetailData.overSold,
+// 						high52Week: hnx30DetailData.high52Week,
+// 						low52Week: hnx30DetailData.low52Week,
+// 						turnOver52WeekAverage:
+// 							hnx30DetailData.turnOver52WeekAverage,
+// 						foreignBuy: hnx30DetailData.foreignBuy,
+// 						ownedRatio: hnx30DetailData.ownedRatio,
+// 						dividendCast: hnx30DetailData.dividendCast, //cổ tức tiền mặt
+// 						dividendYield: hnx30DetailData.dividendYield, // tỷ lệ cổ tức
+// 						beta: hnx30DetailData.beta,
+// 						eps: hnx30DetailData.eps,
+// 						pe: hnx30DetailData.pe,
+// 						fpe: hnx30DetailData.fpe, // F P/e
+// 						bvps: hnx30DetailData.bvps, //book value per share
+// 						pb: hnx30DetailData.pb,
+// 						companyInfo: hnx30DetailData.symbol,
 // 					},
-// 				},
-// 				{ upsert: true }
-// 			)
-// 				// .then((doc) => console.log(doc?.symbol))
-// 				.catch((err) => console.log('crawldetail hnx30' + err));
-// 			// return hnx30DetailData
+// 					{ upsert: true }
+// 				)
+// 					// .then((doc) => console.log(doc?.symbol))
+// 					.catch((err) => console.log('crawldetail hnx30' + err));
 
-// 			await browser.close();
-// 		} catch (error) {
-// 			console.log('crawldetail hnx30' + error);
-// 		}
-// 		// })
+// 				Hnx30Chart.findOneAndUpdate(
+// 					{ symbol: hnx30DetailData.symbol },
+// 					{
+// 						symbol: hnx30DetailData.symbol,
+// 						$push: {
+// 							t: hnx30DetailData.currentTimestamp,
+// 							price: hnx30DetailData.currentPrice,
+// 						},
+// 					},
+// 					{ upsert: true }
+// 				)
+// 					// .then((doc) => console.log(doc?.symbol))
+// 					.catch((err) => console.log('crawldetail hnx30' + err));
+// 				// return hnx30DetailData
+// 			}, 7000 * index);
+// 		});
+// 		console.log('end.............');
+
+// 		await browser.close();
+// 	} catch (error) {
+// 		console.log('crawldetail hnx30' + error);
 // 	}
-// );
+// 	// })
+// });
 
 // const crawlDetailHnx = asyncHandler(
 // 	async (
