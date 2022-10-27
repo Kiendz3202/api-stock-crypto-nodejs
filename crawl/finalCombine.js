@@ -10,9 +10,9 @@ const interestRateRunAll = require('./interestRate/allBanks/index');
 const { delay } = require('../utils/promise/delayTime/delay');
 
 const runCrawlCoin = async () => {
-	// cron.schedule('*/5 * * * *', async () => {
-	coinRunAll();
-	// });
+	cron.schedule('*/5 * * * *', async () => {
+		coinRunAll();
+	});
 };
 
 const runCrawlStock = async () => {
