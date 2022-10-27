@@ -26,10 +26,10 @@ const { delay } = require('../../utils/promise/delayTime/delay');
 
 //----------------------main body-------------------------------------
 
-const crawlDetailHnx30 = asyncHandler(async () => {
+const crawlDetailHnx30 = async () => {
 	try {
 		const browser = await puppeteer.launch({
-			headless: true,
+			headless: false,
 			args: ['--no-sandbox', '--disabled-setupid-sandbox'],
 		});
 		const hnx30All = await Hnx30.find();
@@ -182,7 +182,7 @@ const crawlDetailHnx30 = asyncHandler(async () => {
 				// return hnx30DetailData
 			}, 7000 * index);
 		});
-		await delay(hnx30All * 7000);
+		await delay(hnx30All.length * 7000);
 		console.log('end.............');
 
 		await browser.close();
@@ -190,7 +190,7 @@ const crawlDetailHnx30 = asyncHandler(async () => {
 		console.log('crawldetail hnx30' + error);
 	}
 	// })
-});
+};
 
 // const crawlDetailHnx30 = asyncHandler(
 // 	async (name, symbol, reference, ceil, floor) => {
