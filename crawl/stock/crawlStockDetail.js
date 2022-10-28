@@ -159,7 +159,7 @@ const crawlDetailHnx30 = async () => {
 
 				console.log(hnx30DetailData.symbol + ' HNX30');
 
-				Hnx30Detail.findOneAndUpdate(
+				await Hnx30Detail.findOneAndUpdate(
 					{ symbol: hnx30DetailData.symbol },
 					{
 						name: hnx30DetailData.name,
@@ -199,7 +199,7 @@ const crawlDetailHnx30 = async () => {
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => console.log('crawldetail hnx30' + err));
 
-				Hnx30Chart.findOneAndUpdate(
+				await Hnx30Chart.findOneAndUpdate(
 					{ symbol: hnx30DetailData.symbol },
 					{
 						symbol: hnx30DetailData.symbol,
@@ -360,7 +360,7 @@ const crawlDetailHnx = asyncHandler(async () => {
 
 				// console.log(hnxDetailData);
 
-				HnxDetail.findOneAndUpdate(
+				await HnxDetail.findOneAndUpdate(
 					{ symbol: hnxDetailData.symbol },
 					{
 						name: hnxDetailData.name,
@@ -400,7 +400,7 @@ const crawlDetailHnx = asyncHandler(async () => {
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => console.log('crawldetail hnx' + err));
 
-				HnxChart.findOneAndUpdate(
+				await HnxChart.findOneAndUpdate(
 					{ symbol: hnxDetailData.symbol },
 					{
 						symbol: hnxDetailData.symbol,
@@ -559,7 +559,7 @@ const crawlDetailVn30 = asyncHandler(async () => {
 
 				// console.log(vn30DetailData);
 
-				Vn30Detail.findOneAndUpdate(
+				await Vn30Detail.findOneAndUpdate(
 					{ symbol: vn30DetailData.symbol },
 					{
 						name: vn30DetailData.name,
@@ -599,7 +599,7 @@ const crawlDetailVn30 = asyncHandler(async () => {
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => console.log('crawldetail vn30' + err));
 
-				Vn30Chart.findOneAndUpdate(
+				await Vn30Chart.findOneAndUpdate(
 					{ symbol: vn30DetailData.symbol },
 					{
 						symbol: vn30DetailData.symbol,
@@ -757,7 +757,7 @@ const crawlDetailHose = asyncHandler(async () => {
 
 				// console.log(hoseDetailData);
 
-				HoseDetail.findOneAndUpdate(
+				await HoseDetail.findOneAndUpdate(
 					{ symbol: hoseDetailData.symbol },
 					{
 						name: hoseDetailData.name,
@@ -797,7 +797,7 @@ const crawlDetailHose = asyncHandler(async () => {
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => console.log('crawldetail hose' + err));
 
-				HoseChart.findOneAndUpdate(
+				await HoseChart.findOneAndUpdate(
 					{ symbol: hoseDetailData.symbol },
 					{
 						symbol: hoseDetailData.symbol,
@@ -967,7 +967,7 @@ const crawlDetailUpcom = asyncHandler(
 
 			// console.log(upcomDetailData);
 
-			UpcomDetail.findOneAndUpdate(
+			await UpcomDetail.findOneAndUpdate(
 				{ symbol: upcomDetailData.symbol },
 				{
 					name: upcomDetailData.name,
@@ -1007,7 +1007,7 @@ const crawlDetailUpcom = asyncHandler(
 				// .then((doc) => console.log(doc?.symbol))
 				.catch((err) => console.log('crawldetail upcom' + err));
 
-			UpcomChart.findOneAndUpdate(
+			await UpcomChart.findOneAndUpdate(
 				{ symbol: upcomDetailData.symbol },
 				{
 					symbol: upcomDetailData.symbol,
