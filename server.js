@@ -47,8 +47,8 @@ const {
 
 //--------------------------------------------Main Body------------------------------------------------------------------
 runCrawlCoin();
-// runCrawlGoldPetrolExchangerateInterestRate();
-// runCrawlStockList();
+runCrawlGoldPetrolExchangerateInterestRate();
+runCrawlStockList();
 runCrawlStock();
 
 // -----------------------------------------------

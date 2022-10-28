@@ -10,22 +10,22 @@ const interestRateRunAll = require('./interestRate/allBanks/index');
 const { delay } = require('../utils/promise/delayTime/delay');
 
 const runCrawlCoin = async () => {
-	cron.schedule('*/3 * * * *', async () => {
-		coinRunAll();
-	});
+	// cron.schedule('*/3 * * * *', async () => {
+	coinRunAll();
+	// });
 };
 
 const runCrawlStock = async () => {
 	//  0 */2 * * *
-	cron.schedule('0 */2 * * *', async () => {
-		stockRunAll();
-	});
+	// cron.schedule('0 */2 * * *', async () => {
+	stockRunAll();
+	// });
 };
 
 const runCrawlStockList = async () => {
-	cron.schedule('*/3 * * * *', async () => {
-		stockRunList();
-	});
+	// cron.schedule('*/4 * * * *', async () => {
+	stockRunList();
+	// });
 };
 
 const runCrawlGoldPetrolExchangerateInterestRate = async () => {
