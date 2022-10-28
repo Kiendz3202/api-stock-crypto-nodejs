@@ -36,17 +36,17 @@ const stockRunAll = async () => {
 	// const upcomLength = await Upcom.find().count();
 
 	//----crawl all basic information stocks----
-	// crawlHnx();
-	// await delay(20000);
-	// crawlHnx30();
-	// await delay(10000);
-	// crawlVn30();
-	// await delay(10000);
-	// crawlHose();
-	// await delay(20000);
-	// crawlUpcom();
-	// await delay(20000);
-	// crawlAllInvesting();
+	crawlHnx();
+	await delay(20000);
+	crawlHnx30();
+	await delay(10000);
+	crawlVn30();
+	await delay(10000);
+	crawlHose();
+	await delay(20000);
+	crawlUpcom();
+	await delay(20000);
+	crawlAllInvesting();
 	//--------------------------------------
 
 	// const crawlAllDetailAllInvesting = asyncHandler(async () => {
@@ -87,19 +87,19 @@ const stockRunAll = async () => {
 		await delay(30 * 7000);
 	}
 
-	// crawlDetailHnx();
-	// if (hnxLength !== 0) {
-	// 	await delay(hnxLength * 7000);
-	// } else {
-	// 	await delay(337 * 7000);
-	// }
+	crawlDetailHnx();
+	if (hnxLength !== 0) {
+		await delay(hnxLength * 7000);
+	} else {
+		await delay(337 * 7000);
+	}
 
-	// crawlDetailHose();
-	// if (hoseLength !== 0) {
-	// 	await delay(hoseLength * 7000);
-	// } else {
-	// 	await delay(413 * 7000);
-	// }
+	crawlDetailHose();
+	if (hoseLength !== 0) {
+		await delay(hoseLength * 7000);
+	} else {
+		await delay(413 * 7000);
+	}
 
 	// crawlAllDetailStock(Upcom, crawlDetailUpcom);
 	// if (upcomLength !== 0) {

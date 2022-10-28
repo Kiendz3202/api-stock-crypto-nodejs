@@ -17,7 +17,7 @@ const runCrawlCoin = async () => {
 
 const runCrawlStock = async () => {
 	//  0 */2 * * *
-	cron.schedule('*/10 * * * *', async () => {
+	cron.schedule('0 */2 * * *', async () => {
 		stockRunAll();
 	});
 };
