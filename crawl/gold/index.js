@@ -17,20 +17,20 @@ const goldRunAll = async () => {
 		arr.forEach((gold, index) => {
 			setTimeout(() => {
 				crawlPnj(gold, index + 1);
-			}, 5000 * index);
+			}, 30000 * index);
 		});
 	};
 
 	crawlAllDetailPnj();
-	await delay(30000);
+	await delay(180000);
 	crawlSjc();
-	await delay(30000);
+	await delay(40000);
 	crawlDoji();
-	await delay(30000);
+	await delay(40000);
 	crawlPhuQuySjc();
-	await delay(30000);
+	await delay(40000);
 	crawlBaoTinMinhChau();
-	await delay(30000);
+	await delay(40000);
 	crawlMiHong();
 	// });
 };
