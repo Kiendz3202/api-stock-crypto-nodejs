@@ -38,8 +38,6 @@ const crawlDetailHnx30 = async () => {
 				'--disabled-setupid-sandbox',
 				'--disable-dev-shm-usage',
 				'--disable-accelerated-2d-canvas',
-				'--no-first-run',
-				'--no-zygote',
 			],
 		});
 		const hnx30All = await Hnx30.find();
@@ -236,8 +234,6 @@ const crawlDetailHnx = asyncHandler(async () => {
 				'--disabled-setupid-sandbox',
 				'--disable-dev-shm-usage',
 				'--disable-accelerated-2d-canvas',
-				'--no-first-run',
-				'--no-zygote',
 			],
 		});
 		const hnxAll = await Hnx.find();
@@ -439,8 +435,6 @@ const crawlDetailVn30 = asyncHandler(async () => {
 				'--disabled-setupid-sandbox',
 				'--disable-dev-shm-usage',
 				'--disable-accelerated-2d-canvas',
-				'--no-first-run',
-				'--no-zygote',
 			],
 		});
 		const vn30All = await Vn30.find();
@@ -639,8 +633,6 @@ const crawlDetailHose = asyncHandler(async () => {
 				'--disabled-setupid-sandbox',
 				'--disable-dev-shm-usage',
 				'--disable-accelerated-2d-canvas',
-				'--no-first-run',
-				'--no-zygote',
 			],
 		});
 		const hoseAll = await Hose.find();
