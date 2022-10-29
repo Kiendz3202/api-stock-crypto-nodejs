@@ -215,7 +215,7 @@ const crawlDetailHnx30 = async () => {
 				// return hnx30DetailData
 			}, 7000 * index);
 		});
-		await delay(hnx30All.length * 7000);
+		await delay(hnx30All.length * 7000 + 10000);
 		console.log('end HNX30.............');
 
 		await browser.close();
@@ -416,7 +416,7 @@ const crawlDetailHnx = asyncHandler(async () => {
 				// return hnxDetailData
 			}, 7000 * index);
 		});
-		await delay(hnxAll.length * 7000);
+		await delay(hnxAll.length * 7000 + 20000);
 		console.log('end HNX.............');
 
 		await browser.close();
@@ -615,7 +615,7 @@ const crawlDetailVn30 = asyncHandler(async () => {
 				// return vn30DetailData
 			}, 7000 * index);
 		});
-		await delay(vn30All.length * 7000);
+		await delay(vn30All.length * 7000 + 10000);
 		console.log('end VN30.............');
 
 		await browser.close();
@@ -813,7 +813,7 @@ const crawlDetailHose = asyncHandler(async () => {
 				// return hoseDetailData
 			}, 7000 * index);
 		});
-		await delay(hoseAll.length * 7000);
+		await delay(hoseAll.length * 7000 + 20000);
 		console.log('end HOSE.............');
 
 		await browser.close();

@@ -117,13 +117,13 @@ const stockRunAll = async () => {
 
 const stockRunList = async () => {
 	crawlHnx();
-	await delay(20000);
+	await delay(40000);
 	crawlHnx30();
-	await delay(10000);
-	crawlVn30();
-	await delay(10000);
-	crawlHose();
 	await delay(20000);
+	crawlVn30();
+	await delay(20000);
+	crawlHose();
+	await delay(40000);
 };
 
 module.exports = { stockRunAll, stockRunList };
