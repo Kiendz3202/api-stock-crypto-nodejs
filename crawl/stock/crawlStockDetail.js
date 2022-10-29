@@ -26,6 +26,7 @@ const Hnx = require('../../model/stock/stockList/hnxModel');
 const { delay } = require('../../utils/promise/delayTime/delay');
 const Vn30 = require('../../model/stock/stockList/vn30Model');
 const Hose = require('../../model/stock/stockList/hoseModel');
+const Upcom = require('../../model/stock/stockList/upcomModel');
 
 //----------------------main body-------------------------------------
 
@@ -823,212 +824,203 @@ const crawlDetailHose = asyncHandler(async () => {
 	// })
 });
 
-const crawlDetailUpcom = asyncHandler(
-	async (
-		name,
-		symbol,
-		reference,
-		ceil,
-		floor,
-		currentPrice,
-		high,
-		low,
-		change,
-		changePercent,
-		turnOver
-	) => {
-		// cron.schedule('*/20 * * * * *', async () =>{
+const crawlDetailUpcom = asyncHandler(async () => {
+	try {
+		const browser = await puppeteer.launch({
+			headless: true,
+			args: [
+				'--no-sandbox',
+				'--disabled-setupid-sandbox',
+				'--disable-dev-shm-usage',
+				'--disable-accelerated-2d-canvas',
+			],
+		});
+		const upcomAll = await Upcom.find();
 
-		// const hnx30List = await Hnx30.find({}).sort({ symbol: 'asc' })
+		//start loop
+		console.log('starting Upcom...............');
+		upcomAll.map(async (stock, index) => {
+			setTimeout(async () => {
+				const page = await browser.newPage();
+				await page.goto(
+					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
+					{ waitUntil: 'load' }
+				);
 
-		// let selector = `td[data-tooltip = ${name}]`
+				await page.waitForTimeout(2000);
 
-		try {
-			const browser = await puppeteer.launch({
-				args: ['--no-sandbox', '--disabled-setupid-sandbox'],
-			});
-			const page = await browser.newPage();
-			let status = await page.goto(
-				`https://finance.vietstock.vn/${symbol}/tai-chinh.htm`,
-				{ timeout: 0 }
-			);
-			// await page.click('[data-tooltip = "CTCP Xi măng Bỉm Sơn"]')
-			// await page.click(`[data-value = ${symbol}]`)
-			// const selector = await page.$(`#sym-328`)
-			// await page.waitForSelector(`span[data-value=${symbol}]`)
-			// await page.click('#sym-328')
-			await page.waitForTimeout(2000);
-			// await page.click(`[data-value=${symbol}]`)
-			// await page.waitForSelector('#symbol-detail-popup', { visible: true })
+				let upcomDetailData = await page.evaluate(
+					async (
+						name,
+						symbol,
+						reference,
+						ceil,
+						floor,
+						currentPrice,
+						high,
+						low,
+						change,
+						changePercent,
+						turnOver
+					) => {
+						const $ = document.querySelector.bind(document);
 
-			// await page.evaluate(selector, (selector) => selector.click())
-			// await page.waitForTimeout(3000)
-			let upcomDetailData = await page.evaluate(
-				async (
-					name,
-					symbol,
-					reference,
-					ceil,
-					floor,
-					currentPrice,
-					high,
-					low,
-					change,
-					changePercent,
-					turnOver
-				) => {
-					const $ = document.querySelector.bind(document);
+						let dataJson = {};
 
-					let dataJson = {};
+						try {
+							dataJson.name = name;
+							dataJson.symbol = symbol;
+							dataJson.reference = reference;
+							dataJson.ceil = ceil;
+							dataJson.floor = floor;
+							dataJson.currentPrice = currentPrice;
+							dataJson.high = high;
+							dataJson.low = low;
+							dataJson.change = change;
+							dataJson.changePercent = changePercent;
+							dataJson.openPrice =
+								document.getElementById('openprice')?.innerText;
+							dataJson.turnOver = turnOver;
+							dataJson.marketcap = $(
+								'.stock-price-info :nth-child(2) :nth-child(5) b'
+							)?.innerText;
+							dataJson.overBought = $(
+								'.stock-price-info :nth-child(3) :nth-child(1) b'
+							)?.innerText;
+							dataJson.overSold = $(
+								'.stock-price-info :nth-child(3) :nth-child(2) b'
+							)?.innerText;
+							dataJson.high52Week = $(
+								'.stock-price-info :nth-child(3) :nth-child(3) b'
+							)?.innerText;
+							dataJson.low52Week = $(
+								'.stock-price-info :nth-child(3) :nth-child(4) b'
+							)?.innerText;
+							dataJson.turnOver52WeekAverage = $(
+								'.stock-price-info :nth-child(3) :nth-child(5) b'
+							)?.innerText;
+							dataJson.foreignBuy = $(
+								'.stock-price-info :nth-child(4) :nth-child(1) b'
+							)?.innerText;
+							dataJson.ownedRatio = $(
+								'.stock-price-info :nth-child(4) :nth-child(2) b'
+							)?.innerText;
+							dataJson.dividendCast = $(
+								'.stock-price-info :nth-child(4) :nth-child(3) b'
+							)?.innerText;
+							dataJson.dividendYield = $(
+								'.stock-price-info :nth-child(4) :nth-child(4) b'
+							)?.innerText;
+							dataJson.beta = $(
+								'.stock-price-info :nth-child(4) :nth-child(5) b'
+							)?.innerText;
+							dataJson.eps = $(
+								'.stock-price-info :nth-child(5) :nth-child(1) b'
+							)?.innerText;
+							dataJson.pe = $(
+								'.stock-price-info :nth-child(5) :nth-child(2) b'
+							)?.innerText;
+							dataJson.fpe = $(
+								'.stock-price-info :nth-child(5) :nth-child(3) b'
+							)?.innerText;
+							dataJson.bvps = $(
+								'.stock-price-info :nth-child(5) :nth-child(4) b'
+							)?.innerText;
+							dataJson.pb = $(
+								'.stock-price-info :nth-child(5) :nth-child(5) b'
+							)?.innerText;
 
-					try {
-						dataJson.name = name;
-						dataJson.symbol = symbol;
-						dataJson.reference = reference;
-						dataJson.ceil = ceil;
-						dataJson.floor = floor;
-						dataJson.currentPrice = currentPrice;
-						dataJson.high = high;
-						dataJson.low = low;
-						dataJson.change = change;
-						dataJson.changePercent = changePercent;
-						dataJson.openPrice =
-							document.getElementById('openprice')?.innerText;
-						dataJson.turnOver = turnOver;
-						dataJson.marketcap = $(
-							'.stock-price-info :nth-child(2) :nth-child(5) b'
-						)?.innerText;
-						dataJson.overBought = $(
-							'.stock-price-info :nth-child(3) :nth-child(1) b'
-						)?.innerText;
-						dataJson.overSold = $(
-							'.stock-price-info :nth-child(3) :nth-child(2) b'
-						)?.innerText;
-						dataJson.high52Week = $(
-							'.stock-price-info :nth-child(3) :nth-child(3) b'
-						)?.innerText;
-						dataJson.low52Week = $(
-							'.stock-price-info :nth-child(3) :nth-child(4) b'
-						)?.innerText;
-						dataJson.turnOver52WeekAverage = $(
-							'.stock-price-info :nth-child(3) :nth-child(5) b'
-						)?.innerText;
-						dataJson.foreignBuy = $(
-							'.stock-price-info :nth-child(4) :nth-child(1) b'
-						)?.innerText;
-						dataJson.ownedRatio = $(
-							'.stock-price-info :nth-child(4) :nth-child(2) b'
-						)?.innerText;
-						dataJson.dividendCast = $(
-							'.stock-price-info :nth-child(4) :nth-child(3) b'
-						)?.innerText;
-						dataJson.dividendYield = $(
-							'.stock-price-info :nth-child(4) :nth-child(4) b'
-						)?.innerText;
-						dataJson.beta = $(
-							'.stock-price-info :nth-child(4) :nth-child(5) b'
-						)?.innerText;
-						dataJson.eps = $(
-							'.stock-price-info :nth-child(5) :nth-child(1) b'
-						)?.innerText;
-						dataJson.pe = $(
-							'.stock-price-info :nth-child(5) :nth-child(2) b'
-						)?.innerText;
-						dataJson.fpe = $(
-							'.stock-price-info :nth-child(5) :nth-child(3) b'
-						)?.innerText;
-						dataJson.bvps = $(
-							'.stock-price-info :nth-child(5) :nth-child(4) b'
-						)?.innerText;
-						dataJson.pb = $(
-							'.stock-price-info :nth-child(5) :nth-child(5) b'
-						)?.innerText;
-
-						dataJson.currentTimestamp = Math.floor(
-							Date.now() / 1000
-						);
-					} catch (err) {
-						console.log('crawldetail upcom' + err);
-					}
-					return dataJson;
-				},
-				name,
-				symbol,
-				reference,
-				ceil,
-				floor,
-				currentPrice,
-				high,
-				low,
-				change,
-				changePercent,
-				turnOver
-			);
-
-			// console.log(upcomDetailData);
-
-			await UpcomDetail.findOneAndUpdate(
-				{ symbol: upcomDetailData.symbol },
-				{
-					name: upcomDetailData.name,
-					symbol: upcomDetailData.symbol,
-					reference: upcomDetailData.reference,
-					ceil: upcomDetailData.ceil,
-					floor: upcomDetailData.floor,
-					currentPrice: upcomDetailData.currentPrice,
-					change: upcomDetailData.change,
-					changePercent: upcomDetailData.changePercent,
-					openPrice: upcomDetailData.openPrice,
-					high: upcomDetailData.high,
-					low: upcomDetailData.low,
-					turnOver: upcomDetailData.turnOver,
-
-					marketcap: upcomDetailData.marketcap,
-					overBought: upcomDetailData.overBought,
-					overSold: upcomDetailData.overSold,
-					high52Week: upcomDetailData.high52Week,
-					low52Week: upcomDetailData.low52Week,
-					turnOver52WeekAverage:
-						upcomDetailData.turnOver52WeekAverage,
-					foreignBuy: upcomDetailData.foreignBuy,
-					ownedRatio: upcomDetailData.ownedRatio,
-					dividendCast: upcomDetailData.dividendCast, //cổ tức tiền mặt
-					dividendYield: upcomDetailData.dividendYield, // tỷ lệ cổ tức
-					beta: upcomDetailData.beta,
-					eps: upcomDetailData.eps,
-					pe: upcomDetailData.pe,
-					fpe: upcomDetailData.fpe, // F P/e
-					bvps: upcomDetailData.bvps, //book value per share
-					pb: upcomDetailData.pb,
-					companyInfo: upcomDetailData.symbol,
-				},
-				{ upsert: true }
-			)
-				// .then((doc) => console.log(doc?.symbol))
-				.catch((err) => console.log('crawldetail upcom' + err));
-
-			await UpcomChart.findOneAndUpdate(
-				{ symbol: upcomDetailData.symbol },
-				{
-					symbol: upcomDetailData.symbol,
-					$push: {
-						t: upcomDetailData.currentTimestamp,
-						price: upcomDetailData.currentPrice,
+							dataJson.currentTimestamp = Math.floor(
+								Date.now() / 1000
+							);
+						} catch (err) {
+							console.log('crawldetail upcom' + err);
+						}
+						return dataJson;
 					},
-				},
-				{ upsert: true }
-			)
-				// .then((doc) => console.log(doc?.symbol))
-				.catch((err) => console.log('crawldetail upcom' + err));
-			// return upcomDetailData
+					stock.name,
+					stock.symbol,
+					stock.reference,
+					stock.ceil,
+					stock.floor,
+					stock.currentPrice,
+					stock.high,
+					stock.low,
+					stock.change,
+					stock.changePercent,
+					stock.turnOver
+				);
 
-			await browser.close();
-		} catch (error) {
-			console.log('crawldetail upcom' + error);
-		}
-		// })
+				await page.close();
+
+				console.log(upcomDetailData.symbol + ' Upcom');
+				// console.log(upcomDetailData);
+
+				await UpcomDetail.findOneAndUpdate(
+					{ symbol: upcomDetailData.symbol },
+					{
+						name: upcomDetailData.name,
+						symbol: upcomDetailData.symbol,
+						reference: upcomDetailData.reference,
+						ceil: upcomDetailData.ceil,
+						floor: upcomDetailData.floor,
+						currentPrice: upcomDetailData.currentPrice,
+						change: upcomDetailData.change,
+						changePercent: upcomDetailData.changePercent,
+						openPrice: upcomDetailData.openPrice,
+						high: upcomDetailData.high,
+						low: upcomDetailData.low,
+						turnOver: upcomDetailData.turnOver,
+
+						marketcap: upcomDetailData.marketcap,
+						overBought: upcomDetailData.overBought,
+						overSold: upcomDetailData.overSold,
+						high52Week: upcomDetailData.high52Week,
+						low52Week: upcomDetailData.low52Week,
+						turnOver52WeekAverage:
+							upcomDetailData.turnOver52WeekAverage,
+						foreignBuy: upcomDetailData.foreignBuy,
+						ownedRatio: upcomDetailData.ownedRatio,
+						dividendCast: upcomDetailData.dividendCast, //cổ tức tiền mặt
+						dividendYield: upcomDetailData.dividendYield, // tỷ lệ cổ tức
+						beta: upcomDetailData.beta,
+						eps: upcomDetailData.eps,
+						pe: upcomDetailData.pe,
+						fpe: upcomDetailData.fpe, // F P/e
+						bvps: upcomDetailData.bvps, //book value per share
+						pb: upcomDetailData.pb,
+						companyInfo: upcomDetailData.symbol,
+					},
+					{ upsert: true }
+				)
+					// .then((doc) => console.log(doc?.symbol))
+					.catch((err) => console.log('crawldetail upcom' + err));
+
+				await UpcomChart.findOneAndUpdate(
+					{ symbol: upcomDetailData.symbol },
+					{
+						symbol: upcomDetailData.symbol,
+						$push: {
+							t: upcomDetailData.currentTimestamp,
+							price: upcomDetailData.currentPrice,
+						},
+					},
+					{ upsert: true }
+				)
+					// .then((doc) => console.log(doc?.symbol))
+					.catch((err) => console.log('crawldetail upcom' + err));
+				// return upcomDetailData
+			}, 7000 * index);
+		});
+		await delay(hoseAll.length * 7000 + 40000);
+		console.log('end HOSE.............');
+
+		await browser.close();
+	} catch (error) {
+		console.log('crawldetail upcom' + error);
 	}
-);
+	// })
+});
 
 const crawlDetailAllInvesting = asyncHandler(async (id, name, hrefDetail) => {
 	try {
