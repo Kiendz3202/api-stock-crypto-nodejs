@@ -44,9 +44,9 @@ const stockRunAll = async () => {
 	await delay(10000);
 	crawlHose();
 	await delay(20000);
-	crawlUpcom();
-	await delay(20000);
-	crawlAllInvesting();
+	// crawlUpcom();
+	// await delay(20000);
+	// crawlAllInvesting();
 	//--------------------------------------
 
 	// const crawlAllDetailAllInvesting = asyncHandler(async () => {

@@ -30,6 +30,15 @@ const Upcom = require('../../model/stock/stockList/upcomModel');
 
 //----------------------main body-------------------------------------
 
+// const page = await browser.newPage();
+// 				await page.goto(
+// 					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
+// 					{ waitUntil: 'load' }
+// 				);
+// 				await page.waitForTimeout(2000);
+
+// 				let hnx30DetailData = await page.evaluate(
+
 const crawlDetailHnx30 = async () => {
 	try {
 		const browser = await puppeteer.launch({
@@ -37,7 +46,6 @@ const crawlDetailHnx30 = async () => {
 			args: [
 				'--no-sandbox',
 				'--disabled-setupid-sandbox',
-				'--disable-dev-shm-usage',
 				'--disable-accelerated-2d-canvas',
 			],
 		});
@@ -49,10 +57,10 @@ const crawlDetailHnx30 = async () => {
 			setTimeout(async () => {
 				const page = await browser.newPage();
 				await page.goto(
-					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
-					{ waitUntil: 'load' }
+					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`
 				);
-				await page.waitForTimeout(2000);
+				// await page.waitForTimeout(2000);
+				await page.waitForSelector('.stock-price-info');
 
 				let hnx30DetailData = await page.evaluate(
 					async (
@@ -233,7 +241,6 @@ const crawlDetailHnx = asyncHandler(async () => {
 			args: [
 				'--no-sandbox',
 				'--disabled-setupid-sandbox',
-				'--disable-dev-shm-usage',
 				'--disable-accelerated-2d-canvas',
 			],
 		});
@@ -251,7 +258,8 @@ const crawlDetailHnx = asyncHandler(async () => {
 					}
 				);
 
-				await page.waitForTimeout(2000);
+				// await page.waitForTimeout(2000);
+				await page.waitForSelector('.stock-price-info');
 
 				let hnxDetailData = await page.evaluate(
 					async (
@@ -434,7 +442,6 @@ const crawlDetailVn30 = asyncHandler(async () => {
 			args: [
 				'--no-sandbox',
 				'--disabled-setupid-sandbox',
-				'--disable-dev-shm-usage',
 				'--disable-accelerated-2d-canvas',
 			],
 		});
@@ -446,11 +453,11 @@ const crawlDetailVn30 = asyncHandler(async () => {
 			setTimeout(async () => {
 				const page = await browser.newPage();
 				let status = await page.goto(
-					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
-					{ waitUntil: 'load' }
+					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`
 				);
 
-				await page.waitForTimeout(2000);
+				// await page.waitForTimeout(2000);
+				await page.waitForSelector('.stock-price-info');
 
 				let vn30DetailData = await page.evaluate(
 					async (
@@ -632,7 +639,6 @@ const crawlDetailHose = asyncHandler(async () => {
 			args: [
 				'--no-sandbox',
 				'--disabled-setupid-sandbox',
-				'--disable-dev-shm-usage',
 				'--disable-accelerated-2d-canvas',
 			],
 		});
@@ -644,11 +650,11 @@ const crawlDetailHose = asyncHandler(async () => {
 			setTimeout(async () => {
 				const page = await browser.newPage();
 				let status = await page.goto(
-					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
-					{ waitUntil: 'load' }
+					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`
 				);
 
-				await page.waitForTimeout(2000);
+				// await page.waitForTimeout(2000);
+				await page.waitForSelector('.stock-price-info');
 
 				let hoseDetailData = await page.evaluate(
 					async (
@@ -831,7 +837,6 @@ const crawlDetailUpcom = asyncHandler(async () => {
 			args: [
 				'--no-sandbox',
 				'--disabled-setupid-sandbox',
-				'--disable-dev-shm-usage',
 				'--disable-accelerated-2d-canvas',
 			],
 		});
@@ -843,11 +848,11 @@ const crawlDetailUpcom = asyncHandler(async () => {
 			setTimeout(async () => {
 				const page = await browser.newPage();
 				await page.goto(
-					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
-					{ waitUntil: 'load' }
+					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`
 				);
 
-				await page.waitForTimeout(2000);
+				// await page.waitForTimeout(2000);
+				await page.waitForSelector('.stock-price-info');
 
 				let upcomDetailData = await page.evaluate(
 					async (

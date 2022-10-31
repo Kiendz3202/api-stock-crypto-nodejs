@@ -1,6 +1,7 @@
 //-----import external libraries---
 const express = require('express');
 const createError = require('http-errors');
+const axios = require('axios');
 const cors = require('cors');
 const env = require('dotenv');
 const helmet = require('helmet');
@@ -61,6 +62,56 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
 app.use(helmet());
+
+// app.use('/', async (req, res) => {
+// 	const urlGoldSjc = 'https://webgia.com/gia-vang/sjc/';
+// 	const crawlGold = async () => {
+// 		try {
+// 			const response = await axios.get(urlGoldSjc);
+// 			if (!response.ok) {
+// 				throw new Error('fetch gold sjc failed');
+// 				return;
+// 			}
+// 			const html = response.text();
+// 			//initialize the DOM parser
+// 			const parser = new DOMParser();
+
+// 			//Parse the text
+// 			const doc = parser.parseFromString(html, 'text/html');
+// 			console.log(doc);
+// 		} catch (error) {
+// 			console.log(error);
+// 		}
+// 	};
+// 	await crawlGold();
+// 	res.send('hello');
+// });
+const urlGoldSjc = 'https://webgia.com/gia-vang/sjc/';
+const crawlGold = async () => {
+	try {
+		const response = await axios({
+			method: 'get', //you can set what request you want to be
+			url: urlGoldSjc,
+			headers: {
+				'Content-Type': 'text/plain',
+			},
+		});
+		if (!response.ok) {
+			throw new Error('fetch gold sjc failed');
+			return;
+		}
+		const html = response.text();
+		//initialize the DOM parser
+		const parser = new DOMParser();
+
+		//Parse the text
+		const doc = parser.parseFromString(html, 'text/html');
+		console.log(doc);
+	} catch (error) {
+		console.log(error);
+	}
+};
+// crawlGold();
 
 //------routes cua coin------
 app.use('/', coinRoutes);
