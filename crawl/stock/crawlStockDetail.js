@@ -57,10 +57,10 @@ const crawlDetailHnx30 = async () => {
 			setTimeout(async () => {
 				const page = await browser.newPage();
 				await page.goto(
-					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`
+					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
+					{ waitUntil: 'load' }
 				);
-				// await page.waitForTimeout(2000);
-				await page.waitForSelector('.stock-price-info');
+				await page.waitForTimeout(2000);
 
 				let hnx30DetailData = await page.evaluate(
 					async (
@@ -253,13 +253,9 @@ const crawlDetailHnx = asyncHandler(async () => {
 				const page = await browser.newPage();
 				await page.goto(
 					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
-					{
-						waitUntil: 'load',
-					}
+					{ waitUntil: 'load' }
 				);
-
-				// await page.waitForTimeout(2000);
-				await page.waitForSelector('.stock-price-info');
+				await page.waitForTimeout(2000);
 
 				let hnxDetailData = await page.evaluate(
 					async (
@@ -452,12 +448,11 @@ const crawlDetailVn30 = asyncHandler(async () => {
 		vn30All.map(async (stock, index) => {
 			setTimeout(async () => {
 				const page = await browser.newPage();
-				let status = await page.goto(
-					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`
+				await page.goto(
+					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
+					{ waitUntil: 'load' }
 				);
-
-				// await page.waitForTimeout(2000);
-				await page.waitForSelector('.stock-price-info');
+				await page.waitForTimeout(2000);
 
 				let vn30DetailData = await page.evaluate(
 					async (
@@ -649,12 +644,11 @@ const crawlDetailHose = asyncHandler(async () => {
 		hoseAll.map(async (stock, index) => {
 			setTimeout(async () => {
 				const page = await browser.newPage();
-				let status = await page.goto(
-					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`
+				await page.goto(
+					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
+					{ waitUntil: 'load' }
 				);
-
-				// await page.waitForTimeout(2000);
-				await page.waitForSelector('.stock-price-info');
+				await page.waitForTimeout(2000);
 
 				let hoseDetailData = await page.evaluate(
 					async (
@@ -848,11 +842,10 @@ const crawlDetailUpcom = asyncHandler(async () => {
 			setTimeout(async () => {
 				const page = await browser.newPage();
 				await page.goto(
-					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`
+					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
+					{ waitUntil: 'load' }
 				);
-
-				// await page.waitForTimeout(2000);
-				await page.waitForSelector('.stock-price-info');
+				await page.waitForTimeout(2000);
 
 				let upcomDetailData = await page.evaluate(
 					async (
