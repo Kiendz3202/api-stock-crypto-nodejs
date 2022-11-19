@@ -47,7 +47,7 @@ const {
 // myEmitter.setMaxListeners(0);
 
 //--------------------------------------------Main Body------------------------------------------------------------------
-// runCrawlCoin();
+runCrawlCoin();
 // runCrawlGoldPetrolExchangerateInterestRate();
 // runCrawlStockList();
 // runCrawlStock();
@@ -65,53 +65,18 @@ app.use(helmet());
 
 // app.use('/', async (req, res) => {
 // 	const urlGoldSjc = 'https://webgia.com/gia-vang/sjc/';
-// 	const crawlGold = async () => {
-// 		try {
-// 			const response = await axios.get(urlGoldSjc);
-// 			if (!response.ok) {
-// 				throw new Error('fetch gold sjc failed');
-// 				return;
-// 			}
-// 			const html = response.text();
-// 			//initialize the DOM parser
-// 			const parser = new DOMParser();
+// 	const result = await axios(urlGoldSjc)
+// 		.then((res) => JSON.stringify(res.data))
+// 		.catch((err) => console.log(err));
+// 	// const result = await res.text();
+// 	const goldDiv = document.createElement('div');
+// 	goldDiv.innerHTML = result;
 
-// 			//Parse the text
-// 			const doc = parser.parseFromString(html, 'text/html');
-// 			console.log(doc);
-// 		} catch (error) {
-// 			console.log(error);
-// 		}
-// 	};
-// 	await crawlGold();
-// 	res.send('hello');
+// 	const sjc1l10lBuy = goldDiv.querySelector(
+// 		'#price1 table tbody :nth-child(4) :nth-child(2)'
+// 	)?.innerText;
+// 	res.send(sjc1l10lBuy);
 // });
-const urlGoldSjc = 'https://webgia.com/gia-vang/sjc/';
-const crawlGold = async () => {
-	try {
-		const response = await axios({
-			method: 'get', //you can set what request you want to be
-			url: urlGoldSjc,
-			headers: {
-				'Content-Type': 'text/plain',
-			},
-		});
-		if (!response.ok) {
-			throw new Error('fetch gold sjc failed');
-			return;
-		}
-		const html = response.text();
-		//initialize the DOM parser
-		const parser = new DOMParser();
-
-		//Parse the text
-		const doc = parser.parseFromString(html, 'text/html');
-		console.log(doc);
-	} catch (error) {
-		console.log(error);
-	}
-};
-// crawlGold();
 
 //------routes cua coin------
 app.use('/', coinRoutes);

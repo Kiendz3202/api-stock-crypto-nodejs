@@ -13,7 +13,7 @@ const crawlCoin = asyncHandler(async (page) => {
 		.then((response) => {
 			response.data.map((coin) => {
 				console.log(coin.symbol);
-				coin.currentTimestamp = Math.floor(Date.now() / 1000);
+				coin.currentTimestamp = Math.floor(Date.now());
 
 				Coin.findOneAndUpdate(
 					{ name: coin?.name },
@@ -64,8 +64,8 @@ const crawlCoin = asyncHandler(async (page) => {
 							t: coin.currentTimestamp,
 							price: coin.current_price,
 						},
-					},
-					{ upsert: true }
+					}
+					// { upsert: true }
 				)
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => console.log(err));

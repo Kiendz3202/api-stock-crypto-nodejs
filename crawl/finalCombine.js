@@ -1,6 +1,10 @@
 const cron = require('node-cron');
 
-const { getallCoinsChart, coinRunAll } = require('./coin/index');
+const {
+	getallCoinsChart,
+	coinRunAll,
+	updateNewPrice,
+} = require('./coin/index');
 const { stockRunAll, stockRunList } = require('./stock/index');
 const goldRunAll = require('./gold/index');
 const petrolRunAll = require('./petrol/index');
@@ -10,9 +14,13 @@ const interestRateRunAll = require('./interestRate/allBanks/index');
 const { delay } = require('../utils/promise/delayTime/delay');
 
 const runCrawlCoin = async () => {
-	cron.schedule('*/3 * * * *', async () => {
-		coinRunAll();
+	// cron.schedule('1 tuan chay lai 1 lan', async () => {
+	//function delete all 800 coin
+	coinRunAll();
+	cron.schedule('*/2 * * * *', async () => {
+		updateNewPrice();
 	});
+	// });
 };
 
 const runCrawlStock = async () => {
