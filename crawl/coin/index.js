@@ -15,6 +15,7 @@ const { delay } = require('../../utils/promise/delayTime/delay');
 const Coin = require('../../model/coin/coinModel');
 const CoinChart = require('../../model/coin/chartCoin/chartCoinModel');
 const { default: axios } = require('axios');
+const asyncHandler = require('express-async-handler');
 
 const getallCoinsChart = async () => {
 	const coinList = await Coin.find({}).sort({ rank: 1 }).skip(0).limit(100);
@@ -30,7 +31,7 @@ const getallCoinsChart = async () => {
 	});
 };
 
-const coinRunAll = async () => {
+const coinRunAll = asyncHandler(async () => {
 	//crawl 200 coins * 4 pages = 800 coins
 	const arr = [1, 2, 3, 4];
 	arr.forEach(async (page, index) => {
@@ -128,9 +129,9 @@ const coinRunAll = async () => {
 			}, 2000 * index);
 		});
 	}
-};
+});
 
-const updateNewPrice = async () => {
+const updateNewPrice = asyncHandler(async () => {
 	//crawl 200 coins * 6 pages = 1200 coins
 	const arr = [1, 2, 3, 4, 5, 6];
 	arr.forEach(async (page, index) => {
@@ -203,7 +204,7 @@ const updateNewPrice = async () => {
 			})
 			.catch((err) => console.log(err));
 	});
-};
+});
 
 // const UpdateDataChart = async () => {
 // 	//crawl 200 coins * 4 pages = 800 coins
