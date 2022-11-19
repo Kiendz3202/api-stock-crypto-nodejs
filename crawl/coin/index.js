@@ -34,9 +34,9 @@ const getallCoinsChart = async () => {
 const coinRunAll = asyncHandler(async () => {
 	//crawl 200 coins * 4 pages = 800 coins
 	const arr = [1, 2, 3, 4];
-	arr.forEach(async (page, index) => {
-		setTimeout(() => {
-			try {
+	arr.map(async (page, index) => {
+		try {
+			setTimeout(() => {
 				axios
 					.get(
 						`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=200&page=${page}&sparkline=false&price_change_percentage=1h%2C24h%2C7d%2C14d%2C30d%2C200d%2C1y`
@@ -93,10 +93,10 @@ const coinRunAll = asyncHandler(async () => {
 								.catch((err) => console.log(err));
 						});
 					});
-			} catch (error) {
-				console.log(error);
-			}
-		}, 1000 * index);
+			}, 1000 * index);
+		} catch (error) {
+			console.log(error);
+		}
 	});
 	await delay(8000);
 
@@ -106,8 +106,8 @@ const coinRunAll = asyncHandler(async () => {
 		const arrPrice = [];
 		const arrTime = [];
 		coinInfos.map(async (coin, index) => {
-			setTimeout(() => {
-				try {
+			try {
+				setTimeout(() => {
 					axios
 						.get(
 							`https://api.coingecko.com/api/v3/coins/${coin.nameId}/market_chart?vs_currency=usd&days=90`
@@ -131,10 +131,10 @@ const coinRunAll = asyncHandler(async () => {
 								// .then((doc) => console.log(doc?.symbol))
 								.catch((err) => console.log(err));
 						});
-				} catch (error) {
-					console.log(error);
-				}
-			}, 2000 * index);
+				}, 2000 * index);
+			} catch (error) {
+				console.log(error);
+			}
 		});
 	}
 });
