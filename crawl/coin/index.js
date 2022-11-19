@@ -88,9 +88,9 @@ const coinRunAll = asyncHandler(async () => {
 									maxSupply: coin?.max_supply || '',
 								},
 								{ upsert: true }
-							)
-								// .then((doc) => console.log(doc?.name))
-								.catch((err) => console.log(err));
+							);
+							// .then((doc) => console.log(doc?.name))
+							// .catch((err) => console.log(err));
 						});
 					});
 			} catch (error) {
@@ -127,9 +127,9 @@ const coinRunAll = asyncHandler(async () => {
 									price: arrPrice,
 								},
 								{ upsert: true }
-							)
-								// .then((doc) => console.log(doc?.symbol))
-								.catch((err) => console.log(err));
+							);
+							// .then((doc) => console.log(doc?.symbol))
+							// .catch((err) => console.log(err));
 						});
 				} catch (error) {
 					console.log(error);
@@ -194,9 +194,9 @@ const updateNewPrice = asyncHandler(async () => {
 								maxSupply: coin?.max_supply || '',
 							}
 							// { upsert: true }
-						)
-							// .then((doc) => console.log(doc?.name))
-							.catch((err) => console.log(err));
+						);
+						// .then((doc) => console.log(doc?.name))
+						// .catch((err) => console.log(err));
 
 						CoinChart.findOneAndUpdate(
 							{ symbol: coin.symbol },
@@ -207,9 +207,9 @@ const updateNewPrice = asyncHandler(async () => {
 								},
 							}
 							// { upsert: true }
-						)
-							// .then((doc) => console.log(doc?.symbol))
-							.catch((err) => console.log(err));
+						);
+						// .then((doc) => console.log(doc?.symbol))
+						// .catch((err) => console.log(err));
 					});
 				});
 		} catch (error) {
