@@ -17,9 +17,9 @@ const runCrawlCoin = async () => {
 	// cron.schedule('1 tuan chay lai 1 lan', async () => {
 	//function delete all 800 coin
 	coinRunAll();
-	cron.schedule('*/2 * * * *', async () => {
-		updateNewPrice();
-	});
+	// cron.schedule('*/2 * * * *', async () => {
+	// 	updateNewPrice();
+	// });
 	// });
 };
 
