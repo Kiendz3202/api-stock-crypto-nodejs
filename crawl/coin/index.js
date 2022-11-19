@@ -42,7 +42,7 @@ const coinRunAll = asyncHandler(async () => {
 						`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=200&page=${page}&sparkline=false&price_change_percentage=1h%2C24h%2C7d%2C14d%2C30d%2C200d%2C1y`
 					)
 					.then((response) => {
-						response.data.map((coin) => {
+						response.data.map(async (coin) => {
 							Coin.findOneAndUpdate(
 								{ symbol: coin.symbol },
 								{
@@ -89,7 +89,7 @@ const coinRunAll = asyncHandler(async () => {
 								},
 								{ upsert: true }
 							)
-								.then((doc) => console.log(doc?.name))
+								// .then((doc) => console.log(doc?.name))
 								.catch((err) => console.log(err));
 						});
 					});
@@ -114,7 +114,7 @@ const coinRunAll = asyncHandler(async () => {
 						)
 						.then((response) => {
 							const dataChart = response.data.prices;
-							dataChart.map((item) => {
+							dataChart.map(async (item) => {
 								arrTime.push(item[0]);
 								arrPrice.push(item[1]);
 							});
@@ -128,7 +128,7 @@ const coinRunAll = asyncHandler(async () => {
 								},
 								{ upsert: true }
 							)
-								.then((doc) => console.log(doc?.symbol))
+								// .then((doc) => console.log(doc?.symbol))
 								.catch((err) => console.log(err));
 						});
 				} catch (error) {
@@ -195,7 +195,7 @@ const updateNewPrice = asyncHandler(async () => {
 							}
 							// { upsert: true }
 						)
-							.then((doc) => console.log(doc?.name))
+							// .then((doc) => console.log(doc?.name))
 							.catch((err) => console.log(err));
 
 						CoinChart.findOneAndUpdate(
@@ -208,7 +208,7 @@ const updateNewPrice = asyncHandler(async () => {
 							}
 							// { upsert: true }
 						)
-							.then((doc) => console.log(doc?.symbol))
+							// .then((doc) => console.log(doc?.symbol))
 							.catch((err) => console.log(err));
 					});
 				});
