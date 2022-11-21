@@ -109,7 +109,7 @@ const coinRunAll = asyncHandler(async () => {
 				setTimeout(() => {
 					axios
 						.get(
-							`https://api.coingecko.com/api/v3/coins/${coin.nameId}/market_chart?vs_currency=usd&days=90`
+							`https://api.coingecko.com/api/v3/coins/${coin.nameId}/market_chart?vs_currency=usd&days=1`
 						)
 						.then((response) => {
 							const dataChart = response.data.prices;
