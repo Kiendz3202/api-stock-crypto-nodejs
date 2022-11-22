@@ -47,7 +47,7 @@ const {
 // myEmitter.setMaxListeners(0);
 
 //--------------------------------------------Main Body------------------------------------------------------------------
-runCrawlCoin();
+// runCrawlCoin();
 // runCrawlGoldPetrolExchangerateInterestRate();
 // runCrawlStockList();
 // runCrawlStock();
@@ -63,20 +63,24 @@ app.use(express.json());
 app.use(cors());
 app.use(helmet());
 
-// app.use('/', async (req, res) => {
-// 	const urlGoldSjc = 'https://webgia.com/gia-vang/sjc/';
-// 	const result = await axios(urlGoldSjc)
-// 		.then((res) => JSON.stringify(res.data))
-// 		.catch((err) => console.log(err));
-// 	// const result = await res.text();
-// 	const goldDiv = document.createElement('div');
-// 	goldDiv.innerHTML = result;
+const jsdom = require('jsdom');
+const { JSDOM } = jsdom;
+// const querySelectorAll = require('query-selector');
+const cheerio = require('cheerio');
+// const request = require('request-promise');
 
-// 	const sjc1l10lBuy = goldDiv.querySelector(
-// 		'#price1 table tbody :nth-child(4) :nth-child(2)'
-// 	)?.innerText;
-// 	res.send(sjc1l10lBuy);
-// });
+app.use('/', async (req, res) => {
+	const urlGoldSjc = 'https://webgia.com/gia-vang/sjc';
+	const result = await axios(urlGoldSjc)
+		.then((res) => res.data)
+		.catch((err) => console.log(err));
+
+	const $ = cheerio.load(result);
+	console.log($('#main table tbody :nth-child(1) :nth-child(3)').text()); // chỉnh từ web chính sjc sang web giá, web chính ko trả về html
+	// console.log($('#price1 table tbody :nth-child(4) :nth-child(2)').text());
+
+	res.send($.root().html());
+});
 
 //------routes cua coin------
 app.use('/', coinRoutes);
