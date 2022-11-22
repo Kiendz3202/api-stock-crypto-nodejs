@@ -130,7 +130,7 @@ const coinRunAll = asyncHandler(async () => {
 								// .then((doc) => console.log(doc?.symbol))
 								.catch((err) => console.log(err));
 						});
-				}, 6000 * index);
+				}, 8000 * index);
 			} catch (error) {
 				console.log(error);
 			}
