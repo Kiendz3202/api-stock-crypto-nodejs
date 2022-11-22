@@ -47,7 +47,7 @@ const {
 // myEmitter.setMaxListeners(0);
 
 //--------------------------------------------Main Body------------------------------------------------------------------
-// runCrawlCoin();
+runCrawlCoin();
 // runCrawlGoldPetrolExchangerateInterestRate();
 // runCrawlStockList();
 // runCrawlStock();
