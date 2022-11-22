@@ -109,7 +109,7 @@ const coinRunAll = asyncHandler(async () => {
 				setTimeout(() => {
 					axios
 						.get(
-							`https://api.coingecko.com/api/v3/coins/${coin.nameId}/market_chart?vs_currency=usd&days=90`
+							`https://api.coingecko.com/api/v3/coins/${coin.nameId}/market_chart?vs_currency=usd&days=1`
 						)
 						.then((response) => {
 							const dataChart = response.data.prices;
@@ -149,6 +149,9 @@ const updateNewPrice = asyncHandler(async () => {
 				)
 				.then((response) => {
 					response.data.map(async (coin) => {
+						const isExistInCoinChart = await CoinChart.find({
+							symbol: coin.symbol,
+						});
 						Coin.findOneAndUpdate(
 							{ symbol: coin?.symbol },
 							{
@@ -197,18 +200,20 @@ const updateNewPrice = asyncHandler(async () => {
 							// .then((doc) => console.log(doc?.name))
 							.catch((err) => console.log(err));
 
-						CoinChart.findOneAndUpdate(
-							{ symbol: coin.symbol },
-							{
-								$push: {
-									t: Math.floor(Date.now()),
-									price: coin.current_price,
-								},
-							}
-							// { upsert: true }
-						)
-							// .then((doc) => console.log(doc?.symbol))
-							.catch((err) => console.log(err));
+						if (isExistInCoinChart) {
+							CoinChart.findOneAndUpdate(
+								{ symbol: coin.symbol },
+								{
+									$push: {
+										t: Math.floor(Date.now()),
+										price: coin.current_price,
+									},
+								}
+								// { upsert: true }
+							)
+								// .then((doc) => console.log(doc?.symbol))
+								.catch((err) => console.log(err));
+						}
 					});
 				});
 		} catch (error) {
