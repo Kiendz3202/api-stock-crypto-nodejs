@@ -101,19 +101,21 @@ const coinRunAll = asyncHandler(async () => {
 
 	const coinChartIsEmty = (await CoinChart.count()) ? false : true;
 	if (coinChartIsEmty) {
-		const coinInfos = await Coin.find();
-		const arrPrice = [];
-		const arrTime = [];
+		const coinInfos = await Coin.find().sort({ rank: 1 });
+
 		coinInfos.map(async (coin, index) => {
 			try {
 				setTimeout(() => {
 					axios
 						.get(
-							`https://api.coingecko.com/api/v3/coins/${coin.nameId}/market_chart?vs_currency=usd&days=1`
+							`https://api.coingecko.com/api/v3/coins/${coin.nameId}/market_chart?vs_currency=usd&days=90`
 						)
 						.then((response) => {
+							let arrPrice = [];
+							let arrTime = [];
+
 							const dataChart = response.data.prices;
-							dataChart.map(async (item) => {
+							dataChart.map((item) => {
 								arrTime.push(item[0]);
 								arrPrice.push(item[1]);
 							});
