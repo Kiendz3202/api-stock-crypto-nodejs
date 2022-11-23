@@ -128,6 +128,7 @@ const coinRunAll = asyncHandler(async () => {
 	});
 
 	if (coinChartIsEmty) {
+		console.log('start vcoinChartIsEmty');
 		currentCoin.map(async (coin, index) => {
 			try {
 				setTimeout(() => {
@@ -162,6 +163,7 @@ const coinRunAll = asyncHandler(async () => {
 				console.log(error);
 			}
 		});
+		console.log('end coinChartIsEmty');
 	} else {
 		const currentCoinChart = await CoinChart.find(
 			{},
