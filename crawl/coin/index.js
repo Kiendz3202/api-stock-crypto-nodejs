@@ -32,7 +32,7 @@ const getallCoinsChart = async () => {
 };
 
 const coinRunAll = asyncHandler(async () => {
-	await Coin.remove({});
+	await Coin.deleteMany({});
 	const initialCoinChart = await CoinChart.find({}, { symbol: 1, _id: 0 });
 
 	//crawl 200 coins * 4 pages = 800 coins
@@ -178,7 +178,7 @@ const coinRunAll = asyncHandler(async () => {
 				setTimeout(() => {
 					axios
 						.get(
-							`https://api.coingecko.com/api/v3/coins/${coin.nameId}/market_chart?vs_currency=usd&days=90`
+							`https://api.coingecko.com/api/v3/coins/${coin.nameId}/market_chart?vs_currency=usd&days=1`
 						)
 						.then((response) => {
 							let arrPrice = [];
