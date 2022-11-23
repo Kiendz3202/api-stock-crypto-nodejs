@@ -34,6 +34,7 @@ const getallCoinsChart = async () => {
 const coinRunAll = asyncHandler(async () => {
 	await Coin.deleteMany({});
 	const initialCoinChart = await CoinChart.find({}, { symbol: 1, _id: 0 });
+	const initialCoinChartSymbol = initialCoinChart.map((coin) => coin.symbol);
 
 	//crawl 200 coins * 4 pages = 800 coins
 	const arr = [1, 2, 3, 4];
@@ -111,8 +112,9 @@ const coinRunAll = asyncHandler(async () => {
 
 	if (initialCoinChart.length) {
 		const arrCoinNew = await Coin.find({}, { symbol: 1, _id: 0 });
-		const coinNeedRemove = initialCoinChart.filter((coin) =>
-			arrCoinNew.indexOf(coin) > -1 ? false : true
+		const arrCoinNewSymbol = arrCoinNew.map((coin) => coin.symbol);
+		const coinNeedRemove = arrCoinNewSymbol.filter((coin) =>
+			initialCoinChartSymbol.indexOf(coin) > -1 ? false : true
 		);
 		console.log('coin need remove');
 		coinNeedRemove.map((coin) => {
