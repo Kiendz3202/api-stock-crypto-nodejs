@@ -118,7 +118,7 @@ const coinRunAll = asyncHandler(async () => {
 		);
 		console.log('coin need remove');
 		coinNeedRemove.map((coin) => {
-			CoinChart.findOneAndDelete({ symbol: coin });
+			CoinChart.deleteOne({ symbol: coin });
 			console.log(coin);
 		});
 		console.log('end coin need remove');
