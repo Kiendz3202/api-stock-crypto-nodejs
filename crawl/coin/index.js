@@ -117,12 +117,9 @@ const coinRunAll = asyncHandler(async () => {
 			arrCoinNewSymbol.indexOf(coin) > -1 ? false : true
 		);
 		console.log('coin need remove');
-		console.log('--------');
-		console.log(coinNeedRemove);
-		console.log('--------');
 		coinNeedRemove.map((coin) => {
-			CoinChart.findOneAndDelete({ symbol: coin.symbol });
-			console.log(coin.symbol);
+			CoinChart.findOneAndDelete({ symbol: coin });
+			console.log(coin);
 		});
 		console.log('end coin need remove');
 	}
@@ -131,7 +128,10 @@ const coinRunAll = asyncHandler(async () => {
 	const currentCoin = await Coin.find({}).sort({
 		rank: 1,
 	});
-	const currentCoinSymbol = currentCoin.map((coin) => coin.symbol);
+	const currentCoinSymbol = currentCoin.map((coin) => ({
+		symbol: coin.symbol,
+		nameId: coin.nameId,
+	}));
 
 	if (coinChartIsEmty) {
 		console.log('start vcoinChartIsEmty');
@@ -173,15 +173,16 @@ const coinRunAll = asyncHandler(async () => {
 	} else {
 		const currentCoinChart = await CoinChart.find(
 			{},
-			{ symbol: 1, _id: 0 }
+			{ symbol: 1, nameId: 1, _id: 0 }
 		);
 		const currentSymbolCoinChart = currentCoinChart.map(
 			(coin) => coin.symbol
 		);
 		const coinChartNeedupdate = currentCoinSymbol.filter((coin) =>
-			currentSymbolCoinChart.indexOf(coin) > -1 ? false : true
+			currentSymbolCoinChart.indexOf(coin.symbol) > -1 ? false : true
 		);
 		console.log('coin need update');
+		// coinChartNeedupdate no là arr string symbol nên k dùng dc
 		coinChartNeedupdate.map(async (coin, index) => {
 			console.log(coin.symbol);
 			try {
