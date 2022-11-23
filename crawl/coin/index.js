@@ -128,6 +128,7 @@ const coinRunAll = asyncHandler(async () => {
 	const currentCoin = await Coin.find({}).sort({
 		rank: 1,
 	});
+	const currentCoinSymbol = currentCoin.map((coin) => coin.symbol);
 
 	if (coinChartIsEmty) {
 		console.log('start vcoinChartIsEmty');
@@ -174,8 +175,8 @@ const coinRunAll = asyncHandler(async () => {
 		const currentSymbolCoinChart = currentCoinChart.map(
 			(coin) => coin.symbol
 		);
-		const coinChartNeedupdate = currentCoin.filter((coin) =>
-			currentSymbolCoinChart.indexOf(coin.symbol) > -1 ? false : true
+		const coinChartNeedupdate = currentCoinSymbol.filter((coin) =>
+			currentSymbolCoinChart.indexOf(coin) > -1 ? false : true
 		);
 		console.log('coin need update');
 		coinChartNeedupdate.map(async (coin, index) => {
