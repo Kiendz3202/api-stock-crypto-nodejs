@@ -113,8 +113,8 @@ const coinRunAll = asyncHandler(async () => {
 	if (initialCoinChart.length) {
 		const arrCoinNew = await Coin.find({}, { symbol: 1, _id: 0 });
 		const arrCoinNewSymbol = arrCoinNew.map((coin) => coin.symbol);
-		const coinNeedRemove = arrCoinNewSymbol.filter((coin) =>
-			initialCoinChartSymbol.indexOf(coin) > -1 ? false : true
+		const coinNeedRemove = initialCoinChartSymbol.filter((coin) =>
+			arrCoinNewSymbol.indexOf(coin) > -1 ? false : true
 		);
 		console.log('coin need remove');
 		coinNeedRemove.map((coin) => {
