@@ -36,8 +36,8 @@ const coinRunAll = asyncHandler(async () => {
 	const initialCoinChart = await CoinChart.find({}, { symbol: 1, _id: 0 });
 
 	//crawl 200 coins * 4 pages = 800 coins
-	// const arr = [1, 2, 3, 4];
-	const arr = [1];
+	const arr = [1, 2, 3, 4];
+	// const arr = [1];
 	//coin new
 	// const arrCoinNew = [];
 	arr.map(async (page, index) => {
@@ -114,9 +114,12 @@ const coinRunAll = asyncHandler(async () => {
 		const coinNeedRemove = initialCoinChart.filter((coin) =>
 			arrCoinNew.indexOf(coin) > -1 ? false : true
 		);
+		console.log('coin need remove');
 		coinNeedRemove.map((coin) => {
 			CoinChart.findOneAndDelete({ symbol: coin.symbol });
+			console.log(coin.symbol);
 		});
+		console.log('end coin need remove');
 	}
 
 	const coinChartIsEmty = (await CoinChart.count()) ? false : true;
@@ -172,8 +175,9 @@ const coinRunAll = asyncHandler(async () => {
 		const coinChartNeedupdate = currentCoin.filter((coin) =>
 			currentSymbolCoinChart.indexOf(coin.symbol) > -1 ? false : true
 		);
-
+		console.log('coin need update');
 		coinChartNeedupdate.map(async (coin, index) => {
+			console.log(coin.symbol);
 			try {
 				setTimeout(() => {
 					axios
@@ -207,6 +211,7 @@ const coinRunAll = asyncHandler(async () => {
 				console.log(error);
 			}
 		});
+		console.log('end coin need update');
 	}
 });
 
@@ -215,8 +220,8 @@ const updateNewPrice = asyncHandler(async () => {
 
 	if (!coinIsEmty) {
 		//crawl 200 coins * 6 pages = 1200 coins
-		// const arr = [1, 2, 3, 4, 5, 6];
-		const arr = [1, 2];
+		const arr = [1, 2, 3, 4, 5, 6];
+		// const arr = [1, 2];
 		arr.forEach(async (page, index) => {
 			try {
 				axios
