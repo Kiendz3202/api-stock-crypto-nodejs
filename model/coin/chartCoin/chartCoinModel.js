@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const coinChartSchema = mongoose.Schema(
 	{
 		symbol: { type: 'String' },
+		nameId: { type: 'String' },
 		t: [Number],
 		price: [Number],
 	},

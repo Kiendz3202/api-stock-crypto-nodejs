@@ -33,8 +33,8 @@ const getallCoinsChart = async () => {
 
 const coinRunAll = asyncHandler(async () => {
 	await Coin.deleteMany({});
-	const initialCoinChart = await CoinChart.find({}, { symbol: 1, _id: 0 });
-	const initialCoinChartSymbol = initialCoinChart.map((coin) => coin.symbol);
+	const initialCoinChart = await CoinChart.find({}, { nameId: 1, _id: 0 });
+	const initialCoinChartSymbol = initialCoinChart.map((coin) => coin.nameId);
 
 	//crawl 200 coins * 4 pages = 800 coins
 	const arr = [1, 2, 3, 4];
@@ -112,14 +112,14 @@ const coinRunAll = asyncHandler(async () => {
 	await delay(8000);
 
 	if (initialCoinChart.length) {
-		const arrCoinNew = await Coin.find({}, { symbol: 1, _id: 0 });
-		const arrCoinNewSymbol = arrCoinNew.map((coin) => coin.symbol);
+		const arrCoinNew = await Coin.find({}, { nameId: 1, _id: 0 });
+		const arrCoinNewSymbol = arrCoinNew.map((coin) => coin.nameId);
 		const coinNeedRemove = initialCoinChartSymbol.filter((coin) =>
 			arrCoinNewSymbol.indexOf(coin) > -1 ? false : true
 		);
 		console.log('coin need remove');
 		coinNeedRemove.map((coin) => {
-			CoinChart.deleteOne({ symbol: coin }).catch((err) =>
+			CoinChart.deleteOne({ nameId: coin }).catch((err) =>
 				console.log(err)
 			);
 			console.log(coin);
@@ -156,9 +156,10 @@ const coinRunAll = asyncHandler(async () => {
 							});
 
 							CoinChart.findOneAndUpdate(
-								{ symbol: coin.symbol },
+								{ nameId: coin.nameId },
 								{
 									symbol: coin.symbol,
+									nameId: coin.nameId,
 									t: arrTime,
 									price: arrPrice,
 								},
@@ -179,15 +180,15 @@ const coinRunAll = asyncHandler(async () => {
 			{ symbol: 1, nameId: 1, _id: 0 }
 		);
 		const currentSymbolCoinChart = currentCoinChart.map(
-			(coin) => coin.symbol
+			(coin) => coin.nameId
 		);
 		const coinChartNeedupdate = currentCoinSymbol.filter((coin) =>
-			currentSymbolCoinChart.indexOf(coin.symbol) > -1 ? false : true
+			currentSymbolCoinChart.indexOf(coin.nameId) > -1 ? false : true
 		);
 		console.log('coin need update');
 		// coinChartNeedupdate no là arr string symbol nên k dùng dc
 		coinChartNeedupdate.map(async (coin, index) => {
-			console.log(coin.symbol);
+			console.log(coin.nameId);
 			try {
 				setTimeout(() => {
 					axios
@@ -205,9 +206,10 @@ const coinRunAll = asyncHandler(async () => {
 							});
 
 							CoinChart.findOneAndUpdate(
-								{ symbol: coin.symbol },
+								{ nameId: coin.nameId },
 								{
 									symbol: coin.symbol,
+									nameId: coin.nameId,
 									t: arrTime,
 									price: arrPrice,
 								},
