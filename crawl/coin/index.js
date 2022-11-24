@@ -54,7 +54,7 @@ const coinRunAll = asyncHandler(async () => {
 							// arrCoinNew.push(coin.symbol);
 							//update
 							Coin.findOneAndUpdate(
-								{ nameId: coin.nameId },
+								{ nameId: coin.id },
 								{
 									name: coin?.name || '',
 									symbol: coin?.symbol || '',
@@ -249,7 +249,7 @@ const updateNewPrice = asyncHandler(async () => {
 									}
 								);
 								Coin.findOneAndUpdate(
-									{ nameId: coin?.nameId },
+									{ nameId: coin?.id },
 									{
 										name: coin?.name || '',
 										symbol: coin?.symbol || '',
@@ -300,7 +300,7 @@ const updateNewPrice = asyncHandler(async () => {
 
 								if (isExistInCoinChart) {
 									CoinChart.findOneAndUpdate(
-										{ nameId: coin.nameId },
+										{ nameId: coin.id },
 										{
 											$push: {
 												t: Math.floor(Date.now()),
