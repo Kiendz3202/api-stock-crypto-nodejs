@@ -245,11 +245,11 @@ const updateNewPrice = asyncHandler(async () => {
 							response.data.map(async (coin) => {
 								const isExistInCoinChart = await CoinChart.find(
 									{
-										symbol: coin.symbol,
+										nameId: coin.nameId,
 									}
 								);
 								Coin.findOneAndUpdate(
-									{ symbol: coin?.symbol },
+									{ nameId: coin?.nameId },
 									{
 										name: coin?.name || '',
 										symbol: coin?.symbol || '',
@@ -300,7 +300,7 @@ const updateNewPrice = asyncHandler(async () => {
 
 								if (isExistInCoinChart) {
 									CoinChart.findOneAndUpdate(
-										{ symbol: coin.symbol },
+										{ nameId: coin.nameId },
 										{
 											$push: {
 												t: Math.floor(Date.now()),
