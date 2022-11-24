@@ -21,324 +21,705 @@ const urlPhuQuySjc = 'http://gold.phuquy.com.vn/';
 const ulrBaoTinMinhChau = 'https://btmc.vn/bieu-do-gia-vang.html?t=ngay';
 const urlMiHong = 'https://www.mihong.vn/vi/gia-vang-trong-nuoc';
 
-//only this function crawlSjc crawl data price of sjc and update both price and chart
-const crawlSjc = asyncHandler(async () => {
-	const pageEvaluateFunc = async () => {
-		const $ = document.querySelector.bind(document);
+const jsdom = require('jsdom');
+const { JSDOM } = jsdom;
+// const querySelectorAll = require('query-selector');
+const cheerio = require('cheerio');
+// const request = require('request-promise');
 
-		let dataJson = {};
+const crawlSjc = async () => {
+	const urlGoldSjc = 'https://webtygia.com/gia-vang-sjc.html';
+	const result = await axios(urlGoldSjc)
+		.then((res) => res.data)
+		.catch((err) => console.log(err));
 
-		try {
-			dataJson.name = 'SJC';
+	const $ = cheerio.load(result);
 
-			let date = new Date();
-			dataJson.timeUpdate =
-				date.getHours() +
-				':' +
-				date.getMinutes() +
-				':' +
-				date.getSeconds() +
-				' ' +
-				date.getDate() +
-				'/' +
-				(date.getMonth() + 1) +
-				'/' +
-				date.getFullYear();
+	let dataJson = {};
 
-			dataJson.sjc1l10lBuy = $(
-				'#price1 table tbody :nth-child(4) :nth-child(2)'
-			)?.innerText;
-			dataJson.sjc1l10lSell = $(
-				'#price1 table tbody :nth-child(4) :nth-child(3)'
-			)?.innerText;
+	try {
+		dataJson.name = 'SJC';
 
-			dataJson.sjc5cBuy = $(
-				'#price1 table tbody :nth-child(5) :nth-child(2)'
-			)?.innerText;
-			dataJson.sjc5cSell = $(
-				'#price1 table tbody :nth-child(5) :nth-child(3)'
-			)?.innerText;
+		let date = new Date();
+		dataJson.timeUpdate =
+			date.getHours() +
+			':' +
+			date.getMinutes() +
+			':' +
+			date.getSeconds() +
+			' ' +
+			date.getDate() +
+			'/' +
+			(date.getMonth() + 1) +
+			'/' +
+			date.getFullYear();
 
-			dataJson.sjc2c1c5phanBuy = $(
-				'#price1 table tbody :nth-child(6) :nth-child(2)'
-			)?.innerText;
-			dataJson.sjc2c1c5phanSell = $(
-				'#price1 table tbody :nth-child(6) :nth-child(3)'
-			)?.innerText;
+		dataJson.sjc1l10lBuy = $('#myTable tbody :nth-child(2) :nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.sjc1l10lSell = $('#myTable tbody :nth-child(2) :nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.nhansjc99_991chi2chi5chiBuy = $(
-				'#price1 table tbody :nth-child(7) :nth-child(2)'
-			)?.innerText;
-			dataJson.nhansjc99_991chi2chi5chiSell = $(
-				'#price1 table tbody :nth-child(7) :nth-child(3)'
-			)?.innerText;
+		dataJson.nhansjc99_991chi2chi5chiBuy = $(
+			'#myTable tbody :nth-child(9) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.nhansjc99_991chi2chi5chiSell = $(
+			'#myTable tbody :nth-child(9) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.nhansjc99_99_0_5chiBuy = $(
-				'#price1 table tbody :nth-child(8) :nth-child(2)'
-			)?.innerText;
-			dataJson.nhansjc99_99_0_5chiSell = $(
-				'#price1 table tbody :nth-child(8) :nth-child(3)'
-			)?.innerText;
+		dataJson.nhansjc99_99_0_5chiBuy = $(
+			'#myTable tbody :nth-child(8) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.nhansjc99_99_0_5chiSell = $(
+			'#myTable tbody :nth-child(8) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.nutrang99_99percentBuy = $(
-				'#price1 table tbody :nth-child(9) :nth-child(2)'
-			)?.innerText;
-			dataJson.nutrang99_99percentSell = $(
-				'#price1 table tbody :nth-child(9) :nth-child(3)'
-			)?.innerText;
+		dataJson.nutrang99_99percentBuy = $(
+			'#myTable tbody :nth-child(7) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.nutrang99_99percentSell = $(
+			'#myTable tbody :nth-child(7) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.nutrang99percentBuy = $(
-				'#price1 table tbody :nth-child(10) :nth-child(2)'
-			)?.innerText;
-			dataJson.nutrang99percentSell = $(
-				'#price1 table tbody :nth-child(10) :nth-child(3)'
-			)?.innerText;
+		dataJson.nutrang99percentBuy = $(
+			'#myTable tbody :nth-child(6) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.nutrang99percentSell = $(
+			'#myTable tbody :nth-child(6) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.nutrang75percentBuy = $(
-				'#price1 table tbody :nth-child(11) :nth-child(2)'
-			)?.innerText;
-			dataJson.nutrang75percentSell = $(
-				'#price1 table tbody :nth-child(11) :nth-child(3)'
-			)?.innerText;
+		dataJson.nutrang75percentBuy = $(
+			'#myTable tbody :nth-child(5) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.nutrang75percentSell = $(
+			'#myTable tbody :nth-child(5) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.nutrang58_3percentBuy = $(
-				'#price1 table tbody :nth-child(12) :nth-child(2)'
-			)?.innerText;
-			dataJson.nutrang58_3percentSell = $(
-				'#price1 table tbody :nth-child(12) :nth-child(3)'
-			)?.innerText;
+		dataJson.nutrang58_3percentBuy = $(
+			'#myTable tbody :nth-child(4) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.nutrang58_3percentSell = $(
+			'#myTable tbody :nth-child(4) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.nutrang41_7percentBuy = $(
-				'#price1 table tbody :nth-child(13) :nth-child(2)'
-			)?.innerText;
-			dataJson.nutrang41_7percentSell = $(
-				'#price1 table tbody :nth-child(13) :nth-child(3)'
-			)?.innerText;
+		dataJson.nutrang41_7percentBuy = $(
+			'#myTable tbody :nth-child(3) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.nutrang41_7percentSell = $(
+			'#myTable tbody :nth-child(3) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.sjc1l10lHaNoiBuy = $(
-				'#price1 table tbody :nth-child(15) :nth-child(2)'
-			)?.innerText;
-			dataJson.sjc1l10lHaNoiSell = $(
-				'#price1 table tbody :nth-child(15) :nth-child(3)'
-			)?.innerText;
+		dataJson.sjc1l10lHaNoiBuy = $(
+			'#myTable tbody :nth-child(15) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.sjc1l10lHaNoiSell = $(
+			'#myTable tbody :nth-child(15) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.sjc1l10lDaNangBuy = $(
-				'#price1 table tbody :nth-child(17) :nth-child(2)'
-			)?.innerText;
-			dataJson.sjc1l10lDaNangSell = $(
-				'#price1 table tbody :nth-child(17) :nth-child(3)'
-			)?.innerText;
+		dataJson.sjc1l10lDaNangBuy = $(
+			'#myTable tbody :nth-child(10) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.sjc1l10lDaNangSell = $(
+			'#myTable tbody :nth-child(10) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.sjc1l10lNhaTrangBuy = $(
-				'#price1 table tbody :nth-child(19) :nth-child(2)'
-			)?.innerText;
-			dataJson.sjc1l10lNhaTrangSell = $(
-				'#price1 table tbody :nth-child(19) :nth-child(3)'
-			)?.innerText;
+		dataJson.sjc1l10lNhaTrangBuy = $(
+			'#myTable tbody :nth-child(17) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.sjc1l10lNhaTrangSell = $(
+			'#myTable tbody :nth-child(17) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.sjc1l10lCaMauBuy = $(
-				'#price1 table tbody :nth-child(21) :nth-child(2)'
-			)?.innerText;
-			dataJson.sjc1l10lCaMauSell = $(
-				'#price1 table tbody :nth-child(21) :nth-child(3)'
-			)?.innerText;
+		dataJson.sjc1l10lCaMauBuy = $(
+			'#myTable tbody :nth-child(11) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.sjc1l10lCaMauSell = $(
+			'#myTable tbody :nth-child(11) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.sjc1l10lHueBuy = $(
-				'#price1 table tbody :nth-child(23) :nth-child(2)'
-			)?.innerText;
-			dataJson.sjc1l10lHueSell = $(
-				'#price1 table tbody :nth-child(23) :nth-child(3)'
-			)?.innerText;
+		dataJson.sjc1l10lHueBuy = $(
+			'#myTable tbody :nth-child(23) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.sjc1l10lHueSell = $(
+			'#myTable tbody :nth-child(23) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.sjc1l10lBinhPhuocBuy = $(
-				'#price1 table tbody :nth-child(25) :nth-child(2)'
-			)?.innerText;
-			dataJson.sjc1l10lBinhPhuocSell = $(
-				'#price1 table tbody :nth-child(25) :nth-child(3)'
-			)?.innerText;
+		dataJson.sjc1l10lBinhPhuocBuy = $(
+			'#myTable tbody :nth-child(22) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.sjc1l10lBinhPhuocSell = $(
+			'#myTable tbody :nth-child(22) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.sjc1l10lBienHoaBuy = $(
-				'#price1 table tbody :nth-child(27) :nth-child(2)'
-			)?.innerText;
-			dataJson.sjc1l10lBienHoaSell = $(
-				'#price1 table tbody :nth-child(27) :nth-child(3)'
-			)?.innerText;
+		dataJson.sjc1l10lBienHoaBuy = $(
+			'#myTable tbody :nth-child(13) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.sjc1l10lBienHoaSell = $(
+			'#myTable tbody :nth-child(13) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.sjc1l10lMienTayBuy = $(
-				'#price1 table tbody :nth-child(29) :nth-child(2)'
-			)?.innerText;
-			dataJson.sjc1l10lMienTaySell = $(
-				'#price1 table tbody :nth-child(29) :nth-child(3)'
-			)?.innerText;
+		dataJson.sjc1l10lMienTayBuy = $(
+			'#myTable tbody :nth-child(12) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.sjc1l10lMienTaySell = $(
+			'#myTable tbody :nth-child(12) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.sjc1l10lQuangNgaiBuy = $(
-				'#price1 table tbody :nth-child(31) :nth-child(2)'
-			)?.innerText;
-			dataJson.sjc1l10lQuangNgaiSell = $(
-				'#price1 table tbody :nth-child(31) :nth-child(3)'
-			)?.innerText;
+		dataJson.sjc1l10lQuangNgaiBuy = $(
+			'#myTable tbody :nth-child(14) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.sjc1l10lQuangNgaiSell = $(
+			'#myTable tbody :nth-child(14) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.sjc1l10lLongXuyenBuy = $(
-				'#price1 table tbody :nth-child(33) :nth-child(2)'
-			)?.innerText;
-			dataJson.sjc1l10lLongXuyenSell = $(
-				'#price1 table tbody :nth-child(33) :nth-child(3)'
-			)?.innerText;
+		dataJson.sjc1l10lLongXuyenBuy = $(
+			'#myTable tbody :nth-child(1) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.sjc1l10lLongXuyenSell = $(
+			'#myTable tbody :nth-child(1) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.sjc1l10lBacLieuBuy = $(
-				'#price1 table tbody :nth-child(35) :nth-child(2)'
-			)?.innerText;
-			dataJson.sjc1l10lBacLieuSell = $(
-				'#price1 table tbody :nth-child(35) :nth-child(3)'
-			)?.innerText;
+		dataJson.sjc1l10lBacLieuBuy = $(
+			'#myTable tbody :nth-child(16) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.sjc1l10lBacLieuSell = $(
+			'#myTable tbody :nth-child(16) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.sjc1l10lQuyNhonBuy = $(
-				'#price1 table tbody :nth-child(37) :nth-child(2)'
-			)?.innerText;
-			dataJson.sjc1l10lQuyNhonSell = $(
-				'#price1 table tbody :nth-child(37) :nth-child(3)'
-			)?.innerText;
+		dataJson.sjc1l10lQuyNhonBuy = $(
+			'#myTable tbody :nth-child(18) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.sjc1l10lQuyNhonSell = $(
+			'#myTable tbody :nth-child(18) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.sjc1l10lPhanRangBuy = $(
-				'#price1 table tbody :nth-child(39) :nth-child(2)'
-			)?.innerText;
-			dataJson.sjc1l10lPhanRangSell = $(
-				'#price1 table tbody :nth-child(39) :nth-child(3)'
-			)?.innerText;
+		dataJson.sjc1l10lPhanRangBuy = $(
+			'#myTable tbody :nth-child(19) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.sjc1l10lPhanRangSell = $(
+			'#myTable tbody :nth-child(19) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.sjc1l10lHaLongBuy = $(
-				'#price1 table tbody :nth-child(41) :nth-child(2)'
-			)?.innerText;
-			dataJson.sjc1l10lHaLongSell = $(
-				'#price1 table tbody :nth-child(41) :nth-child(3)'
-			)?.innerText;
+		dataJson.sjc1l10lHaLongBuy = $(
+			'#myTable tbody :nth-child(20) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.sjc1l10lHaLongSell = $(
+			'#myTable tbody :nth-child(20) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
 
-			dataJson.sjc1l10lQuangNamBuy = $(
-				'#price1 table tbody :nth-child(43) :nth-child(2)'
-			)?.innerText;
-			dataJson.sjc1l10lQuangNamSell = $(
-				'#price1 table tbody :nth-child(43) :nth-child(3)'
-			)?.innerText;
-
-			dataJson.currentTimestamp = Math.floor(Date.now() / 1000);
-		} catch (err) {
-			console.log(err);
-		}
-		return dataJson;
-	};
-
-	let data = false;
-	let attemps = 0;
-	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 2) {
-		console.log('loop' + attemps);
-		data = await collectQueryData(urlSjc, pageEvaluateFunc);
-		attemps++;
-		console.log(data);
-		if (data) {
-			Sjc.findOneAndUpdate(
-				{ name: data.name },
-				{
-					name: data.name,
-					timeUpdate: data.timeUpdate,
-					sjc1l10lBuy: data.sjc1l10lBuy,
-					sjc5cBuy: data.sjc5cBuy,
-					sjc2c1c5phanBuy: data.sjc2c1c5phanBuy,
-					nhansjc99_991chi2chi5chiBuy:
-						data.nhansjc99_991chi2chi5chiBuy,
-					nhansjc99_99_0_5chiBuy: data.nhansjc99_99_0_5chiBuy,
-					nutrang99_99percentBuy: data.nutrang99_99percentBuy,
-					nutrang99percentBuy: data.nutrang99percentBuy,
-					nutrang75percentBuy: data.nutrang75percentBuy,
-					nutrang58_3percentBuy: data.nutrang58_3percentBuy,
-					nutrang41_7percentBuy: data.nutrang41_7percentBuy,
-
-					sjc1l10lSell: data.sjc1l10lSell,
-					sjc5cSell: data.sjc5cSell,
-					sjc2c1c5phanSell: data.sjc2c1c5phanSell,
-					nhansjc99_991chi2chi5chiSell:
-						data.nhansjc99_991chi2chi5chiSell,
-					nhansjc99_99_0_5chiSell: data.nhansjc99_99_0_5chiSell,
-					nutrang99_99percentSell: data.nutrang99_99percentSell,
-					nutrang99percentSell: data.nutrang99percentSell,
-					nutrang75percentSell: data.nutrang75percentSell,
-					nutrang58_3percentSell: data.nutrang58_3percentSell,
-					nutrang41_7percentSell: data.nutrang41_7percentSell,
-
-					sjc1l10lHanoiBuy: data.sjc1l10lHanoiBuy,
-					sjc1l10lHaNoiSell: data.sjc1l10lHaNoiSell,
-
-					sjc1l10lDaNangBuy: data.sjc1l10lDaNangBuy,
-					sjc1l10lDaNangSell: data.sjc1l10lDaNangSell,
-
-					sjc1l10lNhatrangBuy: data.sjc1l10lNhatrangBuy,
-					sjc1l10lNhatrangSell: data.sjc1l10lNhatrangSell,
-
-					sjc1l10lCaMauBuy: data.sjc1l10lCaMauBuy,
-					sjc1l10lCaMauSell: data.sjc1l10lCaMauSell,
-
-					sjc1l10lHueBuy: data.sjc1l10lHueBuy,
-					sjc1l10lHueSell: data.sjc1l10lHueSell,
-
-					sjc1l10lBinhPhuocBuy: data.sjc1l10lBinhPhuocBuy,
-					sjc1l10lBinhPhuocSell: data.sjc1l10lBinhPhuocSell,
-
-					sjc1l10lBienHoaBuy: data.sjc1l10lBienHoaBuy,
-					sjc1l10lBienHoaSell: data.sjc1l10lBienHoaSell,
-
-					sjc1l10lMientayBuy: data.sjc1l10lMientayBuy,
-					sjc1l10lMientaySell: data.sjc1l10lMientaySell,
-
-					sjc1l10lQuangNgaiBuy: data.sjc1l10lQuangNgaiBuy,
-					sjc1l10lQuangNgaiSell: data.sjc1l10lQuangNgaiSell,
-
-					sjc1l10lLongXuyenBuy: data.sjc1l10lLongXuyenBuy,
-					sjc1l10lLongXuyenSell: data.sjc1l10lLongXuyenSell,
-
-					sjc1l10lBacLieuBuy: data.sjc1l10lBacLieuBuy,
-					sjc1l10lBacLieuSell: data.sjc1l10lBacLieuSell,
-
-					sjc1l10lQuyNhonBuy: data.sjc1l10lQuyNhonBuy,
-					sjc1l10lQuyNhonSell: data.sjc1l10lQuyNhonSell,
-
-					sjc1l10lPhanRangBuy: data.sjc1l10lPhanRangBuy,
-					sjc1l10lPhanRangSell: data.sjc1l10lPhanRangSell,
-
-					sjc1l10lHaLongBuy: data.sjc1l10lHaLongBuy,
-					sjc1l10lHaLongSell: data.sjc1l10lHaLongSell,
-
-					sjc1l10lQuangNamBuy: data.sjc1l10lQuangNamBuy,
-					sjc1l10lQuangNamSell: data.sjc1l10lQuangNamSell,
-				},
-				{ upsert: true }
-			)
-				// .then((doc) => console.log(doc))
-				.catch((err) => console.log(err));
-
-			SjcChart.findOneAndUpdate(
-				{ name: data.name },
-				{
-					$push: {
-						t: data.currentTimestamp,
-						buy: data.sjc1l10lBuy,
-						sell: data.sjc1l10lSell,
-					},
-				},
-				{ upsert: true }
-			)
-				// .then((doc) => console.log(doc))
-				.catch((err) => console.log(err));
-
-			// await browser.close();
-		}
-
-		if (data === false) {
-			//wait a few second, also a good idea to swap proxy here
-			console.log('Recrawl........' + attemps);
-			await new Promise((resolve) => setTimeout(resolve, 3000));
-		}
+		dataJson.sjc1l10lQuangNamBuy = $(
+			'#myTable tbody :nth-child(21) :nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.sjc1l10lQuangNamSell = $(
+			'#myTable tbody :nth-child(21) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1);
+		dataJson.currentTimestamp = Math.floor(Date.now() / 1000);
+	} catch (err) {
+		console.log(err);
 	}
-});
+	// console.log($('#main table tbody :nth-child(6) ').text());
+	console.log(dataJson);
+};
+
+//only this function crawlSjc crawl data price of sjc and update both price and chart
+// const crawlSjc = asyncHandler(async () => {
+// const pageEvaluateFunc = async () => {
+// 	const $ = document.querySelector.bind(document);
+
+// 	let dataJson = {};
+
+// 	try {
+// 		dataJson.name = 'SJC';
+
+// 		let date = new Date();
+// 		dataJson.timeUpdate =
+// 			date.getHours() +
+// 			':' +
+// 			date.getMinutes() +
+// 			':' +
+// 			date.getSeconds() +
+// 			' ' +
+// 			date.getDate() +
+// 			'/' +
+// 			(date.getMonth() + 1) +
+// 			'/' +
+// 			date.getFullYear();
+
+// 		dataJson.sjc1l10lBuy = $(
+// 			'#price1 table tbody :nth-child(4) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.sjc1l10lSell = $(
+// 			'#price1 table tbody :nth-child(4) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.sjc5cBuy = $(
+// 			'#price1 table tbody :nth-child(5) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.sjc5cSell = $(
+// 			'#price1 table tbody :nth-child(5) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.sjc2c1c5phanBuy = $(
+// 			'#price1 table tbody :nth-child(6) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.sjc2c1c5phanSell = $(
+// 			'#price1 table tbody :nth-child(6) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.nhansjc99_991chi2chi5chiBuy = $(
+// 			'#price1 table tbody :nth-child(7) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.nhansjc99_991chi2chi5chiSell = $(
+// 			'#price1 table tbody :nth-child(7) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.nhansjc99_99_0_5chiBuy = $(
+// 			'#price1 table tbody :nth-child(8) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.nhansjc99_99_0_5chiSell = $(
+// 			'#price1 table tbody :nth-child(8) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.nutrang99_99percentBuy = $(
+// 			'#price1 table tbody :nth-child(9) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.nutrang99_99percentSell = $(
+// 			'#price1 table tbody :nth-child(9) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.nutrang99percentBuy = $(
+// 			'#price1 table tbody :nth-child(10) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.nutrang99percentSell = $(
+// 			'#price1 table tbody :nth-child(10) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.nutrang75percentBuy = $(
+// 			'#price1 table tbody :nth-child(11) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.nutrang75percentSell = $(
+// 			'#price1 table tbody :nth-child(11) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.nutrang58_3percentBuy = $(
+// 			'#price1 table tbody :nth-child(12) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.nutrang58_3percentSell = $(
+// 			'#price1 table tbody :nth-child(12) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.nutrang41_7percentBuy = $(
+// 			'#price1 table tbody :nth-child(13) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.nutrang41_7percentSell = $(
+// 			'#price1 table tbody :nth-child(13) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.sjc1l10lHaNoiBuy = $(
+// 			'#price1 table tbody :nth-child(15) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.sjc1l10lHaNoiSell = $(
+// 			'#price1 table tbody :nth-child(15) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.sjc1l10lDaNangBuy = $(
+// 			'#price1 table tbody :nth-child(17) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.sjc1l10lDaNangSell = $(
+// 			'#price1 table tbody :nth-child(17) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.sjc1l10lNhaTrangBuy = $(
+// 			'#price1 table tbody :nth-child(19) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.sjc1l10lNhaTrangSell = $(
+// 			'#price1 table tbody :nth-child(19) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.sjc1l10lCaMauBuy = $(
+// 			'#price1 table tbody :nth-child(21) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.sjc1l10lCaMauSell = $(
+// 			'#price1 table tbody :nth-child(21) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.sjc1l10lHueBuy = $(
+// 			'#price1 table tbody :nth-child(23) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.sjc1l10lHueSell = $(
+// 			'#price1 table tbody :nth-child(23) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.sjc1l10lBinhPhuocBuy = $(
+// 			'#price1 table tbody :nth-child(25) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.sjc1l10lBinhPhuocSell = $(
+// 			'#price1 table tbody :nth-child(25) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.sjc1l10lBienHoaBuy = $(
+// 			'#price1 table tbody :nth-child(27) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.sjc1l10lBienHoaSell = $(
+// 			'#price1 table tbody :nth-child(27) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.sjc1l10lMienTayBuy = $(
+// 			'#price1 table tbody :nth-child(29) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.sjc1l10lMienTaySell = $(
+// 			'#price1 table tbody :nth-child(29) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.sjc1l10lQuangNgaiBuy = $(
+// 			'#price1 table tbody :nth-child(31) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.sjc1l10lQuangNgaiSell = $(
+// 			'#price1 table tbody :nth-child(31) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.sjc1l10lLongXuyenBuy = $(
+// 			'#price1 table tbody :nth-child(33) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.sjc1l10lLongXuyenSell = $(
+// 			'#price1 table tbody :nth-child(33) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.sjc1l10lBacLieuBuy = $(
+// 			'#price1 table tbody :nth-child(35) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.sjc1l10lBacLieuSell = $(
+// 			'#price1 table tbody :nth-child(35) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.sjc1l10lQuyNhonBuy = $(
+// 			'#price1 table tbody :nth-child(37) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.sjc1l10lQuyNhonSell = $(
+// 			'#price1 table tbody :nth-child(37) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.sjc1l10lPhanRangBuy = $(
+// 			'#price1 table tbody :nth-child(39) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.sjc1l10lPhanRangSell = $(
+// 			'#price1 table tbody :nth-child(39) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.sjc1l10lHaLongBuy = $(
+// 			'#price1 table tbody :nth-child(41) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.sjc1l10lHaLongSell = $(
+// 			'#price1 table tbody :nth-child(41) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.sjc1l10lQuangNamBuy = $(
+// 			'#price1 table tbody :nth-child(43) :nth-child(2)'
+// 		)?.innerText;
+// 		dataJson.sjc1l10lQuangNamSell = $(
+// 			'#price1 table tbody :nth-child(43) :nth-child(3)'
+// 		)?.innerText;
+
+// 		dataJson.currentTimestamp = Math.floor(Date.now() / 1000);
+// 	} catch (err) {
+// 		console.log(err);
+// 	}
+// 	return dataJson;
+// };
+
+// 	let data = false;
+// 	let attemps = 0;
+// 	//retry request until it gets data or tries 3 times
+// 	while (data == false && attemps < 2) {
+// 		console.log('loop' + attemps);
+// 		data = await collectQueryData(urlSjc, pageEvaluateFunc);
+// 		attemps++;
+// 		console.log(data);
+// 		if (data) {
+// 			Sjc.findOneAndUpdate(
+// 				{ name: data.name },
+// 				{
+// 					name: data.name,
+// 					timeUpdate: data.timeUpdate,
+// 					sjc1l10lBuy: data.sjc1l10lBuy,
+// 					sjc5cBuy: data.sjc5cBuy,
+// 					sjc2c1c5phanBuy: data.sjc2c1c5phanBuy,
+// 					nhansjc99_991chi2chi5chiBuy:
+// 						data.nhansjc99_991chi2chi5chiBuy,
+// 					nhansjc99_99_0_5chiBuy: data.nhansjc99_99_0_5chiBuy,
+// 					nutrang99_99percentBuy: data.nutrang99_99percentBuy,
+// 					nutrang99percentBuy: data.nutrang99percentBuy,
+// 					nutrang75percentBuy: data.nutrang75percentBuy,
+// 					nutrang58_3percentBuy: data.nutrang58_3percentBuy,
+// 					nutrang41_7percentBuy: data.nutrang41_7percentBuy,
+
+// 					sjc1l10lSell: data.sjc1l10lSell,
+// 					sjc5cSell: data.sjc5cSell,
+// 					sjc2c1c5phanSell: data.sjc2c1c5phanSell,
+// 					nhansjc99_991chi2chi5chiSell:
+// 						data.nhansjc99_991chi2chi5chiSell,
+// 					nhansjc99_99_0_5chiSell: data.nhansjc99_99_0_5chiSell,
+// 					nutrang99_99percentSell: data.nutrang99_99percentSell,
+// 					nutrang99percentSell: data.nutrang99percentSell,
+// 					nutrang75percentSell: data.nutrang75percentSell,
+// 					nutrang58_3percentSell: data.nutrang58_3percentSell,
+// 					nutrang41_7percentSell: data.nutrang41_7percentSell,
+
+// 					sjc1l10lHanoiBuy: data.sjc1l10lHanoiBuy,
+// 					sjc1l10lHaNoiSell: data.sjc1l10lHaNoiSell,
+
+// 					sjc1l10lDaNangBuy: data.sjc1l10lDaNangBuy,
+// 					sjc1l10lDaNangSell: data.sjc1l10lDaNangSell,
+
+// 					sjc1l10lNhatrangBuy: data.sjc1l10lNhatrangBuy,
+// 					sjc1l10lNhatrangSell: data.sjc1l10lNhatrangSell,
+
+// 					sjc1l10lCaMauBuy: data.sjc1l10lCaMauBuy,
+// 					sjc1l10lCaMauSell: data.sjc1l10lCaMauSell,
+
+// 					sjc1l10lHueBuy: data.sjc1l10lHueBuy,
+// 					sjc1l10lHueSell: data.sjc1l10lHueSell,
+
+// 					sjc1l10lBinhPhuocBuy: data.sjc1l10lBinhPhuocBuy,
+// 					sjc1l10lBinhPhuocSell: data.sjc1l10lBinhPhuocSell,
+
+// 					sjc1l10lBienHoaBuy: data.sjc1l10lBienHoaBuy,
+// 					sjc1l10lBienHoaSell: data.sjc1l10lBienHoaSell,
+
+// 					sjc1l10lMientayBuy: data.sjc1l10lMientayBuy,
+// 					sjc1l10lMientaySell: data.sjc1l10lMientaySell,
+
+// 					sjc1l10lQuangNgaiBuy: data.sjc1l10lQuangNgaiBuy,
+// 					sjc1l10lQuangNgaiSell: data.sjc1l10lQuangNgaiSell,
+
+// 					sjc1l10lLongXuyenBuy: data.sjc1l10lLongXuyenBuy,
+// 					sjc1l10lLongXuyenSell: data.sjc1l10lLongXuyenSell,
+
+// 					sjc1l10lBacLieuBuy: data.sjc1l10lBacLieuBuy,
+// 					sjc1l10lBacLieuSell: data.sjc1l10lBacLieuSell,
+
+// 					sjc1l10lQuyNhonBuy: data.sjc1l10lQuyNhonBuy,
+// 					sjc1l10lQuyNhonSell: data.sjc1l10lQuyNhonSell,
+
+// 					sjc1l10lPhanRangBuy: data.sjc1l10lPhanRangBuy,
+// 					sjc1l10lPhanRangSell: data.sjc1l10lPhanRangSell,
+
+// 					sjc1l10lHaLongBuy: data.sjc1l10lHaLongBuy,
+// 					sjc1l10lHaLongSell: data.sjc1l10lHaLongSell,
+
+// 					sjc1l10lQuangNamBuy: data.sjc1l10lQuangNamBuy,
+// 					sjc1l10lQuangNamSell: data.sjc1l10lQuangNamSell,
+// 				},
+// 				{ upsert: true }
+// 			)
+// 				// .then((doc) => console.log(doc))
+// 				.catch((err) => console.log(err));
+
+// 			SjcChart.findOneAndUpdate(
+// 				{ name: data.name },
+// 				{
+// 					$push: {
+// 						t: data.currentTimestamp,
+// 						buy: data.sjc1l10lBuy,
+// 						sell: data.sjc1l10lSell,
+// 					},
+// 				},
+// 				{ upsert: true }
+// 			)
+// 				// .then((doc) => console.log(doc))
+// 				.catch((err) => console.log(err));
+
+// 			// await browser.close();
+// 		}
+
+// 		if (data === false) {
+// 			//wait a few second, also a good idea to swap proxy here
+// 			console.log('Recrawl........' + attemps);
+// 			await new Promise((resolve) => setTimeout(resolve, 3000));
+// 		}
+// 	}
+// });
 
 const crawlPnj = asyncHandler(async (localtionNumber, index) => {
 	const pageEvaluateFunc = async (localtionNumber, index) => {

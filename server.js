@@ -63,10 +63,10 @@ app.use(express.json());
 app.use(cors());
 app.use(helmet());
 
-// const jsdom = require('jsdom');
-// const { JSDOM } = jsdom;
+const jsdom = require('jsdom');
+const { JSDOM } = jsdom;
 // const querySelectorAll = require('query-selector');
-// const cheerio = require('cheerio');
+const cheerio = require('cheerio');
 // const request = require('request-promise');
 
 // app.use('/', async (req, res) => {
@@ -79,7 +79,7 @@ app.use(helmet());
 // 	console.log($('#main table tbody :nth-child(1) :nth-child(3)').text()); // chỉnh từ web chính sjc sang web giá, web chính ko trả về html
 // 	// console.log($('#price1 table tbody :nth-child(4) :nth-child(2)').text());
 
-// 	res.send($.root().html());
+// 	res.json($.root().html());
 // });
 
 //------routes cua coin------
