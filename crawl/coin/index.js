@@ -54,7 +54,7 @@ const coinRunAll = asyncHandler(async () => {
 							// arrCoinNew.push(coin.symbol);
 							//update
 							Coin.findOneAndUpdate(
-								{ symbol: coin.symbol },
+								{ nameId: coin.nameId },
 								{
 									name: coin?.name || '',
 									symbol: coin?.symbol || '',
