@@ -248,7 +248,7 @@ const updateNewPrice = asyncHandler(async () => {
 							response.data.map(async (coin) => {
 								const isExistInCoinChart = await CoinChart.find(
 									{
-										nameId: coin.nameId,
+										nameId: coin.id,
 									}
 								);
 								Coin.findOneAndUpdate(
