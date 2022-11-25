@@ -108,7 +108,7 @@ const coinRunAll = asyncHandler(async () => {
 		}
 	});
 
-	await delay(10000);
+	await delay(15000);
 
 	if (initialCoinChart.length != 0) {
 		const arrCoinNew = await Coin.find({}, { nameId: 1, _id: 0 });
@@ -129,9 +129,7 @@ const coinRunAll = asyncHandler(async () => {
 	}
 
 	const coinChartIsEmty = (await CoinChart.count()) ? false : true;
-	const currentCoin = await Coin.find({}).sort({
-		rank: 1,
-	});
+	const currentCoin = await Coin.find({});
 	const currentCoinSymbol = currentCoin.map((coin) => ({
 		symbol: coin.symbol,
 		nameId: coin.nameId,
