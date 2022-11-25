@@ -43,73 +43,72 @@ const coinRunAll = asyncHandler(async () => {
 	// const arrCoinNew = [];
 	arr.map(async (page, index) => {
 		try {
-			setTimeout(() => {
-				axios
-					.get(
-						`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=200&page=${page}&sparkline=false&price_change_percentage=1h%2C24h%2C7d%2C14d%2C30d%2C200d%2C1y`
-					)
-					.then((response) => {
-						response.data.map(async (coin) => {
-							//push symbol to arrCoinNew
-							// arrCoinNew.push(coin.symbol);
-							//update
-							Coin.findOneAndUpdate(
-								{ nameId: coin.id },
-								{
-									name: coin?.name || '',
-									symbol: coin?.symbol || '',
-									nameId: coin?.id || '',
-									image: coin?.image || '',
-									priceChange1hPercent:
-										coin?.price_change_percentage_1h_in_currency ||
-										'',
-									priceChange24hPercent:
-										coin?.price_change_percentage_24h_in_currency ||
-										'',
-									priceChange7dPercent:
-										coin?.price_change_percentage_7d_in_currency ||
-										'',
-									priceChange14dPercent:
-										coin?.price_change_percentage_14d_in_currency ||
-										'',
-									priceChange30dPercent:
-										coin?.price_change_percentage_30d_in_currency ||
-										'',
-									priceChange200dPercent:
-										coin?.price_change_percentage_200d_in_currency ||
-										'',
-									priceChange1yPercent:
-										coin?.price_change_percentage_1y_in_currency ||
-										'',
-									'volume24h.usd': coin?.total_volume || '',
-									'marketCap.usd': coin?.market_cap || '',
-									'currentPrice.usd':
-										coin?.current_price || '',
-									'high24h.usd': coin?.high_24h || '',
-									'low24h.usd': coin?.low_24h || '',
-									'ath.usd': coin?.ath || '',
-									'atl.usd': coin?.atl || '',
-									'fullyDilutedValuation.usd':
-										coin?.fully_diluted_valuation || '',
-									rank: coin?.market_cap_rank || '',
-									circulatingSupply:
-										coin?.circulating_supply || '',
-									totalSupply: coin?.total_supply || '',
-									maxSupply: coin?.max_supply || '',
-								},
-								{ upsert: true }
-							)
-								// .then((doc) => console.log(doc?.name))
-								.catch((err) => console.log(err));
-						});
+			// setTimeout(() => {
+			axios
+				.get(
+					`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=200&page=${page}&sparkline=false&price_change_percentage=1h%2C24h%2C7d%2C14d%2C30d%2C200d%2C1y`
+				)
+				.then((response) => {
+					response.data.map(async (coin) => {
+						//push symbol to arrCoinNew
+						// arrCoinNew.push(coin.symbol);
+						//update
+						Coin.findOneAndUpdate(
+							{ nameId: coin.id },
+							{
+								name: coin?.name || '',
+								symbol: coin?.symbol || '',
+								nameId: coin?.id || '',
+								image: coin?.image || '',
+								priceChange1hPercent:
+									coin?.price_change_percentage_1h_in_currency ||
+									'',
+								priceChange24hPercent:
+									coin?.price_change_percentage_24h_in_currency ||
+									'',
+								priceChange7dPercent:
+									coin?.price_change_percentage_7d_in_currency ||
+									'',
+								priceChange14dPercent:
+									coin?.price_change_percentage_14d_in_currency ||
+									'',
+								priceChange30dPercent:
+									coin?.price_change_percentage_30d_in_currency ||
+									'',
+								priceChange200dPercent:
+									coin?.price_change_percentage_200d_in_currency ||
+									'',
+								priceChange1yPercent:
+									coin?.price_change_percentage_1y_in_currency ||
+									'',
+								'volume24h.usd': coin?.total_volume || '',
+								'marketCap.usd': coin?.market_cap || '',
+								'currentPrice.usd': coin?.current_price || '',
+								'high24h.usd': coin?.high_24h || '',
+								'low24h.usd': coin?.low_24h || '',
+								'ath.usd': coin?.ath || '',
+								'atl.usd': coin?.atl || '',
+								'fullyDilutedValuation.usd':
+									coin?.fully_diluted_valuation || '',
+								rank: coin?.market_cap_rank || '',
+								circulatingSupply:
+									coin?.circulating_supply || '',
+								totalSupply: coin?.total_supply || '',
+								maxSupply: coin?.max_supply || '',
+							},
+							{ upsert: true }
+						)
+							// .then((doc) => console.log(doc?.name))
+							.catch((err) => console.log(err));
 					});
-			}, 1000 * index);
+				});
+			// }, 1000 * index);
 		} catch (error) {
 			console.log(error);
 		}
 	});
 
-	await delay(8000);
+	await delay(10000);
 
 	if (initialCoinChart.length != 0) {
 		const arrCoinNew = await Coin.find({}, { nameId: 1, _id: 0 });
@@ -140,6 +139,7 @@ const coinRunAll = asyncHandler(async () => {
 
 	if (coinChartIsEmty) {
 		console.log('start vcoinChartIsEmty');
+		console.log(currentCoin.length);
 		currentCoin.map(async (coin, index) => {
 			try {
 				setTimeout(() => {
@@ -232,6 +232,7 @@ const coinRunAll = asyncHandler(async () => {
 
 const updateNewPrice = asyncHandler(async () => {
 	const coinIsEmty = (await Coin.count()) ? false : true;
+	const coinChartIsEmty = (await CoinChart.count()) ? false : true;
 
 	if (!coinIsEmty) {
 		//crawl 200 coins * 6 pages = 1200 coins
@@ -246,11 +247,11 @@ const updateNewPrice = asyncHandler(async () => {
 						)
 						.then((response) => {
 							response.data.map(async (coin) => {
-								const isExistInCoinChart = await CoinChart.find(
-									{
-										nameId: coin.id,
-									}
-								);
+								// const isExistInCoinChart = await CoinChart.find(
+								// 	{
+								// 		nameId: coin.id,
+								// 	}
+								// );
 								Coin.findOneAndUpdate(
 									{ nameId: coin?.id },
 									{
@@ -301,7 +302,7 @@ const updateNewPrice = asyncHandler(async () => {
 									// .then((doc) => console.log(doc?.name))
 									.catch((err) => console.log(err));
 
-								if (isExistInCoinChart) {
+								if (!coinChartIsEmty) {
 									CoinChart.findOneAndUpdate(
 										{ nameId: coin.id },
 										{
