@@ -16,9 +16,9 @@ const { delay } = require('../utils/promise/delayTime/delay');
 const runCrawlCoin = async () => {
 	// cron.schedule('1 tuan chay lai 1 lan', async () => {
 	//function delete all 800 coin
-	cron.schedule('0 */2 * * *', async () => {
-		coinRunAll();
-	});
+	// cron.schedule('0 */2 * * *', async () => {
+	coinRunAll();
+	// });
 	cron.schedule('*/2 * * * *', async () => {
 		updateNewPrice();
 	});

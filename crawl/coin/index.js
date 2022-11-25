@@ -108,7 +108,7 @@ const coinRunAll = asyncHandler(async () => {
 		}
 	});
 
-	await delay(15000);
+	await delay(10000);
 
 	if (initialCoinChart.length != 0) {
 		const arrCoinNew = await Coin.find({}, { nameId: 1, _id: 0 });
