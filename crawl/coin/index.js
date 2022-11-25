@@ -111,7 +111,7 @@ const coinRunAll = asyncHandler(async () => {
 
 	await delay(8000);
 
-	if (initialCoinChart.length) {
+	if (initialCoinChart.length != 0) {
 		const arrCoinNew = await Coin.find({}, { nameId: 1, _id: 0 });
 		const arrCoinNewSymbol = arrCoinNew.map((coin) => coin.nameId);
 		const coinNeedRemove = initialCoinChartSymbol.filter((coin) =>
