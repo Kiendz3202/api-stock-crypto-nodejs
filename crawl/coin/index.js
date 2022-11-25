@@ -118,12 +118,14 @@ const coinRunAll = asyncHandler(async () => {
 			arrCoinNewSymbol.indexOf(coin) > -1 ? false : true
 		);
 		console.log('coin need remove');
+		let countNeedRemove = 0;
 		coinNeedRemove.map((coin) => {
 			CoinChart.deleteOne({ nameId: coin }).catch((err) =>
 				console.log(err)
 			);
-			console.log(coin);
+			countNeedRemove++;
 		});
+		console.log(countNeedRemove);
 		console.log('end coin need remove');
 	}
 
@@ -186,9 +188,9 @@ const coinRunAll = asyncHandler(async () => {
 			currentSymbolCoinChart.indexOf(coin.nameId) > -1 ? false : true
 		);
 		console.log('coin need update');
-		// coinChartNeedupdate no là arr string symbol nên k dùng dc
+		let countNeedUpdate = 0;
 		coinChartNeedupdate.map(async (coin, index) => {
-			console.log(coin.nameId);
+			countNeedUpdate++;
 			try {
 				setTimeout(() => {
 					axios
@@ -223,6 +225,7 @@ const coinRunAll = asyncHandler(async () => {
 				console.log(error);
 			}
 		});
+		console.log(countNeedUpdate);
 		console.log('end coin need update');
 	}
 });
