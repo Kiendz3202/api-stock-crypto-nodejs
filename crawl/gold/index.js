@@ -22,7 +22,7 @@ const goldRunAll = async () => {
 	};
 
 	crawlAllDetailPnj();
-	await delay(180000);
+	await delay(18000);
 	crawlSjc();
 	await delay(5000);
 	crawlDoji();
