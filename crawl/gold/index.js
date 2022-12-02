@@ -10,7 +10,6 @@ const {
 const { delay } = require('../../utils/promise/delayTime/delay');
 
 const goldRunAll = async () => {
-	// cron.schedule('*/2 * * * *', async () => {
 	const crawlAllDetailPnj = async () => {
 		const arr = ['00', '07', '11', '13', '14', '21'];
 
@@ -32,7 +31,7 @@ const goldRunAll = async () => {
 	crawlBaoTinMinhChau();
 	await delay(5000);
 	crawlMiHong();
-	// });
+	await delay(5000);
 };
 
 module.exports = goldRunAll;

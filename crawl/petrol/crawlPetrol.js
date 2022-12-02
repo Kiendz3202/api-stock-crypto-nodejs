@@ -1,6 +1,8 @@
 const asyncHandler = require('express-async-handler');
 const cron = require('node-cron');
 const puppeteer = require('puppeteer');
+const cheerio = require('cheerio');
+const axios = require('axios');
 
 const {
 	collectQueryDataHeightScroll,
@@ -8,126 +10,233 @@ const {
 
 const Petrolimex = require('../../model/petrol/petrolimexModel');
 
-const urlPetrolimex =
-	'https://www.petrolimex.com.vn/thong-tin-khach-hang.html#cuahangxangdau';
+const urlPetrolimex = 'https://webtygia.com/gia-xang-dau/petrolimex.html'; // ref: https://www.petrolimex.com.vn/thong-tin-khach-hang.html#cuahangxangdau
 
-const crawlPetrolimex = asyncHandler(async () => {
-	const pageEvaluateFunc = async () => {
-		const $ = document.querySelector.bind(document);
+const crawlPetrolimex = async () => {
+	const result = await axios(urlPetrolimex)
+		.then((res) => res.data)
+		.catch((err) => console.log(err));
 
-		let dataJson = {};
+	const $ = cheerio.load(result);
 
-		try {
-			dataJson.name = 'Petrolimex';
+	let dataJson = {};
 
-			let date = new Date();
-			dataJson.timeUpdate =
-				date.getHours() +
-				':' +
-				date.getMinutes() +
-				':' +
-				date.getSeconds() +
-				' ' +
-				date.getDate() +
-				'/' +
-				(date.getMonth() + 1) +
-				'/' +
-				date.getFullYear();
+	try {
+		dataJson.name = 'Petrolimex';
 
-			const tableElement = $('tbody.product');
+		let date = new Date();
+		dataJson.timeUpdate = Math.floor(Date.now() / 1000);
 
-			dataJson.ron95v_1 = tableElement.querySelector(
-				'tr:nth-child(1) td:nth-child(2)'
-			)?.innerText;
-			dataJson.ron95v_2 = tableElement.querySelector(
-				'tr:nth-child(1) td:nth-child(3)'
-			)?.innerText;
+		dataJson.ron95v_1 = $(
+			'#myTabletoday tbody :nth-child(7) td:nth-child(2)'
+		)
+			.text()
+			.slice(1, -1);
+		dataJson.ron95v_2 = $(
+			'#myTabletoday tbody :nth-child(7) td:nth-child(3)'
+		)
+			.text()
+			.slice(1, -1);
 
-			dataJson.ron95III_1 = tableElement.querySelector(
-				'tr:nth-child(2) td:nth-child(2)'
-			)?.innerText;
-			dataJson.ron95III_2 = tableElement.querySelector(
-				'tr:nth-child(2) td:nth-child(3)'
-			)?.innerText;
+		dataJson.ron95III_1 = $(
+			'#myTabletoday tbody :nth-child(4) td:nth-child(2)'
+		)
+			.text()
+			.slice(1, -1);
+		dataJson.ron95III_2 = $(
+			'#myTabletoday tbody :nth-child(4) td:nth-child(3)'
+		)
+			.text()
+			.slice(1, -1);
 
-			dataJson.ron92II_1 = tableElement.querySelector(
-				'tr:nth-child(3) td:nth-child(2)'
-			)?.innerText;
-			dataJson.ron92II_2 = tableElement.querySelector(
-				'tr:nth-child(3) td:nth-child(3)'
-			)?.innerText;
+		dataJson.ron92II_1 = $(
+			'#myTabletoday tbody :nth-child(1) td:nth-child(2)'
+		)
+			.text()
+			.slice(1, -1);
+		dataJson.ron92II_2 = $(
+			'#myTabletoday tbody :nth-child(1) td:nth-child(3)'
+		)
+			.text()
+			.slice(1, -1);
 
-			dataJson.do0001SV_1 = tableElement.querySelector(
-				'tr:nth-child(4) td:nth-child(2)'
-			)?.innerText;
-			dataJson.do0001SV_2 = tableElement.querySelector(
-				'tr:nth-child(4) td:nth-child(3)'
-			)?.innerText;
+		dataJson.do0001SV_1 = $(
+			'#myTabletoday tbody :nth-child(2) td:nth-child(2)'
+		)
+			.text()
+			.slice(1, -1);
+		dataJson.do0001SV_2 = $(
+			'#myTabletoday tbody :nth-child(2) td:nth-child(3)'
+		)
+			.text()
+			.slice(1, -1);
 
-			dataJson.do005SII_1 = tableElement.querySelector(
-				'tr:nth-child(5) td:nth-child(2)'
-			)?.innerText;
-			dataJson.do005SII_2 = tableElement.querySelector(
-				'tr:nth-child(5) td:nth-child(3)'
-			)?.innerText;
+		dataJson.do005SII_1 = $(
+			'#myTabletoday tbody :nth-child(3) td:nth-child(2)'
+		)
+			.text()
+			.slice(1, -1);
+		dataJson.do005SII_2 = $(
+			'#myTabletoday tbody :nth-child(3) td:nth-child(3)'
+		)
+			.text()
+			.slice(1, -1);
 
-			dataJson.dauhoa_1 = tableElement.querySelector(
-				'tr:nth-child(6) td:nth-child(2)'
-			)?.innerText;
-			dataJson.dauhoa_2 = tableElement.querySelector(
-				'tr:nth-child(6) td:nth-child(3)'
-			)?.innerText;
-		} catch (err) {
-			console.log(err);
-		}
-		return dataJson;
-	};
-
-	let data = false;
-	let attemps = 0;
-	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 2) {
-		console.log('loop' + attemps);
-		data = await collectQueryDataHeightScroll(
-			urlPetrolimex,
-			pageEvaluateFunc
-		);
-		attemps++;
-		console.log(data);
-		if (data) {
-			Petrolimex.findOneAndUpdate(
-				{ name: data.name },
-				{
-					name: data.name,
-					timeUpdate: data.timeUpdate,
-					ron95v_1: data.ron95v_1,
-					ron95v_2: data.ron95v_2,
-					ron95III_1: data.ron95III_1,
-					ron95III_2: data.ron95III_2,
-					ron92II_1: data.ron92II_1,
-					ron92II_2: data.ron92II_2,
-					do0001SV_1: data.do0001SV_1,
-					do0001SV_2: data.do0001SV_2,
-					do005SII_1: data.do005SII_1,
-					do005SII_2: data.do005SII_2,
-					dauhoa_1: data.dauhoa_1,
-					dauhoa_2: data.dauhoa_2,
-				},
-				{ upsert: true }
-			)
-				// .then((doc) => console.log(doc))
-				.catch((err) => console.log(data.symbol));
-
-			// await browser.close();
-		}
-
-		if (data === false) {
-			//wait a few second, also a good idea to swap proxy here
-			console.log('Recrawl........' + attemps);
-			await new Promise((resolve) => setTimeout(resolve, 3000));
-		}
+		dataJson.dauhoa_1 = $(
+			'#myTabletoday tbody :nth-child(5) td:nth-child(2)'
+		)
+			.text()
+			.slice(1, -1);
+		dataJson.dauhoa_2 = $(
+			'#myTabletoday tbody :nth-child(5) td:nth-child(3)'
+		)
+			.text()
+			.slice(1, -1);
+	} catch (err) {
+		console.log(err);
 	}
-});
+
+	Petrolimex.findOneAndUpdate(
+		{ name: dataJson.name },
+		{
+			name: dataJson.name,
+			timeUpdate: dataJson.timeUpdate,
+			ron95v_1: dataJson.ron95v_1,
+			ron95v_2: dataJson.ron95v_2,
+			ron95III_1: dataJson.ron95III_1,
+			ron95III_2: dataJson.ron95III_2,
+			ron92II_1: dataJson.ron92II_1,
+			ron92II_2: dataJson.ron92II_2,
+			do0001SV_1: dataJson.do0001SV_1,
+			do0001SV_2: dataJson.do0001SV_2,
+			do005SII_1: dataJson.do005SII_1,
+			do005SII_2: dataJson.do005SII_2,
+			dauhoa_1: dataJson.dauhoa_1,
+			dauhoa_2: dataJson.dauhoa_2,
+		},
+		{ upsert: true }
+	)
+		// .then((doc) => console.log(doc))
+		.catch((err) => console.log(dataJson.symbol));
+};
+
+// const crawlPetrolimex = asyncHandler(async () => {
+// 	const pageEvaluateFunc = async () => {
+// 		const $ = document.querySelector.bind(document);
+
+// 		let dataJson = {};
+
+// try {
+// 	dataJson.name = 'Petrolimex';
+
+// 	let date = new Date();
+// 	dataJson.timeUpdate =
+// 		date.getHours() +
+// 		':' +
+// 		date.getMinutes() +
+// 		':' +
+// 		date.getSeconds() +
+// 		' ' +
+// 		date.getDate() +
+// 		'/' +
+// 		(date.getMonth() + 1) +
+// 		'/' +
+// 		date.getFullYear();
+
+// 	const tableElement = $('tbody.product');
+
+// 	dataJson.ron95v_1 = tableElement.querySelector(
+// 		'tr:nth-child(1) td:nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.ron95v_2 = tableElement.querySelector(
+// 		'tr:nth-child(1) td:nth-child(3)'
+// 	)?.innerText;
+
+// 	dataJson.ron95III_1 = tableElement.querySelector(
+// 		'tr:nth-child(2) td:nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.ron95III_2 = tableElement.querySelector(
+// 		'tr:nth-child(2) td:nth-child(3)'
+// 	)?.innerText;
+
+// 	dataJson.ron92II_1 = tableElement.querySelector(
+// 		'tr:nth-child(3) td:nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.ron92II_2 = tableElement.querySelector(
+// 		'tr:nth-child(3) td:nth-child(3)'
+// 	)?.innerText;
+
+// 	dataJson.do0001SV_1 = tableElement.querySelector(
+// 		'tr:nth-child(4) td:nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.do0001SV_2 = tableElement.querySelector(
+// 		'tr:nth-child(4) td:nth-child(3)'
+// 	)?.innerText;
+
+// 	dataJson.do005SII_1 = tableElement.querySelector(
+// 		'tr:nth-child(5) td:nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.do005SII_2 = tableElement.querySelector(
+// 		'tr:nth-child(5) td:nth-child(3)'
+// 	)?.innerText;
+
+// 	dataJson.dauhoa_1 = tableElement.querySelector(
+// 		'tr:nth-child(6) td:nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.dauhoa_2 = tableElement.querySelector(
+// 		'tr:nth-child(6) td:nth-child(3)'
+// 	)?.innerText;
+// } catch (err) {
+// 	console.log(err);
+// }
+// 		return dataJson;
+// 	};
+
+// 	let data = false;
+// 	let attemps = 0;
+// 	//retry request until it gets data or tries 3 times
+// 	while (data == false && attemps < 2) {
+// 		console.log('loop' + attemps);
+// 		data = await collectQueryDataHeightScroll(
+// 			urlPetrolimex,
+// 			pageEvaluateFunc
+// 		);
+// 		attemps++;
+// 		console.log(data);
+// 		if (data) {
+// Petrolimex.findOneAndUpdate(
+// 	{ name: data.name },
+// 	{
+// 		name: data.name,
+// 		timeUpdate: data.timeUpdate,
+// 		ron95v_1: data.ron95v_1,
+// 		ron95v_2: data.ron95v_2,
+// 		ron95III_1: data.ron95III_1,
+// 		ron95III_2: data.ron95III_2,
+// 		ron92II_1: data.ron92II_1,
+// 		ron92II_2: data.ron92II_2,
+// 		do0001SV_1: data.do0001SV_1,
+// 		do0001SV_2: data.do0001SV_2,
+// 		do005SII_1: data.do005SII_1,
+// 		do005SII_2: data.do005SII_2,
+// 		dauhoa_1: data.dauhoa_1,
+// 		dauhoa_2: data.dauhoa_2,
+// 	},
+// 	{ upsert: true }
+// )
+// 	// .then((doc) => console.log(doc))
+// 	.catch((err) => console.log(data.symbol));
+
+// 			// await browser.close();
+// 		}
+
+// 		if (data === false) {
+// 			//wait a few second, also a good idea to swap proxy here
+// 			console.log('Recrawl........' + attemps);
+// 			await new Promise((resolve) => setTimeout(resolve, 3000));
+// 		}
+// 	}
+// });
 
 module.exports = { crawlPetrolimex };
 

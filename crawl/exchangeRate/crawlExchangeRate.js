@@ -1,6 +1,8 @@
 const asyncHandler = require('express-async-handler');
 const cron = require('node-cron');
 const puppeteer = require('puppeteer');
+const axios = require('axios');
+const cheerio = require('cheerio');
 
 const {
 	collectQueryData,
@@ -14,1815 +16,4536 @@ const Techcombank = require('../../model/exchangeRate/techcombankModel');
 const Vietinbank = require('../../model/exchangeRate/vietinbankModel');
 const Mbbank = require('../../model/exchangeRate/mbbankModel');
 
-const urlAgribank = 'https://www.agribank.com.vn/vn/ty-gia';
-const urlVietcombank =
-	'https://portal.vietcombank.com.vn/Personal/TG/Pages/ty-gia.aspx?devicechannel=default';
-const urlBidv = 'https://www.bidv.com.vn/vn/ty-gia-ngoai-te';
-const urlTechcombank = 'https://chogia.vn/ty-gia/techcombank/';
-const urlVietinbank = 'https://www.vietinbank.vn/web/home/vn/ty-gia/';
-const urlMbbank = 'https://webgia.com/ty-gia/mbbank/';
+const urlAgribank = 'https://webtygia.com/ty-gia/agribank.html';
+const urlVietcombank = 'https://webtygia.com/ty-gia/vietcombank.html';
+const urlBidv = 'https://webtygia.com/ty-gia/bidv.html';
+const urlTechcombank = 'https://webtygia.com/ty-gia/techcombank.html';
+const urlVietinbank = 'https://webtygia.com/ty-gia/vietinbank.html';
+const urlMbbank = 'https://webtygia.com/ty-gia/mbbank.html';
 
-const crawlAgribank = asyncHandler(async () => {
-	const pageEvaluateFunc = async () => {
-		const $ = document.querySelector.bind(document);
+const crawlAgribank = async () => {
+	const result = await axios(urlAgribank)
+		.then((res) => res.data)
+		.catch((err) => console.log(err));
 
-		let dataJson = {};
-		try {
-			dataJson.name =
-				'Ngân hàng Nông nghiệp và Phát triển Nông thôn Việt Nam';
-			dataJson.symbol = 'Agribank';
+	const $ = cheerio.load(result);
 
-			let date = new Date();
-			dataJson.timeUpdate =
-				date.getHours() +
-				':' +
-				date.getMinutes() +
-				':' +
-				date.getSeconds() +
-				' ' +
-				date.getDate() +
-				'/' +
-				(date.getMonth() + 1) +
-				'/' +
-				date.getFullYear();
+	let dataJson = {};
 
-			dataJson.usdBuyCast = $(
-				'#tyGiaCn table tbody :nth-child(1) :nth-child(2)'
-			)?.innerText;
-			dataJson.usdBuyTransfer = $(
-				'#tyGiaCn table tbody :nth-child(1) :nth-child(3)'
-			)?.innerText;
-			dataJson.usdSell = $(
-				'#tyGiaCn table tbody :nth-child(1) :nth-child(4)'
-			)?.innerText;
+	try {
+		dataJson.name =
+			'Ngân hàng Nông nghiệp và Phát triển Nông thôn Việt Nam';
+		dataJson.symbol = 'Agribank';
 
-			dataJson.eurBuyCast = $(
-				'#tyGiaCn table tbody :nth-child(2) :nth-child(2)'
-			)?.innerText;
-			dataJson.eurBuyTransfer = $(
-				'#tyGiaCn table tbody :nth-child(2) :nth-child(3)'
-			)?.innerText;
-			dataJson.eurSell = $(
-				'#tyGiaCn table tbody :nth-child(2) :nth-child(4)'
-			)?.innerText;
+		let date = new Date();
+		dataJson.timeUpdate = Math.floor(Date.now() / 1000);
 
-			dataJson.gbpBuyCast = $(
-				'#tyGiaCn table tbody :nth-child(3) :nth-child(2)'
-			)?.innerText;
-			dataJson.gbpBuyTransfer = $(
-				'#tyGiaCn table tbody :nth-child(3) :nth-child(3)'
-			)?.innerText;
-			dataJson.gbpSell = $(
-				'#tyGiaCn table tbody :nth-child(3) :nth-child(4)'
-			)?.innerText;
+		dataJson.usdBuyCast = $('#myTable tbody :nth-child(1) :nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.usdBuyTransfer = $(
+			'#myTable tbody :nth-child(1) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.usdSell = $('#myTable tbody :nth-child(1) :nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-			dataJson.hkdBuyCast = $(
-				'#tyGiaCn table tbody :nth-child(4) :nth-child(2)'
-			)?.innerText;
-			dataJson.hkdBuyTransfer = $(
-				'#tyGiaCn table tbody :nth-child(4) :nth-child(3)'
-			)?.innerText;
-			dataJson.hkdSell = $(
-				'#tyGiaCn table tbody :nth-child(4) :nth-child(4)'
-			)?.innerText;
+		dataJson.eurBuyCast = $('#myTable tbody :nth-child(3) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.eurBuyTransfer = $(
+			'#myTable tbody :nth-child(3) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.eurSell = $('#myTable tbody :nth-child(3) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-			dataJson.chfBuyCast = $(
-				'#tyGiaCn table tbody :nth-child(5) :nth-child(2)'
-			)?.innerText;
-			dataJson.chfBuyTransfer = $(
-				'#tyGiaCn table tbody :nth-child(5) :nth-child(3)'
-			)?.innerText;
-			dataJson.chfSell = $(
-				'#tyGiaCn table tbody :nth-child(5) :nth-child(4)'
-			)?.innerText;
+		dataJson.gbpBuyCast = $('#myTable tbody :nth-child(5) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.gbpBuyTransfer = $(
+			'#myTable tbody :nth-child(5) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.gbpSell = $('#myTable tbody :nth-child(5) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-			dataJson.jpyBuyCast = $(
-				'#tyGiaCn table tbody :nth-child(6) :nth-child(2)'
-			)?.innerText;
-			dataJson.jpyBuyTransfer = $(
-				'#tyGiaCn table tbody :nth-child(6) :nth-child(3)'
-			)?.innerText;
-			dataJson.jpySell = $(
-				'#tyGiaCn table tbody :nth-child(6) :nth-child(4)'
-			)?.innerText;
+		dataJson.hkdBuyCast = $('#myTable tbody :nth-child(9) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.hkdBuyTransfer = $(
+			'#myTable tbody :nth-child(9) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.hkdSell = $('#myTable tbody :nth-child(9) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-			dataJson.audBuyCast = $(
-				'#tyGiaCn table tbody :nth-child(7) :nth-child(2)'
-			)?.innerText;
-			dataJson.audBuyTransfer = $(
-				'#tyGiaCn table tbody :nth-child(7) :nth-child(3)'
-			)?.innerText;
-			dataJson.audSell = $(
-				'#tyGiaCn table tbody :nth-child(7) :nth-child(4)'
-			)?.innerText;
+		dataJson.chfBuyCast = $('#myTable tbody :nth-child(4) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.chfBuyTransfer = $(
+			'#myTable tbody :nth-child(4) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.chfSell = $('#myTable tbody :nth-child(4) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-			dataJson.sgdBuyCast = $(
-				'#tyGiaCn table tbody :nth-child(8) :nth-child(2)'
-			)?.innerText;
-			dataJson.sgdBuyTransfer = $(
-				'#tyGiaCn table tbody :nth-child(8) :nth-child(3)'
-			)?.innerText;
-			dataJson.sgdSell = $(
-				'#tyGiaCn table tbody :nth-child(8) :nth-child(4)'
-			)?.innerText;
+		dataJson.jpyBuyCast = $('#myTable tbody :nth-child(2) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.jpyBuyTransfer = $(
+			'#myTable tbody :nth-child(2) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.jpySell = $('#myTable tbody :nth-child(2) :nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-			dataJson.thbBuyCast = $(
-				'#tyGiaCn table tbody :nth-child(9) :nth-child(2)'
-			)?.innerText;
-			dataJson.thbBuyTransfer = $(
-				'#tyGiaCn table tbody :nth-child(9) :nth-child(3)'
-			)?.innerText;
-			dataJson.thbSell = $(
-				'#tyGiaCn table tbody :nth-child(9) :nth-child(4)'
-			)?.innerText;
+		dataJson.audBuyCast = $('#myTable tbody :nth-child(6) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.audBuyTransfer = $(
+			'#myTable tbody :nth-child(6) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.audSell = $('#myTable tbody :nth-child(6) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-			dataJson.cadBuyCast = $(
-				'#tyGiaCn table tbody :nth-child(10) :nth-child(2)'
-			)?.innerText;
-			dataJson.cadBuyTransfer = $(
-				'#tyGiaCn table tbody :nth-child(10) :nth-child(3)'
-			)?.innerText;
-			dataJson.cadSell = $(
-				'#tyGiaCn table tbody :nth-child(10) :nth-child(4)'
-			)?.innerText;
+		dataJson.sgdBuyCast = $('#myTable tbody :nth-child(7) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.sgdBuyTransfer = $(
+			'#myTable tbody :nth-child(7) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.sgdSell = $('#myTable tbody :nth-child(7) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-			dataJson.nzdBuyCast = $(
-				'#tyGiaCn table tbody :nth-child(11) :nth-child(2)'
-			)?.innerText;
-			dataJson.nzdBuyTransfer = $(
-				'#tyGiaCn table tbody :nth-child(11) :nth-child(3)'
-			)?.innerText;
-			dataJson.nzdSell = $(
-				'#tyGiaCn table tbody :nth-child(11) :nth-child(4)'
-			)?.innerText;
+		dataJson.thbBuyCast = $('#myTable tbody :nth-child(10) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.thbBuyTransfer = $(
+			'#myTable tbody :nth-child(10) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.thbSell = $('#myTable tbody :nth-child(10) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-			dataJson.krwBuyCast = $(
-				'#tyGiaCn table tbody :nth-child(12) :nth-child(2)'
-			)?.innerText;
-			dataJson.krwBuyTransfer = $(
-				'#tyGiaCn table tbody :nth-child(12) :nth-child(3)'
-			)?.innerText;
-			dataJson.krwSell = $(
-				'#tyGiaCn table tbody :nth-child(12) :nth-child(4)'
-			)?.innerText;
-		} catch (err) {
-			console.log(err);
-		}
+		dataJson.cadBuyCast = $('#myTable tbody :nth-child(8) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.cadBuyTransfer = $(
+			'#myTable tbody :nth-child(8) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.cadSell = $('#myTable tbody :nth-child(8) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-		return dataJson;
-	};
+		dataJson.nzdBuyCast = $('#myTable tbody :nth-child(11) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.nzdBuyTransfer = $(
+			'#myTable tbody :nth-child(11) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.nzdSell = $('#myTable tbody :nth-child(11) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-	let data = false;
-	let attemps = 0;
-	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 2) {
-		console.log('loop' + attemps);
-		data = await collectQueryData(urlAgribank, pageEvaluateFunc);
-		attemps++;
-		console.log(data);
-		if (data) {
-			Agribank.findOneAndUpdate(
-				{ symbol: data.symbol },
-				{
-					name: data.name,
-					symbol: data.symbol,
-					timeUpdate: data.timeUpdate,
-
-					usdBuyCast: data.usdBuyCast,
-					usdBuyTransfer: data.usdBuyTransfer,
-					usdSellTransfer: data.usdSellTransfer,
-					usdSellCast: data.usdSellCast,
-
-					eurBuyCast: data.eurBuyCast,
-					eurBuyTransfer: data.eurBuyTransfer,
-					eurSellTransfer: data.eurSellTransfer,
-					eurSellCast: data.eurSellCast,
-
-					gbpBuyCast: data.gbpBuyCast,
-					gbpBuyTransfer: data.gbpBuyTransfer,
-					gbpSellTransfer: data.gbpSellTransfer,
-					gbpSellCast: data.gbpSellCast,
-
-					jpyBuyCast: data.jpyBuyCast,
-					jpyBuyTransfer: data.jpyBuyTransfer,
-					jpySellTransfer: data.jpySellTransfer,
-					jpySellCast: data.jpySellCast,
-
-					audBuyCast: data.audBuyCast,
-					audBuyTransfer: data.audBuyTransfer,
-					audSellTransfer: data.audSellTransfer,
-					audSellCast: data.audSellCast,
-
-					cadBuyCast: data.cadBuyCast,
-					cadBuyTransfer: data.cadBuyTransfer,
-					cadSellTransfer: data.cadSellTransfer,
-					cadSellCast: data.cadSellCast,
-
-					nzdBuyCast: data.nzdBuyCast,
-					nzdBuyTransfer: data.nzdBuyTransfer,
-					nzdSellTransfer: data.nzdSellTransfer,
-					nzdSellCast: data.nzdSellCast,
-
-					sgdBuyCast: data.sgdBuyCast,
-					sgdBuyTransfer: data.sgdBuyTransfer,
-					sgdSellTransfer: data.sgdSellTransfer,
-					sgdSellCast: data.sgdSellCast,
-
-					chfBuyCast: data.chfBuyCast,
-					chfBuyTransfer: data.chfBuyTransfer,
-					chfSellTransfer: data.chfSellTransfer,
-					chfSellCast: data.chfSellCast,
-
-					hkdBuyCast: data.hkdBuyCast,
-					hkdBuyTransfer: data.hkdBuyTransfer,
-					hkdSellTransfer: data.hkdSellTransfer,
-					hkdSellCast: data.hkdSellCast,
-
-					krwBuyCast: data.krwBuyCast,
-					krwBuyTransfer: data.krwBuyTransfer,
-					krwSellTransfer: data.krwSellTransfer,
-					krwSellCast: data.krwSellCast,
-				},
-				{ upsert: true }
-			)
-				// .then((doc) => console.log(doc))
-				.catch((err) => console.log(data.symbol));
-
-			// await browser.close();
-		}
-
-		if (data === false) {
-			//wait a few second, also a good idea to swap proxy here
-			console.log('Recrawl........' + attemps);
-			await new Promise((resolve) => setTimeout(resolve, 3000));
-		}
+		dataJson.krwBuyCast = $('#myTable tbody :nth-child(12) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\,/g, '');
+		dataJson.krwBuyTransfer = $(
+			'#myTable tbody :nth-child(12) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\,/g, '');
+		dataJson.krwSell = $('#myTable tbody :nth-child(12) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\,/g, '');
+	} catch (err) {
+		console.log(err);
 	}
-});
 
-const crawlVietcombank = asyncHandler(async () => {
-	const pageEvaluateFunc = async () => {
-		const $ = document.querySelector.bind(document);
+	Agribank.findOneAndUpdate(
+		{ symbol: dataJson.symbol },
+		{
+			name: dataJson.name,
+			symbol: dataJson.symbol,
+			timeUpdate: dataJson.timeUpdate,
 
-		let dataJson = {};
+			usdBuyCast: dataJson.usdBuyCast,
+			usdBuyTransfer: dataJson.usdBuyTransfer,
+			usdSellTransfer: dataJson.usdSellTransfer,
+			usdSellCast: dataJson.usdSellCast,
 
-		try {
-			dataJson.name =
-				'Ngân hàng thương mại cổ phần Ngoại thương Việt Nam';
-			dataJson.symbol = 'Vietcombank';
+			eurBuyCast: dataJson.eurBuyCast,
+			eurBuyTransfer: dataJson.eurBuyTransfer,
+			eurSellTransfer: dataJson.eurSellTransfer,
+			eurSellCast: dataJson.eurSellCast,
 
-			let date = new Date();
-			dataJson.timeUpdate =
-				date.getHours() +
-				':' +
-				date.getMinutes() +
-				':' +
-				date.getSeconds() +
-				' ' +
-				date.getDate() +
-				'/' +
-				(date.getMonth() + 1) +
-				'/' +
-				date.getFullYear();
+			gbpBuyCast: dataJson.gbpBuyCast,
+			gbpBuyTransfer: dataJson.gbpBuyTransfer,
+			gbpSellTransfer: dataJson.gbpSellTransfer,
+			gbpSellCast: dataJson.gbpSellCast,
 
-			dataJson.audBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(3) :nth-child(3)'
-			)?.innerText;
-			dataJson.audBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(3) :nth-child(4)'
-			)?.innerText;
-			dataJson.audSell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(3) :nth-child(5)'
-			)?.innerText;
+			jpyBuyCast: dataJson.jpyBuyCast,
+			jpyBuyTransfer: dataJson.jpyBuyTransfer,
+			jpySellTransfer: dataJson.jpySellTransfer,
+			jpySellCast: dataJson.jpySellCast,
 
-			dataJson.cadBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(4) :nth-child(3)'
-			)?.innerText;
-			dataJson.cadBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(4) :nth-child(4)'
-			)?.innerText;
-			dataJson.cadSell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(4) :nth-child(5)'
-			)?.innerText;
+			audBuyCast: dataJson.audBuyCast,
+			audBuyTransfer: dataJson.audBuyTransfer,
+			audSellTransfer: dataJson.audSellTransfer,
+			audSellCast: dataJson.audSellCast,
 
-			dataJson.chfBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(5) :nth-child(3)'
-			)?.innerText;
-			dataJson.chfBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(5) :nth-child(4)'
-			)?.innerText;
-			dataJson.chfSell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(5) :nth-child(5)'
-			)?.innerText;
+			cadBuyCast: dataJson.cadBuyCast,
+			cadBuyTransfer: dataJson.cadBuyTransfer,
+			cadSellTransfer: dataJson.cadSellTransfer,
+			cadSellCast: dataJson.cadSellCast,
 
-			dataJson.cnyBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(6) :nth-child(3)'
-			)?.innerText;
-			dataJson.cnyBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(6) :nth-child(4)'
-			)?.innerText;
-			dataJson.cnySell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(6) :nth-child(5)'
-			)?.innerText;
+			nzdBuyCast: dataJson.nzdBuyCast,
+			nzdBuyTransfer: dataJson.nzdBuyTransfer,
+			nzdSellTransfer: dataJson.nzdSellTransfer,
+			nzdSellCast: dataJson.nzdSellCast,
 
-			dataJson.dkkBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(7) :nth-child(3)'
-			)?.innerText;
-			dataJson.dkkBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(7) :nth-child(4)'
-			)?.innerText;
-			dataJson.dkkSell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(7) :nth-child(5)'
-			)?.innerText;
+			sgdBuyCast: dataJson.sgdBuyCast,
+			sgdBuyTransfer: dataJson.sgdBuyTransfer,
+			sgdSellTransfer: dataJson.sgdSellTransfer,
+			sgdSellCast: dataJson.sgdSellCast,
 
-			dataJson.eurBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(8) :nth-child(3)'
-			)?.innerText;
-			dataJson.eurBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(8) :nth-child(4)'
-			)?.innerText;
-			dataJson.eurSell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(8) :nth-child(5)'
-			)?.innerText;
+			chfBuyCast: dataJson.chfBuyCast,
+			chfBuyTransfer: dataJson.chfBuyTransfer,
+			chfSellTransfer: dataJson.chfSellTransfer,
+			chfSellCast: dataJson.chfSellCast,
 
-			dataJson.gbpBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(9) :nth-child(3)'
-			)?.innerText;
-			dataJson.gbpBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(9) :nth-child(4)'
-			)?.innerText;
-			dataJson.gbpSell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(9) :nth-child(5)'
-			)?.innerText;
+			hkdBuyCast: dataJson.hkdBuyCast,
+			hkdBuyTransfer: dataJson.hkdBuyTransfer,
+			hkdSellTransfer: dataJson.hkdSellTransfer,
+			hkdSellCast: dataJson.hkdSellCast,
 
-			dataJson.hkdBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(10) :nth-child(3)'
-			)?.innerText;
-			dataJson.hkdBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(10) :nth-child(4)'
-			)?.innerText;
-			dataJson.hkdSell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(10) :nth-child(5)'
-			)?.innerText;
+			krwBuyCast: dataJson.krwBuyCast,
+			krwBuyTransfer: dataJson.krwBuyTransfer,
+			krwSellTransfer: dataJson.krwSellTransfer,
+			krwSellCast: dataJson.krwSellCast,
+		},
+		{ upsert: true }
+	)
+		// .then((doc) => console.log(doc))
+		.catch((err) => console.log(data.symbol));
+};
+const crawlVietcombank = async () => {
+	const result = await axios(urlVietcombank)
+		.then((res) => res.data)
+		.catch((err) => console.log(err));
 
-			dataJson.inrBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(11) :nth-child(3)'
-			)?.innerText;
-			dataJson.inrBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(11) :nth-child(4)'
-			)?.innerText;
-			dataJson.inrSell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(11) :nth-child(5)'
-			)?.innerText;
+	const $ = cheerio.load(result);
 
-			dataJson.jpyBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(12) :nth-child(3)'
-			)?.innerText;
-			dataJson.jpyBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(12) :nth-child(4)'
-			)?.innerText;
-			dataJson.jpySell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(12) :nth-child(5)'
-			)?.innerText;
+	let dataJson = {};
 
-			dataJson.krwBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(13) :nth-child(3)'
-			)?.innerText;
-			dataJson.krwBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(13) :nth-child(4)'
-			)?.innerText;
-			dataJson.krwSell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(13) :nth-child(5)'
-			)?.innerText;
+	try {
+		dataJson.name = 'Ngân hàng thương mại cổ phần Ngoại thương Việt Nam';
+		dataJson.symbol = 'Vietcombank';
 
-			dataJson.kwdBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(14) :nth-child(3)'
-			)?.innerText;
-			dataJson.kwdBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(14) :nth-child(4)'
-			)?.innerText;
-			dataJson.kwdSell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(14) :nth-child(5)'
-			)?.innerText;
+		let date = new Date();
+		dataJson.timeUpdate = Math.floor(Date.now() / 1000);
 
-			dataJson.myrBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(15) :nth-child(3)'
-			)?.innerText;
-			dataJson.myrBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(15) :nth-child(4)'
-			)?.innerText;
-			dataJson.myrSell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(15) :nth-child(5)'
-			)?.innerText;
+		dataJson.audBuyCast = $('#myTable tbody :nth-child(6) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.audBuyTransfer = $(
+			'#myTable tbody :nth-child(6) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.audSell = $('#myTable tbody :nth-child(6) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
 
-			dataJson.nokBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(16) :nth-child(3)'
-			)?.innerText;
-			dataJson.nokBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(16) :nth-child(4)'
-			)?.innerText;
-			dataJson.nokSell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(16) :nth-child(5)'
-			)?.innerText;
+		dataJson.cadBuyCast = $('#myTable tbody :nth-child(8) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.cadBuyTransfer = $(
+			'#myTable tbody :nth-child(8) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.cadSell = $('#myTable tbody :nth-child(8) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
 
-			dataJson.rubBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(17) :nth-child(3)'
-			)?.innerText;
-			dataJson.rubBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(17) :nth-child(4)'
-			)?.innerText;
-			dataJson.rubSell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(17) :nth-child(5)'
-			)?.innerText;
+		dataJson.chfBuyCast = $('#myTable tbody :nth-child(4) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.chfBuyTransfer = $(
+			'#myTable tbody :nth-child(4) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.chfSell = $('#myTable tbody :nth-child(4) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
 
-			dataJson.sarBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(18) :nth-child(3)'
-			)?.innerText;
-			dataJson.sarBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(18) :nth-child(4)'
-			)?.innerText;
-			dataJson.sarSell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(18) :nth-child(5)'
-			)?.innerText;
+		dataJson.cnyBuyCast = $('#myTable tbody :nth-child(15) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
+		dataJson.cnyBuyTransfer = $(
+			'#myTable tbody :nth-child(15) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
+		dataJson.cnySell = $('#myTable tbody :nth-child(15) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
 
-			dataJson.sekBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(19) :nth-child(3)'
-			)?.innerText;
-			dataJson.sekBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(19) :nth-child(4)'
-			)?.innerText;
-			dataJson.sekSell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(19) :nth-child(5)'
-			)?.innerText;
+		dataJson.dkkBuyCast = $('#myTable tbody :nth-child(13) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.dkkBuyTransfer = $(
+			'#myTable tbody :nth-child(13) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.dkkSell = $('#myTable tbody :nth-child(13) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
 
-			dataJson.sgdBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(20) :nth-child(3)'
-			)?.innerText;
-			dataJson.sgdBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(20) :nth-child(4)'
-			)?.innerText;
-			dataJson.sgdSell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(20) :nth-child(5)'
-			)?.innerText;
+		dataJson.eurBuyCast = $('#myTable tbody :nth-child(3) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.eurBuyTransfer = $(
+			'#myTable tbody :nth-child(3) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.eurSell = $('#myTable tbody :nth-child(3) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
 
-			dataJson.thbBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(21) :nth-child(3)'
-			)?.innerText;
-			dataJson.thbBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(21) :nth-child(4)'
-			)?.innerText;
-			dataJson.thbSell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(21) :nth-child(5)'
-			)?.innerText;
+		dataJson.gbpBuyCast = $('#myTable tbody :nth-child(5) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.gbpBuyTransfer = $(
+			'#myTable tbody :nth-child(5) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.gbpSell = $('#myTable tbody :nth-child(5) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
 
-			dataJson.usdBuyCast = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(22) :nth-child(3)'
-			)?.innerText;
-			dataJson.usdBuyTransfer = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(22) :nth-child(4)'
-			)?.innerText;
-			dataJson.usdSell = $(
-				'#ctl00_Content_ExrateView tbody :nth-child(22) :nth-child(5)'
-			)?.innerText;
-		} catch (err) {
-			console.log(err);
-		}
-		return dataJson;
-	};
+		dataJson.hkdBuyCast = $('#myTable tbody :nth-child(9) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.hkdBuyTransfer = $(
+			'#myTable tbody :nth-child(9) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.hkdSell = $('#myTable tbody :nth-child(9) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
 
-	let data = false;
-	let attemps = 0;
-	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 2) {
-		console.log('loop' + attemps);
-		data = await collectQueryData(urlVietcombank, pageEvaluateFunc);
-		attemps++;
-		console.log(data);
-		if (data) {
-			Vietcombank.findOneAndUpdate(
-				{ symbol: data.symbol },
-				{
-					name: data.name,
-					symbol: data.symbol,
-					timeUpdate: data.timeUpdate,
+		dataJson.inrBuyCast = $('#myTable tbody :nth-child(20) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.inrBuyTransfer = $(
+			'#myTable tbody :nth-child(20) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.inrSell = $('#myTable tbody :nth-child(20) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
 
-					audBuyCast: data.audBuyCast,
-					audBuyTransfer: data.audBuyTransfer,
-					audSell: data.audSell,
+		dataJson.jpyBuyCast = $('#myTable tbody :nth-child(2) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\,/g, '');
+		dataJson.jpyBuyTransfer = $(
+			'#myTable tbody :nth-child(2) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\,/g, '');
+		dataJson.jpySell = $('#myTable tbody :nth-child(2) :nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\,/g, '');
 
-					cadBuyCast: data.cadBuyCast,
-					cadBuyTransfer: data.cadBuyTransfer,
-					cadSell: data.cadSell,
+		dataJson.krwBuyCast = $('#myTable tbody :nth-child(11) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.krwBuyTransfer = $(
+			'#myTable tbody :nth-child(11) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.krwSell = $('#myTable tbody :nth-child(11) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
 
-					chfBuyCast: data.chfBuyCast,
-					chfBuyTransfer: data.chfBuyTransfer,
-					chfSell: data.chfSell,
+		dataJson.kwdBuyCast = $('#myTable tbody :nth-child(19) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.kwdBuyTransfer = $(
+			'#myTable tbody :nth-child(19) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.kwdSell = $('#myTable tbody :nth-child(19) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
 
-					cnyBuyCast: data.cnyBuyCast,
-					cnyBuyTransfer: data.cnyBuyTransfer,
-					cnySell: data.cnySell,
+		dataJson.myrBuyCast = $('#myTable tbody :nth-child(17) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.myrBuyTransfer = $(
+			'#myTable tbody :nth-child(17) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.myrSell = $('#myTable tbody :nth-child(17) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
 
-					dkkBuyCast: data.dkkBuyCast,
-					dkkBuyTransfer: data.dkkBuyTransfer,
-					dkkSell: data.dkkSell,
+		dataJson.nokBuyCast = $('#myTable tbody :nth-child(14) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.nokBuyTransfer = $(
+			'#myTable tbody :nth-child(14) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.nokSell = $('#myTable tbody :nth-child(14) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
 
-					eurBuyCast: data.eurBuyCast,
-					eurBuyTransfer: data.eurBuyTransfer,
-					eurSell: data.eurSell,
+		dataJson.rubBuyCast = $('#myTable tbody :nth-child(16) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.rubBuyTransfer = $(
+			'#myTable tbody :nth-child(16) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.rubSell = $('#myTable tbody :nth-child(16) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
 
-					gbpBuyCast: data.gbpBuyCast,
-					gbpBuyTransfer: data.gbpBuyTransfer,
-					gbpSell: data.gbpSell,
+		dataJson.sarBuyCast = $('#myTable tbody :nth-child(18) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.sarBuyTransfer = $(
+			'#myTable tbody :nth-child(18) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.sarSell = $('#myTable tbody :nth-child(18) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
 
-					hkdBuyCast: data.hkdBuyCast,
-					hkdBuyTransfer: data.hkdBuyTransfer,
-					hkdSell: data.hkdSell,
+		dataJson.sekBuyCast = $('#myTable tbody :nth-child(12) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.sekBuyTransfer = $(
+			'#myTable tbody :nth-child(12) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.sekSell = $('#myTable tbody :nth-child(12) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
 
-					inrBuyCast: data.inrBuyCast,
-					inrBuyTransfer: data.inrBuyTransfer,
-					inrSell: data.inrSell,
+		dataJson.sgdBuyCast = $('#myTable tbody :nth-child(7) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.sgdBuyTransfer = $(
+			'#myTable tbody :nth-child(7) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
+		dataJson.sgdSell = $('#myTable tbody :nth-child(7) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -3)
+			.replace(/[.,\s]/g, '');
 
-					jpyBuyCast: data.jpyBuyCast,
-					jpyBuyTransfer: data.jpyBuyTransfer,
-					jpySell: data.jpySell,
+		dataJson.thbBuyCast = $('#myTable tbody :nth-child(10) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.thbBuyTransfer = $(
+			'#myTable tbody :nth-child(10) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.thbSell = $('#myTable tbody :nth-child(10) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
 
-					krwBuyCast: data.krwBuyCast,
-					krwBuyTransfer: data.krwBuyTransfer,
-					krwSell: data.krwSell,
-
-					kwdBuyCast: data.kwdBuyCast,
-					kwdBuyTransfer: data.kwdBuyTransfer,
-					kwdSell: data.kwdSell,
-
-					myrBuyCast: data.myrBuyCast,
-					myrBuyTransfer: data.myrBuyTransfer,
-					myrSell: data.myrSell,
-
-					nokBuyCast: data.nokBuyCast,
-					nokBuyTransfer: data.nokBuyTransfer,
-					nokSell: data.nokSell,
-
-					rubBuyCast: data.rubBuyCast,
-					rubBuyTransfer: data.rubBuyTransfer,
-					rubSell: data.rubSell,
-
-					sarBuyCast: data.sarBuyCast,
-					sarBuyTransfer: data.sarBuyTransfer,
-					sarSell: data.sarSell,
-
-					sekBuyCast: data.sekBuyCast,
-					sekBuyTransfer: data.sekBuyTransfer,
-					sekSell: data.sekSell,
-
-					sgdBuyCast: data.sgdBuyCast,
-					sgdBuyTransfer: data.sgdBuyTransfer,
-					sgdSell: data.sgdSell,
-
-					thbBuyCast: data.thbBuyCast,
-					thbBuyTransfer: data.thbBuyTransfer,
-					thbSell: data.thbSell,
-
-					usdBuyCast: data.usdBuyCast,
-					usdBuyTransfer: data.usdBuyTransfer,
-					usdSell: data.usdSell,
-				},
-				{ upsert: true }
-			)
-				// .then((doc) => console.log(doc))
-				.catch((err) => console.log(data.symbol));
-
-			// await browser.close();
-		}
-
-		if (data === false) {
-			//wait a few second, also a good idea to swap proxy here
-			console.log('Recrawl........' + attemps);
-			await new Promise((resolve) => setTimeout(resolve, 3000));
-		}
+		dataJson.usdBuyCast = $('#myTable tbody :nth-child(1) :nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.usdBuyTransfer = $(
+			'#myTable tbody :nth-child(1) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.usdSell = $('#myTable tbody :nth-child(1) :nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+	} catch (err) {
+		console.log(err);
 	}
-});
 
-const crawlBidv = asyncHandler(async () => {
-	const pageEvaluateFunc = async () => {
-		const $ = document.querySelector.bind(document);
+	Vietcombank.findOneAndUpdate(
+		{ symbol: dataJson.symbol },
+		{
+			name: dataJson.name,
+			symbol: dataJson.symbol,
+			timeUpdate: dataJson.timeUpdate,
 
-		let dataJson = {};
+			audBuyCast: dataJson.audBuyCast,
+			audBuyTransfer: dataJson.audBuyTransfer,
+			audSell: dataJson.audSell,
 
-		try {
-			dataJson.name =
-				'Ngân hàng Thương mại cổ phần Đầu tư và Phát triển Việt Nam';
-			dataJson.symbol = 'Bidv';
+			cadBuyCast: dataJson.cadBuyCast,
+			cadBuyTransfer: dataJson.cadBuyTransfer,
+			cadSell: dataJson.cadSell,
 
-			let date = new Date();
-			dataJson.timeUpdate =
-				date.getHours() +
-				':' +
-				date.getMinutes() +
-				':' +
-				date.getSeconds() +
-				' ' +
-				date.getDate() +
-				'/' +
-				(date.getMonth() + 1) +
-				'/' +
-				date.getFullYear();
+			chfBuyCast: dataJson.chfBuyCast,
+			chfBuyTransfer: dataJson.chfBuyTransfer,
+			chfSell: dataJson.chfSell,
 
-			dataJson.usdBuyCast = $(
-				'table tbody :nth-child(1) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.usdBuyTransfer = $(
-				'table tbody :nth-child(1) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.usdSell = $(
-				'table tbody :nth-child(1) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+			cnyBuyCast: dataJson.cnyBuyCast,
+			cnyBuyTransfer: dataJson.cnyBuyTransfer,
+			cnySell: dataJson.cnySell,
 
-			dataJson.gbpBuyCast = $(
-				'table tbody :nth-child(4) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.gbpBuyTransfer = $(
-				'table tbody :nth-child(4) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.gbpSell = $(
-				'table tbody :nth-child(4) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+			dkkBuyCast: dataJson.dkkBuyCast,
+			dkkBuyTransfer: dataJson.dkkBuyTransfer,
+			dkkSell: dataJson.dkkSell,
 
-			dataJson.hkdBuyCast = $(
-				'table tbody :nth-child(5) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.hkdBuyTransfer = $(
-				'table tbody :nth-child(5) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.hkdSell = $(
-				'table tbody :nth-child(5) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+			eurBuyCast: dataJson.eurBuyCast,
+			eurBuyTransfer: dataJson.eurBuyTransfer,
+			eurSell: dataJson.eurSell,
 
-			dataJson.chfBuyCast = $(
-				'table tbody :nth-child(6) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.chfBuyTransfer = $(
-				'table tbody :nth-child(6) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.chfSell = $(
-				'table tbody :nth-child(6) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+			gbpBuyCast: dataJson.gbpBuyCast,
+			gbpBuyTransfer: dataJson.gbpBuyTransfer,
+			gbpSell: dataJson.gbpSell,
 
-			dataJson.jpyBuyCast = $(
-				'table tbody :nth-child(7) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.jpyBuyTransfer = $(
-				'table tbody :nth-child(7) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.jpySell = $(
-				'table tbody :nth-child(7) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+			hkdBuyCast: dataJson.hkdBuyCast,
+			hkdBuyTransfer: dataJson.hkdBuyTransfer,
+			hkdSell: dataJson.hkdSell,
 
-			dataJson.thbBuyCast = $(
-				'table tbody :nth-child(8) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.thbBuyTransfer = $(
-				'table tbody :nth-child(8) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.thbSell = $(
-				'table tbody :nth-child(8) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+			inrBuyCast: dataJson.inrBuyCast,
+			inrBuyTransfer: dataJson.inrBuyTransfer,
+			inrSell: dataJson.inrSell,
 
-			dataJson.audBuyCast = $(
-				'table tbody :nth-child(9) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.audBuyTransfer = $(
-				'table tbody :nth-child(9) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.audSell = $(
-				'table tbody :nth-child(9) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+			jpyBuyCast: dataJson.jpyBuyCast,
+			jpyBuyTransfer: dataJson.jpyBuyTransfer,
+			jpySell: dataJson.jpySell,
 
-			dataJson.cadBuyCast = $(
-				'table tbody :nth-child(10) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.cadBuyTransfer = $(
-				'table tbody :nth-child(10) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.cadSell = $(
-				'table tbody :nth-child(10) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+			krwBuyCast: dataJson.krwBuyCast,
+			krwBuyTransfer: dataJson.krwBuyTransfer,
+			krwSell: dataJson.krwSell,
 
-			dataJson.sgdBuyCast = $(
-				'table tbody :nth-child(11) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.sgdBuyTransfer = $(
-				'table tbody :nth-child(11) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.sgdSell = $(
-				'table tbody :nth-child(11) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+			kwdBuyCast: dataJson.kwdBuyCast,
+			kwdBuyTransfer: dataJson.kwdBuyTransfer,
+			kwdSell: dataJson.kwdSell,
 
-			dataJson.sekBuyCast = $(
-				'table tbody :nth-child(12) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.sekBuyTransfer = $(
-				'table tbody :nth-child(12) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.sekSell = $(
-				'table tbody :nth-child(12) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+			myrBuyCast: dataJson.myrBuyCast,
+			myrBuyTransfer: dataJson.myrBuyTransfer,
+			myrSell: dataJson.myrSell,
 
-			dataJson.lakBuyCast = $(
-				'table tbody :nth-child(13) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.lakBuyTransfer = $(
-				'table tbody :nth-child(13) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.lakSell = $(
-				'table tbody :nth-child(13) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+			nokBuyCast: dataJson.nokBuyCast,
+			nokBuyTransfer: dataJson.nokBuyTransfer,
+			nokSell: dataJson.nokSell,
 
-			dataJson.dkkBuyCast = $(
-				'table tbody :nth-child(14) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.dkkBuyTransfer = $(
-				'table tbody :nth-child(14) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.dkkSell = $(
-				'table tbody :nth-child(14) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+			rubBuyCast: dataJson.rubBuyCast,
+			rubBuyTransfer: dataJson.rubBuyTransfer,
+			rubSell: dataJson.rubSell,
 
-			dataJson.nokBuyCast = $(
-				'table tbody :nth-child(15) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.nokBuyTransfer = $(
-				'table tbody :nth-child(15) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.nokSell = $(
-				'table tbody :nth-child(15) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+			sarBuyCast: dataJson.sarBuyCast,
+			sarBuyTransfer: dataJson.sarBuyTransfer,
+			sarSell: dataJson.sarSell,
 
-			dataJson.cnyBuyCast = $(
-				'table tbody :nth-child(16) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.cnyBuyTransfer = $(
-				'table tbody :nth-child(16) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.cnySell = $(
-				'table tbody :nth-child(16) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+			sekBuyCast: dataJson.sekBuyCast,
+			sekBuyTransfer: dataJson.sekBuyTransfer,
+			sekSell: dataJson.sekSell,
 
-			dataJson.rubBuyCast = $(
-				'table tbody :nth-child(17) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.rubBuyTransfer = $(
-				'table tbody :nth-child(17) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.rubSell = $(
-				'table tbody :nth-child(17) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+			sgdBuyCast: dataJson.sgdBuyCast,
+			sgdBuyTransfer: dataJson.sgdBuyTransfer,
+			sgdSell: dataJson.sgdSell,
 
-			dataJson.nzdBuyCast = $(
-				'table tbody :nth-child(18) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.nzdBuyTransfer = $(
-				'table tbody :nth-child(18) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.nzdSell = $(
-				'table tbody :nth-child(18) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+			thbBuyCast: dataJson.thbBuyCast,
+			thbBuyTransfer: dataJson.thbBuyTransfer,
+			thbSell: dataJson.thbSell,
 
-			dataJson.krwBuyCast = $(
-				'table tbody :nth-child(19) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.krwBuyTransfer = $(
-				'table tbody :nth-child(19) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.krwSell = $(
-				'table tbody :nth-child(19) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+			usdBuyCast: dataJson.usdBuyCast,
+			usdBuyTransfer: dataJson.usdBuyTransfer,
+			usdSell: dataJson.usdSell,
+		},
+		{ upsert: true }
+	)
+		// .then((doc) => console.log(doc))
+		.catch((err) => console.log(dataJson.symbol));
+};
+const crawlBidv = async () => {
+	const result = await axios(urlBidv)
+		.then((res) => res.data)
+		.catch((err) => console.log(err));
 
-			dataJson.eurBuyCast = $(
-				'table tbody :nth-child(20) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.eurBuyTransfer = $(
-				'table tbody :nth-child(20) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.eurSell = $(
-				'table tbody :nth-child(20) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+	const $ = cheerio.load(result);
 
-			dataJson.twdBuyCast = $(
-				'table tbody :nth-child(21) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.twdBuyTransfer = $(
-				'table tbody :nth-child(21) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.twdSell = $(
-				'table tbody :nth-child(21) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
+	let dataJson = {};
 
-			dataJson.myrBuyCast = $(
-				'table tbody :nth-child(22) :nth-child(3) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.myrBuyTransfer = $(
-				'table tbody :nth-child(22) :nth-child(4) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-			dataJson.myrSell = $(
-				'table tbody :nth-child(22) :nth-child(5) :nth-child(2) :nth-child(2) '
-			)?.innerText;
-		} catch (err) {
-			console.log(err);
-		}
-		return dataJson;
-	};
+	try {
+		dataJson.name =
+			'Ngân hàng Thương mại cổ phần Đầu tư và Phát triển Việt Nam';
+		dataJson.symbol = 'Bidv';
 
-	let data = false;
-	let attemps = 0;
-	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 2) {
-		console.log('loop' + attemps);
-		data = await collectQueryData(urlBidv, pageEvaluateFunc);
-		attemps++;
-		console.log(data);
-		if (data) {
-			Bidv.findOneAndUpdate(
-				{ symbol: data.symbol },
-				{
-					name: data.name,
-					symbol: data.symbol,
-					timeUpdate: data.timeUpdate,
+		let date = new Date();
+		dataJson.timeUpdate = Math.floor(Date.now() / 1000);
 
-					usdBuyCast: data.usdBuyCast,
-					usdBuyTransfer: data.usdBuyTransfer,
-					usdSell: data.usdSell,
+		dataJson.audBuyCast = $('#myTable tbody :nth-child(6) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/[.,\s]/g, '');
+		dataJson.audBuyTransfer = $(
+			'#myTable tbody :nth-child(6) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
+		dataJson.audSell = $('#myTable tbody :nth-child(6) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
 
-					gbpBuyCast: data.gbpBuyCast,
-					gbpBuyTransfer: data.gbpBuyTransfer,
-					gbpSell: data.gbpSell,
+		dataJson.cadBuyCast = $('#myTable tbody :nth-child(8) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/[.,\s]/g, '');
+		dataJson.cadBuyTransfer = $(
+			'#myTable tbody :nth-child(8) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
+		dataJson.cadSell = $('#myTable tbody :nth-child(8) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
 
-					hkdBuyCast: data.hkdBuyCast,
-					hkdBuyTransfer: data.hkdBuyTransfer,
-					hkdSell: data.hkdSell,
+		dataJson.chfBuyCast = $('#myTable tbody :nth-child(4) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/[.,\s]/g, '');
+		dataJson.chfBuyTransfer = $(
+			'#myTable tbody :nth-child(4) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
+		dataJson.chfSell = $('#myTable tbody :nth-child(4) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
 
-					chfBuyCast: data.chfBuyCast,
-					chfBuyTransfer: data.chfBuyTransfer,
-					chfSell: data.chfSell,
+		dataJson.cnyBuyCast = $('#myTable tbody :nth-child(18) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.cnyBuyTransfer = $(
+			'#myTable tbody :nth-child(18) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.cnySell = $('#myTable tbody :nth-child(18) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
 
-					jpyBuyCast: data.jpyBuyCast,
-					jpyBuyTransfer: data.jpyBuyTransfer,
-					jpySell: data.jpySell,
+		dataJson.dkkBuyCast = $('#myTable tbody :nth-child(16) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
+		dataJson.dkkBuyTransfer = $(
+			'#myTable tbody :nth-child(16) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
+		dataJson.dkkSell = $('#myTable tbody :nth-child(16) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
 
-					thbBuyCast: data.thbBuyCast,
-					thbBuyTransfer: data.thbBuyTransfer,
-					thbSell: data.thbSell,
+		dataJson.eurBuyCast = $('#myTable tbody :nth-child(3) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/[.,\s]/g, '');
+		dataJson.eurBuyTransfer = $(
+			'#myTable tbody :nth-child(3) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
+		dataJson.eurSell = $('#myTable tbody :nth-child(3) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
 
-					audBuyCast: data.audBuyCast,
-					audBuyTransfer: data.audBuyTransfer,
-					audSell: data.audSell,
+		dataJson.gbpBuyCast = $('#myTable tbody :nth-child(5) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/[.,\s]/g, '');
+		dataJson.gbpBuyTransfer = $(
+			'#myTable tbody :nth-child(5) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
+		dataJson.gbpSell = $('#myTable tbody :nth-child(5) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
 
-					cadBuyCast: data.cadBuyCast,
-					cadBuyTransfer: data.cadBuyTransfer,
-					cadSell: data.cadSell,
+		dataJson.hkdBuyCast = $('#myTable tbody :nth-child(9) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/[.,\s]/g, '');
+		dataJson.hkdBuyTransfer = $(
+			'#myTable tbody :nth-child(9) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
+		dataJson.hkdSell = $('#myTable tbody :nth-child(9) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
 
-					sgdBuyCast: data.sgdBuyCast,
-					sgdBuyTransfer: data.sgdBuyTransfer,
-					sgdSell: data.sgdSell,
+		// dataJson.inrBuyCast = $('#myTable tbody :nth-child(20) td:nth-child(2)')
+		// 	.contents()
+		// 	.first()
+		// 	.text()
+		// 	.slice(0, -1)
+		// 	.replace(/[.\s]/g, '');
+		// dataJson.inrBuyTransfer = $(
+		// 	'#myTable tbody :nth-child(20) td:nth-child(4)'
+		// )
+		// 	.contents()
+		// 	.first()
+		// 	.text()
+		// 	.slice(0, -1)
+		// 	.replace(/[.\s]/g, '');
+		// dataJson.inrSell = $('#myTable tbody :nth-child(20) td:nth-child(3)')
+		// 	.contents()
+		// 	.first()
+		// 	.text()
+		// 	.slice(0, -1)
+		// 	.replace(/[.\s]/g, '');
 
-					sekBuyCast: data.sekBuyCast,
-					sekBuyTransfer: data.sekBuyTransfer,
-					sekSell: data.sekSell,
+		dataJson.jpyBuyCast = $('#myTable tbody :nth-child(2) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\,/g, '');
+		dataJson.jpyBuyTransfer = $(
+			'#myTable tbody :nth-child(2) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\,/g, '');
+		dataJson.jpySell = $('#myTable tbody :nth-child(2) :nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\,/g, '');
 
-					lakBuyCast: data.lakBuyCast,
-					lakBuyTransfer: data.lakBuyTransfer,
-					lakSell: data.lakSell,
+		dataJson.krwBuyCast = $('#myTable tbody :nth-child(13) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.krwBuyTransfer = $(
+			'#myTable tbody :nth-child(13) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.krwSell = $('#myTable tbody :nth-child(13) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
 
-					dkkBuyCast: data.dkkBuyCast,
-					dkkBuyTransfer: data.dkkBuyTransfer,
-					dkkSell: data.dkkSell,
+		// dataJson.kwdBuyCast = $('#myTable tbody :nth-child(19) td:nth-child(2)')
+		// 	.contents()
+		// 	.first()
+		// 	.text()
+		// 	.slice(0, -3)
+		// 	.replace(/[.,\s]/g, '');
+		// dataJson.kwdBuyTransfer = $(
+		// 	'#myTable tbody :nth-child(19) td:nth-child(4)'
+		// )
+		// 	.contents()
+		// 	.first()
+		// 	.text()
+		// 	.slice(0, -3)
+		// 	.replace(/[.,\s]/g, '');
+		// dataJson.kwdSell = $('#myTable tbody :nth-child(19) td:nth-child(3)')
+		// 	.contents()
+		// 	.first()
+		// 	.text()
+		// 	.slice(0, -3)
+		// 	.replace(/[.,\s]/g, '');
 
-					nokBuyCast: data.nokBuyCast,
-					nokBuyTransfer: data.nokBuyTransfer,
-					nokSell: data.nokSell,
+		dataJson.myrBuyCast = $('#myTable tbody :nth-child(20) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.myrBuyTransfer = $(
+			'#myTable tbody :nth-child(20) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.myrSell = $('#myTable tbody :nth-child(20) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
 
-					cnyBuyCast: data.cnyBuyCast,
-					cnyBuyTransfer: data.cnyBuyTransfer,
-					cnySell: data.cnySell,
+		dataJson.nokBuyCast = $('#myTable tbody :nth-child(17) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.nokBuyTransfer = $(
+			'#myTable tbody :nth-child(17) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.nokSell = $('#myTable tbody :nth-child(17) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
 
-					rubBuyCast: data.rubBuyCast,
-					rubBuyTransfer: data.rubBuyTransfer,
-					rubSell: data.rubSell,
+		dataJson.rubBuyCast = $('#myTable tbody :nth-child(19) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.rubBuyTransfer = $(
+			'#myTable tbody :nth-child(19) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.rubSell = $('#myTable tbody :nth-child(19) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
 
-					nzdBuyCast: data.nzdBuyCast,
-					nzdBuyTransfer: data.nzdBuyTransfer,
-					nzdSell: data.nzdSell,
+		// dataJson.sarBuyCast = $('#myTable tbody :nth-child(18) td:nth-child(2)')
+		// 	.contents()
+		// 	.first()
+		// 	.text()
+		// 	.slice(0, -3)
+		// 	.replace(/[.,\s]/g, '');
+		// dataJson.sarBuyTransfer = $(
+		// 	'#myTable tbody :nth-child(18) td:nth-child(4)'
+		// )
+		// 	.contents()
+		// 	.first()
+		// 	.text()
+		// 	.slice(0, -3)
+		// 	.replace(/[.,\s]/g, '');
+		// dataJson.sarSell = $('#myTable tbody :nth-child(18) td:nth-child(3)')
+		// 	.contents()
+		// 	.first()
+		// 	.text()
+		// 	.slice(0, -3)
+		// 	.replace(/[.,\s]/g, '');
 
-					krwBuyCast: data.krwBuyCast,
-					krwBuyTransfer: data.krwBuyTransfer,
-					krwSell: data.krwSell,
+		dataJson.sekBuyCast = $('#myTable tbody :nth-child(14) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.sekBuyTransfer = $(
+			'#myTable tbody :nth-child(14) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.sekSell = $('#myTable tbody :nth-child(14) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
 
-					eurBuyCast: data.eurBuyCast,
-					eurBuyTransfer: data.eurBuyTransfer,
-					eurSell: data.eurSell,
+		dataJson.lakBuyCast = $('#myTable tbody :nth-child(15) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.lakBuyTransfer = $(
+			'#myTable tbody :nth-child(15) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.lakSell = $('#myTable tbody :nth-child(15) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
 
-					twdBuyCast: data.twdBuyCast,
-					twdBuyTransfer: data.twdBuyTransfer,
-					twdSell: data.twdSell,
+		dataJson.sgdBuyCast = $('#myTable tbody :nth-child(7) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/[.,\s]/g, '');
+		dataJson.sgdBuyTransfer = $(
+			'#myTable tbody :nth-child(7) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
+		dataJson.sgdSell = $('#myTable tbody :nth-child(7) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.,\s]/g, '');
 
-					myrBuyCast: data.myrBuyCast,
-					myrBuyTransfer: data.myrBuyTransfer,
-					myrSell: data.myrSell,
-				},
-				{ upsert: true }
-			)
-				// .then((doc) => console.log(doc))
-				.catch((err) => console.log(data.symbol));
+		dataJson.thbBuyCast = $('#myTable tbody :nth-child(10) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.thbBuyTransfer = $(
+			'#myTable tbody :nth-child(10) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.thbSell = $('#myTable tbody :nth-child(10) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
 
-			// await browser.close();
-		}
+		dataJson.twdBuyCast = $('#myTable tbody :nth-child(11) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.twdBuyTransfer = $(
+			'#myTable tbody :nth-child(11) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.twdSell = $('#myTable tbody :nth-child(11) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
 
-		if (data === false) {
-			//wait a few second, also a good idea to swap proxy here
-			console.log('Recrawl........' + attemps);
-			await new Promise((resolve) => setTimeout(resolve, 3000));
-		}
+		dataJson.nzdBuyCast = $('#myTable tbody :nth-child(12) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.nzdBuyTransfer = $(
+			'#myTable tbody :nth-child(12) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+		dataJson.nzdSell = $('#myTable tbody :nth-child(12) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/[.\s]/g, '');
+
+		dataJson.usdBuyCast = $('#myTable tbody :nth-child(1) :nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.usdBuyTransfer = $(
+			'#myTable tbody :nth-child(1) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.usdSell = $('#myTable tbody :nth-child(1) :nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+	} catch (err) {
+		console.log(err);
 	}
-});
 
-const crawlTechcombank = asyncHandler(async () => {
-	const pageEvaluateFunc = async () => {
-		const $ = document.querySelector.bind(document);
+	Bidv.findOneAndUpdate(
+		{ symbol: dataJson.symbol },
+		{
+			name: dataJson.name,
+			symbol: dataJson.symbol,
+			timeUpdate: dataJson.timeUpdate,
 
-		let dataJson = {};
+			usdBuyCast: dataJson.usdBuyCast,
+			usdBuyTransfer: dataJson.usdBuyTransfer,
+			usdSell: dataJson.usdSell,
 
-		try {
-			dataJson.name = 'Ngân hàng Thương mại cổ phần Kỹ Thương Việt Nam';
-			dataJson.symbol = 'Techcombank';
+			gbpBuyCast: dataJson.gbpBuyCast,
+			gbpBuyTransfer: dataJson.gbpBuyTransfer,
+			gbpSell: dataJson.gbpSell,
 
-			let date = new Date();
-			dataJson.timeUpdate =
-				date.getHours() +
-				':' +
-				date.getMinutes() +
-				':' +
-				date.getSeconds() +
-				' ' +
-				date.getDate() +
-				'/' +
-				(date.getMonth() + 1) +
-				'/' +
-				date.getFullYear();
+			hkdBuyCast: dataJson.hkdBuyCast,
+			hkdBuyTransfer: dataJson.hkdBuyTransfer,
+			hkdSell: dataJson.hkdSell,
 
-			dataJson.usdBuyCast = $(
-				'table tbody :nth-child(1) :nth-child(2)'
-			)?.innerText;
-			dataJson.usdBuyTransfer = $(
-				'table tbody :nth-child(1) :nth-child(4)'
-			)?.innerText;
-			dataJson.usdSell = $(
-				'table tbody :nth-child(1) :nth-child(3)'
-			)?.innerText;
+			chfBuyCast: dataJson.chfBuyCast,
+			chfBuyTransfer: dataJson.chfBuyTransfer,
+			chfSell: dataJson.chfSell,
 
-			dataJson.eurBuyCast = $(
-				'table tbody :nth-child(4) :nth-child(2)'
-			)?.innerText;
-			dataJson.eurBuyTransfer = $(
-				'table tbody :nth-child(4) :nth-child(4)'
-			)?.innerText;
-			dataJson.eurSell = $(
-				'table tbody :nth-child(4) :nth-child(3)'
-			)?.innerText;
+			jpyBuyCast: dataJson.jpyBuyCast,
+			jpyBuyTransfer: dataJson.jpyBuyTransfer,
+			jpySell: dataJson.jpySell,
 
-			dataJson.audBuyCast = $(
-				'table tbody :nth-child(5) :nth-child(2)'
-			)?.innerText;
-			dataJson.audBuyTransfer = $(
-				'table tbody :nth-child(5) :nth-child(4)'
-			)?.innerText;
-			dataJson.audSell = $(
-				'table tbody :nth-child(5) :nth-child(3)'
-			)?.innerText;
+			thbBuyCast: dataJson.thbBuyCast,
+			thbBuyTransfer: dataJson.thbBuyTransfer,
+			thbSell: dataJson.thbSell,
 
-			dataJson.cadBuyCast = $(
-				'table tbody :nth-child(6) :nth-child(2)'
-			)?.innerText;
-			dataJson.cadBuyTransfer = $(
-				'table tbody :nth-child(6) :nth-child(4)'
-			)?.innerText;
-			dataJson.cadSell = $(
-				'table tbody :nth-child(6) :nth-child(3)'
-			)?.innerText;
+			audBuyCast: dataJson.audBuyCast,
+			audBuyTransfer: dataJson.audBuyTransfer,
+			audSell: dataJson.audSell,
 
-			dataJson.chfBuyCast = $(
-				'table tbody :nth-child(7) :nth-child(2)'
-			)?.innerText;
-			dataJson.chfBuyTransfer = $(
-				'table tbody :nth-child(7) :nth-child(4)'
-			)?.innerText;
-			dataJson.chfSell = $(
-				'table tbody :nth-child(7) :nth-child(3)'
-			)?.innerText;
+			cadBuyCast: dataJson.cadBuyCast,
+			cadBuyTransfer: dataJson.cadBuyTransfer,
+			cadSell: dataJson.cadSell,
 
-			dataJson.cnyBuyCast = $(
-				'table tbody :nth-child(8) :nth-child(2)'
-			)?.innerText;
-			dataJson.cnyBuyTransfer = $(
-				'table tbody :nth-child(8) :nth-child(4)'
-			)?.innerText;
-			dataJson.cnySell = $(
-				'table tbody :nth-child(8) :nth-child(3)'
-			)?.innerText;
+			sgdBuyCast: dataJson.sgdBuyCast,
+			sgdBuyTransfer: dataJson.sgdBuyTransfer,
+			sgdSell: dataJson.sgdSell,
 
-			dataJson.gbpBuyCast = $(
-				'table tbody :nth-child(9) :nth-child(2)'
-			)?.innerText;
-			dataJson.gbpBuyTransfer = $(
-				'table tbody :nth-child(9) :nth-child(4)'
-			)?.innerText;
-			dataJson.gbpSell = $(
-				'table tbody :nth-child(9) :nth-child(3)'
-			)?.innerText;
+			sekBuyCast: dataJson.sekBuyCast,
+			sekBuyTransfer: dataJson.sekBuyTransfer,
+			sekSell: dataJson.sekSell,
 
-			dataJson.hkdBuyCast = $(
-				'table tbody :nth-child(10) :nth-child(2)'
-			)?.innerText;
-			dataJson.hkdBuyTransfer = $(
-				'table tbody :nth-child(10) :nth-child(4)'
-			)?.innerText;
-			dataJson.hkdSell = $(
-				'table tbody :nth-child(10) :nth-child(3)'
-			)?.innerText;
-			//
-			dataJson.jpyBuyCast = $(
-				'table tbody :nth-child(11) :nth-child(2)'
-			)?.innerText;
-			dataJson.jpyBuyTransfer = $(
-				'table tbody :nth-child(11) :nth-child(4)'
-			)?.innerText;
-			dataJson.jpySell = $(
-				'table tbody :nth-child(11) :nth-child(3)'
-			)?.innerText;
+			lakBuyCast: dataJson.lakBuyCast,
+			lakBuyTransfer: dataJson.lakBuyTransfer,
+			lakSell: dataJson.lakSell,
 
-			dataJson.krwBuyCast = $(
-				'table tbody :nth-child(12) :nth-child(2)'
-			)?.innerText;
-			dataJson.krwBuyTransfer = $(
-				'table tbody :nth-child(12) :nth-child(4)'
-			)?.innerText;
-			dataJson.krwSell = $(
-				'table tbody :nth-child(12) :nth-child(3)'
-			)?.innerText;
+			dkkBuyCast: dataJson.dkkBuyCast,
+			dkkBuyTransfer: dataJson.dkkBuyTransfer,
+			dkkSell: dataJson.dkkSell,
 
-			dataJson.sgdBuyCast = $(
-				'table tbody :nth-child(13) :nth-child(2)'
-			)?.innerText;
-			dataJson.sgdBuyTransfer = $(
-				'table tbody :nth-child(13) :nth-child(4)'
-			)?.innerText;
-			dataJson.sgdSell = $(
-				'table tbody :nth-child(13) :nth-child(3)'
-			)?.innerText;
+			nokBuyCast: dataJson.nokBuyCast,
+			nokBuyTransfer: dataJson.nokBuyTransfer,
+			nokSell: dataJson.nokSell,
 
-			dataJson.thbBuyCast = $(
-				'table tbody :nth-child(14) :nth-child(2)'
-			)?.innerText;
-			dataJson.thbBuyTransfer = $(
-				'table tbody :nth-child(14) :nth-child(4)'
-			)?.innerText;
-			dataJson.thbSell = $(
-				'table tbody :nth-child(14) :nth-child(3)'
-			)?.innerText;
-		} catch (err) {
-			console.log(err);
-		}
-		return dataJson;
-	};
+			cnyBuyCast: dataJson.cnyBuyCast,
+			cnyBuyTransfer: dataJson.cnyBuyTransfer,
+			cnySell: dataJson.cnySell,
 
-	let data = false;
-	let attemps = 0;
-	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 2) {
-		console.log('loop' + attemps);
-		data = await collectQueryData(urlTechcombank, pageEvaluateFunc);
-		attemps++;
-		console.log(data);
-		if (data) {
-			Techcombank.findOneAndUpdate(
-				{ symbol: data.symbol },
-				{
-					name: data.name,
-					symbol: data.symbol,
-					timeUpdate: data.timeUpdate,
+			rubBuyCast: dataJson.rubBuyCast,
+			rubBuyTransfer: dataJson.rubBuyTransfer,
+			rubSell: dataJson.rubSell,
 
-					audBuyCast: data.audBuyCast,
-					audBuyTransfer: data.audBuyTransfer,
-					audSell: data.audSell,
+			nzdBuyCast: dataJson.nzdBuyCast,
+			nzdBuyTransfer: dataJson.nzdBuyTransfer,
+			nzdSell: dataJson.nzdSell,
 
-					cadBuyCast: data.cadBuyCast,
-					cadBuyTransfer: data.cadBuyTransfer,
-					cadSell: data.cadSell,
+			krwBuyCast: dataJson.krwBuyCast,
+			krwBuyTransfer: dataJson.krwBuyTransfer,
+			krwSell: dataJson.krwSell,
 
-					chfBuyCast: data.chfBuyCast,
-					chfBuyTransfer: data.chfBuyTransfer,
-					chfSell: data.chfSell,
+			eurBuyCast: dataJson.eurBuyCast,
+			eurBuyTransfer: dataJson.eurBuyTransfer,
+			eurSell: dataJson.eurSell,
 
-					cnyBuyCast: data.cnyBuyCast,
-					cnyBuyTransfer: data.cnyBuyTransfer,
-					cnySell: data.cnySell,
+			twdBuyCast: dataJson.twdBuyCast,
+			twdBuyTransfer: dataJson.twdBuyTransfer,
+			twdSell: dataJson.twdSell,
 
-					eurBuyCast: data.eurBuyCast,
-					eurBuyTransfer: data.eurBuyTransfer,
-					eurSell: data.eurSell,
+			myrBuyCast: dataJson.myrBuyCast,
+			myrBuyTransfer: dataJson.myrBuyTransfer,
+			myrSell: dataJson.myrSell,
+		},
+		{ upsert: true }
+	)
+		// .then((doc) => console.log(doc))
+		.catch((err) => console.log(dataJson.symbol));
+};
+const crawlTechcombank = async () => {
+	let dataJson = {};
+	try {
+		const result = await axios(urlTechcombank)
+			.then((res) => res.data)
+			.catch((err) => console.log(err));
 
-					gbpBuyCast: data.gbpBuyCast,
-					gbpBuyTransfer: data.gbpBuyTransfer,
-					gbpSell: data.gbpSell,
+		const $ = cheerio.load(result);
 
-					hkdBuyCast: data.hkdBuyCast,
-					hkdBuyTransfer: data.hkdBuyTransfer,
-					hkdSell: data.hkdSell,
+		dataJson.name = 'Ngân hàng Thương mại cổ phần Kỹ Thương Việt Nam';
+		dataJson.symbol = 'Techcombank';
 
-					jpyBuyCast: data.jpyBuyCast,
-					jpyBuyTransfer: data.jpyBuyTransfer,
-					jpySell: data.jpySell,
+		let date = new Date();
+		dataJson.timeUpdate = Math.floor(Date.now() / 1000);
 
-					krwBuyCast: data.krwBuyCast,
-					krwBuyTransfer: data.krwBuyTransfer,
-					krwSell: data.krwSell,
+		dataJson.usdBuyCast = $('#myTable tbody :nth-child(1) :nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.usdBuyTransfer = $(
+			'#myTable tbody :nth-child(1) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.usdSell = $('#myTable tbody :nth-child(1) :nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					myrBuyCast: data.myrBuyCast,
-					myrBuyTransfer: data.myrBuyTransfer,
-					myrSell: data.myrSell,
+		dataJson.eurBuyCast = $('#myTable tbody :nth-child(3) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.eurBuyTransfer = $(
+			'#myTable tbody :nth-child(3) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.eurSell = $('#myTable tbody :nth-child(3) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					sgdBuyCast: data.sgdBuyCast,
-					sgdBuyTransfer: data.sgdBuyTransfer,
-					sgdSell: data.sgdSell,
+		dataJson.audBuyCast = $('#myTable tbody :nth-child(6) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.audBuyTransfer = $(
+			'#myTable tbody :nth-child(6) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.audSell = $('#myTable tbody :nth-child(6) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					thbBuyCast: data.thbBuyCast,
-					thbBuyTransfer: data.thbBuyTransfer,
-					thbSell: data.thbSell,
+		dataJson.cadBuyCast = $('#myTable tbody :nth-child(8) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.cadBuyTransfer = $(
+			'#myTable tbody :nth-child(8) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.cadSell = $('#myTable tbody :nth-child(8) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					usdBuyCast: data.usdBuyCast,
-					usdBuyTransfer: data.usdBuyTransfer,
-					usdSell: data.usdSell,
-				},
-				{ upsert: true }
-			)
-				// .then((doc) => console.log(doc))
-				.catch((err) => console.log(data.symbol));
+		dataJson.chfBuyCast = $('#myTable tbody :nth-child(4) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.chfBuyTransfer = $(
+			'#myTable tbody :nth-child(4) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.chfSell = $('#myTable tbody :nth-child(4) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-			// await browser.close();
-		}
+		dataJson.cnyBuyCast = $('#myTable tbody :nth-child(12) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.cnyBuyTransfer = $(
+			'#myTable tbody :nth-child(12) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.cnySell = $('#myTable tbody :nth-child(12) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-		if (data === false) {
-			//wait a few second, also a good idea to swap proxy here
-			console.log('Recrawl........' + attemps);
-			await new Promise((resolve) => setTimeout(resolve, 3000));
-		}
+		dataJson.gbpBuyCast = $('#myTable tbody :nth-child(5) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.gbpBuyTransfer = $(
+			'#myTable tbody :nth-child(5) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.gbpSell = $('#myTable tbody :nth-child(5) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+
+		dataJson.hkdBuyCast = $('#myTable tbody :nth-child(9) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.hkdBuyTransfer = $(
+			'#myTable tbody :nth-child(9) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.hkdSell = $('#myTable tbody :nth-child(9) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+
+		dataJson.jpyBuyCast = $('#myTable tbody :nth-child(2) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.jpyBuyTransfer = $(
+			'#myTable tbody :nth-child(2) :nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.jpySell = $('#myTable tbody :nth-child(2) :nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+
+		dataJson.krwBuyCast = $('#myTable tbody :nth-child(11) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.krwBuyTransfer = $(
+			'#myTable tbody :nth-child(11) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.krwSell = $('#myTable tbody :nth-child(11) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+
+		dataJson.sgdBuyCast = $('#myTable tbody :nth-child(7) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.sgdBuyTransfer = $(
+			'#myTable tbody :nth-child(7) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.sgdSell = $('#myTable tbody :nth-child(7) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+
+		dataJson.thbBuyCast = $('#myTable tbody :nth-child(10) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -2)
+			.replace(/\./g, '');
+		dataJson.thbBuyTransfer = $(
+			'#myTable tbody :nth-child(10) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.thbSell = $('#myTable tbody :nth-child(10) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+	} catch (err) {
+		console.log(err);
 	}
-});
 
-const crawlVietinbank = asyncHandler(async () => {
-	const pageEvaluateFunc = async () => {
-		const $ = document.querySelector.bind(document);
+	Techcombank.findOneAndUpdate(
+		{ symbol: dataJson.symbol },
+		{
+			name: dataJson.name,
+			symbol: dataJson.symbol,
+			timeUpdate: dataJson.timeUpdate,
 
-		let dataJson = {};
+			audBuyCast: dataJson.audBuyCast,
+			audBuyTransfer: dataJson.audBuyTransfer,
+			audSell: dataJson.audSell,
 
-		try {
-			dataJson.name = 'Ngân hàng Thương mại cổ phần Công Thương Việt Nam';
-			dataJson.symbol = 'VietinBank';
+			cadBuyCast: dataJson.cadBuyCast,
+			cadBuyTransfer: dataJson.cadBuyTransfer,
+			cadSell: dataJson.cadSell,
 
-			let date = new Date();
-			dataJson.timeUpdate =
-				date.getHours() +
-				':' +
-				date.getMinutes() +
-				':' +
-				date.getSeconds() +
-				' ' +
-				date.getDate() +
-				'/' +
-				(date.getMonth() + 1) +
-				'/' +
-				date.getFullYear();
+			chfBuyCast: dataJson.chfBuyCast,
+			chfBuyTransfer: dataJson.chfBuyTransfer,
+			chfSell: dataJson.chfSell,
 
-			dataJson.audBuyCast = $(
-				'#hor-ex-b tbody :nth-child(3) :nth-child(3)'
-			)?.innerText;
-			dataJson.audBuyTransfer = $(
-				'#hor-ex-b tbody :nth-child(3) :nth-child(4)'
-			)?.innerText;
-			dataJson.audSell = $(
-				'#hor-ex-b tbody :nth-child(3) :nth-child(5)'
-			)?.innerText;
+			cnyBuyCast: dataJson.cnyBuyCast,
+			cnyBuyTransfer: dataJson.cnyBuyTransfer,
+			cnySell: dataJson.cnySell,
 
-			dataJson.cadBuyCast = $(
-				'#hor-ex-b tbody :nth-child(4) :nth-child(3)'
-			)?.innerText;
-			dataJson.cadBuyTransfer = $(
-				'#hor-ex-b tbody :nth-child(4) :nth-child(4)'
-			)?.innerText;
-			dataJson.cadSell = $(
-				'#hor-ex-b tbody :nth-child(4) :nth-child(5)'
-			)?.innerText;
+			eurBuyCast: dataJson.eurBuyCast,
+			eurBuyTransfer: dataJson.eurBuyTransfer,
+			eurSell: dataJson.eurSell,
 
-			dataJson.chfBuyCast = $(
-				'#hor-ex-b tbody :nth-child(5) :nth-child(3)'
-			)?.innerText;
-			dataJson.chfBuyTransfer = $(
-				'#hor-ex-b tbody :nth-child(5) :nth-child(4)'
-			)?.innerText;
-			dataJson.chfSell = $(
-				'#hor-ex-b tbody :nth-child(5) :nth-child(5)'
-			)?.innerText;
+			gbpBuyCast: dataJson.gbpBuyCast,
+			gbpBuyTransfer: dataJson.gbpBuyTransfer,
+			gbpSell: dataJson.gbpSell,
 
-			dataJson.cnyBuyCast = $(
-				'#hor-ex-b tbody :nth-child(6) :nth-child(3)'
-			)?.innerText;
-			dataJson.cnyBuyTransfer = $(
-				'#hor-ex-b tbody :nth-child(6) :nth-child(4)'
-			)?.innerText;
-			dataJson.cnySell = $(
-				'#hor-ex-b tbody :nth-child(6) :nth-child(5)'
-			)?.innerText;
+			hkdBuyCast: dataJson.hkdBuyCast,
+			hkdBuyTransfer: dataJson.hkdBuyTransfer,
+			hkdSell: dataJson.hkdSell,
 
-			dataJson.dkkBuyCast = $(
-				'#hor-ex-b tbody :nth-child(7) :nth-child(3)'
-			)?.innerText;
-			dataJson.dkkBuyTransfer = $(
-				'#hor-ex-b tbody :nth-child(7) :nth-child(4)'
-			)?.innerText;
-			dataJson.dkkSell = $(
-				'#hor-ex-b tbody :nth-child(7) :nth-child(5)'
-			)?.innerText;
+			jpyBuyCast: dataJson.jpyBuyCast,
+			jpyBuyTransfer: dataJson.jpyBuyTransfer,
+			jpySell: dataJson.jpySell,
 
-			dataJson.eurBuyCast = document
-				.querySelector('#hor-ex-b tbody :nth-child(8) :nth-child(3)')
-				?.innerText.slice(1);
-			dataJson.eurBuyTransfer = $(
-				'#hor-ex-b tbody :nth-child(8) :nth-child(4)'
-			)?.innerText;
-			dataJson.eurSell = $(
-				'#hor-ex-b tbody :nth-child(8) :nth-child(5)'
-			)?.innerText;
+			krwBuyCast: dataJson.krwBuyCast,
+			krwBuyTransfer: dataJson.krwBuyTransfer,
+			krwSell: dataJson.krwSell,
 
-			dataJson.gbpBuyCast = $(
-				'#hor-ex-b tbody :nth-child(10) :nth-child(3)'
-			)?.innerText;
-			dataJson.gbpBuyTransfer = $(
-				'#hor-ex-b tbody :nth-child(10) :nth-child(4)'
-			)?.innerText;
-			dataJson.gbpSell = $(
-				'#hor-ex-b tbody :nth-child(10) :nth-child(5)'
-			)?.innerText;
+			myrBuyCast: dataJson.myrBuyCast,
+			myrBuyTransfer: dataJson.myrBuyTransfer,
+			myrSell: dataJson.myrSell,
 
-			dataJson.hkdBuyCast = $(
-				'#hor-ex-b tbody :nth-child(11) :nth-child(3)'
-			)?.innerText;
-			dataJson.hkdBuyTransfer = $(
-				'#hor-ex-b tbody :nth-child(11) :nth-child(4)'
-			)?.innerText;
-			dataJson.hkdSell = $(
-				'#hor-ex-b tbody :nth-child(11) :nth-child(5)'
-			)?.innerText;
+			sgdBuyCast: dataJson.sgdBuyCast,
+			sgdBuyTransfer: dataJson.sgdBuyTransfer,
+			sgdSell: dataJson.sgdSell,
 
-			dataJson.jpyBuyCast = $(
-				'#hor-ex-b tbody :nth-child(12) :nth-child(3)'
-			)?.innerText;
-			dataJson.jpyBuyTransfer = $(
-				'#hor-ex-b tbody :nth-child(12) :nth-child(4)'
-			)?.innerText;
-			dataJson.jpySell = $(
-				'#hor-ex-b tbody :nth-child(12) :nth-child(5)'
-			)?.innerText;
+			thbBuyCast: dataJson.thbBuyCast,
+			thbBuyTransfer: dataJson.thbBuyTransfer,
+			thbSell: dataJson.thbSell,
 
-			dataJson.krwBuyCast = $(
-				'#hor-ex-b tbody :nth-child(13) :nth-child(3)'
-			)?.innerText;
-			dataJson.krwBuyTransfer = $(
-				'#hor-ex-b tbody :nth-child(13) :nth-child(4)'
-			)?.innerText;
-			dataJson.krwSell = $(
-				'#hor-ex-b tbody :nth-child(13) :nth-child(5)'
-			)?.innerText;
+			usdBuyCast: dataJson.usdBuyCast,
+			usdBuyTransfer: dataJson.usdBuyTransfer,
+			usdSell: dataJson.usdSell,
+		},
+		{ upsert: true }
+	)
+		// .then((doc) => console.log(doc))
+		.catch((err) => console.log(dataJson.symbol));
+};
+const crawlVietinbank = async () => {
+	const result = await axios(urlVietinbank)
+		.then((res) => res.data)
+		.catch((err) => console.log(err));
+	const $ = cheerio.load(result);
+	let dataJson = {};
+	try {
+		dataJson.name = 'Ngân hàng Thương mại cổ phần Công Thương Việt Nam';
+		dataJson.symbol = 'VietinBank';
+		let date = new Date();
+		dataJson.timeUpdate = Math.floor(Date.now() / 1000);
 
-			dataJson.lakBuyCast = $(
-				'#hor-ex-b tbody :nth-child(14) :nth-child(3)'
-			)?.innerText;
-			dataJson.lakBuyTransfer = $(
-				'#hor-ex-b tbody :nth-child(14) :nth-child(4)'
-			)?.innerText;
-			dataJson.lakSell = $(
-				'#hor-ex-b tbody :nth-child(14) :nth-child(5)'
-			)?.innerText;
+		dataJson.audBuyCast = $('#myTable tbody :nth-child(6) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.audBuyTransfer = $(
+			'#myTable tbody :nth-child(6) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.audSell = $('#myTable tbody :nth-child(6) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-			dataJson.nokBuyCast = $(
-				'#hor-ex-b tbody :nth-child(15) :nth-child(3)'
-			)?.innerText;
-			dataJson.nokBuyTransfer = $(
-				'#hor-ex-b tbody :nth-child(15) :nth-child(4)'
-			)?.innerText;
-			dataJson.nokSell = $(
-				'#hor-ex-b tbody :nth-child(15) :nth-child(5)'
-			)?.innerText;
+		dataJson.cadBuyCast = $('#myTable tbody :nth-child(8) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.cadBuyTransfer = $(
+			'#myTable tbody :nth-child(8) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.cadSell = $('#myTable tbody :nth-child(8) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-			dataJson.nzdBuyCast = $(
-				'#hor-ex-b tbody :nth-child(16) :nth-child(3)'
-			)?.innerText;
-			dataJson.nzdBuyTransfer = $(
-				'#hor-ex-b tbody :nth-child(16) :nth-child(4)'
-			)?.innerText;
-			dataJson.nzdSell = $(
-				'#hor-ex-b tbody :nth-child(16) :nth-child(5)'
-			)?.innerText;
+		dataJson.chfBuyCast = $('#myTable tbody :nth-child(4) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.chfBuyTransfer = $(
+			'#myTable tbody :nth-child(4) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.chfSell = $('#myTable tbody :nth-child(4) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-			dataJson.sekBuyCast = $(
-				'#hor-ex-b tbody :nth-child(17) :nth-child(3)'
-			)?.innerText;
-			dataJson.sekBuyTransfer = $(
-				'#hor-ex-b tbody :nth-child(17) :nth-child(4)'
-			)?.innerText;
-			dataJson.sekSell = $(
-				'#hor-ex-b tbody :nth-child(17) :nth-child(5)'
-			)?.innerText;
+		dataJson.cnyBuyCast = $('#myTable tbody :nth-child(17) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.cnyBuyTransfer = $(
+			'#myTable tbody :nth-child(17) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.cnySell = $('#myTable tbody :nth-child(17) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-			dataJson.sgdBuyCast = $(
-				'#hor-ex-b tbody :nth-child(18) :nth-child(3)'
-			)?.innerText;
-			dataJson.sgdBuyTransfer = $(
-				'#hor-ex-b tbody :nth-child(18) :nth-child(4)'
-			)?.innerText;
-			dataJson.sgdSell = $(
-				'#hor-ex-b tbody :nth-child(18) :nth-child(5)'
-			)?.innerText;
+		dataJson.dkkBuyCast = $('#myTable tbody :nth-child(15) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.dkkBuyTransfer = $(
+			'#myTable tbody :nth-child(15) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.dkkSell = $('#myTable tbody :nth-child(15) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-			dataJson.thbBuyCast = $(
-				'#hor-ex-b tbody :nth-child(19) :nth-child(3)'
-			)?.innerText;
-			dataJson.thbBuyTransfer = $(
-				'#hor-ex-b tbody :nth-child(19) :nth-child(4)'
-			)?.innerText;
-			dataJson.thbSell = $(
-				'#hor-ex-b tbody :nth-child(19) :nth-child(5)'
-			)?.innerText;
+		dataJson.eurBuyCast = $('#myTable tbody :nth-child(3) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.eurBuyTransfer = $(
+			'#myTable tbody :nth-child(3) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.eurSell = $('#myTable tbody :nth-child(3) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-			dataJson.usdBuyCast = document
-				.querySelector('#hor-ex-b tbody :nth-child(20) :nth-child(3)')
-				?.innerText.slice(1);
-			dataJson.usdBuyTransfer = $(
-				'#hor-ex-b tbody :nth-child(20) :nth-child(4)'
-			)?.innerText;
-			dataJson.usdSell = $(
-				'#hor-ex-b tbody :nth-child(20) :nth-child(5)'
-			)?.innerText;
-		} catch (err) {
-			console.log(err);
-		}
-		return dataJson;
-	};
+		dataJson.gbpBuyCast = $('#myTable tbody :nth-child(5) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.gbpBuyTransfer = $(
+			'#myTable tbody :nth-child(5) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.gbpSell = $('#myTable tbody :nth-child(5) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-	let data = false;
-	let attemps = 0;
-	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 2) {
-		console.log('loop' + attemps);
-		data = await collectQueryData(urlVietinbank, pageEvaluateFunc);
-		attemps++;
-		console.log(data);
-		if (data) {
-			Vietinbank.findOneAndUpdate(
-				{ symbol: data.symbol },
-				{
-					name: data.name,
-					symbol: data.symbol,
-					timeUpdate: data.timeUpdate,
+		dataJson.hkdBuyCast = $('#myTable tbody :nth-child(9) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.hkdBuyTransfer = $(
+			'#myTable tbody :nth-child(9) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.hkdSell = $('#myTable tbody :nth-child(9) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					audBuyCast: data.audBuyCast,
-					audBuyTransfer: data.audBuyTransfer,
-					audSell: data.audSell,
+		dataJson.jpyBuyCast = $('#myTable tbody :nth-child(2) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.jpyBuyTransfer = $(
+			'#myTable tbody :nth-child(2) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.jpySell = $('#myTable tbody :nth-child(2) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					cadBuyCast: data.cadBuyCast,
-					cadBuyTransfer: data.cadBuyTransfer,
-					cadSell: data.cadSell,
+		dataJson.krwBuyCast = $('#myTable tbody :nth-child(12) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.krwBuyTransfer = $(
+			'#myTable tbody :nth-child(12) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.krwSell = $('#myTable tbody :nth-child(12) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					chfBuyCast: data.chfBuyCast,
-					chfBuyTransfer: data.chfBuyTransfer,
-					chfSell: data.chfSell,
+		dataJson.lakBuyCast = $('#myTable tbody :nth-child(14) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.lakBuyTransfer = $(
+			'#myTable tbody :nth-child(14) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.lakSell = $('#myTable tbody :nth-child(14) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					cnyBuyCast: data.cnyBuyCast,
-					cnyBuyTransfer: data.cnyBuyTransfer,
-					cnySell: data.cnySell,
+		dataJson.nokBuyCast = $('#myTable tbody :nth-child(16) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.nokBuyTransfer = $(
+			'#myTable tbody :nth-child(16) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.nokSell = $('#myTable tbody :nth-child(16) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					dkkBuyCast: data.dkkBuyCast,
-					dkkBuyTransfer: data.dkkBuyTransfer,
-					dkkSell: data.dkkSell,
+		dataJson.nzdBuyCast = $('#myTable tbody :nth-child(11) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.nzdBuyTransfer = $(
+			'#myTable tbody :nth-child(11) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.nzdSell = $('#myTable tbody :nth-child(11) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					eurBuyCast: data.eurBuyCast,
-					eurBuyTransfer: data.eurBuyTransfer,
-					eurSell: data.eurSell,
+		dataJson.sekBuyCast = $('#myTable tbody :nth-child(13) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.sekBuyTransfer = $(
+			'#myTable tbody :nth-child(13) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.sekSell = $('#myTable tbody :nth-child(13) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					gbpBuyCast: data.gbpBuyCast,
-					gbpBuyTransfer: data.gbpBuyTransfer,
-					gbpSell: data.gbpSell,
+		dataJson.sgdBuyCast = $('#myTable tbody :nth-child(7) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.sgdBuyTransfer = $(
+			'#myTable tbody :nth-child(7) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.sgdSell = $('#myTable tbody :nth-child(7) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					hkdBuyCast: data.hkdBuyCast,
-					hkdBuyTransfer: data.hkdBuyTransfer,
-					hkdSell: data.hkdSell,
+		dataJson.thbBuyCast = $('#myTable tbody :nth-child(10) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.thbBuyTransfer = $(
+			'#myTable tbody :nth-child(10) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.thbSell = $('#myTable tbody :nth-child(10) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					jpyBuyCast: data.jpyBuyCast,
-					jpyBuyTransfer: data.jpyBuyTransfer,
-					jpySell: data.jpySell,
-
-					krwBuyCast: data.krwBuyCast,
-					krwBuyTransfer: data.krwBuyTransfer,
-					krwSell: data.krwSell,
-
-					lakBuyCast: data.lakBuyCast,
-					lakBuyTransfer: data.lakBuyTransfer,
-					lakSell: data.lakSell,
-
-					nokBuyCast: data.nokBuyCast,
-					nokBuyTransfer: data.nokBuyTransfer,
-					nokSell: data.nokSell,
-
-					nzdBuyCast: data.nzdBuyCast,
-					nzdBuyTransfer: data.nzdBuyTransfer,
-					nzdSell: data.nzdSell,
-
-					sekBuyCast: data.sekBuyCast,
-					sekBuyTransfer: data.sekBuyTransfer,
-					sekSell: data.sekSell,
-
-					sgdBuyCast: data.sgdBuyCast,
-					sgdBuyTransfer: data.sgdBuyTransfer,
-					sgdSell: data.sgdSell,
-
-					thbBuyCast: data.thbBuyCast,
-					thbBuyTransfer: data.thbBuyTransfer,
-					thbSell: data.thbSell,
-
-					usdBuyCast: data.usdBuyCast,
-					usdBuyTransfer: data.usdBuyTransfer,
-					usdSell: data.usdSell,
-				},
-				{ upsert: true }
-			)
-				// .then((doc) => console.log(doc))
-				.catch((err) => console.log(data.symbol));
-
-			// await browser.close();
-		}
-
-		if (data === false) {
-			//wait a few second, also a good idea to swap proxy here
-			console.log('Recrawl........' + attemps);
-			await new Promise((resolve) => setTimeout(resolve, 3000));
-		}
+		dataJson.usdBuyCast = $('#myTable tbody :nth-child(1) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.usdBuyTransfer = $(
+			'#myTable tbody :nth-child(1) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.usdSell = $('#myTable tbody :nth-child(1) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+	} catch (err) {
+		console.log(err);
 	}
-});
 
-const crawlMbbank = asyncHandler(async () => {
-	const pageEvaluateFunc = async () => {
-		const $ = document.querySelector.bind(document);
+	Vietinbank.findOneAndUpdate(
+		{ symbol: dataJson.symbol },
+		{
+			name: dataJson.name,
+			symbol: dataJson.symbol,
+			timeUpdate: dataJson.timeUpdate,
 
-		let dataJson = {};
+			audBuyCast: dataJson.audBuyCast,
+			audBuyTransfer: dataJson.audBuyTransfer,
+			audSell: dataJson.audSell,
 
-		try {
-			dataJson.name = 'Ngân hàng Thương mại Cổ phần Quân đội';
-			dataJson.symbol = 'Mbbank';
+			cadBuyCast: dataJson.cadBuyCast,
+			cadBuyTransfer: dataJson.cadBuyTransfer,
+			cadSell: dataJson.cadSell,
 
-			let date = new Date();
-			dataJson.timeUpdate =
-				date.getHours() +
-				':' +
-				date.getMinutes() +
-				':' +
-				date.getSeconds() +
-				' ' +
-				date.getDate() +
-				'/' +
-				(date.getMonth() + 1) +
-				'/' +
-				date.getFullYear();
+			chfBuyCast: dataJson.chfBuyCast,
+			chfBuyTransfer: dataJson.chfBuyTransfer,
+			chfSell: dataJson.chfSell,
 
-			dataJson.usdBuyCast = $(
-				'#main tbody :nth-child(1) :nth-child(3)'
-			)?.innerText;
-			dataJson.usdBuyTransfer = $(
-				'#main tbody :nth-child(1) :nth-child(4)'
-			)?.innerText;
-			dataJson.usdSellCast = $(
-				'#main tbody :nth-child(1) :nth-child(5)'
-			)?.innerText;
-			dataJson.usdSellTransfer = $(
-				'#main tbody :nth-child(1) :nth-child(6)'
-			)?.innerText;
+			cnyBuyCast: dataJson.cnyBuyCast,
+			cnyBuyTransfer: dataJson.cnyBuyTransfer,
+			cnySell: dataJson.cnySell,
 
-			dataJson.eurBuyCast = $(
-				'#main tbody :nth-child(4) :nth-child(3)'
-			)?.innerText;
-			dataJson.eurBuyTransfer = $(
-				'#main tbody :nth-child(4) :nth-child(4)'
-			)?.innerText;
-			dataJson.eurSellCast = $(
-				'#main tbody :nth-child(4) :nth-child(5)'
-			)?.innerText;
-			dataJson.eurSellTransfer = $(
-				'#main tbody :nth-child(4) :nth-child(6)'
-			)?.innerText;
+			dkkBuyCast: dataJson.dkkBuyCast,
+			dkkBuyTransfer: dataJson.dkkBuyTransfer,
+			dkkSell: dataJson.dkkSell,
 
-			dataJson.audBuyCast = $(
-				'#main tbody :nth-child(5) :nth-child(3)'
-			)?.innerText;
-			dataJson.audBuyTransfer = $(
-				'#main tbody :nth-child(5) :nth-child(4)'
-			)?.innerText;
-			dataJson.audSellCast = $(
-				'#main tbody :nth-child(5) :nth-child(5)'
-			)?.innerText;
-			dataJson.audSellTransfer = $(
-				'#main tbody :nth-child(5) :nth-child(6)'
-			)?.innerText;
+			eurBuyCast: dataJson.eurBuyCast,
+			eurBuyTransfer: dataJson.eurBuyTransfer,
+			eurSell: dataJson.eurSell,
 
-			dataJson.cadBuyCast = $(
-				'#main tbody :nth-child(6) :nth-child(3)'
-			)?.innerText;
-			dataJson.cadBuyTransfer = $(
-				'#main tbody :nth-child(6) :nth-child(4)'
-			)?.innerText;
-			dataJson.cadSellCast = $(
-				'#main tbody :nth-child(6) :nth-child(5)'
-			)?.innerText;
-			dataJson.cadSellTransfer = $(
-				'#main tbody :nth-child(6) :nth-child(6)'
-			)?.innerText;
+			gbpBuyCast: dataJson.gbpBuyCast,
+			gbpBuyTransfer: dataJson.gbpBuyTransfer,
+			gbpSell: dataJson.gbpSell,
 
-			dataJson.chfBuyCast = $(
-				'#main tbody :nth-child(7) :nth-child(3)'
-			)?.innerText;
-			dataJson.chfBuyTransfer = $(
-				'#main tbody :nth-child(7) :nth-child(4)'
-			)?.innerText;
-			dataJson.chfSellCast = $(
-				'#main tbody :nth-child(7) :nth-child(5)'
-			)?.innerText;
-			dataJson.chfSellTransfer = $(
-				'#main tbody :nth-child(7) :nth-child(6)'
-			)?.innerText;
+			hkdBuyCast: dataJson.hkdBuyCast,
+			hkdBuyTransfer: dataJson.hkdBuyTransfer,
+			hkdSell: dataJson.hkdSell,
 
-			dataJson.cnyBuyCast = $(
-				'#main tbody :nth-child(8) :nth-child(3)'
-			)?.innerText;
-			dataJson.cnyBuyTransfer = $(
-				'#main tbody :nth-child(8) :nth-child(4)'
-			)?.innerText;
-			dataJson.cnySellCast = $(
-				'#main tbody :nth-child(8) :nth-child(5)'
-			)?.innerText;
-			dataJson.cnySellTransfer = $(
-				'#main tbody :nth-child(8) :nth-child(6)'
-			)?.innerText;
+			jpyBuyCast: dataJson.jpyBuyCast,
+			jpyBuyTransfer: dataJson.jpyBuyTransfer,
+			jpySell: dataJson.jpySell,
 
-			dataJson.gbpBuyCast = $(
-				'#main tbody :nth-child(9) :nth-child(3)'
-			)?.innerText;
-			dataJson.gbpBuyTransfer = $(
-				'#main tbody :nth-child(9) :nth-child(4)'
-			)?.innerText;
-			dataJson.gbpSellCast = $(
-				'#main tbody :nth-child(9) :nth-child(5)'
-			)?.innerText;
-			dataJson.gbpSellTransfer = $(
-				'#main tbody :nth-child(9) :nth-child(6)'
-			)?.innerText;
+			krwBuyCast: dataJson.krwBuyCast,
+			krwBuyTransfer: dataJson.krwBuyTransfer,
+			krwSell: dataJson.krwSell,
 
-			dataJson.hkdBuyCast = $(
-				'#main tbody :nth-child(10) :nth-child(3)'
-			)?.innerText;
-			dataJson.hkdBuyTransfer = $(
-				'#main tbody :nth-child(10) :nth-child(4)'
-			)?.innerText;
-			dataJson.hkdSellCast = $(
-				'#main tbody :nth-child(10) :nth-child(5)'
-			)?.innerText;
-			dataJson.hkdSellTransfer = $(
-				'#main tbody :nth-child(10) :nth-child(6)'
-			)?.innerText;
+			lakBuyCast: dataJson.lakBuyCast,
+			lakBuyTransfer: dataJson.lakBuyTransfer,
+			lakSell: dataJson.lakSell,
 
-			dataJson.jpyBuyCast = $(
-				'#main tbody :nth-child(11) :nth-child(3)'
-			)?.innerText;
-			dataJson.jpyBuyTransfer = $(
-				'#main tbody :nth-child(11) :nth-child(4)'
-			)?.innerText;
-			dataJson.jpySellCast = $(
-				'#main tbody :nth-child(11) :nth-child(5)'
-			)?.innerText;
-			dataJson.jpySellTransfer = $(
-				'#main tbody :nth-child(11) :nth-child(6)'
-			)?.innerText;
+			nokBuyCast: dataJson.nokBuyCast,
+			nokBuyTransfer: dataJson.nokBuyTransfer,
+			nokSell: dataJson.nokSell,
 
-			dataJson.khrBuyCast = $(
-				'#main tbody :nth-child(12) :nth-child(3)'
-			)?.innerText;
-			dataJson.khrBuyTransfer = $(
-				'#main tbody :nth-child(12) :nth-child(4)'
-			)?.innerText;
-			dataJson.khrSellCast = $(
-				'#main tbody :nth-child(12) :nth-child(5)'
-			)?.innerText;
-			dataJson.khrSellTransfer = $(
-				'#main tbody :nth-child(12) :nth-child(6)'
-			)?.innerText;
+			nzdBuyCast: dataJson.nzdBuyCast,
+			nzdBuyTransfer: dataJson.nzdBuyTransfer,
+			nzdSell: dataJson.nzdSell,
 
-			dataJson.krwBuyCast = $(
-				'#main tbody :nth-child(13) :nth-child(3)'
-			)?.innerText;
-			dataJson.krwBuyTransfer = $(
-				'#main tbody :nth-child(13) :nth-child(4)'
-			)?.innerText;
-			dataJson.krwSellCast = $(
-				'#main tbody :nth-child(13) :nth-child(5)'
-			)?.innerText;
-			dataJson.krwSellTransfer = $(
-				'#main tbody :nth-child(13) :nth-child(6)'
-			)?.innerText;
+			sekBuyCast: dataJson.sekBuyCast,
+			sekBuyTransfer: dataJson.sekBuyTransfer,
+			sekSell: dataJson.sekSell,
 
-			dataJson.lakBuyCast = $(
-				'#main tbody :nth-child(14) :nth-child(3)'
-			)?.innerText;
-			dataJson.lakBuyTransfer = $(
-				'#main tbody :nth-child(14) :nth-child(4)'
-			)?.innerText;
-			dataJson.lakSellCast = $(
-				'#main tbody :nth-child(14) :nth-child(5)'
-			)?.innerText;
-			dataJson.lakSellTransfer = $(
-				'#main tbody :nth-child(14) :nth-child(6)'
-			)?.innerText;
+			sgdBuyCast: dataJson.sgdBuyCast,
+			sgdBuyTransfer: dataJson.sgdBuyTransfer,
+			sgdSell: dataJson.sgdSell,
 
-			dataJson.nzdBuyCast = $(
-				'#main tbody :nth-child(15) :nth-child(3)'
-			)?.innerText;
-			dataJson.nzdBuyTransfer = $(
-				'#main tbody :nth-child(15) :nth-child(4)'
-			)?.innerText;
-			dataJson.nzdSellCast = $(
-				'#main tbody :nth-child(15) :nth-child(5)'
-			)?.innerText;
-			dataJson.nzdSellTransfer = $(
-				'#main tbody :nth-child(15) :nth-child(6)'
-			)?.innerText;
+			thbBuyCast: dataJson.thbBuyCast,
+			thbBuyTransfer: dataJson.thbBuyTransfer,
+			thbSell: dataJson.thbSell,
 
-			dataJson.sekBuyCast = $(
-				'#main tbody :nth-child(16) :nth-child(3)'
-			)?.innerText;
-			dataJson.sekBuyTransfer = $(
-				'#main tbody :nth-child(16) :nth-child(4)'
-			)?.innerText;
-			dataJson.sekSellCast = $(
-				'#main tbody :nth-child(16) :nth-child(5)'
-			)?.innerText;
-			dataJson.sekSellTransfer = $(
-				'#main tbody :nth-child(16) :nth-child(6)'
-			)?.innerText;
+			usdBuyCast: dataJson.usdBuyCast,
+			usdBuyTransfer: dataJson.usdBuyTransfer,
+			usdSell: dataJson.usdSell,
+		},
+		{ upsert: true }
+	)
+		// .then((doc) => console.log(doc))
+		.catch((err) => console.log(vietinbankData.symbol));
+};
 
-			dataJson.sgdBuyCast = $(
-				'#main tbody :nth-child(17) :nth-child(3)'
-			)?.innerText;
-			dataJson.sgdBuyTransfer = $(
-				'#main tbody :nth-child(17) :nth-child(4)'
-			)?.innerText;
-			dataJson.sgdSellCast = $(
-				'#main tbody :nth-child(17) :nth-child(5)'
-			)?.innerText;
-			dataJson.sgdSellTransfer = $(
-				'#main tbody :nth-child(17) :nth-child(6)'
-			)?.innerText;
+const crawlMbbank = async () => {
+	const result = await axios(urlMbbank)
+		.then((res) => res.data)
+		.catch((err) => console.log(err));
 
-			dataJson.thbBuyCast = $(
-				'#main tbody :nth-child(18) :nth-child(3)'
-			)?.innerText;
-			dataJson.thbBuyTransfer = $(
-				'#main tbody :nth-child(18) :nth-child(4)'
-			)?.innerText;
-			dataJson.thbSellCast = $(
-				'#main tbody :nth-child(18) :nth-child(5)'
-			)?.innerText;
-			dataJson.thbSellTransfer = $(
-				'#main tbody :nth-child(18) :nth-child(6)'
-			)?.innerText;
-		} catch (err) {
-			console.log(err);
-		}
-		return dataJson;
-	};
+	const $ = cheerio.load(result);
 
-	let data = false;
-	let attemps = 0;
-	//retry request until it gets data or tries 3 times
-	while (data == false && attemps < 2) {
-		console.log('loop' + attemps);
-		data = await collectQueryData(urlMbbank, pageEvaluateFunc);
-		attemps++;
-		console.log(data);
-		if (data) {
-			Mbbank.findOneAndUpdate(
-				{ symbol: data.symbol },
-				{
-					name: data.name,
-					symbol: data.symbol,
-					timeUpdate: data.timeUpdate,
+	let dataJson = {};
 
-					usdBuyCast: data.usdBuyCast,
-					usdBuyTransfer: data.usdBuyTransfer,
-					usdSellCast: data.usdSellCast,
-					usdSellTransfer: data.usdSellTransfer,
+	try {
+		dataJson.name = 'Ngân hàng Thương mại Cổ phần Quân đội';
+		dataJson.symbol = 'Mbbank';
 
-					eurBuyCast: data.eurBuyCast,
-					eurBuyTransfer: data.eurBuyTransfer,
-					eurSellCast: data.eurSellCast,
-					eurSellTransfer: data.eurSellTransfer,
+		let date = new Date();
+		dataJson.timeUpdate = Math.floor(Date.now() / 1000);
 
-					gbpBuyCast: data.gbpBuyCast,
-					gbpBuyTransfer: data.gbpBuyTransfer,
-					gbpSellCast: data.gbpSellCast,
-					gbpSellTransfer: data.gbpSellTransfer,
+		dataJson.usdBuyCast = $('#myTable tbody :nth-child(1) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.usdBuyTransfer = $(
+			'#myTable tbody :nth-child(1) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.usdSellCast = $('#myTable tbody :nth-child(1) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					jpyBuyCast: data.jpyBuyCast,
-					jpyBuyTransfer: data.jpyBuyTransfer,
-					jpySellCast: data.jpySellCast,
-					jpySellTransfer: data.jpySellTransfer,
+		dataJson.eurBuyCast = $('#myTable tbody :nth-child(3) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.eurBuyTransfer = $(
+			'#myTable tbody :nth-child(3) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.eurSellCast = $('#myTable tbody :nth-child(3) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					hkdBuyCast: data.hkdBuyCast,
-					hkdBuyTransfer: data.hkdBuyTransfer,
-					hkdSellCast: data.hkdSellCast,
-					hkdSellTransfer: data.hkdSellTransfer,
+		dataJson.audBuyCast = $('#myTable tbody :nth-child(1) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.audBuyTransfer = $(
+			'#myTable tbody :nth-child(6) td:nth-child(2)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.audSellCast = $('#myTable tbody :nth-child(6) td:nth-child(4)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.audSellTransfer = $(
+			'#myTable tbody :nth-child(6) td:nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					cnyBuyCast: data.cnyBuyCast,
-					cnyBuyTransfer: data.cnyBuyTransfer,
-					cnySellCast: data.cnySellCast,
-					cnySellTransfer: data.cnySellTransfer,
+		dataJson.cadBuyCast = $('#myTable tbody :nth-child(8) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.cadBuyTransfer = $(
+			'#myTable tbody :nth-child(8) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.cadSellCast = $('#myTable tbody :nth-child(8) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					audBuyCast: data.audBuyCast,
-					audBuyTransfer: data.audBuyTransfer,
-					audSellCast: data.audSellCast,
-					audSellTransfer: data.audSellTransfer,
+		dataJson.chfBuyCast = $('#myTable tbody :nth-child(4) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.chfBuyTransfer = $(
+			'#myTable tbody :nth-child(4) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.chfSellCast = $('#myTable tbody :nth-child(4) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					nzdBuyCast: data.nzdBuyCast,
-					nzdBuyTransfer: data.nzdBuyTransfer,
-					nzdSellCast: data.nzdSellCast,
-					nzdSellTransfer: data.nzdSellTransfer,
+		dataJson.cnyBuyCast = $('#myTable tbody :nth-child(15) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.cnyBuyTransfer = $(
+			'#myTable tbody :nth-child(15) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.cnySellCast = $(
+			'#myTable tbody :nth-child(15) td:nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					cadBuyCast: data.cadBuyCast,
-					cadBuyTransfer: data.cadBuyTransfer,
-					cadSellCast: data.cadSellCast,
-					cadSellTransfer: data.cadSellTransfer,
+		dataJson.gbpBuyCast = $('#myTable tbody :nth-child(5) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.gbpBuyTransfer = $(
+			'#myTable tbody :nth-child(5) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.gbpSellCast = $('#myTable tbody :nth-child(5) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					sgdBuyCast: data.sgdBuyCast,
-					sgdBuyTransfer: data.sgdBuyTransfer,
-					sgdSellCast: data.sgdSellCast,
-					sgdSellTransfer: data.sgdSellTransfer,
+		dataJson.hkdBuyCast = $('#myTable tbody :nth-child(9) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.hkdBuyTransfer = $(
+			'#myTable tbody :nth-child(9) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.hkdSellCast = $('#myTable tbody :nth-child(9) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					thbBuyCast: data.thbBuyCast,
-					thbBuyTransfer: data.thbBuyTransfer,
-					thbSellCast: data.thbSellCast,
-					thbSellTransfer: data.thbSellTransfer,
+		dataJson.jpyBuyCast = $('#myTable tbody :nth-child(2) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.jpyBuyTransfer = $(
+			'#myTable tbody :nth-child(2) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.jpySellCast = $('#myTable tbody :nth-child(2) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					chfBuyCast: data.chfBuyCast,
-					chfBuyTransfer: data.chfBuyTransfer,
-					chfSellCast: data.chfSellCast,
-					chfSellTransfer: data.chfSellTransfer,
+		dataJson.khrBuyCast = $('#myTable tbody :nth-child(16) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.khrBuyTransfer = $(
+			'#myTable tbody :nth-child(16) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.khrSellCast = $(
+			'#myTable tbody :nth-child(16) td:nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					krwBuyCast: data.krwBuyCast,
-					krwBuyTransfer: data.krwBuyTransfer,
-					krwSellCast: data.krwSellCast,
-					krwSellTransfer: data.krwSellTransfer,
+		dataJson.krwBuyCast = $('#myTable tbody :nth-child(12) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.krwBuyTransfer = $(
+			'#myTable tbody :nth-child(12) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.krwSellCast = $(
+			'#myTable tbody :nth-child(12) td:nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					lakBuyCast: data.lakBuyCast,
-					lakBuyTransfer: data.lakBuyTransfer,
-					lakSellCast: data.lakSellCast,
-					lakSellTransfer: data.lakSellTransfer,
+		dataJson.lakBuyCast = $('#myTable tbody :nth-child(14) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.lakBuyTransfer = $(
+			'#myTable tbody :nth-child(14) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.lakSellCast = $(
+			'#myTable tbody :nth-child(14) td:nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					khrBuyCast: data.khrBuyCast,
-					khrBuyTransfer: data.khrBuyTransfer,
-					khrSellCast: data.khrSellCast,
-					khrSellTransfer: data.khrSellTransfer,
+		dataJson.nzdBuyCast = $('#myTable tbody :nth-child(11) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.nzdBuyTransfer = $(
+			'#myTable tbody :nth-child(11) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.nzdSellCast = $(
+			'#myTable tbody :nth-child(11) td:nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-					sekBuyCast: data.sekBuyCast,
-					sekBuyTransfer: data.sekBuyTransfer,
-					sekSellCast: data.sekSellCast,
-					sekSellTransfer: data.sekSellTransfer,
-				},
-				{ upsert: true }
-			)
-				// .then((doc) => console.log(doc))
-				.catch((err) => console.log(data.symbol));
+		dataJson.sekBuyCast = $('#myTable tbody :nth-child(13) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.sekBuyTransfer = $(
+			'#myTable tbody :nth-child(13) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.sekSellCast = $(
+			'#myTable tbody :nth-child(13) td:nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-			// await browser.close();
-		}
+		dataJson.sgdBuyCast = $('#myTable tbody :nth-child(7) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.sgdBuyTransfer = $(
+			'#myTable tbody :nth-child(7) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.sgdSellCast = $('#myTable tbody :nth-child(7) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
 
-		if (data === false) {
-			//wait a few second, also a good idea to swap proxy here
-			console.log('Recrawl........' + attemps);
-			await new Promise((resolve) => setTimeout(resolve, 3000));
-		}
+		dataJson.thbBuyCast = $('#myTable tbody :nth-child(10) td:nth-child(2)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.thbBuyTransfer = $(
+			'#myTable tbody :nth-child(10) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+		dataJson.thbSellCast = $(
+			'#myTable tbody :nth-child(10) td:nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(0, -1)
+			.replace(/\./g, '');
+	} catch (err) {
+		console.log(err);
 	}
-});
+
+	Mbbank.findOneAndUpdate(
+		{ symbol: dataJson.symbol },
+		{
+			name: dataJson.name,
+			symbol: dataJson.symbol,
+			timeUpdate: dataJson.timeUpdate,
+
+			usdBuyCast: dataJson.usdBuyCast,
+			usdBuyTransfer: dataJson.usdBuyTransfer,
+			usdSellCast: dataJson.usdSellCast,
+			usdSellTransfer: dataJson.usdSellTransfer,
+
+			eurBuyCast: dataJson.eurBuyCast,
+			eurBuyTransfer: dataJson.eurBuyTransfer,
+			eurSellCast: dataJson.eurSellCast,
+			eurSellTransfer: dataJson.eurSellTransfer,
+
+			gbpBuyCast: dataJson.gbpBuyCast,
+			gbpBuyTransfer: dataJson.gbpBuyTransfer,
+			gbpSellCast: dataJson.gbpSellCast,
+			gbpSellTransfer: dataJson.gbpSellTransfer,
+
+			jpyBuyCast: dataJson.jpyBuyCast,
+			jpyBuyTransfer: dataJson.jpyBuyTransfer,
+			jpySellCast: dataJson.jpySellCast,
+			jpySellTransfer: dataJson.jpySellTransfer,
+
+			hkdBuyCast: dataJson.hkdBuyCast,
+			hkdBuyTransfer: dataJson.hkdBuyTransfer,
+			hkdSellCast: dataJson.hkdSellCast,
+			hkdSellTransfer: dataJson.hkdSellTransfer,
+
+			cnyBuyCast: dataJson.cnyBuyCast,
+			cnyBuyTransfer: dataJson.cnyBuyTransfer,
+			cnySellCast: dataJson.cnySellCast,
+			cnySellTransfer: dataJson.cnySellTransfer,
+
+			audBuyCast: dataJson.audBuyCast,
+			audBuyTransfer: dataJson.audBuyTransfer,
+			audSellCast: dataJson.audSellCast,
+			audSellTransfer: dataJson.audSellTransfer,
+
+			nzdBuyCast: dataJson.nzdBuyCast,
+			nzdBuyTransfer: dataJson.nzdBuyTransfer,
+			nzdSellCast: dataJson.nzdSellCast,
+			nzdSellTransfer: dataJson.nzdSellTransfer,
+
+			cadBuyCast: dataJson.cadBuyCast,
+			cadBuyTransfer: dataJson.cadBuyTransfer,
+			cadSellCast: dataJson.cadSellCast,
+			cadSellTransfer: dataJson.cadSellTransfer,
+
+			sgdBuyCast: dataJson.sgdBuyCast,
+			sgdBuyTransfer: dataJson.sgdBuyTransfer,
+			sgdSellCast: dataJson.sgdSellCast,
+			sgdSellTransfer: dataJson.sgdSellTransfer,
+
+			thbBuyCast: dataJson.thbBuyCast,
+			thbBuyTransfer: dataJson.thbBuyTransfer,
+			thbSellCast: dataJson.thbSellCast,
+			thbSellTransfer: dataJson.thbSellTransfer,
+
+			chfBuyCast: dataJson.chfBuyCast,
+			chfBuyTransfer: dataJson.chfBuyTransfer,
+			chfSellCast: dataJson.chfSellCast,
+			chfSellTransfer: dataJson.chfSellTransfer,
+
+			krwBuyCast: dataJson.krwBuyCast,
+			krwBuyTransfer: dataJson.krwBuyTransfer,
+			krwSellCast: dataJson.krwSellCast,
+			krwSellTransfer: dataJson.krwSellTransfer,
+
+			lakBuyCast: dataJson.lakBuyCast,
+			lakBuyTransfer: dataJson.lakBuyTransfer,
+			lakSellCast: dataJson.lakSellCast,
+			lakSellTransfer: dataJson.lakSellTransfer,
+
+			khrBuyCast: dataJson.khrBuyCast,
+			khrBuyTransfer: dataJson.khrBuyTransfer,
+			khrSellCast: dataJson.khrSellCast,
+			khrSellTransfer: dataJson.khrSellTransfer,
+
+			sekBuyCast: dataJson.sekBuyCast,
+			sekBuyTransfer: dataJson.sekBuyTransfer,
+			sekSellCast: dataJson.sekSellCast,
+			sekSellTransfer: dataJson.sekSellTransfer,
+		},
+		{ upsert: true }
+	)
+		// .then((doc) => console.log(doc))
+		.catch((err) => console.log(data.symbol));
+};
+
+// const crawlAgribank = asyncHandler(async () => {
+// 	const pageEvaluateFunc = async () => {
+// 		const $ = document.querySelector.bind(document);
+
+// 		let dataJson = {};
+// try {
+// 	dataJson.name =
+// 		'Ngân hàng Nông nghiệp và Phát triển Nông thôn Việt Nam';
+// 	dataJson.symbol = 'Agribank';
+
+// 	let date = new Date();
+// 	dataJson.timeUpdate =
+// 		date.getHours() +
+// 		':' +
+// 		date.getMinutes() +
+// 		':' +
+// 		date.getSeconds() +
+// 		' ' +
+// 		date.getDate() +
+// 		'/' +
+// 		(date.getMonth() + 1) +
+// 		'/' +
+// 		date.getFullYear();
+
+// 	dataJson.usdBuyCast = $(
+// 		'#tyGiaCn table tbody :nth-child(1) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.usdBuyTransfer = $(
+// 		'#tyGiaCn table tbody :nth-child(1) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.usdSell = $(
+// 		'#tyGiaCn table tbody :nth-child(1) :nth-child(4)'
+// 	)?.innerText;
+
+// 	dataJson.eurBuyCast = $(
+// 		'#tyGiaCn table tbody :nth-child(2) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.eurBuyTransfer = $(
+// 		'#tyGiaCn table tbody :nth-child(2) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.eurSell = $(
+// 		'#tyGiaCn table tbody :nth-child(2) :nth-child(4)'
+// 	)?.innerText;
+
+// 	dataJson.gbpBuyCast = $(
+// 		'#tyGiaCn table tbody :nth-child(3) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.gbpBuyTransfer = $(
+// 		'#tyGiaCn table tbody :nth-child(3) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.gbpSell = $(
+// 		'#tyGiaCn table tbody :nth-child(3) :nth-child(4)'
+// 	)?.innerText;
+
+// 	dataJson.hkdBuyCast = $(
+// 		'#tyGiaCn table tbody :nth-child(4) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.hkdBuyTransfer = $(
+// 		'#tyGiaCn table tbody :nth-child(4) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.hkdSell = $(
+// 		'#tyGiaCn table tbody :nth-child(4) :nth-child(4)'
+// 	)?.innerText;
+
+// 	dataJson.chfBuyCast = $(
+// 		'#tyGiaCn table tbody :nth-child(5) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.chfBuyTransfer = $(
+// 		'#tyGiaCn table tbody :nth-child(5) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.chfSell = $(
+// 		'#tyGiaCn table tbody :nth-child(5) :nth-child(4)'
+// 	)?.innerText;
+
+// 	dataJson.jpyBuyCast = $(
+// 		'#tyGiaCn table tbody :nth-child(6) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.jpyBuyTransfer = $(
+// 		'#tyGiaCn table tbody :nth-child(6) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.jpySell = $(
+// 		'#tyGiaCn table tbody :nth-child(6) :nth-child(4)'
+// 	)?.innerText;
+
+// 	dataJson.audBuyCast = $(
+// 		'#tyGiaCn table tbody :nth-child(7) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.audBuyTransfer = $(
+// 		'#tyGiaCn table tbody :nth-child(7) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.audSell = $(
+// 		'#tyGiaCn table tbody :nth-child(7) :nth-child(4)'
+// 	)?.innerText;
+
+// 	dataJson.sgdBuyCast = $(
+// 		'#tyGiaCn table tbody :nth-child(8) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.sgdBuyTransfer = $(
+// 		'#tyGiaCn table tbody :nth-child(8) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.sgdSell = $(
+// 		'#tyGiaCn table tbody :nth-child(8) :nth-child(4)'
+// 	)?.innerText;
+
+// 	dataJson.thbBuyCast = $(
+// 		'#tyGiaCn table tbody :nth-child(9) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.thbBuyTransfer = $(
+// 		'#tyGiaCn table tbody :nth-child(9) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.thbSell = $(
+// 		'#tyGiaCn table tbody :nth-child(9) :nth-child(4)'
+// 	)?.innerText;
+
+// 	dataJson.cadBuyCast = $(
+// 		'#tyGiaCn table tbody :nth-child(10) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.cadBuyTransfer = $(
+// 		'#tyGiaCn table tbody :nth-child(10) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.cadSell = $(
+// 		'#tyGiaCn table tbody :nth-child(10) :nth-child(4)'
+// 	)?.innerText;
+
+// 	dataJson.nzdBuyCast = $(
+// 		'#tyGiaCn table tbody :nth-child(11) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.nzdBuyTransfer = $(
+// 		'#tyGiaCn table tbody :nth-child(11) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.nzdSell = $(
+// 		'#tyGiaCn table tbody :nth-child(11) :nth-child(4)'
+// 	)?.innerText;
+
+// 	dataJson.krwBuyCast = $(
+// 		'#tyGiaCn table tbody :nth-child(12) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.krwBuyTransfer = $(
+// 		'#tyGiaCn table tbody :nth-child(12) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.krwSell = $(
+// 		'#tyGiaCn table tbody :nth-child(12) :nth-child(4)'
+// 	)?.innerText;
+// } catch (err) {
+// 	console.log(err);
+// }
+
+// 		return dataJson;
+// 	};
+
+// 	let data = false;
+// 	let attemps = 0;
+// 	//retry request until it gets data or tries 3 times
+// 	while (data == false && attemps < 2) {
+// 		console.log('loop' + attemps);
+// 		data = await collectQueryData(urlAgribank, pageEvaluateFunc);
+// 		attemps++;
+// 		console.log(data);
+// 		if (data) {
+// Agribank.findOneAndUpdate(
+// 	{ symbol: data.symbol },
+// 	{
+// 		name: data.name,
+// 		symbol: data.symbol,
+// 		timeUpdate: data.timeUpdate,
+
+// 		usdBuyCast: data.usdBuyCast,
+// 		usdBuyTransfer: data.usdBuyTransfer,
+// 		usdSellTransfer: data.usdSellTransfer,
+// 		usdSellCast: data.usdSellCast,
+
+// 		eurBuyCast: data.eurBuyCast,
+// 		eurBuyTransfer: data.eurBuyTransfer,
+// 		eurSellTransfer: data.eurSellTransfer,
+// 		eurSellCast: data.eurSellCast,
+
+// 		gbpBuyCast: data.gbpBuyCast,
+// 		gbpBuyTransfer: data.gbpBuyTransfer,
+// 		gbpSellTransfer: data.gbpSellTransfer,
+// 		gbpSellCast: data.gbpSellCast,
+
+// 		jpyBuyCast: data.jpyBuyCast,
+// 		jpyBuyTransfer: data.jpyBuyTransfer,
+// 		jpySellTransfer: data.jpySellTransfer,
+// 		jpySellCast: data.jpySellCast,
+
+// 		audBuyCast: data.audBuyCast,
+// 		audBuyTransfer: data.audBuyTransfer,
+// 		audSellTransfer: data.audSellTransfer,
+// 		audSellCast: data.audSellCast,
+
+// 		cadBuyCast: data.cadBuyCast,
+// 		cadBuyTransfer: data.cadBuyTransfer,
+// 		cadSellTransfer: data.cadSellTransfer,
+// 		cadSellCast: data.cadSellCast,
+
+// 		nzdBuyCast: data.nzdBuyCast,
+// 		nzdBuyTransfer: data.nzdBuyTransfer,
+// 		nzdSellTransfer: data.nzdSellTransfer,
+// 		nzdSellCast: data.nzdSellCast,
+
+// 		sgdBuyCast: data.sgdBuyCast,
+// 		sgdBuyTransfer: data.sgdBuyTransfer,
+// 		sgdSellTransfer: data.sgdSellTransfer,
+// 		sgdSellCast: data.sgdSellCast,
+
+// 		chfBuyCast: data.chfBuyCast,
+// 		chfBuyTransfer: data.chfBuyTransfer,
+// 		chfSellTransfer: data.chfSellTransfer,
+// 		chfSellCast: data.chfSellCast,
+
+// 		hkdBuyCast: data.hkdBuyCast,
+// 		hkdBuyTransfer: data.hkdBuyTransfer,
+// 		hkdSellTransfer: data.hkdSellTransfer,
+// 		hkdSellCast: data.hkdSellCast,
+
+// 		krwBuyCast: data.krwBuyCast,
+// 		krwBuyTransfer: data.krwBuyTransfer,
+// 		krwSellTransfer: data.krwSellTransfer,
+// 		krwSellCast: data.krwSellCast,
+// 	},
+// 	{ upsert: true }
+// )
+// 	// .then((doc) => console.log(doc))
+// 	.catch((err) => console.log(data.symbol));
+
+// 			// await browser.close();
+// 		}
+
+// 		if (data === false) {
+// 			//wait a few second, also a good idea to swap proxy here
+// 			console.log('Recrawl........' + attemps);
+// 			await new Promise((resolve) => setTimeout(resolve, 3000));
+// 		}
+// 	}
+// });
+
+// const crawlVietcombank = asyncHandler(async () => {
+// 	const pageEvaluateFunc = async () => {
+// 		const $ = document.querySelector.bind(document);
+
+// 		let dataJson = {};
+
+// 		try {
+// 			dataJson.name =
+// 				'Ngân hàng thương mại cổ phần Ngoại thương Việt Nam';
+// 			dataJson.symbol = 'Vietcombank';
+
+// 			let date = new Date();
+// 			dataJson.timeUpdate =
+// 				date.getHours() +
+// 				':' +
+// 				date.getMinutes() +
+// 				':' +
+// 				date.getSeconds() +
+// 				' ' +
+// 				date.getDate() +
+// 				'/' +
+// 				(date.getMonth() + 1) +
+// 				'/' +
+// 				date.getFullYear();
+
+// 			dataJson.audBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(3) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.audBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(3) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.audSell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(3) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.cadBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(4) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.cadBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(4) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.cadSell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(4) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.chfBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(5) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.chfBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(5) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.chfSell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(5) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.cnyBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(6) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.cnyBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(6) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.cnySell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(6) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.dkkBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(7) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.dkkBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(7) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.dkkSell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(7) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.eurBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(8) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.eurBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(8) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.eurSell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(8) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.gbpBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(9) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.gbpBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(9) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.gbpSell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(9) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.hkdBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(10) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.hkdBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(10) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.hkdSell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(10) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.inrBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(11) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.inrBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(11) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.inrSell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(11) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.jpyBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(12) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.jpyBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(12) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.jpySell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(12) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.krwBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(13) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.krwBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(13) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.krwSell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(13) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.kwdBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(14) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.kwdBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(14) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.kwdSell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(14) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.myrBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(15) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.myrBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(15) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.myrSell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(15) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.nokBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(16) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.nokBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(16) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.nokSell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(16) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.rubBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(17) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.rubBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(17) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.rubSell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(17) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.sarBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(18) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.sarBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(18) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.sarSell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(18) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.sekBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(19) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.sekBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(19) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.sekSell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(19) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.sgdBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(20) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.sgdBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(20) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.sgdSell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(20) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.thbBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(21) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.thbBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(21) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.thbSell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(21) :nth-child(5)'
+// 			)?.innerText;
+
+// 			dataJson.usdBuyCast = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(22) :nth-child(3)'
+// 			)?.innerText;
+// 			dataJson.usdBuyTransfer = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(22) :nth-child(4)'
+// 			)?.innerText;
+// 			dataJson.usdSell = $(
+// 				'#ctl00_Content_ExrateView tbody :nth-child(22) :nth-child(5)'
+// 			)?.innerText;
+// 		} catch (err) {
+// 			console.log(err);
+// 		}
+// 		return dataJson;
+// 	};
+
+// 	let data = false;
+// 	let attemps = 0;
+// 	//retry request until it gets data or tries 3 times
+// 	while (data == false && attemps < 2) {
+// 		console.log('loop' + attemps);
+// 		data = await collectQueryData(urlVietcombank, pageEvaluateFunc);
+// 		attemps++;
+// 		console.log(data);
+// 		if (data) {
+// Vietcombank.findOneAndUpdate(
+// 	{ symbol: data.symbol },
+// 	{
+// 		name: data.name,
+// 		symbol: data.symbol,
+// 		timeUpdate: data.timeUpdate,
+
+// 		audBuyCast: data.audBuyCast,
+// 		audBuyTransfer: data.audBuyTransfer,
+// 		audSell: data.audSell,
+
+// 		cadBuyCast: data.cadBuyCast,
+// 		cadBuyTransfer: data.cadBuyTransfer,
+// 		cadSell: data.cadSell,
+
+// 		chfBuyCast: data.chfBuyCast,
+// 		chfBuyTransfer: data.chfBuyTransfer,
+// 		chfSell: data.chfSell,
+
+// 		cnyBuyCast: data.cnyBuyCast,
+// 		cnyBuyTransfer: data.cnyBuyTransfer,
+// 		cnySell: data.cnySell,
+
+// 		dkkBuyCast: data.dkkBuyCast,
+// 		dkkBuyTransfer: data.dkkBuyTransfer,
+// 		dkkSell: data.dkkSell,
+
+// 		eurBuyCast: data.eurBuyCast,
+// 		eurBuyTransfer: data.eurBuyTransfer,
+// 		eurSell: data.eurSell,
+
+// 		gbpBuyCast: data.gbpBuyCast,
+// 		gbpBuyTransfer: data.gbpBuyTransfer,
+// 		gbpSell: data.gbpSell,
+
+// 		hkdBuyCast: data.hkdBuyCast,
+// 		hkdBuyTransfer: data.hkdBuyTransfer,
+// 		hkdSell: data.hkdSell,
+
+// 		inrBuyCast: data.inrBuyCast,
+// 		inrBuyTransfer: data.inrBuyTransfer,
+// 		inrSell: data.inrSell,
+
+// 		jpyBuyCast: data.jpyBuyCast,
+// 		jpyBuyTransfer: data.jpyBuyTransfer,
+// 		jpySell: data.jpySell,
+
+// 		krwBuyCast: data.krwBuyCast,
+// 		krwBuyTransfer: data.krwBuyTransfer,
+// 		krwSell: data.krwSell,
+
+// 		kwdBuyCast: data.kwdBuyCast,
+// 		kwdBuyTransfer: data.kwdBuyTransfer,
+// 		kwdSell: data.kwdSell,
+
+// 		myrBuyCast: data.myrBuyCast,
+// 		myrBuyTransfer: data.myrBuyTransfer,
+// 		myrSell: data.myrSell,
+
+// 		nokBuyCast: data.nokBuyCast,
+// 		nokBuyTransfer: data.nokBuyTransfer,
+// 		nokSell: data.nokSell,
+
+// 		rubBuyCast: data.rubBuyCast,
+// 		rubBuyTransfer: data.rubBuyTransfer,
+// 		rubSell: data.rubSell,
+
+// 		sarBuyCast: data.sarBuyCast,
+// 		sarBuyTransfer: data.sarBuyTransfer,
+// 		sarSell: data.sarSell,
+
+// 		sekBuyCast: data.sekBuyCast,
+// 		sekBuyTransfer: data.sekBuyTransfer,
+// 		sekSell: data.sekSell,
+
+// 		sgdBuyCast: data.sgdBuyCast,
+// 		sgdBuyTransfer: data.sgdBuyTransfer,
+// 		sgdSell: data.sgdSell,
+
+// 		thbBuyCast: data.thbBuyCast,
+// 		thbBuyTransfer: data.thbBuyTransfer,
+// 		thbSell: data.thbSell,
+
+// 		usdBuyCast: data.usdBuyCast,
+// 		usdBuyTransfer: data.usdBuyTransfer,
+// 		usdSell: data.usdSell,
+// 	},
+// 	{ upsert: true }
+// )
+// 	// .then((doc) => console.log(doc))
+// 	.catch((err) => console.log(data.symbol));
+
+// 			// await browser.close();
+// 		}
+
+// 		if (data === false) {
+// 			//wait a few second, also a good idea to swap proxy here
+// 			console.log('Recrawl........' + attemps);
+// 			await new Promise((resolve) => setTimeout(resolve, 3000));
+// 		}
+// 	}
+// });
+
+// const crawlBidv = asyncHandler(async () => {
+// 	const pageEvaluateFunc = async () => {
+// 		const $ = document.querySelector.bind(document);
+
+// 		let dataJson = {};
+
+// 		try {
+// 			dataJson.name =
+// 				'Ngân hàng Thương mại cổ phần Đầu tư và Phát triển Việt Nam';
+// 			dataJson.symbol = 'Bidv';
+
+// 			let date = new Date();
+// 			dataJson.timeUpdate =
+// 				date.getHours() +
+// 				':' +
+// 				date.getMinutes() +
+// 				':' +
+// 				date.getSeconds() +
+// 				' ' +
+// 				date.getDate() +
+// 				'/' +
+// 				(date.getMonth() + 1) +
+// 				'/' +
+// 				date.getFullYear();
+
+// 			dataJson.usdBuyCast = $(
+// 				'table tbody :nth-child(1) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.usdBuyTransfer = $(
+// 				'table tbody :nth-child(1) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.usdSell = $(
+// 				'table tbody :nth-child(1) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.gbpBuyCast = $(
+// 				'table tbody :nth-child(4) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.gbpBuyTransfer = $(
+// 				'table tbody :nth-child(4) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.gbpSell = $(
+// 				'table tbody :nth-child(4) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.hkdBuyCast = $(
+// 				'table tbody :nth-child(5) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.hkdBuyTransfer = $(
+// 				'table tbody :nth-child(5) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.hkdSell = $(
+// 				'table tbody :nth-child(5) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.chfBuyCast = $(
+// 				'table tbody :nth-child(6) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.chfBuyTransfer = $(
+// 				'table tbody :nth-child(6) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.chfSell = $(
+// 				'table tbody :nth-child(6) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.jpyBuyCast = $(
+// 				'table tbody :nth-child(7) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.jpyBuyTransfer = $(
+// 				'table tbody :nth-child(7) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.jpySell = $(
+// 				'table tbody :nth-child(7) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.thbBuyCast = $(
+// 				'table tbody :nth-child(8) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.thbBuyTransfer = $(
+// 				'table tbody :nth-child(8) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.thbSell = $(
+// 				'table tbody :nth-child(8) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.audBuyCast = $(
+// 				'table tbody :nth-child(9) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.audBuyTransfer = $(
+// 				'table tbody :nth-child(9) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.audSell = $(
+// 				'table tbody :nth-child(9) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.cadBuyCast = $(
+// 				'table tbody :nth-child(10) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.cadBuyTransfer = $(
+// 				'table tbody :nth-child(10) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.cadSell = $(
+// 				'table tbody :nth-child(10) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.sgdBuyCast = $(
+// 				'table tbody :nth-child(11) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.sgdBuyTransfer = $(
+// 				'table tbody :nth-child(11) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.sgdSell = $(
+// 				'table tbody :nth-child(11) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.sekBuyCast = $(
+// 				'table tbody :nth-child(12) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.sekBuyTransfer = $(
+// 				'table tbody :nth-child(12) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.sekSell = $(
+// 				'table tbody :nth-child(12) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.lakBuyCast = $(
+// 				'table tbody :nth-child(13) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.lakBuyTransfer = $(
+// 				'table tbody :nth-child(13) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.lakSell = $(
+// 				'table tbody :nth-child(13) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.dkkBuyCast = $(
+// 				'table tbody :nth-child(14) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.dkkBuyTransfer = $(
+// 				'table tbody :nth-child(14) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.dkkSell = $(
+// 				'table tbody :nth-child(14) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.nokBuyCast = $(
+// 				'table tbody :nth-child(15) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.nokBuyTransfer = $(
+// 				'table tbody :nth-child(15) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.nokSell = $(
+// 				'table tbody :nth-child(15) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.cnyBuyCast = $(
+// 				'table tbody :nth-child(16) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.cnyBuyTransfer = $(
+// 				'table tbody :nth-child(16) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.cnySell = $(
+// 				'table tbody :nth-child(16) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.rubBuyCast = $(
+// 				'table tbody :nth-child(17) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.rubBuyTransfer = $(
+// 				'table tbody :nth-child(17) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.rubSell = $(
+// 				'table tbody :nth-child(17) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.nzdBuyCast = $(
+// 				'table tbody :nth-child(18) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.nzdBuyTransfer = $(
+// 				'table tbody :nth-child(18) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.nzdSell = $(
+// 				'table tbody :nth-child(18) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.krwBuyCast = $(
+// 				'table tbody :nth-child(19) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.krwBuyTransfer = $(
+// 				'table tbody :nth-child(19) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.krwSell = $(
+// 				'table tbody :nth-child(19) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.eurBuyCast = $(
+// 				'table tbody :nth-child(20) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.eurBuyTransfer = $(
+// 				'table tbody :nth-child(20) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.eurSell = $(
+// 				'table tbody :nth-child(20) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.twdBuyCast = $(
+// 				'table tbody :nth-child(21) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.twdBuyTransfer = $(
+// 				'table tbody :nth-child(21) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.twdSell = $(
+// 				'table tbody :nth-child(21) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+
+// 			dataJson.myrBuyCast = $(
+// 				'table tbody :nth-child(22) :nth-child(3) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.myrBuyTransfer = $(
+// 				'table tbody :nth-child(22) :nth-child(4) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 			dataJson.myrSell = $(
+// 				'table tbody :nth-child(22) :nth-child(5) :nth-child(2) :nth-child(2) '
+// 			)?.innerText;
+// 		} catch (err) {
+// 			console.log(err);
+// 		}
+// 		return dataJson;
+// 	};
+
+// 	let data = false;
+// 	let attemps = 0;
+// 	//retry request until it gets data or tries 3 times
+// 	while (data == false && attemps < 2) {
+// 		console.log('loop' + attemps);
+// 		data = await collectQueryData(urlBidv, pageEvaluateFunc);
+// 		attemps++;
+// 		console.log(data);
+// 		if (data) {
+// Bidv.findOneAndUpdate(
+// 	{ symbol: data.symbol },
+// 	{
+// 		name: data.name,
+// 		symbol: data.symbol,
+// 		timeUpdate: data.timeUpdate,
+
+// 		usdBuyCast: data.usdBuyCast,
+// 		usdBuyTransfer: data.usdBuyTransfer,
+// 		usdSell: data.usdSell,
+
+// 		gbpBuyCast: data.gbpBuyCast,
+// 		gbpBuyTransfer: data.gbpBuyTransfer,
+// 		gbpSell: data.gbpSell,
+
+// 		hkdBuyCast: data.hkdBuyCast,
+// 		hkdBuyTransfer: data.hkdBuyTransfer,
+// 		hkdSell: data.hkdSell,
+
+// 		chfBuyCast: data.chfBuyCast,
+// 		chfBuyTransfer: data.chfBuyTransfer,
+// 		chfSell: data.chfSell,
+
+// 		jpyBuyCast: data.jpyBuyCast,
+// 		jpyBuyTransfer: data.jpyBuyTransfer,
+// 		jpySell: data.jpySell,
+
+// 		thbBuyCast: data.thbBuyCast,
+// 		thbBuyTransfer: data.thbBuyTransfer,
+// 		thbSell: data.thbSell,
+
+// 		audBuyCast: data.audBuyCast,
+// 		audBuyTransfer: data.audBuyTransfer,
+// 		audSell: data.audSell,
+
+// 		cadBuyCast: data.cadBuyCast,
+// 		cadBuyTransfer: data.cadBuyTransfer,
+// 		cadSell: data.cadSell,
+
+// 		sgdBuyCast: data.sgdBuyCast,
+// 		sgdBuyTransfer: data.sgdBuyTransfer,
+// 		sgdSell: data.sgdSell,
+
+// 		sekBuyCast: data.sekBuyCast,
+// 		sekBuyTransfer: data.sekBuyTransfer,
+// 		sekSell: data.sekSell,
+
+// 		lakBuyCast: data.lakBuyCast,
+// 		lakBuyTransfer: data.lakBuyTransfer,
+// 		lakSell: data.lakSell,
+
+// 		dkkBuyCast: data.dkkBuyCast,
+// 		dkkBuyTransfer: data.dkkBuyTransfer,
+// 		dkkSell: data.dkkSell,
+
+// 		nokBuyCast: data.nokBuyCast,
+// 		nokBuyTransfer: data.nokBuyTransfer,
+// 		nokSell: data.nokSell,
+
+// 		cnyBuyCast: data.cnyBuyCast,
+// 		cnyBuyTransfer: data.cnyBuyTransfer,
+// 		cnySell: data.cnySell,
+
+// 		rubBuyCast: data.rubBuyCast,
+// 		rubBuyTransfer: data.rubBuyTransfer,
+// 		rubSell: data.rubSell,
+
+// 		nzdBuyCast: data.nzdBuyCast,
+// 		nzdBuyTransfer: data.nzdBuyTransfer,
+// 		nzdSell: data.nzdSell,
+
+// 		krwBuyCast: data.krwBuyCast,
+// 		krwBuyTransfer: data.krwBuyTransfer,
+// 		krwSell: data.krwSell,
+
+// 		eurBuyCast: data.eurBuyCast,
+// 		eurBuyTransfer: data.eurBuyTransfer,
+// 		eurSell: data.eurSell,
+
+// 		twdBuyCast: data.twdBuyCast,
+// 		twdBuyTransfer: data.twdBuyTransfer,
+// 		twdSell: data.twdSell,
+
+// 		myrBuyCast: data.myrBuyCast,
+// 		myrBuyTransfer: data.myrBuyTransfer,
+// 		myrSell: data.myrSell,
+// 	},
+// 	{ upsert: true }
+// )
+// 	// .then((doc) => console.log(doc))
+// 	.catch((err) => console.log(data.symbol));
+
+// 			// await browser.close();
+// 		}
+
+// 		if (data === false) {
+// 			//wait a few second, also a good idea to swap proxy here
+// 			console.log('Recrawl........' + attemps);
+// 			await new Promise((resolve) => setTimeout(resolve, 3000));
+// 		}
+// 	}
+// });
+
+// const crawlTechcombank = asyncHandler(async () => {
+// 	const pageEvaluateFunc = async () => {
+// 		const $ = document.querySelector.bind(document);
+
+// 		let dataJson = {};
+
+// try {
+// 	dataJson.name = 'Ngân hàng Thương mại cổ phần Kỹ Thương Việt Nam';
+// 	dataJson.symbol = 'Techcombank';
+
+// 	let date = new Date();
+// 	dataJson.timeUpdate =
+// 		date.getHours() +
+// 		':' +
+// 		date.getMinutes() +
+// 		':' +
+// 		date.getSeconds() +
+// 		' ' +
+// 		date.getDate() +
+// 		'/' +
+// 		(date.getMonth() + 1) +
+// 		'/' +
+// 		date.getFullYear();
+
+// 	dataJson.usdBuyCast = $(
+// 		'table tbody :nth-child(1) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.usdBuyTransfer = $(
+// 		'table tbody :nth-child(1) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.usdSell = $(
+// 		'table tbody :nth-child(1) :nth-child(3)'
+// 	)?.innerText;
+
+// 	dataJson.eurBuyCast = $(
+// 		'table tbody :nth-child(4) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.eurBuyTransfer = $(
+// 		'table tbody :nth-child(4) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.eurSell = $(
+// 		'table tbody :nth-child(4) :nth-child(3)'
+// 	)?.innerText;
+
+// 	dataJson.audBuyCast = $(
+// 		'table tbody :nth-child(5) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.audBuyTransfer = $(
+// 		'table tbody :nth-child(5) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.audSell = $(
+// 		'table tbody :nth-child(5) :nth-child(3)'
+// 	)?.innerText;
+
+// 	dataJson.cadBuyCast = $(
+// 		'table tbody :nth-child(6) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.cadBuyTransfer = $(
+// 		'table tbody :nth-child(6) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.cadSell = $(
+// 		'table tbody :nth-child(6) :nth-child(3)'
+// 	)?.innerText;
+
+// 	dataJson.chfBuyCast = $(
+// 		'table tbody :nth-child(7) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.chfBuyTransfer = $(
+// 		'table tbody :nth-child(7) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.chfSell = $(
+// 		'table tbody :nth-child(7) :nth-child(3)'
+// 	)?.innerText;
+
+// 	dataJson.cnyBuyCast = $(
+// 		'table tbody :nth-child(8) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.cnyBuyTransfer = $(
+// 		'table tbody :nth-child(8) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.cnySell = $(
+// 		'table tbody :nth-child(8) :nth-child(3)'
+// 	)?.innerText;
+
+// 	dataJson.gbpBuyCast = $(
+// 		'table tbody :nth-child(9) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.gbpBuyTransfer = $(
+// 		'table tbody :nth-child(9) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.gbpSell = $(
+// 		'table tbody :nth-child(9) :nth-child(3)'
+// 	)?.innerText;
+
+// 	dataJson.hkdBuyCast = $(
+// 		'table tbody :nth-child(10) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.hkdBuyTransfer = $(
+// 		'table tbody :nth-child(10) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.hkdSell = $(
+// 		'table tbody :nth-child(10) :nth-child(3)'
+// 	)?.innerText;
+// 	//
+// 	dataJson.jpyBuyCast = $(
+// 		'table tbody :nth-child(11) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.jpyBuyTransfer = $(
+// 		'table tbody :nth-child(11) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.jpySell = $(
+// 		'table tbody :nth-child(11) :nth-child(3)'
+// 	)?.innerText;
+
+// 	dataJson.krwBuyCast = $(
+// 		'table tbody :nth-child(12) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.krwBuyTransfer = $(
+// 		'table tbody :nth-child(12) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.krwSell = $(
+// 		'table tbody :nth-child(12) :nth-child(3)'
+// 	)?.innerText;
+
+// 	dataJson.sgdBuyCast = $(
+// 		'table tbody :nth-child(13) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.sgdBuyTransfer = $(
+// 		'table tbody :nth-child(13) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.sgdSell = $(
+// 		'table tbody :nth-child(13) :nth-child(3)'
+// 	)?.innerText;
+
+// 	dataJson.thbBuyCast = $(
+// 		'table tbody :nth-child(14) :nth-child(2)'
+// 	)?.innerText;
+// 	dataJson.thbBuyTransfer = $(
+// 		'table tbody :nth-child(14) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.thbSell = $(
+// 		'table tbody :nth-child(14) :nth-child(3)'
+// 	)?.innerText;
+// } catch (err) {
+// 	console.log(err);
+// }
+// 		return dataJson;
+// 	};
+
+// 	let data = false;
+// 	let attemps = 0;
+// 	//retry request until it gets data or tries 3 times
+// 	while (data == false && attemps < 2) {
+// 		console.log('loop' + attemps);
+// 		data = await collectQueryData(urlTechcombank, pageEvaluateFunc);
+// 		attemps++;
+// 		console.log(data);
+// 		if (data) {
+// Techcombank.findOneAndUpdate(
+// 	{ symbol: data.symbol },
+// 	{
+// 		name: data.name,
+// 		symbol: data.symbol,
+// 		timeUpdate: data.timeUpdate,
+
+// 		audBuyCast: data.audBuyCast,
+// 		audBuyTransfer: data.audBuyTransfer,
+// 		audSell: data.audSell,
+
+// 		cadBuyCast: data.cadBuyCast,
+// 		cadBuyTransfer: data.cadBuyTransfer,
+// 		cadSell: data.cadSell,
+
+// 		chfBuyCast: data.chfBuyCast,
+// 		chfBuyTransfer: data.chfBuyTransfer,
+// 		chfSell: data.chfSell,
+
+// 		cnyBuyCast: data.cnyBuyCast,
+// 		cnyBuyTransfer: data.cnyBuyTransfer,
+// 		cnySell: data.cnySell,
+
+// 		eurBuyCast: data.eurBuyCast,
+// 		eurBuyTransfer: data.eurBuyTransfer,
+// 		eurSell: data.eurSell,
+
+// 		gbpBuyCast: data.gbpBuyCast,
+// 		gbpBuyTransfer: data.gbpBuyTransfer,
+// 		gbpSell: data.gbpSell,
+
+// 		hkdBuyCast: data.hkdBuyCast,
+// 		hkdBuyTransfer: data.hkdBuyTransfer,
+// 		hkdSell: data.hkdSell,
+
+// 		jpyBuyCast: data.jpyBuyCast,
+// 		jpyBuyTransfer: data.jpyBuyTransfer,
+// 		jpySell: data.jpySell,
+
+// 		krwBuyCast: data.krwBuyCast,
+// 		krwBuyTransfer: data.krwBuyTransfer,
+// 		krwSell: data.krwSell,
+
+// 		myrBuyCast: data.myrBuyCast,
+// 		myrBuyTransfer: data.myrBuyTransfer,
+// 		myrSell: data.myrSell,
+
+// 		sgdBuyCast: data.sgdBuyCast,
+// 		sgdBuyTransfer: data.sgdBuyTransfer,
+// 		sgdSell: data.sgdSell,
+
+// 		thbBuyCast: data.thbBuyCast,
+// 		thbBuyTransfer: data.thbBuyTransfer,
+// 		thbSell: data.thbSell,
+
+// 		usdBuyCast: data.usdBuyCast,
+// 		usdBuyTransfer: data.usdBuyTransfer,
+// 		usdSell: data.usdSell,
+// 	},
+// 	{ upsert: true }
+// )
+// 	// .then((doc) => console.log(doc))
+// 	.catch((err) => console.log(data.symbol));
+
+// 			// await browser.close();
+// 		}
+
+// 		if (data === false) {
+// 			//wait a few second, also a good idea to swap proxy here
+// 			console.log('Recrawl........' + attemps);
+// 			await new Promise((resolve) => setTimeout(resolve, 3000));
+// 		}
+// 	}
+// });
+
+// const crawlVietinbank = asyncHandler(async () => {
+// 	const pageEvaluateFunc = async () => {
+// 		const $ = document.querySelector.bind(document);
+
+// 		let dataJson = {};
+
+// try {
+// 	dataJson.name = 'Ngân hàng Thương mại cổ phần Công Thương Việt Nam';
+// 	dataJson.symbol = 'VietinBank';
+
+// 	let date = new Date();
+// 	dataJson.timeUpdate =
+// 		date.getHours() +
+// 		':' +
+// 		date.getMinutes() +
+// 		':' +
+// 		date.getSeconds() +
+// 		' ' +
+// 		date.getDate() +
+// 		'/' +
+// 		(date.getMonth() + 1) +
+// 		'/' +
+// 		date.getFullYear();
+
+// 	dataJson.audBuyCast = $(
+// 		'#hor-ex-b tbody :nth-child(3) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.audBuyTransfer = $(
+// 		'#hor-ex-b tbody :nth-child(3) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.audSell = $(
+// 		'#hor-ex-b tbody :nth-child(3) :nth-child(5)'
+// 	)?.innerText;
+
+// 	dataJson.cadBuyCast = $(
+// 		'#hor-ex-b tbody :nth-child(4) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.cadBuyTransfer = $(
+// 		'#hor-ex-b tbody :nth-child(4) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.cadSell = $(
+// 		'#hor-ex-b tbody :nth-child(4) :nth-child(5)'
+// 	)?.innerText;
+
+// 	dataJson.chfBuyCast = $(
+// 		'#hor-ex-b tbody :nth-child(5) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.chfBuyTransfer = $(
+// 		'#hor-ex-b tbody :nth-child(5) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.chfSell = $(
+// 		'#hor-ex-b tbody :nth-child(5) :nth-child(5)'
+// 	)?.innerText;
+
+// 	dataJson.cnyBuyCast = $(
+// 		'#hor-ex-b tbody :nth-child(6) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.cnyBuyTransfer = $(
+// 		'#hor-ex-b tbody :nth-child(6) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.cnySell = $(
+// 		'#hor-ex-b tbody :nth-child(6) :nth-child(5)'
+// 	)?.innerText;
+
+// 	dataJson.dkkBuyCast = $(
+// 		'#hor-ex-b tbody :nth-child(7) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.dkkBuyTransfer = $(
+// 		'#hor-ex-b tbody :nth-child(7) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.dkkSell = $(
+// 		'#hor-ex-b tbody :nth-child(7) :nth-child(5)'
+// 	)?.innerText;
+
+// 	dataJson.eurBuyCast = document
+// 		.querySelector('#hor-ex-b tbody :nth-child(8) :nth-child(3)')
+// 		?.innerText.slice(1);
+// 	dataJson.eurBuyTransfer = $(
+// 		'#hor-ex-b tbody :nth-child(8) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.eurSell = $(
+// 		'#hor-ex-b tbody :nth-child(8) :nth-child(5)'
+// 	)?.innerText;
+
+// 	dataJson.gbpBuyCast = $(
+// 		'#hor-ex-b tbody :nth-child(10) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.gbpBuyTransfer = $(
+// 		'#hor-ex-b tbody :nth-child(10) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.gbpSell = $(
+// 		'#hor-ex-b tbody :nth-child(10) :nth-child(5)'
+// 	)?.innerText;
+
+// 	dataJson.hkdBuyCast = $(
+// 		'#hor-ex-b tbody :nth-child(11) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.hkdBuyTransfer = $(
+// 		'#hor-ex-b tbody :nth-child(11) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.hkdSell = $(
+// 		'#hor-ex-b tbody :nth-child(11) :nth-child(5)'
+// 	)?.innerText;
+
+// 	dataJson.jpyBuyCast = $(
+// 		'#hor-ex-b tbody :nth-child(12) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.jpyBuyTransfer = $(
+// 		'#hor-ex-b tbody :nth-child(12) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.jpySell = $(
+// 		'#hor-ex-b tbody :nth-child(12) :nth-child(5)'
+// 	)?.innerText;
+
+// 	dataJson.krwBuyCast = $(
+// 		'#hor-ex-b tbody :nth-child(13) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.krwBuyTransfer = $(
+// 		'#hor-ex-b tbody :nth-child(13) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.krwSell = $(
+// 		'#hor-ex-b tbody :nth-child(13) :nth-child(5)'
+// 	)?.innerText;
+
+// 	dataJson.lakBuyCast = $(
+// 		'#hor-ex-b tbody :nth-child(14) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.lakBuyTransfer = $(
+// 		'#hor-ex-b tbody :nth-child(14) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.lakSell = $(
+// 		'#hor-ex-b tbody :nth-child(14) :nth-child(5)'
+// 	)?.innerText;
+
+// 	dataJson.nokBuyCast = $(
+// 		'#hor-ex-b tbody :nth-child(15) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.nokBuyTransfer = $(
+// 		'#hor-ex-b tbody :nth-child(15) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.nokSell = $(
+// 		'#hor-ex-b tbody :nth-child(15) :nth-child(5)'
+// 	)?.innerText;
+
+// 	dataJson.nzdBuyCast = $(
+// 		'#hor-ex-b tbody :nth-child(16) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.nzdBuyTransfer = $(
+// 		'#hor-ex-b tbody :nth-child(16) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.nzdSell = $(
+// 		'#hor-ex-b tbody :nth-child(16) :nth-child(5)'
+// 	)?.innerText;
+
+// 	dataJson.sekBuyCast = $(
+// 		'#hor-ex-b tbody :nth-child(17) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.sekBuyTransfer = $(
+// 		'#hor-ex-b tbody :nth-child(17) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.sekSell = $(
+// 		'#hor-ex-b tbody :nth-child(17) :nth-child(5)'
+// 	)?.innerText;
+
+// 	dataJson.sgdBuyCast = $(
+// 		'#hor-ex-b tbody :nth-child(18) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.sgdBuyTransfer = $(
+// 		'#hor-ex-b tbody :nth-child(18) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.sgdSell = $(
+// 		'#hor-ex-b tbody :nth-child(18) :nth-child(5)'
+// 	)?.innerText;
+
+// 	dataJson.thbBuyCast = $(
+// 		'#hor-ex-b tbody :nth-child(19) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.thbBuyTransfer = $(
+// 		'#hor-ex-b tbody :nth-child(19) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.thbSell = $(
+// 		'#hor-ex-b tbody :nth-child(19) :nth-child(5)'
+// 	)?.innerText;
+
+// 	dataJson.usdBuyCast = document
+// 		.querySelector('#hor-ex-b tbody :nth-child(20) :nth-child(3)')
+// 		?.innerText.slice(1);
+// 	dataJson.usdBuyTransfer = $(
+// 		'#hor-ex-b tbody :nth-child(20) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.usdSell = $(
+// 		'#hor-ex-b tbody :nth-child(20) :nth-child(5)'
+// 	)?.innerText;
+// } catch (err) {
+// 	console.log(err);
+// }
+// 		return dataJson;
+// 	};
+
+// 	let data = false;
+// 	let attemps = 0;
+// 	//retry request until it gets data or tries 3 times
+// 	while (data == false && attemps < 2) {
+// 		console.log('loop' + attemps);
+// 		data = await collectQueryData(urlVietinbank, pageEvaluateFunc);
+// 		attemps++;
+// 		console.log(data);
+// 		if (data) {
+// 			Vietinbank.findOneAndUpdate(
+// 				{ symbol: data.symbol },
+// 				{
+// 					name: data.name,
+// 					symbol: data.symbol,
+// 					timeUpdate: data.timeUpdate,
+
+// 					audBuyCast: data.audBuyCast,
+// 					audBuyTransfer: data.audBuyTransfer,
+// 					audSell: data.audSell,
+
+// 					cadBuyCast: data.cadBuyCast,
+// 					cadBuyTransfer: data.cadBuyTransfer,
+// 					cadSell: data.cadSell,
+
+// 					chfBuyCast: data.chfBuyCast,
+// 					chfBuyTransfer: data.chfBuyTransfer,
+// 					chfSell: data.chfSell,
+
+// 					cnyBuyCast: data.cnyBuyCast,
+// 					cnyBuyTransfer: data.cnyBuyTransfer,
+// 					cnySell: data.cnySell,
+
+// 					dkkBuyCast: data.dkkBuyCast,
+// 					dkkBuyTransfer: data.dkkBuyTransfer,
+// 					dkkSell: data.dkkSell,
+
+// 					eurBuyCast: data.eurBuyCast,
+// 					eurBuyTransfer: data.eurBuyTransfer,
+// 					eurSell: data.eurSell,
+
+// 					gbpBuyCast: data.gbpBuyCast,
+// 					gbpBuyTransfer: data.gbpBuyTransfer,
+// 					gbpSell: data.gbpSell,
+
+// 					hkdBuyCast: data.hkdBuyCast,
+// 					hkdBuyTransfer: data.hkdBuyTransfer,
+// 					hkdSell: data.hkdSell,
+
+// 					jpyBuyCast: data.jpyBuyCast,
+// 					jpyBuyTransfer: data.jpyBuyTransfer,
+// 					jpySell: data.jpySell,
+
+// 					krwBuyCast: data.krwBuyCast,
+// 					krwBuyTransfer: data.krwBuyTransfer,
+// 					krwSell: data.krwSell,
+
+// 					lakBuyCast: data.lakBuyCast,
+// 					lakBuyTransfer: data.lakBuyTransfer,
+// 					lakSell: data.lakSell,
+
+// 					nokBuyCast: data.nokBuyCast,
+// 					nokBuyTransfer: data.nokBuyTransfer,
+// 					nokSell: data.nokSell,
+
+// 					nzdBuyCast: data.nzdBuyCast,
+// 					nzdBuyTransfer: data.nzdBuyTransfer,
+// 					nzdSell: data.nzdSell,
+
+// 					sekBuyCast: data.sekBuyCast,
+// 					sekBuyTransfer: data.sekBuyTransfer,
+// 					sekSell: data.sekSell,
+
+// 					sgdBuyCast: data.sgdBuyCast,
+// 					sgdBuyTransfer: data.sgdBuyTransfer,
+// 					sgdSell: data.sgdSell,
+
+// 					thbBuyCast: data.thbBuyCast,
+// 					thbBuyTransfer: data.thbBuyTransfer,
+// 					thbSell: data.thbSell,
+
+// 					usdBuyCast: data.usdBuyCast,
+// 					usdBuyTransfer: data.usdBuyTransfer,
+// 					usdSell: data.usdSell,
+// 				},
+// 				{ upsert: true }
+// 			)
+// 				// .then((doc) => console.log(doc))
+// 				.catch((err) => console.log(data.symbol));
+
+// 			// await browser.close();
+// 		}
+
+// 		if (data === false) {
+// 			//wait a few second, also a good idea to swap proxy here
+// 			console.log('Recrawl........' + attemps);
+// 			await new Promise((resolve) => setTimeout(resolve, 3000));
+// 		}
+// 	}
+// });
+
+// const crawlMbbank = asyncHandler(async () => {
+// 	const pageEvaluateFunc = async () => {
+// 		const $ = document.querySelector.bind(document);
+
+// 		let dataJson = {};
+
+// try {
+// 	dataJson.name = 'Ngân hàng Thương mại Cổ phần Quân đội';
+// 	dataJson.symbol = 'Mbbank';
+
+// 	let date = new Date();
+// 	dataJson.timeUpdate =
+// 		date.getHours() +
+// 		':' +
+// 		date.getMinutes() +
+// 		':' +
+// 		date.getSeconds() +
+// 		' ' +
+// 		date.getDate() +
+// 		'/' +
+// 		(date.getMonth() + 1) +
+// 		'/' +
+// 		date.getFullYear();
+
+// 	dataJson.usdBuyCast = $(
+// 		'#main tbody :nth-child(1) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.usdBuyTransfer = $(
+// 		'#main tbody :nth-child(1) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.usdSellCast = $(
+// 		'#main tbody :nth-child(1) :nth-child(5)'
+// 	)?.innerText;
+// 	dataJson.usdSellTransfer = $(
+// 		'#main tbody :nth-child(1) :nth-child(6)'
+// 	)?.innerText;
+
+// 	dataJson.eurBuyCast = $(
+// 		'#main tbody :nth-child(4) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.eurBuyTransfer = $(
+// 		'#main tbody :nth-child(4) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.eurSellCast = $(
+// 		'#main tbody :nth-child(4) :nth-child(5)'
+// 	)?.innerText;
+// 	dataJson.eurSellTransfer = $(
+// 		'#main tbody :nth-child(4) :nth-child(6)'
+// 	)?.innerText;
+
+// 	dataJson.audBuyCast = $(
+// 		'#main tbody :nth-child(5) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.audBuyTransfer = $(
+// 		'#main tbody :nth-child(5) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.audSellCast = $(
+// 		'#main tbody :nth-child(5) :nth-child(5)'
+// 	)?.innerText;
+// 	dataJson.audSellTransfer = $(
+// 		'#main tbody :nth-child(5) :nth-child(6)'
+// 	)?.innerText;
+
+// 	dataJson.cadBuyCast = $(
+// 		'#main tbody :nth-child(6) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.cadBuyTransfer = $(
+// 		'#main tbody :nth-child(6) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.cadSellCast = $(
+// 		'#main tbody :nth-child(6) :nth-child(5)'
+// 	)?.innerText;
+// 	dataJson.cadSellTransfer = $(
+// 		'#main tbody :nth-child(6) :nth-child(6)'
+// 	)?.innerText;
+
+// 	dataJson.chfBuyCast = $(
+// 		'#main tbody :nth-child(7) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.chfBuyTransfer = $(
+// 		'#main tbody :nth-child(7) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.chfSellCast = $(
+// 		'#main tbody :nth-child(7) :nth-child(5)'
+// 	)?.innerText;
+// 	dataJson.chfSellTransfer = $(
+// 		'#main tbody :nth-child(7) :nth-child(6)'
+// 	)?.innerText;
+
+// 	dataJson.cnyBuyCast = $(
+// 		'#main tbody :nth-child(8) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.cnyBuyTransfer = $(
+// 		'#main tbody :nth-child(8) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.cnySellCast = $(
+// 		'#main tbody :nth-child(8) :nth-child(5)'
+// 	)?.innerText;
+// 	dataJson.cnySellTransfer = $(
+// 		'#main tbody :nth-child(8) :nth-child(6)'
+// 	)?.innerText;
+
+// 	dataJson.gbpBuyCast = $(
+// 		'#main tbody :nth-child(9) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.gbpBuyTransfer = $(
+// 		'#main tbody :nth-child(9) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.gbpSellCast = $(
+// 		'#main tbody :nth-child(9) :nth-child(5)'
+// 	)?.innerText;
+// 	dataJson.gbpSellTransfer = $(
+// 		'#main tbody :nth-child(9) :nth-child(6)'
+// 	)?.innerText;
+
+// 	dataJson.hkdBuyCast = $(
+// 		'#main tbody :nth-child(10) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.hkdBuyTransfer = $(
+// 		'#main tbody :nth-child(10) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.hkdSellCast = $(
+// 		'#main tbody :nth-child(10) :nth-child(5)'
+// 	)?.innerText;
+// 	dataJson.hkdSellTransfer = $(
+// 		'#main tbody :nth-child(10) :nth-child(6)'
+// 	)?.innerText;
+
+// 	dataJson.jpyBuyCast = $(
+// 		'#main tbody :nth-child(11) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.jpyBuyTransfer = $(
+// 		'#main tbody :nth-child(11) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.jpySellCast = $(
+// 		'#main tbody :nth-child(11) :nth-child(5)'
+// 	)?.innerText;
+// 	dataJson.jpySellTransfer = $(
+// 		'#main tbody :nth-child(11) :nth-child(6)'
+// 	)?.innerText;
+
+// 	dataJson.khrBuyCast = $(
+// 		'#main tbody :nth-child(12) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.khrBuyTransfer = $(
+// 		'#main tbody :nth-child(12) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.khrSellCast = $(
+// 		'#main tbody :nth-child(12) :nth-child(5)'
+// 	)?.innerText;
+// 	dataJson.khrSellTransfer = $(
+// 		'#main tbody :nth-child(12) :nth-child(6)'
+// 	)?.innerText;
+
+// 	dataJson.krwBuyCast = $(
+// 		'#main tbody :nth-child(13) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.krwBuyTransfer = $(
+// 		'#main tbody :nth-child(13) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.krwSellCast = $(
+// 		'#main tbody :nth-child(13) :nth-child(5)'
+// 	)?.innerText;
+// 	dataJson.krwSellTransfer = $(
+// 		'#main tbody :nth-child(13) :nth-child(6)'
+// 	)?.innerText;
+
+// 	dataJson.lakBuyCast = $(
+// 		'#main tbody :nth-child(14) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.lakBuyTransfer = $(
+// 		'#main tbody :nth-child(14) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.lakSellCast = $(
+// 		'#main tbody :nth-child(14) :nth-child(5)'
+// 	)?.innerText;
+// 	dataJson.lakSellTransfer = $(
+// 		'#main tbody :nth-child(14) :nth-child(6)'
+// 	)?.innerText;
+
+// 	dataJson.nzdBuyCast = $(
+// 		'#main tbody :nth-child(15) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.nzdBuyTransfer = $(
+// 		'#main tbody :nth-child(15) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.nzdSellCast = $(
+// 		'#main tbody :nth-child(15) :nth-child(5)'
+// 	)?.innerText;
+// 	dataJson.nzdSellTransfer = $(
+// 		'#main tbody :nth-child(15) :nth-child(6)'
+// 	)?.innerText;
+
+// 	dataJson.sekBuyCast = $(
+// 		'#main tbody :nth-child(16) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.sekBuyTransfer = $(
+// 		'#main tbody :nth-child(16) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.sekSellCast = $(
+// 		'#main tbody :nth-child(16) :nth-child(5)'
+// 	)?.innerText;
+// 	dataJson.sekSellTransfer = $(
+// 		'#main tbody :nth-child(16) :nth-child(6)'
+// 	)?.innerText;
+
+// 	dataJson.sgdBuyCast = $(
+// 		'#main tbody :nth-child(17) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.sgdBuyTransfer = $(
+// 		'#main tbody :nth-child(17) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.sgdSellCast = $(
+// 		'#main tbody :nth-child(17) :nth-child(5)'
+// 	)?.innerText;
+// 	dataJson.sgdSellTransfer = $(
+// 		'#main tbody :nth-child(17) :nth-child(6)'
+// 	)?.innerText;
+
+// 	dataJson.thbBuyCast = $(
+// 		'#main tbody :nth-child(18) :nth-child(3)'
+// 	)?.innerText;
+// 	dataJson.thbBuyTransfer = $(
+// 		'#main tbody :nth-child(18) :nth-child(4)'
+// 	)?.innerText;
+// 	dataJson.thbSellCast = $(
+// 		'#main tbody :nth-child(18) :nth-child(5)'
+// 	)?.innerText;
+// 	dataJson.thbSellTransfer = $(
+// 		'#main tbody :nth-child(18) :nth-child(6)'
+// 	)?.innerText;
+// } catch (err) {
+// 	console.log(err);
+// }
+// 		return dataJson;
+// 	};
+
+// 	let data = false;
+// 	let attemps = 0;
+// 	//retry request until it gets data or tries 3 times
+// 	while (data == false && attemps < 2) {
+// 		console.log('loop' + attemps);
+// 		data = await collectQueryData(urlMbbank, pageEvaluateFunc);
+// 		attemps++;
+// 		console.log(data);
+// 		if (data) {
+// Mbbank.findOneAndUpdate(
+// 	{ symbol: data.symbol },
+// 	{
+// 		name: data.name,
+// 		symbol: data.symbol,
+// 		timeUpdate: data.timeUpdate,
+
+// 		usdBuyCast: data.usdBuyCast,
+// 		usdBuyTransfer: data.usdBuyTransfer,
+// 		usdSellCast: data.usdSellCast,
+// 		usdSellTransfer: data.usdSellTransfer,
+
+// 		eurBuyCast: data.eurBuyCast,
+// 		eurBuyTransfer: data.eurBuyTransfer,
+// 		eurSellCast: data.eurSellCast,
+// 		eurSellTransfer: data.eurSellTransfer,
+
+// 		gbpBuyCast: data.gbpBuyCast,
+// 		gbpBuyTransfer: data.gbpBuyTransfer,
+// 		gbpSellCast: data.gbpSellCast,
+// 		gbpSellTransfer: data.gbpSellTransfer,
+
+// 		jpyBuyCast: data.jpyBuyCast,
+// 		jpyBuyTransfer: data.jpyBuyTransfer,
+// 		jpySellCast: data.jpySellCast,
+// 		jpySellTransfer: data.jpySellTransfer,
+
+// 		hkdBuyCast: data.hkdBuyCast,
+// 		hkdBuyTransfer: data.hkdBuyTransfer,
+// 		hkdSellCast: data.hkdSellCast,
+// 		hkdSellTransfer: data.hkdSellTransfer,
+
+// 		cnyBuyCast: data.cnyBuyCast,
+// 		cnyBuyTransfer: data.cnyBuyTransfer,
+// 		cnySellCast: data.cnySellCast,
+// 		cnySellTransfer: data.cnySellTransfer,
+
+// 		audBuyCast: data.audBuyCast,
+// 		audBuyTransfer: data.audBuyTransfer,
+// 		audSellCast: data.audSellCast,
+// 		audSellTransfer: data.audSellTransfer,
+
+// 		nzdBuyCast: data.nzdBuyCast,
+// 		nzdBuyTransfer: data.nzdBuyTransfer,
+// 		nzdSellCast: data.nzdSellCast,
+// 		nzdSellTransfer: data.nzdSellTransfer,
+
+// 		cadBuyCast: data.cadBuyCast,
+// 		cadBuyTransfer: data.cadBuyTransfer,
+// 		cadSellCast: data.cadSellCast,
+// 		cadSellTransfer: data.cadSellTransfer,
+
+// 		sgdBuyCast: data.sgdBuyCast,
+// 		sgdBuyTransfer: data.sgdBuyTransfer,
+// 		sgdSellCast: data.sgdSellCast,
+// 		sgdSellTransfer: data.sgdSellTransfer,
+
+// 		thbBuyCast: data.thbBuyCast,
+// 		thbBuyTransfer: data.thbBuyTransfer,
+// 		thbSellCast: data.thbSellCast,
+// 		thbSellTransfer: data.thbSellTransfer,
+
+// 		chfBuyCast: data.chfBuyCast,
+// 		chfBuyTransfer: data.chfBuyTransfer,
+// 		chfSellCast: data.chfSellCast,
+// 		chfSellTransfer: data.chfSellTransfer,
+
+// 		krwBuyCast: data.krwBuyCast,
+// 		krwBuyTransfer: data.krwBuyTransfer,
+// 		krwSellCast: data.krwSellCast,
+// 		krwSellTransfer: data.krwSellTransfer,
+
+// 		lakBuyCast: data.lakBuyCast,
+// 		lakBuyTransfer: data.lakBuyTransfer,
+// 		lakSellCast: data.lakSellCast,
+// 		lakSellTransfer: data.lakSellTransfer,
+
+// 		khrBuyCast: data.khrBuyCast,
+// 		khrBuyTransfer: data.khrBuyTransfer,
+// 		khrSellCast: data.khrSellCast,
+// 		khrSellTransfer: data.khrSellTransfer,
+
+// 		sekBuyCast: data.sekBuyCast,
+// 		sekBuyTransfer: data.sekBuyTransfer,
+// 		sekSellCast: data.sekSellCast,
+// 		sekSellTransfer: data.sekSellTransfer,
+// 	},
+// 	{ upsert: true }
+// )
+// 	// .then((doc) => console.log(doc))
+// 	.catch((err) => console.log(data.symbol));
+
+// 			// await browser.close();
+// 		}
+
+// 		if (data === false) {
+// 			//wait a few second, also a good idea to swap proxy here
+// 			console.log('Recrawl........' + attemps);
+// 			await new Promise((resolve) => setTimeout(resolve, 3000));
+// 		}
+// 	}
+// });
 
 module.exports = {
 	crawlAgribank,
@@ -3218,85 +5941,85 @@ module.exports = {
 
 // 		// console.log(vietinbankData)
 
-// 		Vietinbank.findOneAndUpdate(
-// 			{ symbol: vietinbankData.symbol },
-// 			{
-// 				name: vietinbankData.name,
-// 				symbol: vietinbankData.symbol,
-// 				timeUpdate: vietinbankData.timeUpdate,
+// Vietinbank.findOneAndUpdate(
+// 	{ symbol: vietinbankData.symbol },
+// 	{
+// 		name: vietinbankData.name,
+// 		symbol: vietinbankData.symbol,
+// 		timeUpdate: vietinbankData.timeUpdate,
 
-// 				audBuyCast: vietinbankData.audBuyCast,
-// 				audBuyTransfer: vietinbankData.audBuyTransfer,
-// 				audSell: vietinbankData.audSell,
+// 		audBuyCast: vietinbankData.audBuyCast,
+// 		audBuyTransfer: vietinbankData.audBuyTransfer,
+// 		audSell: vietinbankData.audSell,
 
-// 				cadBuyCast: vietinbankData.cadBuyCast,
-// 				cadBuyTransfer: vietinbankData.cadBuyTransfer,
-// 				cadSell: vietinbankData.cadSell,
+// 		cadBuyCast: vietinbankData.cadBuyCast,
+// 		cadBuyTransfer: vietinbankData.cadBuyTransfer,
+// 		cadSell: vietinbankData.cadSell,
 
-// 				chfBuyCast: vietinbankData.chfBuyCast,
-// 				chfBuyTransfer: vietinbankData.chfBuyTransfer,
-// 				chfSell: vietinbankData.chfSell,
+// 		chfBuyCast: vietinbankData.chfBuyCast,
+// 		chfBuyTransfer: vietinbankData.chfBuyTransfer,
+// 		chfSell: vietinbankData.chfSell,
 
-// 				cnyBuyCast: vietinbankData.cnyBuyCast,
-// 				cnyBuyTransfer: vietinbankData.cnyBuyTransfer,
-// 				cnySell: vietinbankData.cnySell,
+// 		cnyBuyCast: vietinbankData.cnyBuyCast,
+// 		cnyBuyTransfer: vietinbankData.cnyBuyTransfer,
+// 		cnySell: vietinbankData.cnySell,
 
-// 				dkkBuyCast: vietinbankData.dkkBuyCast,
-// 				dkkBuyTransfer: vietinbankData.dkkBuyTransfer,
-// 				dkkSell: vietinbankData.dkkSell,
+// 		dkkBuyCast: vietinbankData.dkkBuyCast,
+// 		dkkBuyTransfer: vietinbankData.dkkBuyTransfer,
+// 		dkkSell: vietinbankData.dkkSell,
 
-// 				eurBuyCast: vietinbankData.eurBuyCast,
-// 				eurBuyTransfer: vietinbankData.eurBuyTransfer,
-// 				eurSell: vietinbankData.eurSell,
+// 		eurBuyCast: vietinbankData.eurBuyCast,
+// 		eurBuyTransfer: vietinbankData.eurBuyTransfer,
+// 		eurSell: vietinbankData.eurSell,
 
-// 				gbpBuyCast: vietinbankData.gbpBuyCast,
-// 				gbpBuyTransfer: vietinbankData.gbpBuyTransfer,
-// 				gbpSell: vietinbankData.gbpSell,
+// 		gbpBuyCast: vietinbankData.gbpBuyCast,
+// 		gbpBuyTransfer: vietinbankData.gbpBuyTransfer,
+// 		gbpSell: vietinbankData.gbpSell,
 
-// 				hkdBuyCast: vietinbankData.hkdBuyCast,
-// 				hkdBuyTransfer: vietinbankData.hkdBuyTransfer,
-// 				hkdSell: vietinbankData.hkdSell,
+// 		hkdBuyCast: vietinbankData.hkdBuyCast,
+// 		hkdBuyTransfer: vietinbankData.hkdBuyTransfer,
+// 		hkdSell: vietinbankData.hkdSell,
 
-// 				jpyBuyCast: vietinbankData.jpyBuyCast,
-// 				jpyBuyTransfer: vietinbankData.jpyBuyTransfer,
-// 				jpySell: vietinbankData.jpySell,
+// 		jpyBuyCast: vietinbankData.jpyBuyCast,
+// 		jpyBuyTransfer: vietinbankData.jpyBuyTransfer,
+// 		jpySell: vietinbankData.jpySell,
 
-// 				krwBuyCast: vietinbankData.krwBuyCast,
-// 				krwBuyTransfer: vietinbankData.krwBuyTransfer,
-// 				krwSell: vietinbankData.krwSell,
+// 		krwBuyCast: vietinbankData.krwBuyCast,
+// 		krwBuyTransfer: vietinbankData.krwBuyTransfer,
+// 		krwSell: vietinbankData.krwSell,
 
-// 				lakBuyCast: vietinbankData.lakBuyCast,
-// 				lakBuyTransfer: vietinbankData.lakBuyTransfer,
-// 				lakSell: vietinbankData.lakSell,
+// 		lakBuyCast: vietinbankData.lakBuyCast,
+// 		lakBuyTransfer: vietinbankData.lakBuyTransfer,
+// 		lakSell: vietinbankData.lakSell,
 
-// 				nokBuyCast: vietinbankData.nokBuyCast,
-// 				nokBuyTransfer: vietinbankData.nokBuyTransfer,
-// 				nokSell: vietinbankData.nokSell,
+// 		nokBuyCast: vietinbankData.nokBuyCast,
+// 		nokBuyTransfer: vietinbankData.nokBuyTransfer,
+// 		nokSell: vietinbankData.nokSell,
 
-// 				nzdBuyCast: vietinbankData.nzdBuyCast,
-// 				nzdBuyTransfer: vietinbankData.nzdBuyTransfer,
-// 				nzdSell: vietinbankData.nzdSell,
+// 		nzdBuyCast: vietinbankData.nzdBuyCast,
+// 		nzdBuyTransfer: vietinbankData.nzdBuyTransfer,
+// 		nzdSell: vietinbankData.nzdSell,
 
-// 				sekBuyCast: vietinbankData.sekBuyCast,
-// 				sekBuyTransfer: vietinbankData.sekBuyTransfer,
-// 				sekSell: vietinbankData.sekSell,
+// 		sekBuyCast: vietinbankData.sekBuyCast,
+// 		sekBuyTransfer: vietinbankData.sekBuyTransfer,
+// 		sekSell: vietinbankData.sekSell,
 
-// 				sgdBuyCast: vietinbankData.sgdBuyCast,
-// 				sgdBuyTransfer: vietinbankData.sgdBuyTransfer,
-// 				sgdSell: vietinbankData.sgdSell,
+// 		sgdBuyCast: vietinbankData.sgdBuyCast,
+// 		sgdBuyTransfer: vietinbankData.sgdBuyTransfer,
+// 		sgdSell: vietinbankData.sgdSell,
 
-// 				thbBuyCast: vietinbankData.thbBuyCast,
-// 				thbBuyTransfer: vietinbankData.thbBuyTransfer,
-// 				thbSell: vietinbankData.thbSell,
+// 		thbBuyCast: vietinbankData.thbBuyCast,
+// 		thbBuyTransfer: vietinbankData.thbBuyTransfer,
+// 		thbSell: vietinbankData.thbSell,
 
-// 				usdBuyCast: vietinbankData.usdBuyCast,
-// 				usdBuyTransfer: vietinbankData.usdBuyTransfer,
-// 				usdSell: vietinbankData.usdSell,
-// 			},
-// 			{ upsert: true }
-// 		)
-// 			// .then((doc) => console.log(doc))
-// 			.catch((err) => console.log(vietinbankData.symbol));
+// 		usdBuyCast: vietinbankData.usdBuyCast,
+// 		usdBuyTransfer: vietinbankData.usdBuyTransfer,
+// 		usdSell: vietinbankData.usdSell,
+// 	},
+// 	{ upsert: true }
+// )
+// 	// .then((doc) => console.log(doc))
+// 	.catch((err) => console.log(vietinbankData.symbol));
 
 // 		await browser.close();
 // 	} catch (error) {

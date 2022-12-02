@@ -524,7 +524,7 @@ const crawlSjc = async () => {
 };
 
 const crawlPnj = async (localtionNumber, index) => {
-	console.time('pnj');
+	console.time('pnj' + index);
 	const result = await axios(`${urlPnj}${localtionNumber}`)
 		.then((res) => res.data)
 		.catch((err) => console.log(err));
@@ -709,7 +709,7 @@ const crawlPnj = async (localtionNumber, index) => {
 		},
 		{ upsert: true }
 	)
-		.then((doc) => console.timeEnd('pnj'))
+		.then((doc) => console.timeEnd('pnj' + index))
 		.catch((err) => console.log(dataJson.name));
 };
 

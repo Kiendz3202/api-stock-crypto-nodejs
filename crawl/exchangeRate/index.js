@@ -12,16 +12,17 @@ const { delay } = require('../../utils/promise/delayTime/delay');
 const exchangeRateRunAll = async () => {
 	// cron.schedule('*/3 * * * *', async () => {
 	crawlAgribank();
-	await delay(40000);
+	await delay(10000);
 	crawlVietcombank();
-	await delay(40000);
+	await delay(10000);
 	crawlBidv();
-	await delay(40000);
+	await delay(10000);
 	crawlTechcombank();
-	await delay(40000);
+	await delay(10000);
 	crawlVietinbank();
-	await delay(40000);
+	await delay(10000);
 	crawlMbbank();
+	await delay(10000);
 	// });
 };
 

@@ -16,9 +16,9 @@ const { delay } = require('../utils/promise/delayTime/delay');
 const runCrawlCoin = async () => {
 	// cron.schedule('1 tuan chay lai 1 lan', async () => {
 	//function delete all 800 coin
-	// cron.schedule('0 */2 * * *', async () => {
-	coinRunAll();
-	// });
+	cron.schedule('0 */2 * * *', async () => {
+		coinRunAll();
+	});
 	cron.schedule('*/2 * * * *', async () => {
 		updateNewPrice();
 	});
@@ -39,14 +39,14 @@ const runCrawlStockList = async () => {
 };
 
 const runCrawlGoldPetrolExchangerateInterestRate = async () => {
-	cron.schedule('*/2 * * * *', async () => {
+	cron.schedule('*/30 * * * *', async () => {
 		goldRunAll();
 		// await delay(380000);
-		// petrolRunAll();
+		petrolRunAll();
 		// await delay(40000);
-		// exchangeRateRunAll();
+		exchangeRateRunAll();
 		// await delay(240000);
-		// interestRateRunAll();
+		interestRateRunAll();
 		//360
 	});
 };
