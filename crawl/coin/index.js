@@ -108,11 +108,12 @@ const coinRunAll = asyncHandler(async () => {
 		}
 	});
 
-	await delay(15000);
-	const CoinIsEnough = 800;
-	if ((await Coin.find()).length != 800) {
-		await delay(10000);
-	}
+	await delay(30000);
+	// const CoinIsEnough = 800;
+	// if ((await Coin.find()).length != CoinIsEnough) {
+	// 	console.log('update not enough coins');
+	// 	await delay(10000);
+	// }
 
 	if (initialCoinChart.length != 0) {
 		const arrCoinNew = await Coin.find({}, { nameId: 1, _id: 0 });
