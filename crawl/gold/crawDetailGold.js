@@ -433,8 +433,6 @@ const crawlSjc = async () => {
 	} catch (err) {
 		console.log(err);
 	}
-	// console.log($('#main table tbody :nth-child(6) ').text());
-	console.log(dataJson);
 	Sjc.findOneAndUpdate(
 		{ name: dataJson.name },
 		{

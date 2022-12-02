@@ -11,8 +11,9 @@ const router = express.Router();
 
 // router.get('/hb', autoAddTredingCoin)
 
+// router.get('/coin/:page', verifytoken, paginationPageCoinController);
 router.get('/coin/:page', verifytoken, paginationPageCoinController);
-router.get('/coin/detail/:coin', detailCoinController);
-router.get('/coin/chart/:coin', coinChartController);
+router.get('/coin/detail/:nameId', detailCoinController);
+router.get('/coin/chart/:nameId', coinChartController);
 
 module.exports = router;

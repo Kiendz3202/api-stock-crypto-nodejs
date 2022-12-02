@@ -30,17 +30,17 @@ const paginationPageCoinController = asyncHandler(async (req, res, next) => {
 });
 
 const detailCoinController = asyncHandler(async (req, res, next) => {
-	const coinSymbol = req.params.coin || 'btc';
+	const coinNameId = req.params.nameId || 'bitcoin';
 
-	const coinDetail = await Coin.find({ symbol: coinSymbol });
+	const coinDetail = await Coin.find({ nameId: coinNameId });
 
 	res.status(200).json(coinDetail);
 });
 
 const coinChartController = async (req, res, next) => {
-	const coinSymbol = req.params.coin || 'btc';
+	const coinNameId = req.params.nameId || 'bitcoin';
 
-	const chartData = await CoinChart.find({ symbol: coinSymbol });
+	const chartData = await CoinChart.find({ nameId: coinNameId });
 
 	res.status(200).json(chartData);
 };
