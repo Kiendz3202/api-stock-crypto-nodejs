@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const cron = require('node-cron');
 const axios = require('axios');
+const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 
 const { collectQueryData } = require('../../utils/pupperteer/collectQueryData');
@@ -18,13 +19,13 @@ const urlSjc = 'https://webtygia.com/gia-vang-sjc.html';
 const urlPnj = 'https://www.pnj.com.vn/blog/gia-vang/?zone=';
 const urlDoji = 'https://doji.vn/bang-gia-vang/';
 const urlPhuQuySjc = 'https://webtygia.com/gia-vang-phu-quy.html';
-const ulrBaoTinMinhChau = 'https://btmc.vn/bieu-do-gia-vang.html?t=ngay';
+const ulrBaoTinMinhChau =
+	'https://webtygia.com/gia-vang-bao-tin-minh-chau.html';
 const urlMiHong = 'https://webtygia.com/gia-vang-mi-hong.html';
 
 const jsdom = require('jsdom');
 const { JSDOM } = jsdom;
 // const querySelectorAll = require('query-selector');
-const cheerio = require('cheerio');
 // const request = require('request-promise');
 
 const crawlSjc = async () => {
@@ -1391,88 +1392,143 @@ const crawlBaoTinMinhChau = async () => {
 		let date = new Date();
 		dataJson.timeUpdate = Math.floor(Date.now() / 1000);
 
-		dataJson.vangMiengVRTLBuy = (
-			$('table tbody :nth-child(2) :nth-child(4) b')
-				.text()
-				.replace(/\s/g, '') * 10000
-		).toString();
-		dataJson.vangMiengVRTLSell = (
-			$('table tbody :nth-child(2) :nth-child(5) b')
-				.text()
-				.replace(/\s/g, '') * 10000
-		).toString();
+		dataJson.vangMiengVRTLBuy = $(
+			'#myTable tbody :nth-child(2) td:nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.vangMiengVRTLSell = $(
+			'#myTable tbody :nth-child(2) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
 
-		dataJson.nhanTronTronBuy = (
-			$('table tbody :nth-child(3) :nth-child(3) b')
-				.text()
-				.replace(/\s/g, '') * 10000
-		).toString();
-		dataJson.nhanTronTronSell = (
-			$('table tbody :nth-child(3) :nth-child(4) b')
-				.text()
-				.replace(/\s/g, '') * 10000
-		).toString();
+		dataJson.nhanTronTronBuy = $(
+			'#myTable tbody :nth-child(1) td:nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.nhanTronTronSell = $(
+			'#myTable tbody :nth-child(1) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
 
-		dataJson.quaMungBanViVangBuy = (
-			$('table tbody :nth-child(4) :nth-child(4) b')
-				.text()
-				.replace(/\s/g, '') * 10000
-		).toString();
-		dataJson.quaMungBanViVangSell = (
-			$('table tbody :nth-child(4) :nth-child(5) b')
-				.text()
-				.replace(/\s/g, '') * 10000
-		).toString();
+		dataJson.quaMungBanViVangBuy = $(
+			'#myTable tbody :nth-child(8) td:nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.quaMungBanViVangSell = $(
+			'#myTable tbody :nth-child(8) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
 
-		dataJson.vangMiengSjcBuy = (
-			$('table tbody :nth-child(5) :nth-child(4) b')
-				.text()
-				.replace(/\s/g, '') * 10000
-		).toString();
-		dataJson.vangMiengSjcSell = (
-			$('table tbody :nth-child(5) :nth-child(5) b')
-				.text()
-				.replace(/\s/g, '') * 10000
-		).toString();
+		dataJson.vangMiengSjcBuy = $(
+			'#myTable tbody :nth-child(6) td:nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.vangMiengSjcSell = $(
+			'#myTable tbody :nth-child(6) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
 
-		dataJson.trangSucBangVangRongThangLong9999Buy = (
-			$('table tbody :nth-child(6) :nth-child(4) b')
-				.text()
-				.replace(/\s/g, '') * 10000
-		).toString();
-		dataJson.trangSucBangVangRongThangLong9999Sell = (
-			$('table tbody :nth-child(6) :nth-child(5) b')
-				.text()
-				.replace(/\s/g, '') * 10000
-		).toString();
+		dataJson.trangSucBangVangRongThangLong9999Buy = $(
+			'#myTable tbody :nth-child(3) td:nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.trangSucBangVangRongThangLong9999Sell = $(
+			'#myTable tbody :nth-child(3) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
 
-		dataJson.trangSucBangVangRongThangLong999Buy = (
-			$('table tbody :nth-child(7) :nth-child(3) b')
-				.text()
-				.replace(/\s/g, '') * 10000
-		).toString();
-		dataJson.trangSucBangVangRongThangLong999Sell = (
-			$('table tbody :nth-child(7) :nth-child(4) b')
-				.text()
-				.replace(/\s/g, '') * 10000
-		).toString();
+		dataJson.trangSucBangVangRongThangLong999Buy = $(
+			'#myTable tbody :nth-child(4) td:nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.trangSucBangVangRongThangLong999Sell = $(
+			'#myTable tbody :nth-child(4) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
 
-		dataJson.vangHTBTBuy = (
-			$('table tbody :nth-child(8) :nth-child(4) b')
-				.text()
-				.replace(/\s/g, '') * 10000
-		).toString();
-		// dataJson.vangHTBTSell = $('table tbody :nth-child(8) :nth-child(5) b ')?.innerText
+		dataJson.vangHTBTBuy = $('#myTable tbody :nth-child(5) td:nth-child(3)')
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.vangHTBTSell = $(
+			'#myTable tbody :nth-child(5) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
 
-		dataJson.vangNguyenLieuBuy = (
-			$('table tbody :nth-child(9) :nth-child(4) b')
-				.text()
-				.replace(/\s/g, '') * 10000
-		).toString();
-		// dataJson.vangNguyenLieuSell = $('table tbody :nth-child(9) :nth-child(5) b ')?.innerText
+		dataJson.vangNguyenLieuBuy = $(
+			'#myTable tbody :nth-child(7) td:nth-child(3)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
+		dataJson.vangNguyenLieuSell = $(
+			'#myTable tbody :nth-child(7) td:nth-child(4)'
+		)
+			.contents()
+			.first()
+			.text()
+			.slice(1, -1)
+			.replace(/\./g, '');
 	} catch (err) {
 		console.log(err);
 	}
+	console.log(dataJson);
 
 	BaoTinMinhChau.findOneAndUpdate(
 		{ name: dataJson.name },
@@ -1501,7 +1557,9 @@ const crawlBaoTinMinhChau = async () => {
 				dataJson.trangSucBangVangRongThangLong999Sell,
 
 			'vangHTBT.vangHTBTBuy': dataJson.vangHTBTBuy,
+			'vangHTBT.vangHTBTSell': dataJson.vangHTBTSell,
 			'vangThiTruong.vangNguyenLieuBuy': dataJson.vangNguyenLieuBuy,
+			'vangThiTruong.vangNguyenLieuSell': dataJson.vangNguyenLieuSell,
 		},
 		{ upsert: true }
 	)

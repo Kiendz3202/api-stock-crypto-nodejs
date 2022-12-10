@@ -24,10 +24,33 @@ const {
 	crawlDetailUpcom,
 	crawlDetailAllInvesting,
 	crawlDetailReportChartAll,
-	crawlDetailChartHnx,
+	crawlChartHnx30,
+	crawlChartHnx,
+	crawlChartVn30,
+	crawlChartHose,
+	crawlChartUpcom,
 } = require('../index');
 
-const stockRunAll = async () => {
+const updateAllListStocks = async () => {
+	crawlHnx();
+	await delay(10000);
+	crawlHose();
+	await delay(10000);
+	crawlHnx30();
+	await delay(10000);
+	crawlVn30();
+	await delay(30000);
+	const hnxLength = await Hnx.find().count();
+	const hnx30Length = await Hnx30.find().count();
+	const vn30Length = await Vn30.find().count();
+	const hoseLength = await Hose.find().count();
+	console.log(hnxLength + ' final');
+	console.log(hnx30Length + ' final');
+	console.log(vn30Length + ' final');
+	console.log(hoseLength + ' final');
+};
+
+const updateAllDetailStocks = async () => {
 	//----Length of collection to caculate time delay each crawlingFunction executes
 	const hnxLength = await Hnx.find().count();
 	const hnx30Length = await Hnx30.find().count();
@@ -35,95 +58,73 @@ const stockRunAll = async () => {
 	const hoseLength = await Hose.find().count();
 	// const upcomLength = await Upcom.find().count();
 
-	//----crawl all basic information stocks----
-	crawlHnx();
-	await delay(20000);
-	crawlHnx30();
-	await delay(10000);
-	crawlVn30();
-	await delay(10000);
-	crawlHose();
-	await delay(20000);
-	// crawlUpcom();
-	// await delay(20000);
-	// crawlAllInvesting();
-	//--------------------------------------
-
-	// const crawlAllDetailAllInvesting = asyncHandler(async () => {
-	// 	const list = await AllInvesting.find({}).limit(20);
-
-	// 	list.forEach(async (stock, index) => {
-	// 		setTimeout(() => {
-	// 			crawlDetailAllInvesting(stock.id, stock.name, stock.hrefDetail);
-	// 		}, 2000 * index);
-	// 	});
-	// });
-
-	// const crawlAllDetailReportChart = asyncHandler(async () => {
-	// 	const list = await AllInvestingDetail.find({}).limit(10);
-
-	// 	list.forEach(async (stock, index) => {
-	// 		setTimeout(() => {
-	// 			crawlDetailReportChartAll(stock.id, stock.symbol);
-	// 		}, index * 2000);
-	// 	});
-	// });
-
 	//---crawl detail information in particularly stock and update price to array in database to draw chart
-	console.log('start crawl detail');
-	crawlDetailHnx30();
-	//set delay for crwaling each exchange.When crawling first time, dont have data in database so we have to set default time delay,
-	//it depends on your caculating
+	console.log('start crawl detail stocks');
+
 	if (hnx30Length !== 0) {
-		await delay(hnx30Length * 7000);
-	} else {
-		await delay(30 * 7000);
+		crawlDetailHnx30();
+		await delay(hnx30Length * 2000);
 	}
 
-	crawlDetailVn30();
 	if (vn30Length !== 0) {
-		await delay(vn30Length * 7000);
-	} else {
-		await delay(30 * 7000);
+		crawlDetailVn30();
+		await delay(vn30Length * 2000);
 	}
 
-	crawlDetailHnx();
 	if (hnxLength !== 0) {
-		await delay(hnxLength * 7000);
-	} else {
-		await delay(337 * 7000);
+		crawlDetailHnx();
+		await delay(hnxLength * 2000);
 	}
 
-	crawlDetailHose();
 	if (hoseLength !== 0) {
-		await delay(hoseLength * 7000);
-	} else {
-		await delay(413 * 7000);
+		crawlDetailHose();
+		await delay(hoseLength * 2000);
 	}
 
-	// crawlAllDetailStock(Upcom, crawlDetailUpcom);
 	// if (upcomLength !== 0) {
-	// 	await delay(upcomLength * 7000);
-	// } else {
-	// 	await delay(900 * 7000);
+	// 	crawlDetailUpcom();
+	// 	await delay(upcomLength * 2000);
 	// }
 
-	// crawlAllDetailAllInvesting();
-
-	// crawlAllDetailChartHnx(); ham nay la goi api cua ho de lay data,gio khong can nua
-
-	// crawlAllDetailReportChart();
+	console.log('end crawl detail stocks');
 };
 
-const stockRunList = async () => {
-	crawlHnx();
-	await delay(40000);
-	crawlHnx30();
-	await delay(20000);
-	crawlVn30();
-	await delay(20000);
-	crawlHose();
-	await delay(40000);
+const updateAllChartStocks = async () => {
+	//----Length of collection to caculate time delay each crawlingFunction executes
+	const hnxLength = await Hnx.find().count();
+	const hnx30Length = await Hnx30.find().count();
+	const vn30Length = await Vn30.find().count();
+	const hoseLength = await Hose.find().count();
+	// const upcomLength = await Upcom.find().count();
+
+	if (hnx30Length !== 0) {
+		crawlChartHnx30();
+		await delay(hnx30Length * 3000);
+	}
+
+	if (hnxLength !== 0) {
+		crawlChartHnx();
+		await delay(hnxLength * 3000);
+	}
+
+	if (vn30Length !== 0) {
+		crawlChartVn30();
+		await delay(vn30Length * 3000);
+	}
+
+	if (hoseLength !== 0) {
+		crawlChartHose();
+		await delay(hoseLength * 3000);
+	}
+
+	// if (upcomLength !== 0) {
+	// 	crawlChartUpcom();
+	// 	await delay(upcomLength * 3000);
+	// }
 };
 
-module.exports = { stockRunAll, stockRunList };
+module.exports = {
+	updateAllDetailStocks,
+	updateAllListStocks,
+	updateAllChartStocks,
+};

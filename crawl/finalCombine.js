@@ -5,7 +5,11 @@ const {
 	coinRunAll,
 	updateNewPrice,
 } = require('./coin/index');
-const { stockRunAll, stockRunList } = require('./stock/index');
+const {
+	updateAllDetailStocks,
+	updateAllListStocks,
+	updateAllChartStocks,
+} = require('./stock/index');
 const goldRunAll = require('./gold/index');
 const petrolRunAll = require('./petrol/index');
 const exchangeRateRunAll = require('./exchangeRate/index');
@@ -25,35 +29,42 @@ const runCrawlCoin = async () => {
 	// });
 };
 
-const runCrawlStock = async () => {
-	//  0 */2 * * *
-	cron.schedule('0 */2 * * *', async () => {
-		stockRunAll();
+const runCrawlAllListStocks = async () => {
+	cron.schedule('*/5 * * * *', async () => {
+		updateAllListStocks();
 	});
 };
 
-const runCrawlStockList = async () => {
-	cron.schedule('*/4 * * * *', async () => {
-		stockRunList();
+const runCrawlAllDetailStocks = async () => {
+	//  0 */2 * * *
+	cron.schedule('0 2,12 * * *', async () => {
+		updateAllDetailStocks();
+	});
+};
+
+const runCrawlAllChartStocks = async () => {
+	cron.schedule('0 2 * * *', async () => {
+		updateAllChartStocks();
 	});
 };
 
 const runCrawlGoldPetrolExchangerateInterestRate = async () => {
 	cron.schedule('*/30 * * * *', async () => {
 		goldRunAll();
-		// await delay(380000);
+		await delay(380000);
 		petrolRunAll();
-		// await delay(40000);
+		await delay(40000);
 		exchangeRateRunAll();
-		// await delay(240000);
+		await delay(240000);
 		interestRateRunAll();
-		//360
+		360;
 	});
 };
 
 module.exports = {
 	runCrawlGoldPetrolExchangerateInterestRate,
-	runCrawlStock,
-	runCrawlStockList,
+	runCrawlAllDetailStocks,
+	runCrawlAllListStocks,
+	runCrawlAllChartStocks,
 	runCrawlCoin,
 };

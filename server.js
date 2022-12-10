@@ -37,20 +37,23 @@ const { authRoutes } = require('./routes/authRoutes/index');
 
 const {
 	runCrawlGoldPetrolExchangerateInterestRate,
-	runCrawlStock,
-	runCrawlStockList,
+	runCrawlAllDetailStocks,
+	runCrawlAllListStocks,
+	runCrawlAllChartStocks,
 	runCrawlCoin,
 } = require('./crawl/finalCombine');
+// const { crawlDetailHnx30 } = require('./crawl');
 //---------------------------------------------------
 
 // const myEmitter = new EventEmitter();
 // myEmitter.setMaxListeners(0);
 
 //--------------------------------------------Main Body------------------------------------------------------------------
-runCrawlCoin();
-runCrawlGoldPetrolExchangerateInterestRate();
-// runCrawlStockList();
-// runCrawlStock();
+// runCrawlCoin();
+// runCrawlGoldPetrolExchangerateInterestRate();
+runCrawlAllListStocks();
+runCrawlAllDetailStocks();
+runCrawlAllChartStocks();
 
 // -----------------------------------------------
 

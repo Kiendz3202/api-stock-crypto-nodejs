@@ -15,24 +15,36 @@ const hnx30DetailSchema = mongoose.Schema(
 		high: { type: 'String' },
 		low: { type: 'String' },
 		turnOver: { type: 'String' },
-
 		marketcap: { type: 'String' },
-		overBought: { type: 'String' },
-		overSold: { type: 'String' },
-		high52Week: { type: 'String' },
-		low52Week: { type: 'String' },
-		turnOver52WeekAverage: { type: 'String' },
-		foreignBuy: { type: 'String' },
-		ownedRatio: { type: 'String' },
-		dividendCast: { type: 'String' }, //cổ tức tiền mặt
-		dividendYield: { type: 'String' }, // tỷ lệ cổ tức
-		beta: { type: 'String' },
-		eps: { type: 'String' },
+
+		priceChange52Week: { type: 'String' },
+		averageVolume10Day: { type: 'String' },
+
+		percentPriceChange1Week: { type: 'String' },
+		percentPriceChange1Month: { type: 'String' },
+		percentPriceChange3Month: { type: 'String' },
+		percentPriceChange6Month: { type: 'String' },
+		percentPriceChange1Year: { type: 'String' },
+
+		priceChange1Week: { type: 'String' }, //cổ tức tiền mặt
+		priceChange1Month: { type: 'String' }, // tỷ lệ cổ tức
+		priceChange3Month: { type: 'String' },
+		priceChange6Month: { type: 'String' },
+		priceChange1Year: { type: 'String' },
+
+		high52Week: { type: 'String' }, // F P/e
+		low52Week: { type: 'String' }, //book value per share
+		outstandingShare: { type: 'String' },
+		freeFloat: { type: 'String' },
 		pe: { type: 'String' },
-		fpe: { type: 'String' }, // F P/e
-		bvps: { type: 'String' }, //book value per share
+		dilutionPE: { type: 'String' },
 		pb: { type: 'String' },
-		companyInfo: { type: 'String', ref: 'HnxInvestingDetail' },
+		eps: { type: 'String' },
+		dilutionEPS: { type: 'String' },
+		bookValue: { type: 'String' },
+		lastInterest: { type: 'String' },
+		roe: { type: 'String' },
+		companyInfo: { type: 'String', ref: 'Hnx30CompanyInfo' }, //populated
 	},
 	{
 		timestamps: true,

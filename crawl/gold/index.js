@@ -12,14 +12,12 @@ const { delay } = require('../../utils/promise/delayTime/delay');
 const goldRunAll = async () => {
 	const crawlAllDetailPnj = async () => {
 		const arr = ['00', '07', '11', '13', '14', '21'];
-
 		arr.forEach((gold, index) => {
 			setTimeout(() => {
 				crawlPnj(gold, index + 1);
 			}, 3000 * index);
 		});
 	};
-
 	crawlAllDetailPnj();
 	await delay(18000);
 	crawlSjc();

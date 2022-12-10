@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler');
 const cron = require('node-cron');
 const axios = require('axios');
 const puppeteer = require('puppeteer');
-// const Hnx30 = require('../../model/stock/stockList/hnx30Model');
+const Hnx30 = require('../../model/stock/stockList/hnx30Model');
 // const Hnx = require('../../model/stock/stockList/hnxModel');
 // const Vn30 = require('../../model/stock/stockList/vn30Model');
 // const Hose = require('../../model/stock/stockList/hoseModel');
@@ -16,36 +16,182 @@ const puppeteer = require('puppeteer');
 
 // const AllInvestingDetail = require('../../model/stock/stockDetail/allInvestingDetailModel');
 
+const { delay } = require('../../utils/promise/delayTime/delay');
+const Hnx30Chart = require('../../model/stock/chartStock/chart/hnx30ChartModel');
+const Hnx = require('../../model/stock/stockList/hnxModel');
 const HnxChart = require('../../model/stock/chartStock/chart/hnxChartModel');
+const Vn30 = require('../../model/stock/stockList/vn30Model');
+const Vn30Chart = require('../../model/stock/chartStock/chart/vn30ChartModel');
+const Hose = require('../../model/stock/stockList/hoseModel');
+const HoseChart = require('../../model/stock/chartStock/chart/hoseChartModel');
+const Upcom = require('../../model/stock/stockList/upcomModel');
+const UpcomChart = require('../../model/stock/chartStock/chart/upcomChartModel');
 // const AllReportChart = require('../../model/stock/chartStock/reportChart/allReportChartModel');
 
-// khong can dung de crawl data chart
-const crawlDetailChartHnx = asyncHandler(async (symbol) => {
+const crawlChartHnx30 = asyncHandler(async (symbol) => {
+	const hnx30Stocks = await Hnx30.find({});
 	let currentTime = Math.floor(Date.now() / 1000);
-	axios
-		.get(
-			`https://api.vietstock.vn/ta/history?symbol=${symbol}&resolution=D&from=1500000000&to=${currentTime}`
-		)
-		.then((response) => {
-			const data = JSON.parse(response.data);
-			HnxChart.findOneAndUpdate(
-				{ symbol: symbol },
-				{
-					symbol: symbol,
-					t: data.t,
-					o: data.o,
-					h: data.h,
-					l: data.l,
-					c: data.c,
-				},
-				{ upsert: true }
+
+	for (const stock of hnx30Stocks) {
+		await axios
+			.get(
+				`https://dchart-api.vndirect.com.vn/dchart/history?resolution=5&symbol=${stock.symbol}&from=1450000000&to=${currentTime}`
 			)
-				.then((doc) => console.log(doc))
-				.catch((err) => console.log(err));
-		})
-		.catch((err) => {
-			console.log(err);
-		});
+			.then((response) => {
+				const data = response.data;
+				if (data) {
+					Hnx30Chart.findOneAndUpdate(
+						{ symbol: stock.symbol },
+						{
+							symbol: stock.symbol,
+							t: data.t,
+							price: data.o,
+						},
+						{ upsert: true }
+					)
+						// .then((doc) => console.log(stock.symbol))
+						.catch((err) => console.log(err));
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+		await delay(3000);
+	}
 });
 
-module.exports = { crawlDetailChartHnx };
+const crawlChartHnx = asyncHandler(async (symbol) => {
+	const hnxStocks = await Hnx.find({});
+	let currentTime = Math.floor(Date.now() / 1000);
+
+	for (const stock of hnxStocks) {
+		await axios
+			.get(
+				`https://dchart-api.vndirect.com.vn/dchart/history?resolution=5&symbol=${stock.symbol}&from=1450000000&to=${currentTime}`
+			)
+			.then((response) => {
+				const data = response.data;
+				if (data) {
+					HnxChart.findOneAndUpdate(
+						{ symbol: stock.symbol },
+						{
+							symbol: stock.symbol,
+							t: data.t,
+							price: data.o,
+						},
+						{ upsert: true }
+					)
+						// .then((doc) => console.log(stock.symbol))
+						.catch((err) => console.log(err));
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+		await delay(3000);
+	}
+});
+
+const crawlChartVn30 = asyncHandler(async (symbol) => {
+	const vn30Stocks = await Vn30.find({});
+	let currentTime = Math.floor(Date.now() / 1000);
+
+	for (const stock of vn30Stocks) {
+		await axios
+			.get(
+				`https://dchart-api.vndirect.com.vn/dchart/history?resolution=5&symbol=${stock.symbol}&from=1450000000&to=${currentTime}`
+			)
+			.then((response) => {
+				const data = response.data;
+				if (data) {
+					Vn30Chart.findOneAndUpdate(
+						{ symbol: stock.symbol },
+						{
+							symbol: stock.symbol,
+							t: data.t,
+							price: data.o,
+						},
+						{ upsert: true }
+					)
+						// .then((doc) => console.log(stock.symbol))
+						.catch((err) => console.log(err));
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+		await delay(3000);
+	}
+});
+
+const crawlChartHose = asyncHandler(async (symbol) => {
+	const hoseStocks = await Hose.find({});
+	let currentTime = Math.floor(Date.now() / 1000);
+
+	for (const stock of hoseStocks) {
+		await axios
+			.get(
+				`https://dchart-api.vndirect.com.vn/dchart/history?resolution=5&symbol=${stock.symbol}&from=1450000000&to=${currentTime}`
+			)
+			.then((response) => {
+				const data = response.data;
+				if (data) {
+					HoseChart.findOneAndUpdate(
+						{ symbol: stock.symbol },
+						{
+							symbol: stock.symbol,
+							t: data.t,
+							price: data.o,
+						},
+						{ upsert: true }
+					)
+						// .then((doc) => console.log(stock.symbol))
+						.catch((err) => console.log(err));
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+		await delay(3000);
+	}
+});
+
+const crawlChartUpcom = asyncHandler(async (symbol) => {
+	const upcomStocks = await Upcom.find({});
+	let currentTime = Math.floor(Date.now() / 1000);
+
+	for (const stock of upcomStocks) {
+		await axios
+			.get(
+				`https://dchart-api.vndirect.com.vn/dchart/history?resolution=5&symbol=${stock.symbol}&from=1450000000&to=${currentTime}`
+			)
+			.then((response) => {
+				const data = response.data;
+				if (data) {
+					UpcomChart.findOneAndUpdate(
+						{ symbol: stock.symbol },
+						{
+							symbol: stock.symbol,
+							t: data.t,
+							price: data.o,
+						},
+						{ upsert: true }
+					)
+						// .then((doc) => console.log(stock.symbol))
+						.catch((err) => console.log(err));
+				}
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+		await delay(3000);
+	}
+});
+
+module.exports = {
+	crawlChartHnx30,
+	crawlChartHnx,
+	crawlChartVn30,
+	crawlChartHose,
+	crawlChartUpcom,
+};

@@ -1,7 +1,11 @@
 const asyncHandler = require('express-async-handler');
 const cron = require('node-cron');
 const axios = require('axios');
+const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
+const {
+	convertTimestampToDate,
+} = require('../../utils/date/convertTimestampToDate');
 
 const {
 	collectQueryData,
@@ -30,7 +34,653 @@ const Upcom = require('../../model/stock/stockList/upcomModel');
 
 //----------------------main body-------------------------------------
 
-// const page = await browser.newPage();
+const crawlDetailHnx30 = async () => {
+	hnx30All = await Hnx30.find({});
+
+	for (const stock of hnx30All) {
+		// const reportDate = convertTimestampToDate(Date.now() - 3000000000);
+		const ratios = await axios(
+			`https://data-ifin.tvsi.com.vn/api/v1/Dashboard/GetListCompanyOverView?stockSymbol=${stock.symbol}`
+		)
+			.then((res) => res.data)
+			.catch((err) => console.log(err));
+
+		let dataJson = {};
+
+		if (ratios) {
+			try {
+				dataJson.name = stock.name;
+				dataJson.symbol = stock.symbol;
+				dataJson.timeUpdate = Math.floor(Date.now() / 1000);
+				dataJson.reference = stock.reference;
+				dataJson.ceil = stock.ceil;
+				dataJson.floor = stock.floor;
+				dataJson.currentPrice = stock.currentPrice; //sửa thành crawl từ trang detail chứ kp lấy như thế này, mà trang all stock cũng ko cần currentprice, muốn xem thì vào trang details
+				dataJson.high = stock.high;
+				dataJson.low = stock.low;
+				dataJson.change = stock.change;
+				dataJson.changePercent = stock.changePercent;
+				dataJson.turnOver = stock.turnOver;
+				dataJson.marketcap = ratios.marketCapital.toString();
+				dataJson.openPrice = ratios.firstPrice.toString();
+
+				dataJson.priceChange52Week = ratios.priceChange52Week;
+				dataJson.averageVolume10Day =
+					ratios.averageVolume10Day.toString();
+				dataJson.percentPriceChange1Week =
+					ratios.percentPriceChange1Week.toString();
+				dataJson.percentPriceChange1Month =
+					ratios.percentPriceChange1Month.toString();
+				dataJson.percentPriceChange3Month =
+					ratios.percentPriceChange3Month.toString();
+				dataJson.percentPriceChange6Month =
+					ratios.percentPriceChange6Month.toString();
+				dataJson.percentPriceChange1Year =
+					ratios.percentPriceChange1Year.toString();
+				dataJson.priceChange1Week = ratios.priceChange1Week.toString();
+				dataJson.priceChange1Month =
+					ratios.priceChange1Month.toString();
+				dataJson.priceChange3Month =
+					ratios.priceChange3Month.toString();
+				dataJson.priceChange6Month =
+					ratios.priceChange6Month.toString();
+				dataJson.priceChange1Year = ratios.priceChange1Year.toString();
+				dataJson.high52Week = ratios.highestPrice52Week.toString();
+				dataJson.low52Week = ratios.lowestPrice52Week.toString();
+				dataJson.outstandingShare = ratios.outstandingShare.toString();
+				dataJson.freeFloat = ratios.freeFloat.toString();
+				dataJson.pe = ratios.pe.toString();
+				dataJson.dilutionPE = ratios.dilutionPE.toString();
+				dataJson.pb = ratios.pb.toString();
+				dataJson.eps = ratios.eps.toString();
+				dataJson.dilutionEPS = ratios.dilutionEPS.toString();
+				dataJson.bookValue = ratios.bookValue.toString();
+				dataJson.lastInterest = ratios.lastInterest.toString();
+				dataJson.roe = ratios.roe.toString();
+			} catch (err) {
+				console.log('crawldetail hnx30' + err);
+			}
+			// console.log(dataJson.symbol + ' HNX30');
+
+			await Hnx30Detail.findOneAndUpdate(
+				{ symbol: dataJson.symbol },
+				{
+					name: dataJson.name,
+					symbol: dataJson.symbol,
+					timeUpdate: dataJson.timeUpdate,
+					reference: dataJson.reference,
+					ceil: dataJson.ceil,
+					floor: dataJson.floor,
+					currentPrice: dataJson.currentPrice,
+					change: dataJson.change,
+					changePercent: dataJson.changePercent,
+					openPrice: dataJson.openPrice,
+					high: dataJson.high,
+					low: dataJson.low,
+					turnOver: dataJson.turnOver,
+					marketcap: dataJson.marketcap,
+
+					priceChange52Week: dataJson.priceChange52Week,
+					averageVolume10Day: dataJson.averageVolume10Day,
+
+					percentPriceChange1Week: dataJson.percentPriceChange1Week,
+					percentPriceChange1Month: dataJson.percentPriceChange1Month,
+					percentPriceChange3Month: dataJson.percentPriceChange3Month,
+					percentPriceChange6Month: dataJson.percentPriceChange6Month,
+					percentPriceChange1Year: dataJson.percentPriceChange1Year,
+
+					priceChange1Week: dataJson.priceChange1Week,
+					priceChange1Month: dataJson.priceChange1Month,
+					priceChange3Month: dataJson.priceChange3Month,
+					priceChange6Month: dataJson.priceChange6Month,
+					priceChange1Year: dataJson.priceChange1Year,
+
+					high52Week: dataJson.high52Week,
+					low52Week: dataJson.low52Week,
+					outstandingShare: dataJson.outstandingShare,
+					freeFloat: dataJson.freeFloat,
+					pe: dataJson.pe,
+					dilutionPE: dataJson.dilutionPE,
+					pb: dataJson.pb,
+					eps: dataJson.eps,
+					dilutionEPS: dataJson.dilutionEPS,
+					bookValue: dataJson.bookValue,
+					lastInterest: dataJson.lastInterest,
+					roe: dataJson.roe,
+					companyInfo: dataJson.symbol,
+				},
+				{ upsert: true }
+			)
+				// .then((doc) => console.log(doc?.symbol))
+				.catch((err) =>
+					console.log(`crawldetail hnx30 ${dataJson.symbol}` + err)
+				);
+			await delay(2000);
+		}
+	}
+};
+
+const crawlDetailHnx = async () => {
+	hnxAll = await Hnx.find({});
+
+	for (const stock of hnxAll) {
+		// const reportDate = convertTimestampToDate(Date.now() - 3000000000);
+		const ratios = await axios(
+			`https://data-ifin.tvsi.com.vn/api/v1/Dashboard/GetListCompanyOverView?stockSymbol=${stock.symbol}`
+		)
+			.then((res) => res.data)
+			.catch((err) => console.log(err));
+
+		let dataJson = {};
+
+		if (ratios) {
+			try {
+				dataJson.name = stock.name;
+				dataJson.symbol = stock.symbol;
+				dataJson.timeUpdate = Math.floor(Date.now() / 1000);
+				dataJson.reference = stock.reference;
+				dataJson.ceil = stock.ceil;
+				dataJson.floor = stock.floor;
+				dataJson.currentPrice = stock.currentPrice; //sửa thành crawl từ trang detail chứ kp lấy như thế này, mà trang all stock cũng ko cần currentprice, muốn xem thì vào trang details
+				dataJson.high = stock.high;
+				dataJson.low = stock.low;
+				dataJson.change = stock.change;
+				dataJson.changePercent = stock.changePercent;
+				dataJson.turnOver = stock.turnOver;
+				dataJson.marketcap = ratios.marketCapital.toString();
+				dataJson.openPrice = ratios.firstPrice.toString();
+
+				dataJson.priceChange52Week = ratios.priceChange52Week;
+				dataJson.averageVolume10Day =
+					ratios.averageVolume10Day.toString();
+				dataJson.percentPriceChange1Week =
+					ratios.percentPriceChange1Week.toString();
+				dataJson.percentPriceChange1Month =
+					ratios.percentPriceChange1Month.toString();
+				dataJson.percentPriceChange3Month =
+					ratios.percentPriceChange3Month.toString();
+				dataJson.percentPriceChange6Month =
+					ratios.percentPriceChange6Month.toString();
+				dataJson.percentPriceChange1Year =
+					ratios.percentPriceChange1Year.toString();
+				dataJson.priceChange1Week = ratios.priceChange1Week.toString();
+				dataJson.priceChange1Month =
+					ratios.priceChange1Month.toString();
+				dataJson.priceChange3Month =
+					ratios.priceChange3Month.toString();
+				dataJson.priceChange6Month =
+					ratios.priceChange6Month.toString();
+				dataJson.priceChange1Year = ratios.priceChange1Year.toString();
+				dataJson.high52Week = ratios.highestPrice52Week.toString();
+				dataJson.low52Week = ratios.lowestPrice52Week.toString();
+				dataJson.outstandingShare = ratios.outstandingShare.toString();
+				dataJson.freeFloat = ratios.freeFloat.toString();
+				dataJson.pe = ratios.pe.toString();
+				dataJson.dilutionPE = ratios.dilutionPE.toString();
+				dataJson.pb = ratios.pb.toString();
+				dataJson.eps = ratios.eps.toString();
+				dataJson.dilutionEPS = ratios.dilutionEPS.toString();
+				dataJson.bookValue = ratios.bookValue.toString();
+				dataJson.lastInterest = ratios.lastInterest.toString();
+				dataJson.roe = ratios.roe.toString();
+			} catch (err) {
+				console.log('crawldetail hnx' + err);
+			}
+			// console.log(dataJson.symbol + ' HNX');
+
+			await HnxDetail.findOneAndUpdate(
+				{ symbol: dataJson.symbol },
+				{
+					name: dataJson.name,
+					symbol: dataJson.symbol,
+					timeUpdate: dataJson.timeUpdate,
+					reference: dataJson.reference,
+					ceil: dataJson.ceil,
+					floor: dataJson.floor,
+					currentPrice: dataJson.currentPrice,
+					change: dataJson.change,
+					changePercent: dataJson.changePercent,
+					openPrice: dataJson.openPrice,
+					high: dataJson.high,
+					low: dataJson.low,
+					turnOver: dataJson.turnOver,
+					marketcap: dataJson.marketcap,
+
+					priceChange52Week: dataJson.priceChange52Week,
+					averageVolume10Day: dataJson.averageVolume10Day,
+
+					percentPriceChange1Week: dataJson.percentPriceChange1Week,
+					percentPriceChange1Month: dataJson.percentPriceChange1Month,
+					percentPriceChange3Month: dataJson.percentPriceChange3Month,
+					percentPriceChange6Month: dataJson.percentPriceChange6Month,
+					percentPriceChange1Year: dataJson.percentPriceChange1Year,
+
+					priceChange1Week: dataJson.priceChange1Week,
+					priceChange1Month: dataJson.priceChange1Month,
+					priceChange3Month: dataJson.priceChange3Month,
+					priceChange6Month: dataJson.priceChange6Month,
+					priceChange1Year: dataJson.priceChange1Year,
+
+					high52Week: dataJson.high52Week,
+					low52Week: dataJson.low52Week,
+					outstandingShare: dataJson.outstandingShare,
+					freeFloat: dataJson.freeFloat,
+					pe: dataJson.pe,
+					dilutionPE: dataJson.dilutionPE,
+					pb: dataJson.pb,
+					eps: dataJson.eps,
+					dilutionEPS: dataJson.dilutionEPS,
+					bookValue: dataJson.bookValue,
+					lastInterest: dataJson.lastInterest,
+					roe: dataJson.roe,
+					companyInfo: dataJson.symbol,
+				},
+				{ upsert: true }
+			)
+				// .then((doc) => console.log(doc?.symbol))
+				.catch((err) =>
+					console.log(`crawldetail hnx ${dataJson.symbol}` + err)
+				);
+			await delay(2000);
+		}
+	}
+};
+
+const crawlDetailVn30 = async () => {
+	vn30All = await Vn30.find({});
+
+	for (const stock of vn30All) {
+		// const reportDate = convertTimestampToDate(Date.now() - 3000000000);
+		const ratios = await axios(
+			`https://data-ifin.tvsi.com.vn/api/v1/Dashboard/GetListCompanyOverView?stockSymbol=${stock.symbol}`
+		)
+			.then((res) => res.data)
+			.catch((err) => console.log(err));
+
+		let dataJson = {};
+
+		if (ratios) {
+			try {
+				dataJson.name = stock.name;
+				dataJson.symbol = stock.symbol;
+				dataJson.timeUpdate = Math.floor(Date.now() / 1000);
+				dataJson.reference = stock.reference;
+				dataJson.ceil = stock.ceil;
+				dataJson.floor = stock.floor;
+				dataJson.currentPrice = stock.currentPrice; //sửa thành crawl từ trang detail chứ kp lấy như thế này, mà trang all stock cũng ko cần currentprice, muốn xem thì vào trang details
+				dataJson.high = stock.high;
+				dataJson.low = stock.low;
+				dataJson.change = stock.change;
+				dataJson.changePercent = stock.changePercent;
+				dataJson.turnOver = stock.turnOver;
+				dataJson.marketcap = ratios.marketCapital.toString();
+				dataJson.openPrice = ratios.firstPrice.toString();
+
+				dataJson.priceChange52Week = ratios.priceChange52Week;
+				dataJson.averageVolume10Day =
+					ratios.averageVolume10Day.toString();
+				dataJson.percentPriceChange1Week =
+					ratios.percentPriceChange1Week.toString();
+				dataJson.percentPriceChange1Month =
+					ratios.percentPriceChange1Month.toString();
+				dataJson.percentPriceChange3Month =
+					ratios.percentPriceChange3Month.toString();
+				dataJson.percentPriceChange6Month =
+					ratios.percentPriceChange6Month.toString();
+				dataJson.percentPriceChange1Year =
+					ratios.percentPriceChange1Year.toString();
+				dataJson.priceChange1Week = ratios.priceChange1Week.toString();
+				dataJson.priceChange1Month =
+					ratios.priceChange1Month.toString();
+				dataJson.priceChange3Month =
+					ratios.priceChange3Month.toString();
+				dataJson.priceChange6Month =
+					ratios.priceChange6Month.toString();
+				dataJson.priceChange1Year = ratios.priceChange1Year.toString();
+				dataJson.high52Week = ratios.highestPrice52Week.toString();
+				dataJson.low52Week = ratios.lowestPrice52Week.toString();
+				dataJson.outstandingShare = ratios.outstandingShare.toString();
+				dataJson.freeFloat = ratios.freeFloat.toString();
+				dataJson.pe = ratios.pe.toString();
+				dataJson.dilutionPE = ratios.dilutionPE.toString();
+				dataJson.pb = ratios.pb.toString();
+				dataJson.eps = ratios.eps.toString();
+				dataJson.dilutionEPS = ratios.dilutionEPS.toString();
+				dataJson.bookValue = ratios.bookValue.toString();
+				dataJson.lastInterest = ratios.lastInterest.toString();
+				dataJson.roe = ratios.roe.toString();
+			} catch (err) {
+				console.log('crawldetail vn30' + err);
+			}
+			// console.log(dataJson.symbol + ' VN30');
+
+			await Vn30Detail.findOneAndUpdate(
+				{ symbol: dataJson.symbol },
+				{
+					name: dataJson.name,
+					symbol: dataJson.symbol,
+					timeUpdate: dataJson.timeUpdate,
+					reference: dataJson.reference,
+					ceil: dataJson.ceil,
+					floor: dataJson.floor,
+					currentPrice: dataJson.currentPrice,
+					change: dataJson.change,
+					changePercent: dataJson.changePercent,
+					openPrice: dataJson.openPrice,
+					high: dataJson.high,
+					low: dataJson.low,
+					turnOver: dataJson.turnOver,
+					marketcap: dataJson.marketcap,
+
+					priceChange52Week: dataJson.priceChange52Week,
+					averageVolume10Day: dataJson.averageVolume10Day,
+
+					percentPriceChange1Week: dataJson.percentPriceChange1Week,
+					percentPriceChange1Month: dataJson.percentPriceChange1Month,
+					percentPriceChange3Month: dataJson.percentPriceChange3Month,
+					percentPriceChange6Month: dataJson.percentPriceChange6Month,
+					percentPriceChange1Year: dataJson.percentPriceChange1Year,
+
+					priceChange1Week: dataJson.priceChange1Week,
+					priceChange1Month: dataJson.priceChange1Month,
+					priceChange3Month: dataJson.priceChange3Month,
+					priceChange6Month: dataJson.priceChange6Month,
+					priceChange1Year: dataJson.priceChange1Year,
+
+					high52Week: dataJson.high52Week,
+					low52Week: dataJson.low52Week,
+					outstandingShare: dataJson.outstandingShare,
+					freeFloat: dataJson.freeFloat,
+					pe: dataJson.pe,
+					dilutionPE: dataJson.dilutionPE,
+					pb: dataJson.pb,
+					eps: dataJson.eps,
+					dilutionEPS: dataJson.dilutionEPS,
+					bookValue: dataJson.bookValue,
+					lastInterest: dataJson.lastInterest,
+					roe: dataJson.roe,
+					companyInfo: dataJson.symbol,
+				},
+				{ upsert: true }
+			)
+				// .then((doc) => console.log(doc?.symbol))
+				.catch((err) =>
+					console.log(`crawldetail vn30 ${dataJson.symbol}` + err)
+				);
+			await delay(2000);
+		}
+	}
+};
+
+const crawlDetailHose = async () => {
+	hoseAll = await Hose.find({});
+
+	for (const stock of hoseAll) {
+		// const reportDate = convertTimestampToDate(Date.now() - 3000000000);
+		const ratios = await axios(
+			`https://data-ifin.tvsi.com.vn/api/v1/Dashboard/GetListCompanyOverView?stockSymbol=${stock.symbol}`
+		)
+			.then((res) => res.data)
+			.catch((err) => console.log(err));
+
+		let dataJson = {};
+
+		if (ratios) {
+			try {
+				dataJson.name = stock.name;
+				dataJson.symbol = stock.symbol;
+				dataJson.timeUpdate = Math.floor(Date.now() / 1000);
+				dataJson.reference = stock.reference;
+				dataJson.ceil = stock.ceil;
+				dataJson.floor = stock.floor;
+				dataJson.currentPrice = stock.currentPrice; //sửa thành crawl từ trang detail chứ kp lấy như thế này, mà trang all stock cũng ko cần currentprice, muốn xem thì vào trang details
+				dataJson.high = stock.high;
+				dataJson.low = stock.low;
+				dataJson.change = stock.change;
+				dataJson.changePercent = stock.changePercent;
+				dataJson.turnOver = stock.turnOver;
+				dataJson.marketcap = ratios.marketCapital.toString();
+				dataJson.openPrice = ratios.firstPrice.toString();
+
+				dataJson.priceChange52Week = ratios.priceChange52Week;
+				dataJson.averageVolume10Day =
+					ratios.averageVolume10Day.toString();
+				dataJson.percentPriceChange1Week =
+					ratios.percentPriceChange1Week.toString();
+				dataJson.percentPriceChange1Month =
+					ratios.percentPriceChange1Month.toString();
+				dataJson.percentPriceChange3Month =
+					ratios.percentPriceChange3Month.toString();
+				dataJson.percentPriceChange6Month =
+					ratios.percentPriceChange6Month.toString();
+				dataJson.percentPriceChange1Year =
+					ratios.percentPriceChange1Year.toString();
+				dataJson.priceChange1Week = ratios.priceChange1Week.toString();
+				dataJson.priceChange1Month =
+					ratios.priceChange1Month.toString();
+				dataJson.priceChange3Month =
+					ratios.priceChange3Month.toString();
+				dataJson.priceChange6Month =
+					ratios.priceChange6Month.toString();
+				dataJson.priceChange1Year = ratios.priceChange1Year.toString();
+				dataJson.high52Week = ratios.highestPrice52Week.toString();
+				dataJson.low52Week = ratios.lowestPrice52Week.toString();
+				dataJson.outstandingShare = ratios.outstandingShare.toString();
+				dataJson.freeFloat = ratios.freeFloat.toString();
+				dataJson.pe = ratios.pe.toString();
+				dataJson.dilutionPE = ratios.dilutionPE.toString();
+				dataJson.pb = ratios.pb.toString();
+				dataJson.eps = ratios.eps.toString();
+				dataJson.dilutionEPS = ratios.dilutionEPS.toString();
+				dataJson.bookValue = ratios.bookValue.toString();
+				dataJson.lastInterest = ratios.lastInterest.toString();
+				dataJson.roe = ratios.roe.toString();
+			} catch (err) {
+				console.log('crawldetail hose' + err);
+			}
+			// console.log(dataJson.symbol + ' HOSE');
+
+			await HoseDetail.findOneAndUpdate(
+				{ symbol: dataJson.symbol },
+				{
+					name: dataJson.name,
+					symbol: dataJson.symbol,
+					timeUpdate: dataJson.timeUpdate,
+					reference: dataJson.reference,
+					ceil: dataJson.ceil,
+					floor: dataJson.floor,
+					currentPrice: dataJson.currentPrice,
+					change: dataJson.change,
+					changePercent: dataJson.changePercent,
+					openPrice: dataJson.openPrice,
+					high: dataJson.high,
+					low: dataJson.low,
+					turnOver: dataJson.turnOver,
+					marketcap: dataJson.marketcap,
+
+					priceChange52Week: dataJson.priceChange52Week,
+					averageVolume10Day: dataJson.averageVolume10Day,
+
+					percentPriceChange1Week: dataJson.percentPriceChange1Week,
+					percentPriceChange1Month: dataJson.percentPriceChange1Month,
+					percentPriceChange3Month: dataJson.percentPriceChange3Month,
+					percentPriceChange6Month: dataJson.percentPriceChange6Month,
+					percentPriceChange1Year: dataJson.percentPriceChange1Year,
+
+					priceChange1Week: dataJson.priceChange1Week,
+					priceChange1Month: dataJson.priceChange1Month,
+					priceChange3Month: dataJson.priceChange3Month,
+					priceChange6Month: dataJson.priceChange6Month,
+					priceChange1Year: dataJson.priceChange1Year,
+
+					high52Week: dataJson.high52Week,
+					low52Week: dataJson.low52Week,
+					outstandingShare: dataJson.outstandingShare,
+					freeFloat: dataJson.freeFloat,
+					pe: dataJson.pe,
+					dilutionPE: dataJson.dilutionPE,
+					pb: dataJson.pb,
+					eps: dataJson.eps,
+					dilutionEPS: dataJson.dilutionEPS,
+					bookValue: dataJson.bookValue,
+					lastInterest: dataJson.lastInterest,
+					roe: dataJson.roe,
+					companyInfo: dataJson.symbol,
+				},
+				{ upsert: true }
+			)
+				// .then((doc) => console.log(doc?.symbol))
+				.catch((err) =>
+					console.log(`crawldetail hose ${dataJson.symbol}` + err)
+				);
+			await delay(2000);
+		}
+	}
+};
+
+const crawlDetailUpcom = async () => {
+	upcomAll = await Upcom.find({});
+
+	for (const stock of upcomAll) {
+		// const reportDate = convertTimestampToDate(Date.now() - 3000000000);
+		const ratios = await axios(
+			`https://data-ifin.tvsi.com.vn/api/v1/Dashboard/GetListCompanyOverView?stockSymbol=${stock.symbol}`
+		)
+			.then((res) => res.data)
+			.catch((err) => console.log(err));
+
+		let dataJson = {};
+
+		if (ratios) {
+			try {
+				dataJson.name = stock.name;
+				dataJson.symbol = stock.symbol;
+				dataJson.timeUpdate = Math.floor(Date.now() / 1000);
+				dataJson.reference = stock.reference;
+				dataJson.ceil = stock.ceil;
+				dataJson.floor = stock.floor;
+				dataJson.currentPrice = stock.currentPrice; //sửa thành crawl từ trang detail chứ kp lấy như thế này, mà trang all stock cũng ko cần currentprice, muốn xem thì vào trang details
+				dataJson.high = stock.high;
+				dataJson.low = stock.low;
+				dataJson.change = stock.change;
+				dataJson.changePercent = stock.changePercent;
+				dataJson.turnOver = stock.turnOver;
+				dataJson.marketcap = ratios.marketCapital.toString();
+				dataJson.openPrice = ratios.firstPrice.toString();
+
+				dataJson.priceChange52Week = ratios.priceChange52Week;
+				dataJson.averageVolume10Day =
+					ratios.averageVolume10Day.toString();
+				dataJson.percentPriceChange1Week =
+					ratios.percentPriceChange1Week.toString();
+				dataJson.percentPriceChange1Month =
+					ratios.percentPriceChange1Month.toString();
+				dataJson.percentPriceChange3Month =
+					ratios.percentPriceChange3Month.toString();
+				dataJson.percentPriceChange6Month =
+					ratios.percentPriceChange6Month.toString();
+				dataJson.percentPriceChange1Year =
+					ratios.percentPriceChange1Year.toString();
+				dataJson.priceChange1Week = ratios.priceChange1Week.toString();
+				dataJson.priceChange1Month =
+					ratios.priceChange1Month.toString();
+				dataJson.priceChange3Month =
+					ratios.priceChange3Month.toString();
+				dataJson.priceChange6Month =
+					ratios.priceChange6Month.toString();
+				dataJson.priceChange1Year = ratios.priceChange1Year.toString();
+				dataJson.high52Week = ratios.highestPrice52Week.toString();
+				dataJson.low52Week = ratios.lowestPrice52Week.toString();
+				dataJson.outstandingShare = ratios.outstandingShare.toString();
+				dataJson.freeFloat = ratios.freeFloat.toString();
+				dataJson.pe = ratios.pe.toString();
+				dataJson.dilutionPE = ratios.dilutionPE.toString();
+				dataJson.pb = ratios.pb.toString();
+				dataJson.eps = ratios.eps.toString();
+				dataJson.dilutionEPS = ratios.dilutionEPS.toString();
+				dataJson.bookValue = ratios.bookValue.toString();
+				dataJson.lastInterest = ratios.lastInterest.toString();
+				dataJson.roe = ratios.roe.toString();
+			} catch (err) {
+				console.log('crawldetail upcom' + err);
+			}
+			// console.log(dataJson.symbol + ' UPCOM');
+
+			await UpcomDetail.findOneAndUpdate(
+				{ symbol: dataJson.symbol },
+				{
+					name: dataJson.name,
+					symbol: dataJson.symbol,
+					timeUpdate: dataJson.timeUpdate,
+					reference: dataJson.reference,
+					ceil: dataJson.ceil,
+					floor: dataJson.floor,
+					currentPrice: dataJson.currentPrice,
+					change: dataJson.change,
+					changePercent: dataJson.changePercent,
+					openPrice: dataJson.openPrice,
+					high: dataJson.high,
+					low: dataJson.low,
+					turnOver: dataJson.turnOver,
+					marketcap: dataJson.marketcap,
+
+					priceChange52Week: dataJson.priceChange52Week,
+					averageVolume10Day: dataJson.averageVolume10Day,
+
+					percentPriceChange1Week: dataJson.percentPriceChange1Week,
+					percentPriceChange1Month: dataJson.percentPriceChange1Month,
+					percentPriceChange3Month: dataJson.percentPriceChange3Month,
+					percentPriceChange6Month: dataJson.percentPriceChange6Month,
+					percentPriceChange1Year: dataJson.percentPriceChange1Year,
+
+					priceChange1Week: dataJson.priceChange1Week,
+					priceChange1Month: dataJson.priceChange1Month,
+					priceChange3Month: dataJson.priceChange3Month,
+					priceChange6Month: dataJson.priceChange6Month,
+					priceChange1Year: dataJson.priceChange1Year,
+
+					high52Week: dataJson.high52Week,
+					low52Week: dataJson.low52Week,
+					outstandingShare: dataJson.outstandingShare,
+					freeFloat: dataJson.freeFloat,
+					pe: dataJson.pe,
+					dilutionPE: dataJson.dilutionPE,
+					pb: dataJson.pb,
+					eps: dataJson.eps,
+					dilutionEPS: dataJson.dilutionEPS,
+					bookValue: dataJson.bookValue,
+					lastInterest: dataJson.lastInterest,
+					roe: dataJson.roe,
+					companyInfo: dataJson.symbol,
+				},
+				{ upsert: true }
+			)
+				// .then((doc) => console.log(doc?.symbol))
+				.catch((err) =>
+					console.log(`crawldetail upcom ${dataJson.symbol}` + err)
+				);
+			await delay(2000);
+		}
+	}
+};
+
+// const crawlDetailHnx30 = async () => {
+// 	try {
+// 		const browser = await puppeteer.launch({
+// 			headless: true,
+// 			args: [
+// 				'--no-sandbox',
+// 				'--disabled-setupid-sandbox',
+// 				'--disable-accelerated-2d-canvas',
+// 			],
+// 		});
+// 		const hnx30All = await Hnx30.find();
+
+// 		//start loop
+// 		console.log('starting HNX30...............');
+// 		hnx30All.map(async (stock, index) => {
+// 			setTimeout(async () => {
+// 				const page = await browser.newPage();
 // 				await page.goto(
 // 					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
 // 					{ waitUntil: 'load' }
@@ -38,987 +688,962 @@ const Upcom = require('../../model/stock/stockList/upcomModel');
 // 				await page.waitForTimeout(2000);
 
 // 				let hnx30DetailData = await page.evaluate(
+// 					async (
+// 						name,
+// 						symbol,
+// 						reference,
+// 						ceil,
+// 						floor,
+// 						currentPrice,
+// 						high,
+// 						low,
+// 						change,
+// 						changePercent,
+// 						turnOver
+// 					) => {
+// 						const $ = document.querySelector.bind(document);
 
-const crawlDetailHnx30 = async () => {
-	try {
-		const browser = await puppeteer.launch({
-			headless: true,
-			args: [
-				'--no-sandbox',
-				'--disabled-setupid-sandbox',
-				'--disable-accelerated-2d-canvas',
-			],
-		});
-		const hnx30All = await Hnx30.find();
+// 						let dataJson = {};
 
-		//start loop
-		console.log('starting HNX30...............');
-		hnx30All.map(async (stock, index) => {
-			setTimeout(async () => {
-				const page = await browser.newPage();
-				await page.goto(
-					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
-					{ waitUntil: 'load' }
-				);
-				await page.waitForTimeout(2000);
+// try {
+// 	dataJson.name = name;
+// 	dataJson.symbol = symbol;
+// 	dataJson.reference = reference;
+// 	dataJson.ceil = ceil;
+// 	dataJson.floor = floor;
+// 	dataJson.currentPrice = currentPrice;
+// 	dataJson.high = high;
+// 	dataJson.low = low;
+// 	dataJson.change = change;
+// 	dataJson.changePercent = changePercent;
+// 	dataJson.openPrice =
+// 		document.getElementById('openprice')?.innerText;
+// 	dataJson.turnOver = turnOver;
+// 	dataJson.marketcap = $(
+// 		'.stock-price-info :nth-child(2) :nth-child(5) b'
+// 	)?.innerText;
+// 	dataJson.overBought = $(
+// 		'.stock-price-info :nth-child(3) :nth-child(1) b'
+// 	)?.innerText;
+// 	dataJson.overSold = $(
+// 		'.stock-price-info :nth-child(3) :nth-child(2) b'
+// 	)?.innerText;
+// 	dataJson.high52Week = $(
+// 		'.stock-price-info :nth-child(3) :nth-child(3) b'
+// 	)?.innerText;
+// 	dataJson.low52Week = $(
+// 		'.stock-price-info :nth-child(3) :nth-child(4) b'
+// 	)?.innerText;
+// 	dataJson.turnOver52WeekAverage = $(
+// 		'.stock-price-info :nth-child(3) :nth-child(5) b'
+// 	)?.innerText;
+// 	dataJson.foreignBuy = $(
+// 		'.stock-price-info :nth-child(4) :nth-child(1) b'
+// 	)?.innerText;
+// 	dataJson.ownedRatio = $(
+// 		'.stock-price-info :nth-child(4) :nth-child(2) b'
+// 	)?.innerText;
+// 	dataJson.dividendCast = $(
+// 		'.stock-price-info :nth-child(4) :nth-child(3) b'
+// 	)?.innerText;
+// 	dataJson.dividendYield = $(
+// 		'.stock-price-info :nth-child(4) :nth-child(4) b'
+// 	)?.innerText;
+// 	dataJson.beta = $(
+// 		'.stock-price-info :nth-child(4) :nth-child(5) b'
+// 	)?.innerText;
+// 	dataJson.eps = $(
+// 		'.stock-price-info :nth-child(5) :nth-child(1) b'
+// 	)?.innerText;
+// 	dataJson.pe = $(
+// 		'.stock-price-info :nth-child(5) :nth-child(2) b'
+// 	)?.innerText;
+// 	dataJson.fpe = $(
+// 		'.stock-price-info :nth-child(5) :nth-child(3) b'
+// 	)?.innerText;
+// 	dataJson.bvps = $(
+// 		'.stock-price-info :nth-child(5) :nth-child(4) b'
+// 	)?.innerText;
+// 	dataJson.pb = $(
+// 		'.stock-price-info :nth-child(5) :nth-child(5) b'
+// 	)?.innerText;
 
-				let hnx30DetailData = await page.evaluate(
-					async (
-						name,
-						symbol,
-						reference,
-						ceil,
-						floor,
-						currentPrice,
-						high,
-						low,
-						change,
-						changePercent,
-						turnOver
-					) => {
-						const $ = document.querySelector.bind(document);
+// 	dataJson.currentTimestamp = Math.floor(
+// 		Date.now() / 1000
+// 	);
+// } catch (err) {
+// 	console.log('crawldetail hnx30' + err);
+// }
+// 						return dataJson;
+// 					},
+// 					stock.name,
+// 					stock.symbol,
+// 					stock.reference,
+// 					stock.ceil,
+// 					stock.floor,
+// 					stock.currentPrice,
+// 					stock.high,
+// 					stock.low,
+// 					stock.change,
+// 					stock.changePercent,
+// 					stock.turnOver
+// 				);
 
-						let dataJson = {};
+// 				await page.close();
 
-						try {
-							dataJson.name = name;
-							dataJson.symbol = symbol;
-							dataJson.reference = reference;
-							dataJson.ceil = ceil;
-							dataJson.floor = floor;
-							dataJson.currentPrice = currentPrice;
-							dataJson.high = high;
-							dataJson.low = low;
-							dataJson.change = change;
-							dataJson.changePercent = changePercent;
-							dataJson.openPrice =
-								document.getElementById('openprice')?.innerText;
-							dataJson.turnOver = turnOver;
-							dataJson.marketcap = $(
-								'.stock-price-info :nth-child(2) :nth-child(5) b'
-							)?.innerText;
-							dataJson.overBought = $(
-								'.stock-price-info :nth-child(3) :nth-child(1) b'
-							)?.innerText;
-							dataJson.overSold = $(
-								'.stock-price-info :nth-child(3) :nth-child(2) b'
-							)?.innerText;
-							dataJson.high52Week = $(
-								'.stock-price-info :nth-child(3) :nth-child(3) b'
-							)?.innerText;
-							dataJson.low52Week = $(
-								'.stock-price-info :nth-child(3) :nth-child(4) b'
-							)?.innerText;
-							dataJson.turnOver52WeekAverage = $(
-								'.stock-price-info :nth-child(3) :nth-child(5) b'
-							)?.innerText;
-							dataJson.foreignBuy = $(
-								'.stock-price-info :nth-child(4) :nth-child(1) b'
-							)?.innerText;
-							dataJson.ownedRatio = $(
-								'.stock-price-info :nth-child(4) :nth-child(2) b'
-							)?.innerText;
-							dataJson.dividendCast = $(
-								'.stock-price-info :nth-child(4) :nth-child(3) b'
-							)?.innerText;
-							dataJson.dividendYield = $(
-								'.stock-price-info :nth-child(4) :nth-child(4) b'
-							)?.innerText;
-							dataJson.beta = $(
-								'.stock-price-info :nth-child(4) :nth-child(5) b'
-							)?.innerText;
-							dataJson.eps = $(
-								'.stock-price-info :nth-child(5) :nth-child(1) b'
-							)?.innerText;
-							dataJson.pe = $(
-								'.stock-price-info :nth-child(5) :nth-child(2) b'
-							)?.innerText;
-							dataJson.fpe = $(
-								'.stock-price-info :nth-child(5) :nth-child(3) b'
-							)?.innerText;
-							dataJson.bvps = $(
-								'.stock-price-info :nth-child(5) :nth-child(4) b'
-							)?.innerText;
-							dataJson.pb = $(
-								'.stock-price-info :nth-child(5) :nth-child(5) b'
-							)?.innerText;
+// 				console.log(hnx30DetailData.symbol + ' HNX30');
 
-							dataJson.currentTimestamp = Math.floor(
-								Date.now() / 1000
-							);
-						} catch (err) {
-							console.log('crawldetail hnx30' + err);
-						}
-						return dataJson;
-					},
-					stock.name,
-					stock.symbol,
-					stock.reference,
-					stock.ceil,
-					stock.floor,
-					stock.currentPrice,
-					stock.high,
-					stock.low,
-					stock.change,
-					stock.changePercent,
-					stock.turnOver
-				);
+// await Hnx30Detail.findOneAndUpdate(
+// 	{ symbol: hnx30DetailData.symbol },
+// 	{
+// 		name: hnx30DetailData.name,
+// 		symbol: hnx30DetailData.symbol,
+// 		reference: hnx30DetailData.reference,
+// 		ceil: hnx30DetailData.ceil,
+// 		floor: hnx30DetailData.floor,
+// 		currentPrice: hnx30DetailData.currentPrice,
+// 		change: hnx30DetailData.change,
+// 		changePercent: hnx30DetailData.changePercent,
+// 		openPrice: hnx30DetailData.openPrice,
+// 		high: hnx30DetailData.high,
+// 		low: hnx30DetailData.low,
+// 		turnOver: hnx30DetailData.turnOver,
 
-				await page.close();
+// 		marketcap: hnx30DetailData.marketcap,
+// 		overBought: hnx30DetailData.overBought,
+// 		overSold: hnx30DetailData.overSold,
+// 		high52Week: hnx30DetailData.high52Week,
+// 		low52Week: hnx30DetailData.low52Week,
+// 		turnOver52WeekAverage:
+// 			hnx30DetailData.turnOver52WeekAverage,
+// 		foreignBuy: hnx30DetailData.foreignBuy,
+// 		ownedRatio: hnx30DetailData.ownedRatio,
+// 		dividendCast: hnx30DetailData.dividendCast, //cổ tức tiền mặt
+// 		dividendYield: hnx30DetailData.dividendYield, // tỷ lệ cổ tức
+// 		beta: hnx30DetailData.beta,
+// 		eps: hnx30DetailData.eps,
+// 		pe: hnx30DetailData.pe,
+// 		fpe: hnx30DetailData.fpe, // F P/e
+// 		bvps: hnx30DetailData.bvps, //book value per share
+// 		pb: hnx30DetailData.pb,
+// 		companyInfo: hnx30DetailData.symbol,
+// 	},
+// 	{ upsert: true }
+// )
+// 	// .then((doc) => console.log(doc?.symbol))
+// 	.catch((err) => console.log('crawldetail hnx30' + err));
 
-				console.log(hnx30DetailData.symbol + ' HNX30');
+// await Hnx30Chart.findOneAndUpdate(
+// 	{ symbol: hnx30DetailData.symbol },
+// 	{
+// 		symbol: hnx30DetailData.symbol,
+// 		$push: {
+// 			t: hnx30DetailData.currentTimestamp,
+// 			price: hnx30DetailData.currentPrice,
+// 		},
+// 	},
+// 	{ upsert: true }
+// )
+// 	// .then((doc) => console.log(doc?.symbol))
+// 	.catch((err) => console.log('crawldetail hnx30' + err));
+// 				// return hnx30DetailData
+// 			}, 7000 * index);
+// 		});
+// 		await delay(hnx30All.length * 7000 + 10000);
+// 		console.log('end HNX30.............');
 
-				await Hnx30Detail.findOneAndUpdate(
-					{ symbol: hnx30DetailData.symbol },
-					{
-						name: hnx30DetailData.name,
-						symbol: hnx30DetailData.symbol,
-						reference: hnx30DetailData.reference,
-						ceil: hnx30DetailData.ceil,
-						floor: hnx30DetailData.floor,
-						currentPrice: hnx30DetailData.currentPrice,
-						change: hnx30DetailData.change,
-						changePercent: hnx30DetailData.changePercent,
-						openPrice: hnx30DetailData.openPrice,
-						high: hnx30DetailData.high,
-						low: hnx30DetailData.low,
-						turnOver: hnx30DetailData.turnOver,
+// 		await browser.close();
+// 	} catch (error) {
+// 		console.log('crawldetail hnx30' + error);
+// 	}
+// 	// })
+// };
 
-						marketcap: hnx30DetailData.marketcap,
-						overBought: hnx30DetailData.overBought,
-						overSold: hnx30DetailData.overSold,
-						high52Week: hnx30DetailData.high52Week,
-						low52Week: hnx30DetailData.low52Week,
-						turnOver52WeekAverage:
-							hnx30DetailData.turnOver52WeekAverage,
-						foreignBuy: hnx30DetailData.foreignBuy,
-						ownedRatio: hnx30DetailData.ownedRatio,
-						dividendCast: hnx30DetailData.dividendCast, //cổ tức tiền mặt
-						dividendYield: hnx30DetailData.dividendYield, // tỷ lệ cổ tức
-						beta: hnx30DetailData.beta,
-						eps: hnx30DetailData.eps,
-						pe: hnx30DetailData.pe,
-						fpe: hnx30DetailData.fpe, // F P/e
-						bvps: hnx30DetailData.bvps, //book value per share
-						pb: hnx30DetailData.pb,
-						companyInfo: hnx30DetailData.symbol,
-					},
-					{ upsert: true }
-				)
-					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawldetail hnx30' + err));
+// const crawlDetailHnx = asyncHandler(async () => {
+// 	try {
+// 		const browser = await puppeteer.launch({
+// 			headless: true,
+// 			args: [
+// 				'--no-sandbox',
+// 				'--disabled-setupid-sandbox',
+// 				'--disable-accelerated-2d-canvas',
+// 			],
+// 		});
+// 		const hnxAll = await Hnx.find();
 
-				await Hnx30Chart.findOneAndUpdate(
-					{ symbol: hnx30DetailData.symbol },
-					{
-						symbol: hnx30DetailData.symbol,
-						$push: {
-							t: hnx30DetailData.currentTimestamp,
-							price: hnx30DetailData.currentPrice,
-						},
-					},
-					{ upsert: true }
-				)
-					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawldetail hnx30' + err));
-				// return hnx30DetailData
-			}, 7000 * index);
-		});
-		await delay(hnx30All.length * 7000 + 10000);
-		console.log('end HNX30.............');
+// 		//start loop
+// 		console.log('starting HNX...............');
+// 		hnxAll.map(async (stock, index) => {
+// 			setTimeout(async () => {
+// 				const page = await browser.newPage();
+// 				await page.goto(
+// 					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
+// 					{ waitUntil: 'load' }
+// 				);
+// 				await page.waitForTimeout(2000);
 
-		await browser.close();
-	} catch (error) {
-		console.log('crawldetail hnx30' + error);
-	}
-	// })
-};
+// 				let hnxDetailData = await page.evaluate(
+// 					async (
+// 						name,
+// 						symbol,
+// 						reference,
+// 						ceil,
+// 						floor,
+// 						currentPrice,
+// 						high,
+// 						low,
+// 						change,
+// 						changePercent,
+// 						turnOver
+// 					) => {
+// 						const $ = document.querySelector.bind(document);
 
-const crawlDetailHnx = asyncHandler(async () => {
-	try {
-		const browser = await puppeteer.launch({
-			headless: true,
-			args: [
-				'--no-sandbox',
-				'--disabled-setupid-sandbox',
-				'--disable-accelerated-2d-canvas',
-			],
-		});
-		const hnxAll = await Hnx.find();
+// 						let dataJson = {};
 
-		//start loop
-		console.log('starting HNX...............');
-		hnxAll.map(async (stock, index) => {
-			setTimeout(async () => {
-				const page = await browser.newPage();
-				await page.goto(
-					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
-					{ waitUntil: 'load' }
-				);
-				await page.waitForTimeout(2000);
+// 						try {
+// 							dataJson.name = name;
+// 							dataJson.symbol = symbol;
+// 							dataJson.reference = reference;
+// 							dataJson.ceil = ceil;
+// 							dataJson.floor = floor;
+// 							dataJson.currentPrice = currentPrice;
+// 							dataJson.high = high;
+// 							dataJson.low = low;
+// 							dataJson.change = change;
+// 							dataJson.changePercent = changePercent;
+// 							dataJson.openPrice =
+// 								document.getElementById('openprice')?.innerText;
+// 							dataJson.turnOver = turnOver;
+// 							dataJson.marketcap = $(
+// 								'.stock-price-info :nth-child(2) :nth-child(5) b'
+// 							)?.innerText;
+// 							dataJson.overBought = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(1) b'
+// 							)?.innerText;
+// 							dataJson.overSold = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(2) b'
+// 							)?.innerText;
+// 							dataJson.high52Week = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(3) b'
+// 							)?.innerText;
+// 							dataJson.low52Week = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(4) b'
+// 							)?.innerText;
+// 							dataJson.turnOver52WeekAverage = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(5) b'
+// 							)?.innerText;
+// 							dataJson.foreignBuy = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(1) b'
+// 							)?.innerText;
+// 							dataJson.ownedRatio = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(2) b'
+// 							)?.innerText;
+// 							dataJson.dividendCast = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(3) b'
+// 							)?.innerText;
+// 							dataJson.dividendYield = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(4) b'
+// 							)?.innerText;
+// 							dataJson.beta = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(5) b'
+// 							)?.innerText;
+// 							dataJson.eps = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(1) b'
+// 							)?.innerText;
+// 							dataJson.pe = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(2) b'
+// 							)?.innerText;
+// 							dataJson.fpe = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(3) b'
+// 							)?.innerText;
+// 							dataJson.bvps = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(4) b'
+// 							)?.innerText;
+// 							dataJson.pb = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(5) b'
+// 							)?.innerText;
 
-				let hnxDetailData = await page.evaluate(
-					async (
-						name,
-						symbol,
-						reference,
-						ceil,
-						floor,
-						currentPrice,
-						high,
-						low,
-						change,
-						changePercent,
-						turnOver
-					) => {
-						const $ = document.querySelector.bind(document);
+// 							dataJson.currentTimestamp = Math.floor(
+// 								Date.now() / 1000
+// 							);
+// 						} catch (err) {
+// 							console.log('crawldetail hnx' + err);
+// 						}
+// 						return dataJson;
+// 					},
+// 					stock.name,
+// 					stock.symbol,
+// 					stock.reference,
+// 					stock.ceil,
+// 					stock.floor,
+// 					stock.currentPrice,
+// 					stock.high,
+// 					stock.low,
+// 					stock.change,
+// 					stock.changePercent,
+// 					stock.turnOver
+// 				);
 
-						let dataJson = {};
+// 				await page.close();
 
-						try {
-							dataJson.name = name;
-							dataJson.symbol = symbol;
-							dataJson.reference = reference;
-							dataJson.ceil = ceil;
-							dataJson.floor = floor;
-							dataJson.currentPrice = currentPrice;
-							dataJson.high = high;
-							dataJson.low = low;
-							dataJson.change = change;
-							dataJson.changePercent = changePercent;
-							dataJson.openPrice =
-								document.getElementById('openprice')?.innerText;
-							dataJson.turnOver = turnOver;
-							dataJson.marketcap = $(
-								'.stock-price-info :nth-child(2) :nth-child(5) b'
-							)?.innerText;
-							dataJson.overBought = $(
-								'.stock-price-info :nth-child(3) :nth-child(1) b'
-							)?.innerText;
-							dataJson.overSold = $(
-								'.stock-price-info :nth-child(3) :nth-child(2) b'
-							)?.innerText;
-							dataJson.high52Week = $(
-								'.stock-price-info :nth-child(3) :nth-child(3) b'
-							)?.innerText;
-							dataJson.low52Week = $(
-								'.stock-price-info :nth-child(3) :nth-child(4) b'
-							)?.innerText;
-							dataJson.turnOver52WeekAverage = $(
-								'.stock-price-info :nth-child(3) :nth-child(5) b'
-							)?.innerText;
-							dataJson.foreignBuy = $(
-								'.stock-price-info :nth-child(4) :nth-child(1) b'
-							)?.innerText;
-							dataJson.ownedRatio = $(
-								'.stock-price-info :nth-child(4) :nth-child(2) b'
-							)?.innerText;
-							dataJson.dividendCast = $(
-								'.stock-price-info :nth-child(4) :nth-child(3) b'
-							)?.innerText;
-							dataJson.dividendYield = $(
-								'.stock-price-info :nth-child(4) :nth-child(4) b'
-							)?.innerText;
-							dataJson.beta = $(
-								'.stock-price-info :nth-child(4) :nth-child(5) b'
-							)?.innerText;
-							dataJson.eps = $(
-								'.stock-price-info :nth-child(5) :nth-child(1) b'
-							)?.innerText;
-							dataJson.pe = $(
-								'.stock-price-info :nth-child(5) :nth-child(2) b'
-							)?.innerText;
-							dataJson.fpe = $(
-								'.stock-price-info :nth-child(5) :nth-child(3) b'
-							)?.innerText;
-							dataJson.bvps = $(
-								'.stock-price-info :nth-child(5) :nth-child(4) b'
-							)?.innerText;
-							dataJson.pb = $(
-								'.stock-price-info :nth-child(5) :nth-child(5) b'
-							)?.innerText;
+// 				console.log(hnxDetailData.symbol + ' HNX');
 
-							dataJson.currentTimestamp = Math.floor(
-								Date.now() / 1000
-							);
-						} catch (err) {
-							console.log('crawldetail hnx' + err);
-						}
-						return dataJson;
-					},
-					stock.name,
-					stock.symbol,
-					stock.reference,
-					stock.ceil,
-					stock.floor,
-					stock.currentPrice,
-					stock.high,
-					stock.low,
-					stock.change,
-					stock.changePercent,
-					stock.turnOver
-				);
+// 				// console.log(hnxDetailData);
 
-				await page.close();
+// 				await HnxDetail.findOneAndUpdate(
+// 					{ symbol: hnxDetailData.symbol },
+// 					{
+// 						name: hnxDetailData.name,
+// 						symbol: hnxDetailData.symbol,
+// 						reference: hnxDetailData.reference,
+// 						ceil: hnxDetailData.ceil,
+// 						floor: hnxDetailData.floor,
+// 						currentPrice: hnxDetailData.currentPrice,
+// 						change: hnxDetailData.change,
+// 						changePercent: hnxDetailData.changePercent,
+// 						openPrice: hnxDetailData.openPrice,
+// 						high: hnxDetailData.high,
+// 						low: hnxDetailData.low,
+// 						turnOver: hnxDetailData.turnOver,
 
-				console.log(hnxDetailData.symbol + ' HNX');
+// 						marketcap: hnxDetailData.marketcap,
+// 						overBought: hnxDetailData.overBought,
+// 						overSold: hnxDetailData.overSold,
+// 						high52Week: hnxDetailData.high52Week,
+// 						low52Week: hnxDetailData.low52Week,
+// 						turnOver52WeekAverage:
+// 							hnxDetailData.turnOver52WeekAverage,
+// 						foreignBuy: hnxDetailData.foreignBuy,
+// 						ownedRatio: hnxDetailData.ownedRatio,
+// 						dividendCast: hnxDetailData.dividendCast, //cổ tức tiền mặt
+// 						dividendYield: hnxDetailData.dividendYield, // tỷ lệ cổ tức
+// 						beta: hnxDetailData.beta,
+// 						eps: hnxDetailData.eps,
+// 						pe: hnxDetailData.pe,
+// 						fpe: hnxDetailData.fpe, // F P/e
+// 						bvps: hnxDetailData.bvps, //book value per share
+// 						pb: hnxDetailData.pb,
+// 						companyInfo: hnxDetailData.symbol,
+// 					},
+// 					{ upsert: true }
+// 				)
+// 					// .then((doc) => console.log(doc?.symbol))
+// 					.catch((err) => console.log('crawldetail hnx' + err));
 
-				// console.log(hnxDetailData);
+// 				await HnxChart.findOneAndUpdate(
+// 					{ symbol: hnxDetailData.symbol },
+// 					{
+// 						symbol: hnxDetailData.symbol,
+// 						$push: {
+// 							t: hnxDetailData.currentTimestamp,
+// 							price: hnxDetailData.currentPrice,
+// 						},
+// 					},
+// 					{ upsert: true }
+// 				)
+// 					// .then((doc) => console.log(doc?.symbol))
+// 					.catch((err) => console.log('crawldetail hnx' + err));
+// 				// return hnxDetailData
+// 			}, 7000 * index);
+// 		});
+// 		await delay(hnxAll.length * 7000 + 20000);
+// 		console.log('end HNX.............');
 
-				await HnxDetail.findOneAndUpdate(
-					{ symbol: hnxDetailData.symbol },
-					{
-						name: hnxDetailData.name,
-						symbol: hnxDetailData.symbol,
-						reference: hnxDetailData.reference,
-						ceil: hnxDetailData.ceil,
-						floor: hnxDetailData.floor,
-						currentPrice: hnxDetailData.currentPrice,
-						change: hnxDetailData.change,
-						changePercent: hnxDetailData.changePercent,
-						openPrice: hnxDetailData.openPrice,
-						high: hnxDetailData.high,
-						low: hnxDetailData.low,
-						turnOver: hnxDetailData.turnOver,
+// 		await browser.close();
+// 	} catch (error) {
+// 		console.log('crawldetail hnx' + error);
+// 	}
+// 	// })
+// });
 
-						marketcap: hnxDetailData.marketcap,
-						overBought: hnxDetailData.overBought,
-						overSold: hnxDetailData.overSold,
-						high52Week: hnxDetailData.high52Week,
-						low52Week: hnxDetailData.low52Week,
-						turnOver52WeekAverage:
-							hnxDetailData.turnOver52WeekAverage,
-						foreignBuy: hnxDetailData.foreignBuy,
-						ownedRatio: hnxDetailData.ownedRatio,
-						dividendCast: hnxDetailData.dividendCast, //cổ tức tiền mặt
-						dividendYield: hnxDetailData.dividendYield, // tỷ lệ cổ tức
-						beta: hnxDetailData.beta,
-						eps: hnxDetailData.eps,
-						pe: hnxDetailData.pe,
-						fpe: hnxDetailData.fpe, // F P/e
-						bvps: hnxDetailData.bvps, //book value per share
-						pb: hnxDetailData.pb,
-						companyInfo: hnxDetailData.symbol,
-					},
-					{ upsert: true }
-				)
-					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawldetail hnx' + err));
+// const crawlDetailVn30 = asyncHandler(async () => {
+// 	try {
+// 		const browser = await puppeteer.launch({
+// 			headless: true,
+// 			args: [
+// 				'--no-sandbox',
+// 				'--disabled-setupid-sandbox',
+// 				'--disable-accelerated-2d-canvas',
+// 			],
+// 		});
+// 		const vn30All = await Vn30.find();
 
-				await HnxChart.findOneAndUpdate(
-					{ symbol: hnxDetailData.symbol },
-					{
-						symbol: hnxDetailData.symbol,
-						$push: {
-							t: hnxDetailData.currentTimestamp,
-							price: hnxDetailData.currentPrice,
-						},
-					},
-					{ upsert: true }
-				)
-					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawldetail hnx' + err));
-				// return hnxDetailData
-			}, 7000 * index);
-		});
-		await delay(hnxAll.length * 7000 + 20000);
-		console.log('end HNX.............');
+// 		//start loop
+// 		console.log('starting VN30...............');
+// 		vn30All.map(async (stock, index) => {
+// 			setTimeout(async () => {
+// 				const page = await browser.newPage();
+// 				await page.goto(
+// 					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
+// 					{ waitUntil: 'load' }
+// 				);
+// 				await page.waitForTimeout(2000);
 
-		await browser.close();
-	} catch (error) {
-		console.log('crawldetail hnx' + error);
-	}
-	// })
-});
+// 				let vn30DetailData = await page.evaluate(
+// 					async (
+// 						name,
+// 						symbol,
+// 						reference,
+// 						ceil,
+// 						floor,
+// 						currentPrice,
+// 						high,
+// 						low,
+// 						change,
+// 						changePercent,
+// 						turnOver
+// 					) => {
+// 						const $ = document.querySelector.bind(document);
 
-const crawlDetailVn30 = asyncHandler(async () => {
-	try {
-		const browser = await puppeteer.launch({
-			headless: true,
-			args: [
-				'--no-sandbox',
-				'--disabled-setupid-sandbox',
-				'--disable-accelerated-2d-canvas',
-			],
-		});
-		const vn30All = await Vn30.find();
+// 						let dataJson = {};
 
-		//start loop
-		console.log('starting VN30...............');
-		vn30All.map(async (stock, index) => {
-			setTimeout(async () => {
-				const page = await browser.newPage();
-				await page.goto(
-					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
-					{ waitUntil: 'load' }
-				);
-				await page.waitForTimeout(2000);
+// 						try {
+// 							dataJson.name = name;
+// 							dataJson.symbol = symbol;
+// 							dataJson.reference = reference;
+// 							dataJson.ceil = ceil;
+// 							dataJson.floor = floor;
+// 							dataJson.currentPrice = currentPrice;
+// 							dataJson.high = high;
+// 							dataJson.low = low;
+// 							dataJson.change = change;
+// 							dataJson.changePercent = changePercent;
+// 							dataJson.openPrice =
+// 								document.getElementById('openprice')?.innerText;
+// 							dataJson.turnOver = turnOver;
+// 							dataJson.marketcap = $(
+// 								'.stock-price-info :nth-child(2) :nth-child(5) b'
+// 							)?.innerText;
+// 							dataJson.overBought = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(1) b'
+// 							)?.innerText;
+// 							dataJson.overSold = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(2) b'
+// 							)?.innerText;
+// 							dataJson.high52Week = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(3) b'
+// 							)?.innerText;
+// 							dataJson.low52Week = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(4) b'
+// 							)?.innerText;
+// 							dataJson.turnOver52WeekAverage = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(5) b'
+// 							)?.innerText;
+// 							dataJson.foreignBuy = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(1) b'
+// 							)?.innerText;
+// 							dataJson.ownedRatio = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(2) b'
+// 							)?.innerText;
+// 							dataJson.dividendCast = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(3) b'
+// 							)?.innerText;
+// 							dataJson.dividendYield = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(4) b'
+// 							)?.innerText;
+// 							dataJson.beta = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(5) b'
+// 							)?.innerText;
+// 							dataJson.eps = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(1) b'
+// 							)?.innerText;
+// 							dataJson.pe = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(2) b'
+// 							)?.innerText;
+// 							dataJson.fpe = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(3) b'
+// 							)?.innerText;
+// 							dataJson.bvps = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(4) b'
+// 							)?.innerText;
+// 							dataJson.pb = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(5) b'
+// 							)?.innerText;
 
-				let vn30DetailData = await page.evaluate(
-					async (
-						name,
-						symbol,
-						reference,
-						ceil,
-						floor,
-						currentPrice,
-						high,
-						low,
-						change,
-						changePercent,
-						turnOver
-					) => {
-						const $ = document.querySelector.bind(document);
+// 							dataJson.currentTimestamp = Math.floor(
+// 								Date.now() / 1000
+// 							);
+// 						} catch (err) {
+// 							console.log('crawldetail vn30' + err);
+// 						}
+// 						return dataJson;
+// 					},
+// 					stock.name,
+// 					stock.symbol,
+// 					stock.reference,
+// 					stock.ceil,
+// 					stock.floor,
+// 					stock.currentPrice,
+// 					stock.high,
+// 					stock.low,
+// 					stock.change,
+// 					stock.changePercent,
+// 					stock.turnOver
+// 				);
 
-						let dataJson = {};
+// 				await page.close();
 
-						try {
-							dataJson.name = name;
-							dataJson.symbol = symbol;
-							dataJson.reference = reference;
-							dataJson.ceil = ceil;
-							dataJson.floor = floor;
-							dataJson.currentPrice = currentPrice;
-							dataJson.high = high;
-							dataJson.low = low;
-							dataJson.change = change;
-							dataJson.changePercent = changePercent;
-							dataJson.openPrice =
-								document.getElementById('openprice')?.innerText;
-							dataJson.turnOver = turnOver;
-							dataJson.marketcap = $(
-								'.stock-price-info :nth-child(2) :nth-child(5) b'
-							)?.innerText;
-							dataJson.overBought = $(
-								'.stock-price-info :nth-child(3) :nth-child(1) b'
-							)?.innerText;
-							dataJson.overSold = $(
-								'.stock-price-info :nth-child(3) :nth-child(2) b'
-							)?.innerText;
-							dataJson.high52Week = $(
-								'.stock-price-info :nth-child(3) :nth-child(3) b'
-							)?.innerText;
-							dataJson.low52Week = $(
-								'.stock-price-info :nth-child(3) :nth-child(4) b'
-							)?.innerText;
-							dataJson.turnOver52WeekAverage = $(
-								'.stock-price-info :nth-child(3) :nth-child(5) b'
-							)?.innerText;
-							dataJson.foreignBuy = $(
-								'.stock-price-info :nth-child(4) :nth-child(1) b'
-							)?.innerText;
-							dataJson.ownedRatio = $(
-								'.stock-price-info :nth-child(4) :nth-child(2) b'
-							)?.innerText;
-							dataJson.dividendCast = $(
-								'.stock-price-info :nth-child(4) :nth-child(3) b'
-							)?.innerText;
-							dataJson.dividendYield = $(
-								'.stock-price-info :nth-child(4) :nth-child(4) b'
-							)?.innerText;
-							dataJson.beta = $(
-								'.stock-price-info :nth-child(4) :nth-child(5) b'
-							)?.innerText;
-							dataJson.eps = $(
-								'.stock-price-info :nth-child(5) :nth-child(1) b'
-							)?.innerText;
-							dataJson.pe = $(
-								'.stock-price-info :nth-child(5) :nth-child(2) b'
-							)?.innerText;
-							dataJson.fpe = $(
-								'.stock-price-info :nth-child(5) :nth-child(3) b'
-							)?.innerText;
-							dataJson.bvps = $(
-								'.stock-price-info :nth-child(5) :nth-child(4) b'
-							)?.innerText;
-							dataJson.pb = $(
-								'.stock-price-info :nth-child(5) :nth-child(5) b'
-							)?.innerText;
+// 				console.log(vn30DetailData.symbol + ' VN30');
 
-							dataJson.currentTimestamp = Math.floor(
-								Date.now() / 1000
-							);
-						} catch (err) {
-							console.log('crawldetail vn30' + err);
-						}
-						return dataJson;
-					},
-					stock.name,
-					stock.symbol,
-					stock.reference,
-					stock.ceil,
-					stock.floor,
-					stock.currentPrice,
-					stock.high,
-					stock.low,
-					stock.change,
-					stock.changePercent,
-					stock.turnOver
-				);
+// 				// console.log(vn30DetailData);
 
-				await page.close();
+// 				await Vn30Detail.findOneAndUpdate(
+// 					{ symbol: vn30DetailData.symbol },
+// 					{
+// 						name: vn30DetailData.name,
+// 						symbol: vn30DetailData.symbol,
+// 						reference: vn30DetailData.reference,
+// 						ceil: vn30DetailData.ceil,
+// 						floor: vn30DetailData.floor,
+// 						currentPrice: vn30DetailData.currentPrice,
+// 						change: vn30DetailData.change,
+// 						changePercent: vn30DetailData.changePercent,
+// 						openPrice: vn30DetailData.openPrice,
+// 						high: vn30DetailData.high,
+// 						low: vn30DetailData.low,
+// 						turnOver: vn30DetailData.turnOver,
 
-				console.log(vn30DetailData.symbol + ' VN30');
+// 						marketcap: vn30DetailData.marketcap,
+// 						overBought: vn30DetailData.overBought,
+// 						overSold: vn30DetailData.overSold,
+// 						high52Week: vn30DetailData.high52Week,
+// 						low52Week: vn30DetailData.low52Week,
+// 						turnOver52WeekAverage:
+// 							vn30DetailData.turnOver52WeekAverage,
+// 						foreignBuy: vn30DetailData.foreignBuy,
+// 						ownedRatio: vn30DetailData.ownedRatio,
+// 						dividendCast: vn30DetailData.dividendCast, //cổ tức tiền mặt
+// 						dividendYield: vn30DetailData.dividendYield, // tỷ lệ cổ tức
+// 						beta: vn30DetailData.beta,
+// 						eps: vn30DetailData.eps,
+// 						pe: vn30DetailData.pe,
+// 						fpe: vn30DetailData.fpe, // F P/e
+// 						bvps: vn30DetailData.bvps, //book value per share
+// 						pb: vn30DetailData.pb,
+// 						companyInfo: vn30DetailData.symbol,
+// 					},
+// 					{ upsert: true }
+// 				)
+// 					// .then((doc) => console.log(doc?.symbol))
+// 					.catch((err) => console.log('crawldetail vn30' + err));
 
-				// console.log(vn30DetailData);
+// 				await Vn30Chart.findOneAndUpdate(
+// 					{ symbol: vn30DetailData.symbol },
+// 					{
+// 						symbol: vn30DetailData.symbol,
+// 						$push: {
+// 							t: vn30DetailData.currentTimestamp,
+// 							price: vn30DetailData.currentPrice,
+// 						},
+// 					},
+// 					{ upsert: true }
+// 				)
+// 					// .then((doc) => console.log(doc?.symbol))
+// 					.catch((err) => console.log('crawldetail vn30' + err));
+// 				// return vn30DetailData
+// 			}, 7000 * index);
+// 		});
+// 		await delay(vn30All.length * 7000 + 10000);
+// 		console.log('end VN30.............');
 
-				await Vn30Detail.findOneAndUpdate(
-					{ symbol: vn30DetailData.symbol },
-					{
-						name: vn30DetailData.name,
-						symbol: vn30DetailData.symbol,
-						reference: vn30DetailData.reference,
-						ceil: vn30DetailData.ceil,
-						floor: vn30DetailData.floor,
-						currentPrice: vn30DetailData.currentPrice,
-						change: vn30DetailData.change,
-						changePercent: vn30DetailData.changePercent,
-						openPrice: vn30DetailData.openPrice,
-						high: vn30DetailData.high,
-						low: vn30DetailData.low,
-						turnOver: vn30DetailData.turnOver,
+// 		await browser.close();
+// 	} catch (error) {
+// 		console.log('crawldetail vn30' + error);
+// 	}
+// });
 
-						marketcap: vn30DetailData.marketcap,
-						overBought: vn30DetailData.overBought,
-						overSold: vn30DetailData.overSold,
-						high52Week: vn30DetailData.high52Week,
-						low52Week: vn30DetailData.low52Week,
-						turnOver52WeekAverage:
-							vn30DetailData.turnOver52WeekAverage,
-						foreignBuy: vn30DetailData.foreignBuy,
-						ownedRatio: vn30DetailData.ownedRatio,
-						dividendCast: vn30DetailData.dividendCast, //cổ tức tiền mặt
-						dividendYield: vn30DetailData.dividendYield, // tỷ lệ cổ tức
-						beta: vn30DetailData.beta,
-						eps: vn30DetailData.eps,
-						pe: vn30DetailData.pe,
-						fpe: vn30DetailData.fpe, // F P/e
-						bvps: vn30DetailData.bvps, //book value per share
-						pb: vn30DetailData.pb,
-						companyInfo: vn30DetailData.symbol,
-					},
-					{ upsert: true }
-				)
-					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawldetail vn30' + err));
+// const crawlDetailHose = asyncHandler(async () => {
+// 	try {
+// 		const browser = await puppeteer.launch({
+// 			headless: true,
+// 			args: [
+// 				'--no-sandbox',
+// 				'--disabled-setupid-sandbox',
+// 				'--disable-accelerated-2d-canvas',
+// 			],
+// 		});
+// 		const hoseAll = await Hose.find();
 
-				await Vn30Chart.findOneAndUpdate(
-					{ symbol: vn30DetailData.symbol },
-					{
-						symbol: vn30DetailData.symbol,
-						$push: {
-							t: vn30DetailData.currentTimestamp,
-							price: vn30DetailData.currentPrice,
-						},
-					},
-					{ upsert: true }
-				)
-					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawldetail vn30' + err));
-				// return vn30DetailData
-			}, 7000 * index);
-		});
-		await delay(vn30All.length * 7000 + 10000);
-		console.log('end VN30.............');
+// 		//start loop
+// 		console.log('starting HOSE...............');
+// 		hoseAll.map(async (stock, index) => {
+// 			setTimeout(async () => {
+// 				const page = await browser.newPage();
+// 				await page.goto(
+// 					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
+// 					{ waitUntil: 'load' }
+// 				);
+// 				await page.waitForTimeout(2000);
 
-		await browser.close();
-	} catch (error) {
-		console.log('crawldetail vn30' + error);
-	}
-});
+// 				let hoseDetailData = await page.evaluate(
+// 					async (
+// 						name,
+// 						symbol,
+// 						reference,
+// 						ceil,
+// 						floor,
+// 						currentPrice,
+// 						high,
+// 						low,
+// 						change,
+// 						changePercent,
+// 						turnOver
+// 					) => {
+// 						const $ = document.querySelector.bind(document);
 
-const crawlDetailHose = asyncHandler(async () => {
-	try {
-		const browser = await puppeteer.launch({
-			headless: true,
-			args: [
-				'--no-sandbox',
-				'--disabled-setupid-sandbox',
-				'--disable-accelerated-2d-canvas',
-			],
-		});
-		const hoseAll = await Hose.find();
+// 						let dataJson = {};
 
-		//start loop
-		console.log('starting HOSE...............');
-		hoseAll.map(async (stock, index) => {
-			setTimeout(async () => {
-				const page = await browser.newPage();
-				await page.goto(
-					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
-					{ waitUntil: 'load' }
-				);
-				await page.waitForTimeout(2000);
+// 						try {
+// 							dataJson.name = name;
+// 							dataJson.symbol = symbol;
+// 							dataJson.reference = reference;
+// 							dataJson.ceil = ceil;
+// 							dataJson.floor = floor;
+// 							dataJson.currentPrice = currentPrice;
+// 							dataJson.high = high;
+// 							dataJson.low = low;
+// 							dataJson.change = change;
+// 							dataJson.changePercent = changePercent;
+// 							dataJson.openPrice =
+// 								document.getElementById('openprice')?.innerText;
+// 							dataJson.turnOver = turnOver;
+// 							dataJson.marketcap = $(
+// 								'.stock-price-info :nth-child(2) :nth-child(5) b'
+// 							)?.innerText;
+// 							dataJson.overBought = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(1) b'
+// 							)?.innerText;
+// 							dataJson.overSold = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(2) b'
+// 							)?.innerText;
+// 							dataJson.high52Week = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(3) b'
+// 							)?.innerText;
+// 							dataJson.low52Week = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(4) b'
+// 							)?.innerText;
+// 							dataJson.turnOver52WeekAverage = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(5) b'
+// 							)?.innerText;
+// 							dataJson.foreignBuy = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(1) b'
+// 							)?.innerText;
+// 							dataJson.ownedRatio = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(2) b'
+// 							)?.innerText;
+// 							dataJson.dividendCast = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(3) b'
+// 							)?.innerText;
+// 							dataJson.dividendYield = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(4) b'
+// 							)?.innerText;
+// 							dataJson.beta = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(5) b'
+// 							)?.innerText;
+// 							dataJson.eps = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(1) b'
+// 							)?.innerText;
+// 							dataJson.pe = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(2) b'
+// 							)?.innerText;
+// 							dataJson.fpe = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(3) b'
+// 							)?.innerText;
+// 							dataJson.bvps = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(4) b'
+// 							)?.innerText;
+// 							dataJson.pb = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(5) b'
+// 							)?.innerText;
 
-				let hoseDetailData = await page.evaluate(
-					async (
-						name,
-						symbol,
-						reference,
-						ceil,
-						floor,
-						currentPrice,
-						high,
-						low,
-						change,
-						changePercent,
-						turnOver
-					) => {
-						const $ = document.querySelector.bind(document);
+// 							dataJson.currentTimestamp = Math.floor(
+// 								Date.now() / 1000
+// 							);
+// 						} catch (err) {
+// 							console.log('crawldetail hose' + err);
+// 						}
+// 						return dataJson;
+// 					},
+// 					stock.name,
+// 					stock.symbol,
+// 					stock.reference,
+// 					stock.ceil,
+// 					stock.floor,
+// 					stock.currentPrice,
+// 					stock.high,
+// 					stock.low,
+// 					stock.change,
+// 					stock.changePercent,
+// 					stock.turnOver
+// 				);
 
-						let dataJson = {};
+// 				await page.close();
 
-						try {
-							dataJson.name = name;
-							dataJson.symbol = symbol;
-							dataJson.reference = reference;
-							dataJson.ceil = ceil;
-							dataJson.floor = floor;
-							dataJson.currentPrice = currentPrice;
-							dataJson.high = high;
-							dataJson.low = low;
-							dataJson.change = change;
-							dataJson.changePercent = changePercent;
-							dataJson.openPrice =
-								document.getElementById('openprice')?.innerText;
-							dataJson.turnOver = turnOver;
-							dataJson.marketcap = $(
-								'.stock-price-info :nth-child(2) :nth-child(5) b'
-							)?.innerText;
-							dataJson.overBought = $(
-								'.stock-price-info :nth-child(3) :nth-child(1) b'
-							)?.innerText;
-							dataJson.overSold = $(
-								'.stock-price-info :nth-child(3) :nth-child(2) b'
-							)?.innerText;
-							dataJson.high52Week = $(
-								'.stock-price-info :nth-child(3) :nth-child(3) b'
-							)?.innerText;
-							dataJson.low52Week = $(
-								'.stock-price-info :nth-child(3) :nth-child(4) b'
-							)?.innerText;
-							dataJson.turnOver52WeekAverage = $(
-								'.stock-price-info :nth-child(3) :nth-child(5) b'
-							)?.innerText;
-							dataJson.foreignBuy = $(
-								'.stock-price-info :nth-child(4) :nth-child(1) b'
-							)?.innerText;
-							dataJson.ownedRatio = $(
-								'.stock-price-info :nth-child(4) :nth-child(2) b'
-							)?.innerText;
-							dataJson.dividendCast = $(
-								'.stock-price-info :nth-child(4) :nth-child(3) b'
-							)?.innerText;
-							dataJson.dividendYield = $(
-								'.stock-price-info :nth-child(4) :nth-child(4) b'
-							)?.innerText;
-							dataJson.beta = $(
-								'.stock-price-info :nth-child(4) :nth-child(5) b'
-							)?.innerText;
-							dataJson.eps = $(
-								'.stock-price-info :nth-child(5) :nth-child(1) b'
-							)?.innerText;
-							dataJson.pe = $(
-								'.stock-price-info :nth-child(5) :nth-child(2) b'
-							)?.innerText;
-							dataJson.fpe = $(
-								'.stock-price-info :nth-child(5) :nth-child(3) b'
-							)?.innerText;
-							dataJson.bvps = $(
-								'.stock-price-info :nth-child(5) :nth-child(4) b'
-							)?.innerText;
-							dataJson.pb = $(
-								'.stock-price-info :nth-child(5) :nth-child(5) b'
-							)?.innerText;
+// 				console.log(hoseDetailData.symbol + ' HOSE');
 
-							dataJson.currentTimestamp = Math.floor(
-								Date.now() / 1000
-							);
-						} catch (err) {
-							console.log('crawldetail hose' + err);
-						}
-						return dataJson;
-					},
-					stock.name,
-					stock.symbol,
-					stock.reference,
-					stock.ceil,
-					stock.floor,
-					stock.currentPrice,
-					stock.high,
-					stock.low,
-					stock.change,
-					stock.changePercent,
-					stock.turnOver
-				);
+// 				// console.log(hoseDetailData);
 
-				await page.close();
+// 				await HoseDetail.findOneAndUpdate(
+// 					{ symbol: hoseDetailData.symbol },
+// 					{
+// 						name: hoseDetailData.name,
+// 						symbol: hoseDetailData.symbol,
+// 						reference: hoseDetailData.reference,
+// 						ceil: hoseDetailData.ceil,
+// 						floor: hoseDetailData.floor,
+// 						currentPrice: hoseDetailData.currentPrice,
+// 						change: hoseDetailData.change,
+// 						changePercent: hoseDetailData.changePercent,
+// 						openPrice: hoseDetailData.openPrice,
+// 						high: hoseDetailData.high,
+// 						low: hoseDetailData.low,
+// 						turnOver: hoseDetailData.turnOver,
 
-				console.log(hoseDetailData.symbol + ' HOSE');
+// 						marketcap: hoseDetailData.marketcap,
+// 						overBought: hoseDetailData.overBought,
+// 						overSold: hoseDetailData.overSold,
+// 						high52Week: hoseDetailData.high52Week,
+// 						low52Week: hoseDetailData.low52Week,
+// 						turnOver52WeekAverage:
+// 							hoseDetailData.turnOver52WeekAverage,
+// 						foreignBuy: hoseDetailData.foreignBuy,
+// 						ownedRatio: hoseDetailData.ownedRatio,
+// 						dividendCast: hoseDetailData.dividendCast, //cổ tức tiền mặt
+// 						dividendYield: hoseDetailData.dividendYield, // tỷ lệ cổ tức
+// 						beta: hoseDetailData.beta,
+// 						eps: hoseDetailData.eps,
+// 						pe: hoseDetailData.pe,
+// 						fpe: hoseDetailData.fpe, // F P/e
+// 						bvps: hoseDetailData.bvps, //book value per share
+// 						pb: hoseDetailData.pb,
+// 						companyInfo: hoseDetailData.symbol,
+// 					},
+// 					{ upsert: true }
+// 				)
+// 					// .then((doc) => console.log(doc?.symbol))
+// 					.catch((err) => console.log('crawldetail hose' + err));
 
-				// console.log(hoseDetailData);
+// 				await HoseChart.findOneAndUpdate(
+// 					{ symbol: hoseDetailData.symbol },
+// 					{
+// 						symbol: hoseDetailData.symbol,
+// 						$push: {
+// 							t: hoseDetailData.currentTimestamp,
+// 							price: hoseDetailData.currentPrice,
+// 						},
+// 					},
+// 					{ upsert: true }
+// 				)
+// 					// .then((doc) => console.log(doc?.symbol))
+// 					.catch((err) => console.log('crawldetail hose' + err));
+// 				// return hoseDetailData
+// 			}, 7000 * index);
+// 		});
+// 		await delay(hoseAll.length * 7000 + 20000);
+// 		console.log('end HOSE.............');
 
-				await HoseDetail.findOneAndUpdate(
-					{ symbol: hoseDetailData.symbol },
-					{
-						name: hoseDetailData.name,
-						symbol: hoseDetailData.symbol,
-						reference: hoseDetailData.reference,
-						ceil: hoseDetailData.ceil,
-						floor: hoseDetailData.floor,
-						currentPrice: hoseDetailData.currentPrice,
-						change: hoseDetailData.change,
-						changePercent: hoseDetailData.changePercent,
-						openPrice: hoseDetailData.openPrice,
-						high: hoseDetailData.high,
-						low: hoseDetailData.low,
-						turnOver: hoseDetailData.turnOver,
+// 		await browser.close();
+// 	} catch (error) {
+// 		console.log('crawldetail hose' + error);
+// 	}
+// 	// })
+// });
 
-						marketcap: hoseDetailData.marketcap,
-						overBought: hoseDetailData.overBought,
-						overSold: hoseDetailData.overSold,
-						high52Week: hoseDetailData.high52Week,
-						low52Week: hoseDetailData.low52Week,
-						turnOver52WeekAverage:
-							hoseDetailData.turnOver52WeekAverage,
-						foreignBuy: hoseDetailData.foreignBuy,
-						ownedRatio: hoseDetailData.ownedRatio,
-						dividendCast: hoseDetailData.dividendCast, //cổ tức tiền mặt
-						dividendYield: hoseDetailData.dividendYield, // tỷ lệ cổ tức
-						beta: hoseDetailData.beta,
-						eps: hoseDetailData.eps,
-						pe: hoseDetailData.pe,
-						fpe: hoseDetailData.fpe, // F P/e
-						bvps: hoseDetailData.bvps, //book value per share
-						pb: hoseDetailData.pb,
-						companyInfo: hoseDetailData.symbol,
-					},
-					{ upsert: true }
-				)
-					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawldetail hose' + err));
+// const crawlDetailUpcom = asyncHandler(async () => {
+// 	try {
+// 		const browser = await puppeteer.launch({
+// 			headless: true,
+// 			args: [
+// 				'--no-sandbox',
+// 				'--disabled-setupid-sandbox',
+// 				'--disable-accelerated-2d-canvas',
+// 			],
+// 		});
+// 		const upcomAll = await Upcom.find();
 
-				await HoseChart.findOneAndUpdate(
-					{ symbol: hoseDetailData.symbol },
-					{
-						symbol: hoseDetailData.symbol,
-						$push: {
-							t: hoseDetailData.currentTimestamp,
-							price: hoseDetailData.currentPrice,
-						},
-					},
-					{ upsert: true }
-				)
-					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawldetail hose' + err));
-				// return hoseDetailData
-			}, 7000 * index);
-		});
-		await delay(hoseAll.length * 7000 + 20000);
-		console.log('end HOSE.............');
+// 		//start loop
+// 		console.log('starting Upcom...............');
+// 		upcomAll.map(async (stock, index) => {
+// 			setTimeout(async () => {
+// 				const page = await browser.newPage();
+// 				await page.goto(
+// 					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
+// 					{ waitUntil: 'load' }
+// 				);
+// 				await page.waitForTimeout(2000);
 
-		await browser.close();
-	} catch (error) {
-		console.log('crawldetail hose' + error);
-	}
-	// })
-});
+// 				let upcomDetailData = await page.evaluate(
+// 					async (
+// 						name,
+// 						symbol,
+// 						reference,
+// 						ceil,
+// 						floor,
+// 						currentPrice,
+// 						high,
+// 						low,
+// 						change,
+// 						changePercent,
+// 						turnOver
+// 					) => {
+// 						const $ = document.querySelector.bind(document);
 
-const crawlDetailUpcom = asyncHandler(async () => {
-	try {
-		const browser = await puppeteer.launch({
-			headless: true,
-			args: [
-				'--no-sandbox',
-				'--disabled-setupid-sandbox',
-				'--disable-accelerated-2d-canvas',
-			],
-		});
-		const upcomAll = await Upcom.find();
+// 						let dataJson = {};
 
-		//start loop
-		console.log('starting Upcom...............');
-		upcomAll.map(async (stock, index) => {
-			setTimeout(async () => {
-				const page = await browser.newPage();
-				await page.goto(
-					`https://finance.vietstock.vn/${stock.symbol}/tai-chinh.htm`,
-					{ waitUntil: 'load' }
-				);
-				await page.waitForTimeout(2000);
+// 						try {
+// 							dataJson.name = name;
+// 							dataJson.symbol = symbol;
+// 							dataJson.reference = reference;
+// 							dataJson.ceil = ceil;
+// 							dataJson.floor = floor;
+// 							dataJson.currentPrice = currentPrice;
+// 							dataJson.high = high;
+// 							dataJson.low = low;
+// 							dataJson.change = change;
+// 							dataJson.changePercent = changePercent;
+// 							dataJson.openPrice =
+// 								document.getElementById('openprice')?.innerText;
+// 							dataJson.turnOver = turnOver;
+// 							dataJson.marketcap = $(
+// 								'.stock-price-info :nth-child(2) :nth-child(5) b'
+// 							)?.innerText;
+// 							dataJson.overBought = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(1) b'
+// 							)?.innerText;
+// 							dataJson.overSold = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(2) b'
+// 							)?.innerText;
+// 							dataJson.high52Week = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(3) b'
+// 							)?.innerText;
+// 							dataJson.low52Week = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(4) b'
+// 							)?.innerText;
+// 							dataJson.turnOver52WeekAverage = $(
+// 								'.stock-price-info :nth-child(3) :nth-child(5) b'
+// 							)?.innerText;
+// 							dataJson.foreignBuy = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(1) b'
+// 							)?.innerText;
+// 							dataJson.ownedRatio = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(2) b'
+// 							)?.innerText;
+// 							dataJson.dividendCast = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(3) b'
+// 							)?.innerText;
+// 							dataJson.dividendYield = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(4) b'
+// 							)?.innerText;
+// 							dataJson.beta = $(
+// 								'.stock-price-info :nth-child(4) :nth-child(5) b'
+// 							)?.innerText;
+// 							dataJson.eps = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(1) b'
+// 							)?.innerText;
+// 							dataJson.pe = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(2) b'
+// 							)?.innerText;
+// 							dataJson.fpe = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(3) b'
+// 							)?.innerText;
+// 							dataJson.bvps = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(4) b'
+// 							)?.innerText;
+// 							dataJson.pb = $(
+// 								'.stock-price-info :nth-child(5) :nth-child(5) b'
+// 							)?.innerText;
 
-				let upcomDetailData = await page.evaluate(
-					async (
-						name,
-						symbol,
-						reference,
-						ceil,
-						floor,
-						currentPrice,
-						high,
-						low,
-						change,
-						changePercent,
-						turnOver
-					) => {
-						const $ = document.querySelector.bind(document);
+// 							dataJson.currentTimestamp = Math.floor(
+// 								Date.now() / 1000
+// 							);
+// 						} catch (err) {
+// 							console.log('crawldetail upcom' + err);
+// 						}
+// 						return dataJson;
+// 					},
+// 					stock.name,
+// 					stock.symbol,
+// 					stock.reference,
+// 					stock.ceil,
+// 					stock.floor,
+// 					stock.currentPrice,
+// 					stock.high,
+// 					stock.low,
+// 					stock.change,
+// 					stock.changePercent,
+// 					stock.turnOver
+// 				);
 
-						let dataJson = {};
+// 				await page.close();
 
-						try {
-							dataJson.name = name;
-							dataJson.symbol = symbol;
-							dataJson.reference = reference;
-							dataJson.ceil = ceil;
-							dataJson.floor = floor;
-							dataJson.currentPrice = currentPrice;
-							dataJson.high = high;
-							dataJson.low = low;
-							dataJson.change = change;
-							dataJson.changePercent = changePercent;
-							dataJson.openPrice =
-								document.getElementById('openprice')?.innerText;
-							dataJson.turnOver = turnOver;
-							dataJson.marketcap = $(
-								'.stock-price-info :nth-child(2) :nth-child(5) b'
-							)?.innerText;
-							dataJson.overBought = $(
-								'.stock-price-info :nth-child(3) :nth-child(1) b'
-							)?.innerText;
-							dataJson.overSold = $(
-								'.stock-price-info :nth-child(3) :nth-child(2) b'
-							)?.innerText;
-							dataJson.high52Week = $(
-								'.stock-price-info :nth-child(3) :nth-child(3) b'
-							)?.innerText;
-							dataJson.low52Week = $(
-								'.stock-price-info :nth-child(3) :nth-child(4) b'
-							)?.innerText;
-							dataJson.turnOver52WeekAverage = $(
-								'.stock-price-info :nth-child(3) :nth-child(5) b'
-							)?.innerText;
-							dataJson.foreignBuy = $(
-								'.stock-price-info :nth-child(4) :nth-child(1) b'
-							)?.innerText;
-							dataJson.ownedRatio = $(
-								'.stock-price-info :nth-child(4) :nth-child(2) b'
-							)?.innerText;
-							dataJson.dividendCast = $(
-								'.stock-price-info :nth-child(4) :nth-child(3) b'
-							)?.innerText;
-							dataJson.dividendYield = $(
-								'.stock-price-info :nth-child(4) :nth-child(4) b'
-							)?.innerText;
-							dataJson.beta = $(
-								'.stock-price-info :nth-child(4) :nth-child(5) b'
-							)?.innerText;
-							dataJson.eps = $(
-								'.stock-price-info :nth-child(5) :nth-child(1) b'
-							)?.innerText;
-							dataJson.pe = $(
-								'.stock-price-info :nth-child(5) :nth-child(2) b'
-							)?.innerText;
-							dataJson.fpe = $(
-								'.stock-price-info :nth-child(5) :nth-child(3) b'
-							)?.innerText;
-							dataJson.bvps = $(
-								'.stock-price-info :nth-child(5) :nth-child(4) b'
-							)?.innerText;
-							dataJson.pb = $(
-								'.stock-price-info :nth-child(5) :nth-child(5) b'
-							)?.innerText;
+// 				console.log(upcomDetailData.symbol + ' Upcom');
+// 				// console.log(upcomDetailData);
 
-							dataJson.currentTimestamp = Math.floor(
-								Date.now() / 1000
-							);
-						} catch (err) {
-							console.log('crawldetail upcom' + err);
-						}
-						return dataJson;
-					},
-					stock.name,
-					stock.symbol,
-					stock.reference,
-					stock.ceil,
-					stock.floor,
-					stock.currentPrice,
-					stock.high,
-					stock.low,
-					stock.change,
-					stock.changePercent,
-					stock.turnOver
-				);
+// 				await UpcomDetail.findOneAndUpdate(
+// 					{ symbol: upcomDetailData.symbol },
+// 					{
+// 						name: upcomDetailData.name,
+// 						symbol: upcomDetailData.symbol,
+// 						reference: upcomDetailData.reference,
+// 						ceil: upcomDetailData.ceil,
+// 						floor: upcomDetailData.floor,
+// 						currentPrice: upcomDetailData.currentPrice,
+// 						change: upcomDetailData.change,
+// 						changePercent: upcomDetailData.changePercent,
+// 						openPrice: upcomDetailData.openPrice,
+// 						high: upcomDetailData.high,
+// 						low: upcomDetailData.low,
+// 						turnOver: upcomDetailData.turnOver,
 
-				await page.close();
+// 						marketcap: upcomDetailData.marketcap,
+// 						overBought: upcomDetailData.overBought,
+// 						overSold: upcomDetailData.overSold,
+// 						high52Week: upcomDetailData.high52Week,
+// 						low52Week: upcomDetailData.low52Week,
+// 						turnOver52WeekAverage:
+// 							upcomDetailData.turnOver52WeekAverage,
+// 						foreignBuy: upcomDetailData.foreignBuy,
+// 						ownedRatio: upcomDetailData.ownedRatio,
+// 						dividendCast: upcomDetailData.dividendCast, //cổ tức tiền mặt
+// 						dividendYield: upcomDetailData.dividendYield, // tỷ lệ cổ tức
+// 						beta: upcomDetailData.beta,
+// 						eps: upcomDetailData.eps,
+// 						pe: upcomDetailData.pe,
+// 						fpe: upcomDetailData.fpe, // F P/e
+// 						bvps: upcomDetailData.bvps, //book value per share
+// 						pb: upcomDetailData.pb,
+// 						companyInfo: upcomDetailData.symbol,
+// 					},
+// 					{ upsert: true }
+// 				)
+// 					// .then((doc) => console.log(doc?.symbol))
+// 					.catch((err) => console.log('crawldetail upcom' + err));
 
-				console.log(upcomDetailData.symbol + ' Upcom');
-				// console.log(upcomDetailData);
+// 				await UpcomChart.findOneAndUpdate(
+// 					{ symbol: upcomDetailData.symbol },
+// 					{
+// 						symbol: upcomDetailData.symbol,
+// 						$push: {
+// 							t: upcomDetailData.currentTimestamp,
+// 							price: upcomDetailData.currentPrice,
+// 						},
+// 					},
+// 					{ upsert: true }
+// 				)
+// 					// .then((doc) => console.log(doc?.symbol))
+// 					.catch((err) => console.log('crawldetail upcom' + err));
+// 				// return upcomDetailData
+// 			}, 7000 * index);
+// 		});
+// 		await delay(hoseAll.length * 7000 + 40000);
+// 		console.log('end HOSE.............');
 
-				await UpcomDetail.findOneAndUpdate(
-					{ symbol: upcomDetailData.symbol },
-					{
-						name: upcomDetailData.name,
-						symbol: upcomDetailData.symbol,
-						reference: upcomDetailData.reference,
-						ceil: upcomDetailData.ceil,
-						floor: upcomDetailData.floor,
-						currentPrice: upcomDetailData.currentPrice,
-						change: upcomDetailData.change,
-						changePercent: upcomDetailData.changePercent,
-						openPrice: upcomDetailData.openPrice,
-						high: upcomDetailData.high,
-						low: upcomDetailData.low,
-						turnOver: upcomDetailData.turnOver,
-
-						marketcap: upcomDetailData.marketcap,
-						overBought: upcomDetailData.overBought,
-						overSold: upcomDetailData.overSold,
-						high52Week: upcomDetailData.high52Week,
-						low52Week: upcomDetailData.low52Week,
-						turnOver52WeekAverage:
-							upcomDetailData.turnOver52WeekAverage,
-						foreignBuy: upcomDetailData.foreignBuy,
-						ownedRatio: upcomDetailData.ownedRatio,
-						dividendCast: upcomDetailData.dividendCast, //cổ tức tiền mặt
-						dividendYield: upcomDetailData.dividendYield, // tỷ lệ cổ tức
-						beta: upcomDetailData.beta,
-						eps: upcomDetailData.eps,
-						pe: upcomDetailData.pe,
-						fpe: upcomDetailData.fpe, // F P/e
-						bvps: upcomDetailData.bvps, //book value per share
-						pb: upcomDetailData.pb,
-						companyInfo: upcomDetailData.symbol,
-					},
-					{ upsert: true }
-				)
-					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawldetail upcom' + err));
-
-				await UpcomChart.findOneAndUpdate(
-					{ symbol: upcomDetailData.symbol },
-					{
-						symbol: upcomDetailData.symbol,
-						$push: {
-							t: upcomDetailData.currentTimestamp,
-							price: upcomDetailData.currentPrice,
-						},
-					},
-					{ upsert: true }
-				)
-					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawldetail upcom' + err));
-				// return upcomDetailData
-			}, 7000 * index);
-		});
-		await delay(hoseAll.length * 7000 + 40000);
-		console.log('end HOSE.............');
-
-		await browser.close();
-	} catch (error) {
-		console.log('crawldetail upcom' + error);
-	}
-	// })
-});
+// 		await browser.close();
+// 	} catch (error) {
+// 		console.log('crawldetail upcom' + error);
+// 	}
+// 	// })
+// });
 
 const crawlDetailAllInvesting = asyncHandler(async (id, name, hrefDetail) => {
 	try {

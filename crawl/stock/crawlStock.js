@@ -15,6 +15,11 @@ const Hose = require('../../model/stock/stockList/hoseModel');
 const Upcom = require('../../model/stock/stockList/upcomModel');
 
 const AllInvesting = require('../../model/stock/stockList/allInvestingModel');
+const Hnx30Chart = require('../../model/stock/chartStock/chart/hnx30ChartModel');
+const HnxChart = require('../../model/stock/chartStock/chart/hnxChartModel');
+const Vn30Chart = require('../../model/stock/chartStock/chart/vn30ChartModel');
+const HoseChart = require('../../model/stock/chartStock/chart/hoseChartModel');
+const UpcomChart = require('../../model/stock/chartStock/chart/upcomChartModel');
 
 const urlHnx30 = 'https://banggia.vietstock.vn/bang-gia/hnx30';
 const urlHnx = 'https://banggia.vietstock.vn/bang-gia/hnx';
@@ -52,19 +57,7 @@ const crawlHnx30 = asyncHandler(async () => {
 					dataJson.symbol = symbolCrawl;
 				}
 
-				let date = new Date();
-				dataJson.timeUpdate =
-					date.getHours() +
-					':' +
-					date.getMinutes() +
-					':' +
-					date.getSeconds() +
-					' ' +
-					date.getDate() +
-					'/' +
-					(date.getMonth() + 1) +
-					'/' +
-					date.getFullYear();
+				dataJson.timeUpdate = Math.floor(Date.now() / 1000);
 
 				dataJson.reference = stock.getElementsByClassName(
 					'cell-body-highlight'
@@ -111,7 +104,7 @@ const crawlHnx30 = asyncHandler(async () => {
 	//retry request until it gets data or tries 3 times
 	while (data == false && attemps < 2) {
 		data = await collectQueryData(urlHnx30, pageEvaluateFunc);
-		console.log(data);
+		console.log(data.length);
 		attemps++;
 
 		if (data) {
@@ -136,6 +129,20 @@ const crawlHnx30 = asyncHandler(async () => {
 				)
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => console.log('crawl hnx30' + err));
+
+				Hnx30Chart.findOneAndUpdate(
+					{ symbol: stock.symbol },
+					{
+						symbol: stock.symbol,
+						$push: {
+							t: stock.timeUpdate,
+							price: stock.currentPrice,
+						},
+					}
+					// { upsert: true }
+				)
+					// .then((doc) => console.log(doc?.symbol))
+					.catch((err) => console.log('crawldetail hnx30' + err));
 			});
 			// await browser.close();
 		}
@@ -174,19 +181,7 @@ const crawlHnx = asyncHandler(async () => {
 					dataJson.symbol = symbolCrawl;
 				}
 
-				let date = new Date();
-				dataJson.timeUpdate =
-					date.getHours() +
-					':' +
-					date.getMinutes() +
-					':' +
-					date.getSeconds() +
-					' ' +
-					date.getDate() +
-					'/' +
-					(date.getMonth() + 1) +
-					'/' +
-					date.getFullYear();
+				dataJson.timeUpdate = Math.floor(Date.now() / 1000);
 
 				dataJson.reference = stock.getElementsByClassName(
 					'cell-body-highlight'
@@ -234,7 +229,7 @@ const crawlHnx = asyncHandler(async () => {
 	//retry request until it gets data or tries 3 times
 	while (data == false && attemps < 2) {
 		data = await collectQueryDataHeightScroll(urlHnx, pageEvaluateFunc);
-		console.log(data);
+		console.log(data.length);
 		attemps++;
 
 		if (data) {
@@ -259,6 +254,20 @@ const crawlHnx = asyncHandler(async () => {
 				)
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => console.log('crawl hnx' + err));
+
+				HnxChart.findOneAndUpdate(
+					{ symbol: stock.symbol },
+					{
+						symbol: stock.symbol,
+						$push: {
+							t: stock.timeUpdate,
+							price: stock.currentPrice,
+						},
+					}
+					// { upsert: true }
+				)
+					// .then((doc) => console.log(doc?.symbol))
+					.catch((err) => console.log('crawldetail hnx30' + err));
 			});
 			// await browser.close();
 		}
@@ -297,19 +306,7 @@ const crawlVn30 = asyncHandler(async () => {
 					dataJson.symbol = symbolCrawl;
 				}
 
-				let date = new Date();
-				dataJson.timeUpdate =
-					date.getHours() +
-					':' +
-					date.getMinutes() +
-					':' +
-					date.getSeconds() +
-					' ' +
-					date.getDate() +
-					'/' +
-					(date.getMonth() + 1) +
-					'/' +
-					date.getFullYear();
+				dataJson.timeUpdate = Math.floor(Date.now() / 1000);
 
 				dataJson.reference = stock.getElementsByClassName(
 					'cell-body-highlight'
@@ -357,7 +354,7 @@ const crawlVn30 = asyncHandler(async () => {
 	//retry request until it gets data or tries 3 times
 	while (data == false && attemps < 2) {
 		data = await collectQueryData(urlVn30, pageEvaluateFunc);
-		console.log(data);
+		console.log(data.length);
 		attemps++;
 
 		if (data) {
@@ -382,6 +379,20 @@ const crawlVn30 = asyncHandler(async () => {
 				)
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => console.log('crawl vn30' + err));
+
+				Vn30Chart.findOneAndUpdate(
+					{ symbol: stock.symbol },
+					{
+						symbol: stock.symbol,
+						$push: {
+							t: stock.timeUpdate,
+							price: stock.currentPrice,
+						},
+					}
+					// { upsert: true }
+				)
+					// .then((doc) => console.log(doc?.symbol))
+					.catch((err) => console.log('crawldetail hnx30' + err));
 			});
 			// await browser.close();
 		}
@@ -420,19 +431,7 @@ const crawlHose = asyncHandler(async () => {
 					dataJson.symbol = symbolCrawl;
 				}
 
-				let date = new Date();
-				dataJson.timeUpdate =
-					date.getHours() +
-					':' +
-					date.getMinutes() +
-					':' +
-					date.getSeconds() +
-					' ' +
-					date.getDate() +
-					'/' +
-					(date.getMonth() + 1) +
-					'/' +
-					date.getFullYear();
+				dataJson.timeUpdate = Math.floor(Date.now() / 1000);
 
 				dataJson.reference = stock.getElementsByClassName(
 					'cell-body-highlight'
@@ -480,7 +479,7 @@ const crawlHose = asyncHandler(async () => {
 	//retry request until it gets data or tries 3 times
 	while (data == false && attemps < 2) {
 		data = await collectQueryData(urlHose, pageEvaluateFunc);
-		console.log(data);
+		console.log(data.length);
 		attemps++;
 
 		if (data) {
@@ -505,6 +504,20 @@ const crawlHose = asyncHandler(async () => {
 				)
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => console.log('crawl hose' + err));
+
+				HoseChart.findOneAndUpdate(
+					{ symbol: stock.symbol },
+					{
+						symbol: stock.symbol,
+						$push: {
+							t: stock.timeUpdate,
+							price: stock.currentPrice,
+						},
+					}
+					// { upsert: true }
+				)
+					// .then((doc) => console.log(doc?.symbol))
+					.catch((err) => console.log('crawldetail hnx30' + err));
 			});
 			// await browser.close();
 		}
@@ -543,19 +556,7 @@ const crawlUpcom = asyncHandler(async () => {
 					dataJson.symbol = symbolCrawl;
 				}
 
-				let date = new Date();
-				dataJson.timeUpdate =
-					date.getHours() +
-					':' +
-					date.getMinutes() +
-					':' +
-					date.getSeconds() +
-					' ' +
-					date.getDate() +
-					'/' +
-					(date.getMonth() + 1) +
-					'/' +
-					date.getFullYear();
+				dataJson.timeUpdate = Math.floor(Date.now() / 1000);
 
 				dataJson.reference = stock.getElementsByClassName(
 					'cell-body-highlight'
@@ -602,7 +603,7 @@ const crawlUpcom = asyncHandler(async () => {
 	//retry request until it gets data or tries 3 times
 	while (data == false && attemps < 2) {
 		data = await collectQueryData(urlUpcom, pageEvaluateFunc);
-		console.log(data);
+		console.log(data.length);
 		attemps++;
 
 		if (data) {
@@ -627,6 +628,20 @@ const crawlUpcom = asyncHandler(async () => {
 				)
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => console.log('crawl upcom' + err));
+
+				UpcomChart.findOneAndUpdate(
+					{ symbol: stock.symbol },
+					{
+						symbol: stock.symbol,
+						$push: {
+							t: stock.timeUpdate,
+							price: stock.currentPrice,
+						},
+					}
+					// { upsert: true }
+				)
+					// .then((doc) => console.log(doc?.symbol))
+					.catch((err) => console.log('crawldetail hnx30' + err));
 			});
 			// await browser.close();
 		}
