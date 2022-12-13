@@ -52,8 +52,8 @@ const {
 // runCrawlCoin();
 // runCrawlGoldPetrolExchangerateInterestRate();
 runCrawlAllListStocks();
-runCrawlAllDetailStocks();
-runCrawlAllChartStocks();
+// runCrawlAllDetailStocks();
+// runCrawlAllChartStocks();
 
 // -----------------------------------------------
 
@@ -118,7 +118,8 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
 	res.json({
-		status: err.status || 500,
+		status: 'fail',
+		code: err.status || 500,
 		message: err.message,
 	});
 });

@@ -1,4 +1,4 @@
-const asyncHandler = require('express-async-handler');
+const createError = require('http-errors');
 
 const Hnx30 = require('../../../model/stock/stockList/hnx30Model');
 const Hnx30Detail = require('../../../model/stock/stockDetail/hnx30DetailModel');
@@ -15,48 +15,61 @@ const AllInvestingDetail = require('../../../model/stock/stockDetail/allInvestin
 // });
 
 const hnx30StockList = async (req, res, next) => {
-	const stockList = await Hnx30.find({}).select(
-		'-_id -createdAt -updatedAt -__v'
-	);
+	try {
+		const stockList = await Hnx30.find({}).select(
+			'-_id -createdAt -updatedAt -__v'
+		);
 
-	res.status(200).json(stockList);
+		if (!stockList) {
+			throw createError.NotFound('can not find data');
+		}
+
+		res.status(200).json({ status: 'ok', data: stockList });
+	} catch (error) {
+		next(error);
+	}
 };
 
 //populate thì đầu tiên cần có data description của tất cả công ty lấy từ web investing đã
 const hnx30DetailStock = async (req, res, next) => {
-	const symbol = req.params.symbol;
-	// console.log(symbol)
+	try {
+		const symbol = req.params.symbol;
+		// console.log(symbol)
 
-	const stock = await Hnx30Detail.find({
-		symbol: symbol,
-	})
-		// .populate(
-		// 	'companyInfo',
-		// 	'-_id -createdAt -updatedAt -__v -name -symbol'
-		// )
-		.select('-_id -createdAt -updatedAt -__v');
+		const stock = await Hnx30Detail.find({
+			symbol: symbol,
+		})
+			// .populate(
+			// 	'companyInfo',
+			// 	'-_id -createdAt -updatedAt -__v -name -symbol'
+			// )
+			.select('-_id -createdAt -updatedAt -__v');
 
-	res.status(200).json(stock);
+		if (!stock) {
+			throw createError.NotFound('can not find data');
+		}
+
+		res.status(200).json({ status: 'ok', data: stock });
+	} catch (error) {
+		next(error);
+	}
 };
 
 const hnx30DetailChart = async (req, res, next) => {
-	const symbol = req.params.symbol;
-	const list = await Hnx30Chart.find({ symbol: symbol }).select(
-		'-_id -createdAt -updatedAt -__v'
-	);
-	// let arr = []
-	// for (let i = 0; i < 1042; i++) {
-	//     let todayDate = new Date(t[i] * 1000).toISOString()
-	//     arr.push({
-	//         time: todayDate.slice(0, 10),
-	//         open: o[i],
-	//         high: h[i],
-	//         low: l[i],
-	//         close: c[i]
-	//     })
-	// }
+	try {
+		const symbol = req.params.symbol;
+		const list = await Hnx30Chart.find({ symbol: symbol }).select(
+			'-_id -createdAt -updatedAt -__v'
+		);
 
-	res.status(200).json(list);
+		if (!list) {
+			throw createError.NotFound('can not find data');
+		}
+
+		res.status(200).json({ status: 'ok', data: list });
+	} catch (error) {
+		next(error);
+	}
 };
 
 const hnx30DetailReportChart = async (req, res, next) => {

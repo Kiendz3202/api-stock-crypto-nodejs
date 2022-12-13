@@ -12,7 +12,7 @@ const register = async (req, res, next) => {
 	try {
 		const { email, password } = req.body;
 		const { error, value } = userValidate(req.body);
-		console.log(error);
+		// console.log(error.status);
 		if (error) {
 			throw createError(error.details[0].message);
 		}
@@ -31,8 +31,8 @@ const register = async (req, res, next) => {
 		const savedUser = await user.save();
 
 		return res.status(200).json({
-			status: 'okay',
-			element: savedUser,
+			status: 'ok',
+			data: savedUser,
 		});
 	} catch (error) {
 		next(error);
@@ -65,8 +65,8 @@ const login = async (req, res, next) => {
 		const refreshtoken = await signRefreshToken(user._id);
 
 		res.status(200).json({
-			status: 'success',
-			elements: {
+			status: 'ok',
+			data: {
 				accessToken,
 				refreshtoken,
 			},
@@ -88,8 +88,11 @@ const refreshtoken = async (req, res, next) => {
 		const accessTokenNew = await signAccessToken(userId);
 		const refreshTokenNew = await signRefreshToken(userId);
 		res.send({
-			accessTokenNew,
-			refreshTokenNew,
+			status: 'ok',
+			data: {
+				accessTokenNew,
+				refreshTokenNew,
+			},
 		});
 	} catch (error) {
 		next(error);

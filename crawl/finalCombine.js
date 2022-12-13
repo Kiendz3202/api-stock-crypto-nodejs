@@ -30,22 +30,22 @@ const runCrawlCoin = async () => {
 };
 
 const runCrawlAllListStocks = async () => {
-	cron.schedule('*/5 * * * *', async () => {
-		updateAllListStocks();
-	});
+	// cron.schedule('*/5 * * * *', async () => {
+	updateAllListStocks();
+	// });
 };
 
 const runCrawlAllDetailStocks = async () => {
 	//  0 */2 * * *
-	cron.schedule('0 2,12 * * *', async () => {
-		updateAllDetailStocks();
-	});
+	// cron.schedule('0 2,12 * * *', async () => {
+	updateAllDetailStocks();
+	// });
 };
 
 const runCrawlAllChartStocks = async () => {
-	cron.schedule('0 2 * * *', async () => {
-		updateAllChartStocks();
-	});
+	// cron.schedule('0 2 * * *', async () => {
+	updateAllChartStocks();
+	// });
 };
 
 const runCrawlGoldPetrolExchangerateInterestRate = async () => {

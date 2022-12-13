@@ -31,6 +31,7 @@ const UpcomChart = require('../../model/stock/chartStock/chart/upcomChartModel')
 const crawlChartHnx30 = asyncHandler(async (symbol) => {
 	const hnx30Stocks = await Hnx30.find({});
 	let currentTime = Math.floor(Date.now() / 1000);
+	let count = 0;
 
 	for (const stock of hnx30Stocks) {
 		await axios
@@ -40,6 +41,7 @@ const crawlChartHnx30 = asyncHandler(async (symbol) => {
 			.then((response) => {
 				const data = response.data;
 				if (data) {
+					count++;
 					Hnx30Chart.findOneAndUpdate(
 						{ symbol: stock.symbol },
 						{
@@ -49,20 +51,24 @@ const crawlChartHnx30 = asyncHandler(async (symbol) => {
 						},
 						{ upsert: true }
 					)
-						// .then((doc) => console.log(stock.symbol))
+						// .then((doc) =>
+						// 	console.log(stock.symbol + ' chart HNX30')
+						// )
 						.catch((err) => console.log(err));
 				}
 			})
 			.catch((err) => {
 				console.log(err);
 			});
-		await delay(3000);
+		await delay(2000);
 	}
+	console.log(count + ' chart HNX30');
 });
 
 const crawlChartHnx = asyncHandler(async (symbol) => {
 	const hnxStocks = await Hnx.find({});
 	let currentTime = Math.floor(Date.now() / 1000);
+	let count = 0;
 
 	for (const stock of hnxStocks) {
 		await axios
@@ -72,6 +78,7 @@ const crawlChartHnx = asyncHandler(async (symbol) => {
 			.then((response) => {
 				const data = response.data;
 				if (data) {
+					count++;
 					HnxChart.findOneAndUpdate(
 						{ symbol: stock.symbol },
 						{
@@ -81,20 +88,22 @@ const crawlChartHnx = asyncHandler(async (symbol) => {
 						},
 						{ upsert: true }
 					)
-						// .then((doc) => console.log(stock.symbol))
+						.then((doc) => console.log(stock.symbol + ' chart HNX'))
 						.catch((err) => console.log(err));
 				}
 			})
 			.catch((err) => {
 				console.log(err);
 			});
-		await delay(3000);
+		await delay(2000);
 	}
+	console.log(count + ' chart HNX');
 });
 
 const crawlChartVn30 = asyncHandler(async (symbol) => {
 	const vn30Stocks = await Vn30.find({});
 	let currentTime = Math.floor(Date.now() / 1000);
+	let count = 0;
 
 	for (const stock of vn30Stocks) {
 		await axios
@@ -104,6 +113,7 @@ const crawlChartVn30 = asyncHandler(async (symbol) => {
 			.then((response) => {
 				const data = response.data;
 				if (data) {
+					count++;
 					Vn30Chart.findOneAndUpdate(
 						{ symbol: stock.symbol },
 						{
@@ -113,20 +123,24 @@ const crawlChartVn30 = asyncHandler(async (symbol) => {
 						},
 						{ upsert: true }
 					)
-						// .then((doc) => console.log(stock.symbol))
+						.then((doc) =>
+							console.log(stock.symbol + ' chart VN30')
+						)
 						.catch((err) => console.log(err));
 				}
 			})
 			.catch((err) => {
 				console.log(err);
 			});
-		await delay(3000);
+		await delay(2000);
 	}
+	console.log(count + ' chart VN30');
 });
 
 const crawlChartHose = asyncHandler(async (symbol) => {
 	const hoseStocks = await Hose.find({});
 	let currentTime = Math.floor(Date.now() / 1000);
+	let count = 0;
 
 	for (const stock of hoseStocks) {
 		await axios
@@ -136,6 +150,7 @@ const crawlChartHose = asyncHandler(async (symbol) => {
 			.then((response) => {
 				const data = response.data;
 				if (data) {
+					count++;
 					HoseChart.findOneAndUpdate(
 						{ symbol: stock.symbol },
 						{
@@ -145,20 +160,24 @@ const crawlChartHose = asyncHandler(async (symbol) => {
 						},
 						{ upsert: true }
 					)
-						// .then((doc) => console.log(stock.symbol))
+						.then((doc) =>
+							console.log(stock.symbol + ' chart HOSE')
+						)
 						.catch((err) => console.log(err));
 				}
 			})
 			.catch((err) => {
 				console.log(err);
 			});
-		await delay(3000);
+		await delay(2000);
 	}
+	console.log(count + ' chart HOSE');
 });
 
 const crawlChartUpcom = asyncHandler(async (symbol) => {
 	const upcomStocks = await Upcom.find({});
 	let currentTime = Math.floor(Date.now() / 1000);
+	let count = 0;
 
 	for (const stock of upcomStocks) {
 		await axios
@@ -168,6 +187,7 @@ const crawlChartUpcom = asyncHandler(async (symbol) => {
 			.then((response) => {
 				const data = response.data;
 				if (data) {
+					count++;
 					UpcomChart.findOneAndUpdate(
 						{ symbol: stock.symbol },
 						{
@@ -177,15 +197,18 @@ const crawlChartUpcom = asyncHandler(async (symbol) => {
 						},
 						{ upsert: true }
 					)
-						// .then((doc) => console.log(stock.symbol))
+						.then((doc) =>
+							console.log(stock.symbol + ' chart UPCOM')
+						)
 						.catch((err) => console.log(err));
 				}
 			})
 			.catch((err) => {
 				console.log(err);
 			});
-		await delay(3000);
+		await delay(2000);
 	}
+	console.log(count + ' chart UPCOM');
 });
 
 module.exports = {

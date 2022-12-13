@@ -66,14 +66,14 @@ const updateAllDetailStocks = async () => {
 		await delay(hnx30Length * 2000);
 	}
 
-	if (vn30Length !== 0) {
-		crawlDetailVn30();
-		await delay(vn30Length * 2000);
-	}
-
 	if (hnxLength !== 0) {
 		crawlDetailHnx();
 		await delay(hnxLength * 2000);
+	}
+
+	if (vn30Length !== 0) {
+		crawlDetailVn30();
+		await delay(vn30Length * 2000);
 	}
 
 	if (hoseLength !== 0) {
@@ -99,27 +99,27 @@ const updateAllChartStocks = async () => {
 
 	if (hnx30Length !== 0) {
 		crawlChartHnx30();
-		await delay(hnx30Length * 3000);
+		await delay(hnx30Length * 2000);
 	}
 
 	if (hnxLength !== 0) {
 		crawlChartHnx();
-		await delay(hnxLength * 3000);
+		await delay(hnxLength * 2000);
 	}
 
 	if (vn30Length !== 0) {
 		crawlChartVn30();
-		await delay(vn30Length * 3000);
+		await delay(vn30Length * 2000);
 	}
 
 	if (hoseLength !== 0) {
 		crawlChartHose();
-		await delay(hoseLength * 3000);
+		await delay(hoseLength * 2000);
 	}
 
 	// if (upcomLength !== 0) {
 	// 	crawlChartUpcom();
-	// 	await delay(upcomLength * 3000);
+	// 	await delay(upcomLength * 2000);
 	// }
 };
 

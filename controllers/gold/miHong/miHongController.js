@@ -1,15 +1,21 @@
-const asyncHandler = require('express-async-handler')
+const createError = require('http-errors');
 
-const MiHong = require('../../../model/gold/miHongModel')
+const MiHong = require('../../../model/gold/miHongModel');
 
-const miHongData = asyncHandler(async (req, res, next) => {
-    try {
-        const data = await MiHong.find().select('-_id -createdAt -updatedAt -__v')
-        res.status(200).json(data)
-    } catch (error) {
-        res.status(400)
-        throw new Error(error.message)
-    }
-})
+const miHongData = async (req, res, next) => {
+	try {
+		const data = await MiHong.find().select(
+			'-_id -createdAt -updatedAt -__v'
+		);
 
-module.exports = { miHongData }
+		if (!data) {
+			throw createError.NotFound('can not find data');
+		}
+
+		res.status(200).json({ status: 'ok', data: data });
+	} catch (error) {
+		next(error);
+	}
+};
+
+module.exports = { miHongData };

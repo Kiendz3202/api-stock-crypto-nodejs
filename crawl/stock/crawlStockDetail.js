@@ -36,6 +36,7 @@ const Upcom = require('../../model/stock/stockList/upcomModel');
 
 const crawlDetailHnx30 = async () => {
 	hnx30All = await Hnx30.find({});
+	let count = 0;
 
 	for (const stock of hnx30All) {
 		// const reportDate = convertTimestampToDate(Date.now() - 3000000000);
@@ -100,7 +101,8 @@ const crawlDetailHnx30 = async () => {
 			} catch (err) {
 				console.log('crawldetail hnx30' + err);
 			}
-			// console.log(dataJson.symbol + ' HNX30');
+			// console.log(dataJson.symbol + ' detail HNX30');
+			count++;
 
 			await Hnx30Detail.findOneAndUpdate(
 				{ symbol: dataJson.symbol },
@@ -158,10 +160,12 @@ const crawlDetailHnx30 = async () => {
 			await delay(2000);
 		}
 	}
+	console.log(count + ' detail HNX30');
 };
 
 const crawlDetailHnx = async () => {
 	hnxAll = await Hnx.find({});
+	let count = 0;
 
 	for (const stock of hnxAll) {
 		// const reportDate = convertTimestampToDate(Date.now() - 3000000000);
@@ -226,7 +230,8 @@ const crawlDetailHnx = async () => {
 			} catch (err) {
 				console.log('crawldetail hnx' + err);
 			}
-			// console.log(dataJson.symbol + ' HNX');
+			// console.log(dataJson.symbol + ' detail HNX');
+			count++;
 
 			await HnxDetail.findOneAndUpdate(
 				{ symbol: dataJson.symbol },
@@ -284,10 +289,12 @@ const crawlDetailHnx = async () => {
 			await delay(2000);
 		}
 	}
+	console.log(count + ' detail HNX');
 };
 
 const crawlDetailVn30 = async () => {
 	vn30All = await Vn30.find({});
+	let count = 0;
 
 	for (const stock of vn30All) {
 		// const reportDate = convertTimestampToDate(Date.now() - 3000000000);
@@ -352,7 +359,8 @@ const crawlDetailVn30 = async () => {
 			} catch (err) {
 				console.log('crawldetail vn30' + err);
 			}
-			// console.log(dataJson.symbol + ' VN30');
+			// console.log(dataJson.symbol + ' detail VN30');
+			count++;
 
 			await Vn30Detail.findOneAndUpdate(
 				{ symbol: dataJson.symbol },
@@ -410,10 +418,12 @@ const crawlDetailVn30 = async () => {
 			await delay(2000);
 		}
 	}
+	console.log(count + ' detail VN30');
 };
 
 const crawlDetailHose = async () => {
 	hoseAll = await Hose.find({});
+	let count = 0;
 
 	for (const stock of hoseAll) {
 		// const reportDate = convertTimestampToDate(Date.now() - 3000000000);
@@ -478,7 +488,8 @@ const crawlDetailHose = async () => {
 			} catch (err) {
 				console.log('crawldetail hose' + err);
 			}
-			// console.log(dataJson.symbol + ' HOSE');
+			// console.log(dataJson.symbol + ' detail HOSE');
+			count++;
 
 			await HoseDetail.findOneAndUpdate(
 				{ symbol: dataJson.symbol },
@@ -536,10 +547,12 @@ const crawlDetailHose = async () => {
 			await delay(2000);
 		}
 	}
+	console.log(count + ' detail HOSE30');
 };
 
 const crawlDetailUpcom = async () => {
 	upcomAll = await Upcom.find({});
+	let count = 0;
 
 	for (const stock of upcomAll) {
 		// const reportDate = convertTimestampToDate(Date.now() - 3000000000);
@@ -604,7 +617,8 @@ const crawlDetailUpcom = async () => {
 			} catch (err) {
 				console.log('crawldetail upcom' + err);
 			}
-			// console.log(dataJson.symbol + ' UPCOM');
+			// console.log(dataJson.symbol + ' detail UPCOM');
+			count++;
 
 			await UpcomDetail.findOneAndUpdate(
 				{ symbol: dataJson.symbol },
@@ -662,6 +676,7 @@ const crawlDetailUpcom = async () => {
 			await delay(2000);
 		}
 	}
+	console.log(count + ' detail UPCOM');
 };
 
 // const crawlDetailHnx30 = async () => {

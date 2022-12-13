@@ -1,4 +1,4 @@
-const asyncHandler = require('express-async-handler');
+const createError = require('http-errors');
 
 const AgribankbankInterestRate = require('../../model/interestRate/agribankInterestRateModel');
 const BidvInterestRate = require('../../model/interestRate/bidvInterestRateModel');
@@ -8,96 +8,115 @@ const VibInterestRate = require('../../model/interestRate/vibInterestRateModel')
 const VietcombankInterestRate = require('../../model/interestRate/vietcombankInterestRateModel');
 const VietinbankInterestRate = require('../../model/interestRate/vietinbankInterestRateModel');
 
-const agribankbankInterestRateController = asyncHandler(
-	async (req, res, next) => {
-		try {
-			const data = await AgribankbankInterestRate.find().select(
-				'-_id -createdAt -updatedAt -__v'
-			);
-			res.status(200).json(data);
-		} catch (error) {
-			res.status(400);
-			throw new Error(error.message);
-		}
-	}
-);
+const agribankbankInterestRateController = async (req, res, next) => {
+	try {
+		const data = await AgribankbankInterestRate.find().select(
+			'-_id -createdAt -updatedAt -__v'
+		);
 
-const bidvInterestRateController = asyncHandler(async (req, res, next) => {
+		if (!data) {
+			throw createError.NotFound('can not find data');
+		}
+
+		res.status(200).json({ status: 'ok', data: data });
+	} catch (error) {
+		next(error);
+	}
+};
+const bidvInterestRateController = async (req, res, next) => {
 	try {
 		const data = await BidvInterestRate.find().select(
 			'-_id -createdAt -updatedAt -__v'
 		);
-		res.status(200).json(data);
-	} catch (error) {
-		res.status(400);
-		throw new Error(error.message);
-	}
-});
 
-const mbbankInterestRateController = asyncHandler(async (req, res, next) => {
+		if (!data) {
+			throw createError.NotFound('can not find data');
+		}
+
+		res.status(200).json({ status: 'ok', data: data });
+	} catch (error) {
+		next(error);
+	}
+};
+
+const mbbankInterestRateController = async (req, res, next) => {
 	try {
 		const data = await MbbankInterestRate.find().select(
 			'-_id -createdAt -updatedAt -__v'
 		);
-		res.status(200).json(data);
-	} catch (error) {
-		res.status(400);
-		throw new Error(error.message);
-	}
-});
 
-const scbInterestRateController = asyncHandler(async (req, res, next) => {
+		if (!data) {
+			throw createError.NotFound('can not find data');
+		}
+
+		res.status(200).json({ status: 'ok', data: data });
+	} catch (error) {
+		next(error);
+	}
+};
+
+const scbInterestRateController = async (req, res, next) => {
 	try {
 		const data = await ScbInterestRate.find().select(
 			'-_id -createdAt -updatedAt -__v'
 		);
-		res.status(200).json(data);
-	} catch (error) {
-		res.status(400);
-		throw new Error(error.message);
-	}
-});
 
-const vibInterestRateController = asyncHandler(async (req, res, next) => {
+		if (!data) {
+			throw createError.NotFound('can not find data');
+		}
+
+		res.status(200).json({ status: 'ok', data: data });
+	} catch (error) {
+		next(error);
+	}
+};
+
+const vibInterestRateController = async (req, res, next) => {
 	try {
 		const data = await VibInterestRate.find().select(
 			'-_id -createdAt -updatedAt -__v'
 		);
-		res.status(200).json(data);
+
+		if (!data) {
+			throw createError.NotFound('can not find data');
+		}
+
+		res.status(200).json({ status: 'ok', data: data });
 	} catch (error) {
-		res.status(400);
-		throw new Error(error.message);
+		next(error);
 	}
-});
+};
 
-const vietcombankInterestRateController = asyncHandler(
-	async (req, res, next) => {
-		try {
-			const data = await VietcombankInterestRate.find().select(
-				'-_id -createdAt -updatedAt -__v'
-			);
-			res.status(200).json(data);
-		} catch (error) {
-			res.status(400);
-			throw new Error(error.message);
+const vietcombankInterestRateController = async (req, res, next) => {
+	try {
+		const data = await VietcombankInterestRate.find().select(
+			'-_id -createdAt -updatedAt -__v'
+		);
+
+		if (!data) {
+			throw createError.NotFound('can not find data');
 		}
-	}
-);
 
-const vietinbankInterestRateController = asyncHandler(
-	async (req, res, next) => {
-		try {
-			const data = await VietinbankInterestRate.find().select(
-				'-_id -createdAt -updatedAt -__v'
-			);
-			res.status(200).json(data);
-		} catch (error) {
-			res.status(400);
-			throw new Error(error.message);
+		res.status(200).json({ status: 'ok', data: data });
+	} catch (error) {
+		next(error);
+	}
+};
+const vietinbankInterestRateController = async (req, res, next) => {
+	try {
+		const data = await VietinbankInterestRate.find().select(
+			'-_id -createdAt -updatedAt -__v'
+		);
+
+		if (!data) {
+			throw createError.NotFound('can not find data');
 		}
-	}
-);
 
+		res.status(200).json({ status: 'ok', data: data });
+	} catch (error) {
+		next(error);
+	}
+};
 module.exports = {
 	agribankbankInterestRateController,
 	bidvInterestRateController,

@@ -1,15 +1,21 @@
-const asyncHandler = require('express-async-handler')
+const createError = require('http-errors');
 
-const Doji = require('../../../model/gold/dojiModel')
+const Doji = require('../../../model/gold/dojiModel');
 
-const dojiData = asyncHandler(async (req, res, next) => {
-    try {
-        const data = await Doji.find().select('-_id -createdAt -updatedAt -__v')
-        res.status(200).json(data)
-    } catch (error) {
-        res.status(400)
-        throw new Error(error.message)
-    }
-})
+const dojiData = async (req, res, next) => {
+	try {
+		const data = await Doji.find().select(
+			'-_id -createdAt -updatedAt -__v'
+		);
 
-module.exports = { dojiData }
+		if (!data) {
+			throw createError.NotFound('can not find data');
+		}
+
+		res.status(200).json({ status: 'ok', data: data });
+	} catch (error) {
+		next(error);
+	}
+};
+
+module.exports = { dojiData };

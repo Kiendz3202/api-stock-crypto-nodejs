@@ -1,15 +1,21 @@
-const asyncHandler = require('express-async-handler')
+const createError = require('http-errors');
 
-const PhuQuySjc = require('../../../model/gold/phuquysjcModel')
+const PhuQuySjc = require('../../../model/gold/phuquysjcModel');
 
-const phuQuyData = asyncHandler(async (req, res, next) => {
-    try {
-        const data = await PhuQuySjc.find().select('-_id -createdAt -updatedAt -__v')
-        res.status(200).json(data)
-    } catch (error) {
-        res.status(400)
-        throw new Error(error.message)
-    }
-})
+const phuQuyData = async (req, res, next) => {
+	try {
+		const data = await PhuQuySjc.find().select(
+			'-_id -createdAt -updatedAt -__v'
+		);
 
-module.exports = { phuQuyData }
+		if (!data) {
+			throw createError.NotFound('can not find data');
+		}
+
+		res.status(200).json({ status: 'ok', data: data });
+	} catch (error) {
+		next(error);
+	}
+};
+
+module.exports = { phuQuyData };
