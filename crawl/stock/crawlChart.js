@@ -88,7 +88,7 @@ const crawlChartHnx = asyncHandler(async (symbol) => {
 						},
 						{ upsert: true }
 					)
-						.then((doc) => console.log(stock.symbol + ' chart HNX'))
+						// .then((doc) => console.log(stock.symbol + ' chart HNX'))
 						.catch((err) => console.log(err));
 				}
 			})
@@ -123,9 +123,9 @@ const crawlChartVn30 = asyncHandler(async (symbol) => {
 						},
 						{ upsert: true }
 					)
-						.then((doc) =>
-							console.log(stock.symbol + ' chart VN30')
-						)
+						// .then((doc) =>
+						// 	console.log(stock.symbol + ' chart VN30')
+						// )
 						.catch((err) => console.log(err));
 				}
 			})
@@ -160,9 +160,9 @@ const crawlChartHose = asyncHandler(async (symbol) => {
 						},
 						{ upsert: true }
 					)
-						.then((doc) =>
-							console.log(stock.symbol + ' chart HOSE')
-						)
+						// .then((doc) =>
+						// 	console.log(stock.symbol + ' chart HOSE')
+						// )
 						.catch((err) => console.log(err));
 				}
 			})
@@ -197,9 +197,9 @@ const crawlChartUpcom = asyncHandler(async (symbol) => {
 						},
 						{ upsert: true }
 					)
-						.then((doc) =>
-							console.log(stock.symbol + ' chart UPCOM')
-						)
+						// .then((doc) =>
+						// 	console.log(stock.symbol + ' chart UPCOM')
+						// )
 						.catch((err) => console.log(err));
 				}
 			})
