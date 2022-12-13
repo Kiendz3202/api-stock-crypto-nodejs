@@ -52,8 +52,8 @@ const {
 // runCrawlCoin();
 // runCrawlGoldPetrolExchangerateInterestRate();
 runCrawlAllListStocks();
-// runCrawlAllDetailStocks();
-// runCrawlAllChartStocks();
+runCrawlAllDetailStocks();
+runCrawlAllChartStocks();
 
 // -----------------------------------------------
 
