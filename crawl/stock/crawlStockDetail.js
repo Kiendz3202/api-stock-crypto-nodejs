@@ -62,42 +62,42 @@ const crawlDetailHnx30 = async () => {
 				dataJson.change = stock.change;
 				dataJson.changePercent = stock.changePercent;
 				dataJson.turnOver = stock.turnOver;
-				dataJson.marketcap = ratios.marketCapital.toString();
-				dataJson.openPrice = ratios.firstPrice.toString();
+				dataJson.marketcap = ratios.marketCapital?.toString();
+				dataJson.openPrice = ratios.firstPrice?.toString();
 
 				dataJson.priceChange52Week = ratios.priceChange52Week;
 				dataJson.averageVolume10Day =
-					ratios.averageVolume10Day.toString();
+					ratios.averageVolume10Day?.toString();
 				dataJson.percentPriceChange1Week =
-					ratios.percentPriceChange1Week.toString();
+					ratios.percentPriceChange1Week?.toString();
 				dataJson.percentPriceChange1Month =
-					ratios.percentPriceChange1Month.toString();
+					ratios.percentPriceChange1Month?.toString();
 				dataJson.percentPriceChange3Month =
-					ratios.percentPriceChange3Month.toString();
+					ratios.percentPriceChange3Month?.toString();
 				dataJson.percentPriceChange6Month =
-					ratios.percentPriceChange6Month.toString();
+					ratios.percentPriceChange6Month?.toString();
 				dataJson.percentPriceChange1Year =
-					ratios.percentPriceChange1Year.toString();
-				dataJson.priceChange1Week = ratios.priceChange1Week.toString();
+					ratios.percentPriceChange1Year?.toString();
+				dataJson.priceChange1Week = ratios.priceChange1Week?.toString();
 				dataJson.priceChange1Month =
-					ratios.priceChange1Month.toString();
+					ratios.priceChange1Month?.toString();
 				dataJson.priceChange3Month =
-					ratios.priceChange3Month.toString();
+					ratios.priceChange3Month?.toString();
 				dataJson.priceChange6Month =
-					ratios.priceChange6Month.toString();
-				dataJson.priceChange1Year = ratios.priceChange1Year.toString();
-				dataJson.high52Week = ratios.highestPrice52Week.toString();
-				dataJson.low52Week = ratios.lowestPrice52Week.toString();
-				dataJson.outstandingShare = ratios.outstandingShare.toString();
-				dataJson.freeFloat = ratios.freeFloat.toString();
-				dataJson.pe = ratios.pe.toString();
-				dataJson.dilutionPE = ratios.dilutionPE.toString();
-				dataJson.pb = ratios.pb.toString();
-				dataJson.eps = ratios.eps.toString();
-				dataJson.dilutionEPS = ratios.dilutionEPS.toString();
-				dataJson.bookValue = ratios.bookValue.toString();
-				dataJson.lastInterest = ratios.lastInterest.toString();
-				dataJson.roe = ratios.roe.toString();
+					ratios.priceChange6Month?.toString();
+				dataJson.priceChange1Year = ratios.priceChange1Year?.toString();
+				dataJson.high52Week = ratios.highestPrice52Week?.toString();
+				dataJson.low52Week = ratios.lowestPrice52Week?.toString();
+				dataJson.outstandingShare = ratios.outstandingShare?.toString();
+				dataJson.freeFloat = ratios.freeFloat?.toString();
+				dataJson.pe = ratios.pe?.toString();
+				dataJson.dilutionPE = ratios.dilutionPE?.toString();
+				dataJson.pb = ratios.pb?.toString();
+				dataJson.eps = ratios.eps?.toString();
+				dataJson.dilutionEPS = ratios.dilutionEPS?.toString();
+				dataJson.bookValue = ratios.bookValue?.toString();
+				dataJson.lastInterest = ratios.lastInterest?.toString();
+				dataJson.roe = ratios.roe?.toString();
 			} catch (err) {
 				console.log('crawldetail hnx30' + err);
 			}
@@ -191,42 +191,42 @@ const crawlDetailHnx = async () => {
 				dataJson.change = stock.change;
 				dataJson.changePercent = stock.changePercent;
 				dataJson.turnOver = stock.turnOver;
-				dataJson.marketcap = ratios.marketCapital.toString();
-				dataJson.openPrice = ratios.firstPrice.toString();
+				dataJson.marketcap = ratios.marketCapital?.toString();
+				dataJson.openPrice = ratios.firstPrice?.toString();
 
 				dataJson.priceChange52Week = ratios.priceChange52Week;
 				dataJson.averageVolume10Day =
-					ratios.averageVolume10Day.toString();
+					ratios.averageVolume10Day?.toString();
 				dataJson.percentPriceChange1Week =
-					ratios.percentPriceChange1Week.toString();
+					ratios.percentPriceChange1Week?.toString();
 				dataJson.percentPriceChange1Month =
-					ratios.percentPriceChange1Month.toString();
+					ratios.percentPriceChange1Month?.toString();
 				dataJson.percentPriceChange3Month =
-					ratios.percentPriceChange3Month.toString();
+					ratios.percentPriceChange3Month?.toString();
 				dataJson.percentPriceChange6Month =
-					ratios.percentPriceChange6Month.toString();
+					ratios.percentPriceChange6Month?.toString();
 				dataJson.percentPriceChange1Year =
-					ratios.percentPriceChange1Year.toString();
-				dataJson.priceChange1Week = ratios.priceChange1Week.toString();
+					ratios.percentPriceChange1Year?.toString();
+				dataJson.priceChange1Week = ratios.priceChange1Week?.toString();
 				dataJson.priceChange1Month =
-					ratios.priceChange1Month.toString();
+					ratios.priceChange1Month?.toString();
 				dataJson.priceChange3Month =
-					ratios.priceChange3Month.toString();
+					ratios.priceChange3Month?.toString();
 				dataJson.priceChange6Month =
-					ratios.priceChange6Month.toString();
-				dataJson.priceChange1Year = ratios.priceChange1Year.toString();
-				dataJson.high52Week = ratios.highestPrice52Week.toString();
-				dataJson.low52Week = ratios.lowestPrice52Week.toString();
-				dataJson.outstandingShare = ratios.outstandingShare.toString();
-				dataJson.freeFloat = ratios.freeFloat.toString();
-				dataJson.pe = ratios.pe.toString();
-				dataJson.dilutionPE = ratios.dilutionPE.toString();
-				dataJson.pb = ratios.pb.toString();
-				dataJson.eps = ratios.eps.toString();
-				dataJson.dilutionEPS = ratios.dilutionEPS.toString();
-				dataJson.bookValue = ratios.bookValue.toString();
-				dataJson.lastInterest = ratios.lastInterest.toString();
-				dataJson.roe = ratios.roe.toString();
+					ratios.priceChange6Month?.toString();
+				dataJson.priceChange1Year = ratios.priceChange1Year?.toString();
+				dataJson.high52Week = ratios.highestPrice52Week?.toString();
+				dataJson.low52Week = ratios.lowestPrice52Week?.toString();
+				dataJson.outstandingShare = ratios.outstandingShare?.toString();
+				dataJson.freeFloat = ratios.freeFloat?.toString();
+				dataJson.pe = ratios.pe?.toString();
+				dataJson.dilutionPE = ratios.dilutionPE?.toString();
+				dataJson.pb = ratios.pb?.toString();
+				dataJson.eps = ratios.eps?.toString();
+				dataJson.dilutionEPS = ratios.dilutionEPS?.toString();
+				dataJson.bookValue = ratios.bookValue?.toString();
+				dataJson.lastInterest = ratios.lastInterest?.toString();
+				dataJson.roe = ratios.roe?.toString();
 			} catch (err) {
 				console.log('crawldetail hnx' + err);
 			}
@@ -320,42 +320,42 @@ const crawlDetailVn30 = async () => {
 				dataJson.change = stock.change;
 				dataJson.changePercent = stock.changePercent;
 				dataJson.turnOver = stock.turnOver;
-				dataJson.marketcap = ratios.marketCapital.toString();
-				dataJson.openPrice = ratios.firstPrice.toString();
+				dataJson.marketcap = ratios.marketCapital?.toString();
+				dataJson.openPrice = ratios.firstPrice?.toString();
 
 				dataJson.priceChange52Week = ratios.priceChange52Week;
 				dataJson.averageVolume10Day =
-					ratios.averageVolume10Day.toString();
+					ratios.averageVolume10Day?.toString();
 				dataJson.percentPriceChange1Week =
-					ratios.percentPriceChange1Week.toString();
+					ratios.percentPriceChange1Week?.toString();
 				dataJson.percentPriceChange1Month =
-					ratios.percentPriceChange1Month.toString();
+					ratios.percentPriceChange1Month?.toString();
 				dataJson.percentPriceChange3Month =
-					ratios.percentPriceChange3Month.toString();
+					ratios.percentPriceChange3Month?.toString();
 				dataJson.percentPriceChange6Month =
-					ratios.percentPriceChange6Month.toString();
+					ratios.percentPriceChange6Month?.toString();
 				dataJson.percentPriceChange1Year =
-					ratios.percentPriceChange1Year.toString();
-				dataJson.priceChange1Week = ratios.priceChange1Week.toString();
+					ratios.percentPriceChange1Year?.toString();
+				dataJson.priceChange1Week = ratios.priceChange1Week?.toString();
 				dataJson.priceChange1Month =
-					ratios.priceChange1Month.toString();
+					ratios.priceChange1Month?.toString();
 				dataJson.priceChange3Month =
-					ratios.priceChange3Month.toString();
+					ratios.priceChange3Month?.toString();
 				dataJson.priceChange6Month =
-					ratios.priceChange6Month.toString();
-				dataJson.priceChange1Year = ratios.priceChange1Year.toString();
-				dataJson.high52Week = ratios.highestPrice52Week.toString();
-				dataJson.low52Week = ratios.lowestPrice52Week.toString();
-				dataJson.outstandingShare = ratios.outstandingShare.toString();
-				dataJson.freeFloat = ratios.freeFloat.toString();
-				dataJson.pe = ratios.pe.toString();
-				dataJson.dilutionPE = ratios.dilutionPE.toString();
-				dataJson.pb = ratios.pb.toString();
-				dataJson.eps = ratios.eps.toString();
-				dataJson.dilutionEPS = ratios.dilutionEPS.toString();
-				dataJson.bookValue = ratios.bookValue.toString();
-				dataJson.lastInterest = ratios.lastInterest.toString();
-				dataJson.roe = ratios.roe.toString();
+					ratios.priceChange6Month?.toString();
+				dataJson.priceChange1Year = ratios.priceChange1Year?.toString();
+				dataJson.high52Week = ratios.highestPrice52Week?.toString();
+				dataJson.low52Week = ratios.lowestPrice52Week?.toString();
+				dataJson.outstandingShare = ratios.outstandingShare?.toString();
+				dataJson.freeFloat = ratios.freeFloat?.toString();
+				dataJson.pe = ratios.pe?.toString();
+				dataJson.dilutionPE = ratios.dilutionPE?.toString();
+				dataJson.pb = ratios.pb?.toString();
+				dataJson.eps = ratios.eps?.toString();
+				dataJson.dilutionEPS = ratios.dilutionEPS?.toString();
+				dataJson.bookValue = ratios.bookValue?.toString();
+				dataJson.lastInterest = ratios.lastInterest?.toString();
+				dataJson.roe = ratios.roe?.toString();
 			} catch (err) {
 				console.log('crawldetail vn30' + err);
 			}
@@ -449,42 +449,42 @@ const crawlDetailHose = async () => {
 				dataJson.change = stock.change;
 				dataJson.changePercent = stock.changePercent;
 				dataJson.turnOver = stock.turnOver;
-				dataJson.marketcap = ratios.marketCapital.toString();
-				dataJson.openPrice = ratios.firstPrice.toString();
+				dataJson.marketcap = ratios.marketCapital?.toString();
+				dataJson.openPrice = ratios.firstPrice?.toString();
 
 				dataJson.priceChange52Week = ratios.priceChange52Week;
 				dataJson.averageVolume10Day =
-					ratios.averageVolume10Day.toString();
+					ratios.averageVolume10Day?.toString();
 				dataJson.percentPriceChange1Week =
-					ratios.percentPriceChange1Week.toString();
+					ratios.percentPriceChange1Week?.toString();
 				dataJson.percentPriceChange1Month =
-					ratios.percentPriceChange1Month.toString();
+					ratios.percentPriceChange1Month?.toString();
 				dataJson.percentPriceChange3Month =
-					ratios.percentPriceChange3Month.toString();
+					ratios.percentPriceChange3Month?.toString();
 				dataJson.percentPriceChange6Month =
-					ratios.percentPriceChange6Month.toString();
+					ratios.percentPriceChange6Month?.toString();
 				dataJson.percentPriceChange1Year =
-					ratios.percentPriceChange1Year.toString();
-				dataJson.priceChange1Week = ratios.priceChange1Week.toString();
+					ratios.percentPriceChange1Year?.toString();
+				dataJson.priceChange1Week = ratios.priceChange1Week?.toString();
 				dataJson.priceChange1Month =
-					ratios.priceChange1Month.toString();
+					ratios.priceChange1Month?.toString();
 				dataJson.priceChange3Month =
-					ratios.priceChange3Month.toString();
+					ratios.priceChange3Month?.toString();
 				dataJson.priceChange6Month =
-					ratios.priceChange6Month.toString();
-				dataJson.priceChange1Year = ratios.priceChange1Year.toString();
-				dataJson.high52Week = ratios.highestPrice52Week.toString();
-				dataJson.low52Week = ratios.lowestPrice52Week.toString();
-				dataJson.outstandingShare = ratios.outstandingShare.toString();
-				dataJson.freeFloat = ratios.freeFloat.toString();
-				dataJson.pe = ratios.pe.toString();
-				dataJson.dilutionPE = ratios.dilutionPE.toString();
-				dataJson.pb = ratios.pb.toString();
-				dataJson.eps = ratios.eps.toString();
-				dataJson.dilutionEPS = ratios.dilutionEPS.toString();
-				dataJson.bookValue = ratios.bookValue.toString();
-				dataJson.lastInterest = ratios.lastInterest.toString();
-				dataJson.roe = ratios.roe.toString();
+					ratios.priceChange6Month?.toString();
+				dataJson.priceChange1Year = ratios.priceChange1Year?.toString();
+				dataJson.high52Week = ratios.highestPrice52Week?.toString();
+				dataJson.low52Week = ratios.lowestPrice52Week?.toString();
+				dataJson.outstandingShare = ratios.outstandingShare?.toString();
+				dataJson.freeFloat = ratios.freeFloat?.toString();
+				dataJson.pe = ratios.pe?.toString();
+				dataJson.dilutionPE = ratios.dilutionPE?.toString();
+				dataJson.pb = ratios.pb?.toString();
+				dataJson.eps = ratios.eps?.toString();
+				dataJson.dilutionEPS = ratios.dilutionEPS?.toString();
+				dataJson.bookValue = ratios.bookValue?.toString();
+				dataJson.lastInterest = ratios.lastInterest?.toString();
+				dataJson.roe = ratios.roe?.toString();
 			} catch (err) {
 				console.log('crawldetail hose' + err);
 			}
@@ -547,7 +547,7 @@ const crawlDetailHose = async () => {
 			await delay(2000);
 		}
 	}
-	console.log(count + ' detail HOSE30');
+	console.log(count + ' detail HOSE');
 };
 
 const crawlDetailUpcom = async () => {
@@ -578,42 +578,42 @@ const crawlDetailUpcom = async () => {
 				dataJson.change = stock.change;
 				dataJson.changePercent = stock.changePercent;
 				dataJson.turnOver = stock.turnOver;
-				dataJson.marketcap = ratios.marketCapital.toString();
-				dataJson.openPrice = ratios.firstPrice.toString();
+				dataJson.marketcap = ratios.marketCapital?.toString();
+				dataJson.openPrice = ratios.firstPrice?.toString();
 
 				dataJson.priceChange52Week = ratios.priceChange52Week;
 				dataJson.averageVolume10Day =
-					ratios.averageVolume10Day.toString();
+					ratios.averageVolume10Day?.toString();
 				dataJson.percentPriceChange1Week =
-					ratios.percentPriceChange1Week.toString();
+					ratios.percentPriceChange1Week?.toString();
 				dataJson.percentPriceChange1Month =
-					ratios.percentPriceChange1Month.toString();
+					ratios.percentPriceChange1Month?.toString();
 				dataJson.percentPriceChange3Month =
-					ratios.percentPriceChange3Month.toString();
+					ratios.percentPriceChange3Month?.toString();
 				dataJson.percentPriceChange6Month =
-					ratios.percentPriceChange6Month.toString();
+					ratios.percentPriceChange6Month?.toString();
 				dataJson.percentPriceChange1Year =
-					ratios.percentPriceChange1Year.toString();
-				dataJson.priceChange1Week = ratios.priceChange1Week.toString();
+					ratios.percentPriceChange1Year?.toString();
+				dataJson.priceChange1Week = ratios.priceChange1Week?.toString();
 				dataJson.priceChange1Month =
-					ratios.priceChange1Month.toString();
+					ratios.priceChange1Month?.toString();
 				dataJson.priceChange3Month =
-					ratios.priceChange3Month.toString();
+					ratios.priceChange3Month?.toString();
 				dataJson.priceChange6Month =
-					ratios.priceChange6Month.toString();
-				dataJson.priceChange1Year = ratios.priceChange1Year.toString();
-				dataJson.high52Week = ratios.highestPrice52Week.toString();
-				dataJson.low52Week = ratios.lowestPrice52Week.toString();
-				dataJson.outstandingShare = ratios.outstandingShare.toString();
-				dataJson.freeFloat = ratios.freeFloat.toString();
-				dataJson.pe = ratios.pe.toString();
-				dataJson.dilutionPE = ratios.dilutionPE.toString();
-				dataJson.pb = ratios.pb.toString();
-				dataJson.eps = ratios.eps.toString();
-				dataJson.dilutionEPS = ratios.dilutionEPS.toString();
-				dataJson.bookValue = ratios.bookValue.toString();
-				dataJson.lastInterest = ratios.lastInterest.toString();
-				dataJson.roe = ratios.roe.toString();
+					ratios.priceChange6Month?.toString();
+				dataJson.priceChange1Year = ratios.priceChange1Year?.toString();
+				dataJson.high52Week = ratios.highestPrice52Week?.toString();
+				dataJson.low52Week = ratios.lowestPrice52Week?.toString();
+				dataJson.outstandingShare = ratios.outstandingShare?.toString();
+				dataJson.freeFloat = ratios.freeFloat?.toString();
+				dataJson.pe = ratios.pe?.toString();
+				dataJson.dilutionPE = ratios.dilutionPE?.toString();
+				dataJson.pb = ratios.pb?.toString();
+				dataJson.eps = ratios.eps?.toString();
+				dataJson.dilutionEPS = ratios.dilutionEPS?.toString();
+				dataJson.bookValue = ratios.bookValue?.toString();
+				dataJson.lastInterest = ratios.lastInterest?.toString();
+				dataJson.roe = ratios.roe?.toString();
 			} catch (err) {
 				console.log('crawldetail upcom' + err);
 			}
