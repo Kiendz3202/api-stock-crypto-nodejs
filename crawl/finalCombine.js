@@ -37,14 +37,14 @@ const runCrawlAllListStocks = async () => {
 
 const runCrawlAllDetailStocks = async () => {
 	//  0 2,12 * * *
-	cron.schedule('0 */1 * * *', async () => {
+	cron.schedule('0 2,12 * * *', async () => {
 		updateAllDetailStocks();
 	});
 };
 
 const runCrawlAllChartStocks = async () => {
 	// 0 2 * * *
-	cron.schedule('0 */1 * * *', async () => {
+	cron.schedule('0 2 * * *', async () => {
 		updateAllChartStocks();
 	});
 };

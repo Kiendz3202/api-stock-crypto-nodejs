@@ -160,7 +160,7 @@ const crawlDetailHnx30 = async () => {
 			await delay(2000);
 		}
 	}
-	console.log(count + ' detail HNX30');
+	// console.log(count + ' detail HNX30');
 };
 
 const crawlDetailHnx = async () => {
@@ -289,7 +289,7 @@ const crawlDetailHnx = async () => {
 			await delay(2000);
 		}
 	}
-	console.log(count + ' detail HNX');
+	// console.log(count + ' detail HNX');
 };
 
 const crawlDetailVn30 = async () => {
@@ -418,7 +418,7 @@ const crawlDetailVn30 = async () => {
 			await delay(2000);
 		}
 	}
-	console.log(count + ' detail VN30');
+	// console.log(count + ' detail VN30');
 };
 
 const crawlDetailHose = async () => {
@@ -547,7 +547,7 @@ const crawlDetailHose = async () => {
 			await delay(2000);
 		}
 	}
-	console.log(count + ' detail HOSE');
+	// console.log(count + ' detail HOSE');
 };
 
 const crawlDetailUpcom = async () => {
@@ -676,7 +676,7 @@ const crawlDetailUpcom = async () => {
 			await delay(2000);
 		}
 	}
-	console.log(count + ' detail UPCOM');
+	// console.log(count + ' detail UPCOM');
 };
 
 // const crawlDetailHnx30 = async () => {

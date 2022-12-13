@@ -62,7 +62,7 @@ const crawlChartHnx30 = asyncHandler(async (symbol) => {
 			});
 		await delay(2000);
 	}
-	console.log(count + ' chart HNX30');
+	// console.log(count + ' chart HNX30');
 });
 
 const crawlChartHnx = asyncHandler(async (symbol) => {
@@ -97,7 +97,7 @@ const crawlChartHnx = asyncHandler(async (symbol) => {
 			});
 		await delay(2000);
 	}
-	console.log(count + ' chart HNX');
+	// console.log(count + ' chart HNX');
 });
 
 const crawlChartVn30 = asyncHandler(async (symbol) => {
@@ -134,7 +134,7 @@ const crawlChartVn30 = asyncHandler(async (symbol) => {
 			});
 		await delay(2000);
 	}
-	console.log(count + ' chart VN30');
+	// console.log(count + ' chart VN30');
 });
 
 const crawlChartHose = asyncHandler(async (symbol) => {
@@ -171,7 +171,7 @@ const crawlChartHose = asyncHandler(async (symbol) => {
 			});
 		await delay(2000);
 	}
-	console.log(count + ' chart HOSE');
+	// console.log(count + ' chart HOSE');
 });
 
 const crawlChartUpcom = asyncHandler(async (symbol) => {
@@ -208,7 +208,7 @@ const crawlChartUpcom = asyncHandler(async (symbol) => {
 			});
 		await delay(2000);
 	}
-	console.log(count + ' chart UPCOM');
+	// console.log(count + ' chart UPCOM');
 });
 
 module.exports = {
