@@ -15,8 +15,8 @@ const createError = require('http-errors');
 
 const paginationPageCoinController = async (req, res, next) => {
 	try {
-		const perPage = 25;
-		const page = req.params.page || 1;
+		const perPage = req.query.per_page || 25;
+		const page = req.query.page || 1;
 		const allCoin = await Coin.find();
 		const allCoinLength = allCoin.length;
 		const countPage = Math.ceil(allCoinLength / perPage);
@@ -60,7 +60,9 @@ const coinChartController = async (req, res, next) => {
 	try {
 		const coinNameId = req.params.nameId || 'bitcoin';
 
-		const chartData = await CoinChart.find({ nameId: coinNameId });
+		const chartData = await CoinChart.find({ nameId: coinNameId }).select(
+			'-__v -createdAt -updatedAt'
+		);
 
 		if (!chartData) {
 			throw createError.NotFound('can not find data');

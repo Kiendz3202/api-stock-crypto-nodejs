@@ -304,58 +304,58 @@ const crawlAgribank = async () => {
 
 			usdBuyCast: dataJson.usdBuyCast,
 			usdBuyTransfer: dataJson.usdBuyTransfer,
-			usdSellTransfer: dataJson.usdSellTransfer,
-			usdSellCast: dataJson.usdSellCast,
+			// usdSellTransfer: dataJson.usdSellTransfer,
+			usdSell: dataJson.usdSell,
 
 			eurBuyCast: dataJson.eurBuyCast,
 			eurBuyTransfer: dataJson.eurBuyTransfer,
-			eurSellTransfer: dataJson.eurSellTransfer,
-			eurSellCast: dataJson.eurSellCast,
+			// eurSellTransfer: dataJson.eurSellTransfer,
+			eurSell: dataJson.eurSell,
 
 			gbpBuyCast: dataJson.gbpBuyCast,
 			gbpBuyTransfer: dataJson.gbpBuyTransfer,
-			gbpSellTransfer: dataJson.gbpSellTransfer,
-			gbpSellCast: dataJson.gbpSellCast,
+			// gbpSellTransfer: dataJson.gbpSellTransfer,
+			gbpSell: dataJson.gbpSell,
 
 			jpyBuyCast: dataJson.jpyBuyCast,
 			jpyBuyTransfer: dataJson.jpyBuyTransfer,
-			jpySellTransfer: dataJson.jpySellTransfer,
-			jpySellCast: dataJson.jpySellCast,
+			// jpySellTransfer: dataJson.jpySellTransfer,
+			jpySell: dataJson.jpySell,
 
 			audBuyCast: dataJson.audBuyCast,
 			audBuyTransfer: dataJson.audBuyTransfer,
-			audSellTransfer: dataJson.audSellTransfer,
-			audSellCast: dataJson.audSellCast,
+			// audSellTransfer: dataJson.audSellTransfer,
+			audSell: dataJson.audSell,
 
 			cadBuyCast: dataJson.cadBuyCast,
 			cadBuyTransfer: dataJson.cadBuyTransfer,
-			cadSellTransfer: dataJson.cadSellTransfer,
-			cadSellCast: dataJson.cadSellCast,
+			// cadSellTransfer: dataJson.cadSellTransfer,
+			cadSell: dataJson.cadSell,
 
 			nzdBuyCast: dataJson.nzdBuyCast,
 			nzdBuyTransfer: dataJson.nzdBuyTransfer,
-			nzdSellTransfer: dataJson.nzdSellTransfer,
-			nzdSellCast: dataJson.nzdSellCast,
+			// nzdSellTransfer: dataJson.nzdSellTransfer,
+			nzdSell: dataJson.nzdSell,
 
 			sgdBuyCast: dataJson.sgdBuyCast,
 			sgdBuyTransfer: dataJson.sgdBuyTransfer,
-			sgdSellTransfer: dataJson.sgdSellTransfer,
-			sgdSellCast: dataJson.sgdSellCast,
+			// sgdSellTransfer: dataJson.sgdSellTransfer,
+			sgdSell: dataJson.sgdSell,
 
 			chfBuyCast: dataJson.chfBuyCast,
 			chfBuyTransfer: dataJson.chfBuyTransfer,
-			chfSellTransfer: dataJson.chfSellTransfer,
-			chfSellCast: dataJson.chfSellCast,
+			// chfSellTransfer: dataJson.chfSellTransfer,
+			chfSell: dataJson.chfSell,
 
 			hkdBuyCast: dataJson.hkdBuyCast,
 			hkdBuyTransfer: dataJson.hkdBuyTransfer,
-			hkdSellTransfer: dataJson.hkdSellTransfer,
-			hkdSellCast: dataJson.hkdSellCast,
+			// hkdSellTransfer: dataJson.hkdSellTransfer,
+			hkdSell: dataJson.hkdSell,
 
 			krwBuyCast: dataJson.krwBuyCast,
 			krwBuyTransfer: dataJson.krwBuyTransfer,
-			krwSellTransfer: dataJson.krwSellTransfer,
-			krwSellCast: dataJson.krwSellCast,
+			// krwSellTransfer: dataJson.krwSellTransfer,
+			krwSell: dataJson.krwSell,
 		},
 		{ upsert: true }
 	)
@@ -2305,7 +2305,7 @@ const crawlMbbank = async () => {
 			.text()
 			.slice(0, -1)
 			.replace(/\./g, '');
-		dataJson.usdSellCast = $('#myTable tbody :nth-child(1) td:nth-child(3)')
+		dataJson.usdSell = $('#myTable tbody :nth-child(1) td:nth-child(3)')
 			.contents()
 			.first()
 			.text()
@@ -2326,7 +2326,7 @@ const crawlMbbank = async () => {
 			.text()
 			.slice(0, -1)
 			.replace(/\./g, '');
-		dataJson.eurSellCast = $('#myTable tbody :nth-child(3) td:nth-child(3)')
+		dataJson.eurSell = $('#myTable tbody :nth-child(3) td:nth-child(3)')
 			.contents()
 			.first()
 			.text()
@@ -2347,7 +2347,7 @@ const crawlMbbank = async () => {
 			.text()
 			.slice(1, -1)
 			.replace(/\./g, '');
-		dataJson.audSellCast = $('#myTable tbody :nth-child(6) td:nth-child(4)')
+		dataJson.audSell = $('#myTable tbody :nth-child(6) td:nth-child(4)')
 			.contents()
 			.first()
 			.text()
@@ -2376,7 +2376,7 @@ const crawlMbbank = async () => {
 			.text()
 			.slice(0, -1)
 			.replace(/\./g, '');
-		dataJson.cadSellCast = $('#myTable tbody :nth-child(8) td:nth-child(3)')
+		dataJson.cadSell = $('#myTable tbody :nth-child(8) td:nth-child(3)')
 			.contents()
 			.first()
 			.text()
@@ -2397,7 +2397,7 @@ const crawlMbbank = async () => {
 			.text()
 			.slice(0, -1)
 			.replace(/\./g, '');
-		dataJson.chfSellCast = $('#myTable tbody :nth-child(4) td:nth-child(3)')
+		dataJson.chfSell = $('#myTable tbody :nth-child(4) td:nth-child(3)')
 			.contents()
 			.first()
 			.text()
@@ -2418,9 +2418,7 @@ const crawlMbbank = async () => {
 			.text()
 			.slice(0, -1)
 			.replace(/\./g, '');
-		dataJson.cnySellCast = $(
-			'#myTable tbody :nth-child(15) td:nth-child(3)'
-		)
+		dataJson.cnySell = $('#myTable tbody :nth-child(15) td:nth-child(3)')
 			.contents()
 			.first()
 			.text()
@@ -2441,7 +2439,7 @@ const crawlMbbank = async () => {
 			.text()
 			.slice(0, -1)
 			.replace(/\./g, '');
-		dataJson.gbpSellCast = $('#myTable tbody :nth-child(5) td:nth-child(3)')
+		dataJson.gbpSell = $('#myTable tbody :nth-child(5) td:nth-child(3)')
 			.contents()
 			.first()
 			.text()
@@ -2462,7 +2460,7 @@ const crawlMbbank = async () => {
 			.text()
 			.slice(0, -1)
 			.replace(/\./g, '');
-		dataJson.hkdSellCast = $('#myTable tbody :nth-child(9) td:nth-child(3)')
+		dataJson.hkdSell = $('#myTable tbody :nth-child(9) td:nth-child(3)')
 			.contents()
 			.first()
 			.text()
@@ -2483,7 +2481,7 @@ const crawlMbbank = async () => {
 			.text()
 			.slice(0, -1)
 			.replace(/\./g, '');
-		dataJson.jpySellCast = $('#myTable tbody :nth-child(2) td:nth-child(3)')
+		dataJson.jpySell = $('#myTable tbody :nth-child(2) td:nth-child(3)')
 			.contents()
 			.first()
 			.text()
@@ -2504,9 +2502,7 @@ const crawlMbbank = async () => {
 			.text()
 			.slice(0, -1)
 			.replace(/\./g, '');
-		dataJson.khrSellCast = $(
-			'#myTable tbody :nth-child(16) td:nth-child(3)'
-		)
+		dataJson.khrSell = $('#myTable tbody :nth-child(16) td:nth-child(3)')
 			.contents()
 			.first()
 			.text()
@@ -2527,9 +2523,7 @@ const crawlMbbank = async () => {
 			.text()
 			.slice(0, -1)
 			.replace(/\./g, '');
-		dataJson.krwSellCast = $(
-			'#myTable tbody :nth-child(12) td:nth-child(3)'
-		)
+		dataJson.krwSell = $('#myTable tbody :nth-child(12) td:nth-child(3)')
 			.contents()
 			.first()
 			.text()
@@ -2550,9 +2544,7 @@ const crawlMbbank = async () => {
 			.text()
 			.slice(0, -1)
 			.replace(/\./g, '');
-		dataJson.lakSellCast = $(
-			'#myTable tbody :nth-child(14) td:nth-child(3)'
-		)
+		dataJson.lakSell = $('#myTable tbody :nth-child(14) td:nth-child(3)')
 			.contents()
 			.first()
 			.text()
@@ -2573,9 +2565,7 @@ const crawlMbbank = async () => {
 			.text()
 			.slice(0, -1)
 			.replace(/\./g, '');
-		dataJson.nzdSellCast = $(
-			'#myTable tbody :nth-child(11) td:nth-child(3)'
-		)
+		dataJson.nzdSell = $('#myTable tbody :nth-child(11) td:nth-child(3)')
 			.contents()
 			.first()
 			.text()
@@ -2596,9 +2586,7 @@ const crawlMbbank = async () => {
 			.text()
 			.slice(0, -1)
 			.replace(/\./g, '');
-		dataJson.sekSellCast = $(
-			'#myTable tbody :nth-child(13) td:nth-child(3)'
-		)
+		dataJson.sekSell = $('#myTable tbody :nth-child(13) td:nth-child(3)')
 			.contents()
 			.first()
 			.text()
@@ -2619,7 +2607,7 @@ const crawlMbbank = async () => {
 			.text()
 			.slice(0, -1)
 			.replace(/\./g, '');
-		dataJson.sgdSellCast = $('#myTable tbody :nth-child(7) td:nth-child(3)')
+		dataJson.sgdSell = $('#myTable tbody :nth-child(7) td:nth-child(3)')
 			.contents()
 			.first()
 			.text()
@@ -2640,9 +2628,7 @@ const crawlMbbank = async () => {
 			.text()
 			.slice(0, -1)
 			.replace(/\./g, '');
-		dataJson.thbSellCast = $(
-			'#myTable tbody :nth-child(10) td:nth-child(3)'
-		)
+		dataJson.thbSell = $('#myTable tbody :nth-child(10) td:nth-child(3)')
 			.contents()
 			.first()
 			.text()
@@ -2661,83 +2647,83 @@ const crawlMbbank = async () => {
 
 			usdBuyCast: dataJson.usdBuyCast,
 			usdBuyTransfer: dataJson.usdBuyTransfer,
-			usdSellCast: dataJson.usdSellCast,
-			usdSellTransfer: dataJson.usdSellTransfer,
+			usdSell: dataJson.usdSell,
+			// usdSellTransfer: dataJson.usdSellTransfer,
 
 			eurBuyCast: dataJson.eurBuyCast,
 			eurBuyTransfer: dataJson.eurBuyTransfer,
-			eurSellCast: dataJson.eurSellCast,
-			eurSellTransfer: dataJson.eurSellTransfer,
+			eurSell: dataJson.eurSell,
+			// eurSellTransfer: dataJson.eurSellTransfer,
 
 			gbpBuyCast: dataJson.gbpBuyCast,
 			gbpBuyTransfer: dataJson.gbpBuyTransfer,
-			gbpSellCast: dataJson.gbpSellCast,
-			gbpSellTransfer: dataJson.gbpSellTransfer,
+			gbpSell: dataJson.gbpSell,
+			// gbpSellTransfer: dataJson.gbpSellTransfer,
 
 			jpyBuyCast: dataJson.jpyBuyCast,
 			jpyBuyTransfer: dataJson.jpyBuyTransfer,
-			jpySellCast: dataJson.jpySellCast,
-			jpySellTransfer: dataJson.jpySellTransfer,
+			jpySell: dataJson.jpySell,
+			// jpySellTransfer: dataJson.jpySellTransfer,
 
 			hkdBuyCast: dataJson.hkdBuyCast,
 			hkdBuyTransfer: dataJson.hkdBuyTransfer,
-			hkdSellCast: dataJson.hkdSellCast,
-			hkdSellTransfer: dataJson.hkdSellTransfer,
+			hkdSell: dataJson.hkdSell,
+			// hkdSellTransfer: dataJson.hkdSellTransfer,
 
 			cnyBuyCast: dataJson.cnyBuyCast,
 			cnyBuyTransfer: dataJson.cnyBuyTransfer,
-			cnySellCast: dataJson.cnySellCast,
-			cnySellTransfer: dataJson.cnySellTransfer,
+			cnySell: dataJson.cnySell,
+			// cnySellTransfer: dataJson.cnySellTransfer,
 
 			audBuyCast: dataJson.audBuyCast,
 			audBuyTransfer: dataJson.audBuyTransfer,
-			audSellCast: dataJson.audSellCast,
-			audSellTransfer: dataJson.audSellTransfer,
+			audSell: dataJson.audSell,
+			// audSellTransfer: dataJson.audSellTransfer,
 
 			nzdBuyCast: dataJson.nzdBuyCast,
 			nzdBuyTransfer: dataJson.nzdBuyTransfer,
-			nzdSellCast: dataJson.nzdSellCast,
-			nzdSellTransfer: dataJson.nzdSellTransfer,
+			nzdSell: dataJson.nzdSell,
+			// nzdSellTransfer: dataJson.nzdSellTransfer,
 
 			cadBuyCast: dataJson.cadBuyCast,
 			cadBuyTransfer: dataJson.cadBuyTransfer,
-			cadSellCast: dataJson.cadSellCast,
-			cadSellTransfer: dataJson.cadSellTransfer,
+			cadSell: dataJson.cadSell,
+			// cadSellTransfer: dataJson.cadSellTransfer,
 
 			sgdBuyCast: dataJson.sgdBuyCast,
 			sgdBuyTransfer: dataJson.sgdBuyTransfer,
-			sgdSellCast: dataJson.sgdSellCast,
-			sgdSellTransfer: dataJson.sgdSellTransfer,
+			sgdSell: dataJson.sgdSell,
+			// sgdSellTransfer: dataJson.sgdSellTransfer,
 
 			thbBuyCast: dataJson.thbBuyCast,
 			thbBuyTransfer: dataJson.thbBuyTransfer,
-			thbSellCast: dataJson.thbSellCast,
-			thbSellTransfer: dataJson.thbSellTransfer,
+			thbSell: dataJson.thbSell,
+			// thbSellTransfer: dataJson.thbSellTransfer,
 
 			chfBuyCast: dataJson.chfBuyCast,
 			chfBuyTransfer: dataJson.chfBuyTransfer,
-			chfSellCast: dataJson.chfSellCast,
-			chfSellTransfer: dataJson.chfSellTransfer,
+			chfSell: dataJson.chfSell,
+			// chfSellTransfer: dataJson.chfSellTransfer,
 
 			krwBuyCast: dataJson.krwBuyCast,
 			krwBuyTransfer: dataJson.krwBuyTransfer,
-			krwSellCast: dataJson.krwSellCast,
-			krwSellTransfer: dataJson.krwSellTransfer,
+			krwSell: dataJson.krwSell,
+			// krwSellTransfer: dataJson.krwSellTransfer,
 
 			lakBuyCast: dataJson.lakBuyCast,
 			lakBuyTransfer: dataJson.lakBuyTransfer,
-			lakSellCast: dataJson.lakSellCast,
-			lakSellTransfer: dataJson.lakSellTransfer,
+			lakSell: dataJson.lakSell,
+			// lakSellTransfer: dataJson.lakSellTransfer,
 
 			khrBuyCast: dataJson.khrBuyCast,
 			khrBuyTransfer: dataJson.khrBuyTransfer,
-			khrSellCast: dataJson.khrSellCast,
-			khrSellTransfer: dataJson.khrSellTransfer,
+			khrSell: dataJson.khrSell,
+			// khrSellTransfer: dataJson.khrSellTransfer,
 
 			sekBuyCast: dataJson.sekBuyCast,
 			sekBuyTransfer: dataJson.sekBuyTransfer,
-			sekSellCast: dataJson.sekSellCast,
-			sekSellTransfer: dataJson.sekSellTransfer,
+			sekSell: dataJson.sekSell,
+			// sekSellTransfer: dataJson.sekSellTransfer,
 		},
 		{ upsert: true }
 	)

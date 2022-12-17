@@ -517,10 +517,6 @@ const crawlAgribankbankInterestRate = async () => {
 					.find('table tbody :nth-child(17) :nth-child(2)')
 					.text()
 					.slice(0, -1);
-				dataJson.checkableDepositsPersonal = $(el)
-					.find('table tbody :nth-child(18) :nth-child(2)')
-					.text()
-					.slice(0, -1);
 			}
 			if (index == 1) {
 				dataJson.khongkyhanBusiness = $(el)
@@ -591,10 +587,6 @@ const crawlAgribankbankInterestRate = async () => {
 					.find('table tbody :nth-child(17) :nth-child(2)')
 					.text()
 					.slice(0, -1);
-				dataJson.checkableDepositsBusiness = $(el)
-					.find('table tbody :nth-child(18) :nth-child(2)')
-					.text()
-					.slice(0, -1);
 			}
 		});
 	} catch (err) {
@@ -624,7 +616,6 @@ const crawlAgribankbankInterestRate = async () => {
 			month15Personal: dataJson.month15Personal,
 			month18Personal: dataJson.month18Personal,
 			month24Personal: dataJson.month24Personal,
-			checkableDepositsPersonal: dataJson.checkableDepositsPersonal,
 
 			khongkyhanBusiness: dataJson.khongkyhanBusiness,
 			month1Business: dataJson.month1Business,
@@ -643,7 +634,6 @@ const crawlAgribankbankInterestRate = async () => {
 			month15Business: dataJson.month15Business,
 			month18Business: dataJson.month18Business,
 			month24Business: dataJson.month24Business,
-			checkableDepositsBusiness: dataJson.checkableDepositsBusiness,
 		},
 		{ upsert: true }
 	)

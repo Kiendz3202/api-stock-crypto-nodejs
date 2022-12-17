@@ -49,11 +49,11 @@ const {
 // myEmitter.setMaxListeners(0);
 
 //--------------------------------------------Main Body------------------------------------------------------------------
-runCrawlCoin();
-runCrawlGoldPetrolExchangerateInterestRate();
-runCrawlAllListStocks();
-runCrawlAllDetailStocks();
-runCrawlAllChartStocks();
+// runCrawlCoin();
+// runCrawlGoldPetrolExchangerateInterestRate();
+// runCrawlAllListStocks();
+// runCrawlAllDetailStocks();
+// runCrawlAllChartStocks();
 
 // -----------------------------------------------
 
@@ -67,46 +67,46 @@ app.use(cors());
 app.use(helmet());
 
 //------routes cua coin------
-app.use('/', coinRoutes);
+app.use('/api/v1', coinRoutes);
 
 //---------------------------
 
 //-----routes cua stock------
-app.use('/', hnxStockRoutes);
-app.use('/', hnx30StockRoutes);
-app.use('/', vn30StockRoutes);
-app.use('/', hoseStockRoutes);
-app.use('/', upcomStockRoutes);
+app.use('/api/v1', hnxStockRoutes);
+app.use('/api/v1', hnx30StockRoutes);
+app.use('/api/v1', vn30StockRoutes);
+app.use('/api/v1', hoseStockRoutes);
+app.use('/api/v1', upcomStockRoutes);
 
 //---------------------------
 
 //-----routes cua vang-----
-app.use('/', sjcRoutes);
-app.use('/', pnjRoutes);
-app.use('/', dojiRoutes);
-app.use('/', phuQuyRoutes);
-app.use('/', baoTinMinhChauRoutes);
-app.use('/', miHongRoutes);
+app.use('/api/v1', sjcRoutes);
+app.use('/api/v1', pnjRoutes);
+app.use('/api/v1', dojiRoutes);
+app.use('/api/v1', phuQuyRoutes);
+app.use('/api/v1', baoTinMinhChauRoutes);
+app.use('/api/v1', miHongRoutes);
 
 //-------------------------
 
 //-----routes cua petrol--------
-app.use('/', petrolimexRoutes);
+app.use('/api/v1', petrolimexRoutes);
 
 //----------------------------
 
 //---------routes of exchangeRate----------
-app.use('/', priceExchangeRateRoutes);
+app.use('/api/v1', priceExchangeRateRoutes);
 
 //-----------------------------------------
 
 //---------routes of interestRate---------------
-app.use('/', interestRateRoutes);
+app.use('/api/v1', interestRateRoutes);
 
 //---------------------------------------------
 
 //--------routes of user-----------------------
-app.use('/auth', authRoutes);
+app.use('/api/v1', authRoutes);
 //-----------------------------------------------
 
 //-----------------ERROR HANDLE---------------------

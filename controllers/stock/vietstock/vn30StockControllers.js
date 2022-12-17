@@ -16,15 +16,27 @@ const AllInvestingDetail = require('../../../model/stock/stockDetail/allInvestin
 
 const vn30StockList = async (req, res, next) => {
 	try {
-		const stockList = await Vn30.find({}).select(
-			'-_id -createdAt -updatedAt -__v'
-		);
+		const perPage = req.query.per_page || 25;
+		const page = req.query.page || 1;
+		const allStock = await Vn30.find();
+		const allStockLength = allStock.length;
+		const countPage = Math.ceil(allStockLength / perPage);
+
+		//-------------pagination by mongoose------------------------
+		const stockList = await Vn30.find({})
+			.sort({ rank: 1 })
+			.skip(perPage * page - perPage)
+			.limit(perPage)
+			.select('-_id -createdAt -updatedAt -__v');
 
 		if (!stockList) {
 			throw createError.NotFound('can not find data');
 		}
 
-		res.status(200).json({ status: 'ok', data: stockList });
+		res.status(200).json({
+			status: 'ok',
+			data: { stockList, pages: countPage },
+		});
 	} catch (error) {
 		next(error);
 	}

@@ -29,10 +29,11 @@ const register = async (req, res, next) => {
 		});
 
 		const savedUser = await user.save();
+		const userResponse = { email: savedUser.email, _id: savedUser._id };
 
 		return res.status(200).json({
 			status: 'ok',
-			data: savedUser,
+			data: userResponse,
 		});
 	} catch (error) {
 		next(error);
@@ -69,6 +70,10 @@ const login = async (req, res, next) => {
 			data: {
 				accessToken,
 				refreshtoken,
+				user: {
+					_id: user._id,
+					email: user.email,
+				},
 			},
 		});
 	} catch (error) {

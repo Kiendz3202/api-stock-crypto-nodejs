@@ -1528,7 +1528,7 @@ const crawlBaoTinMinhChau = async () => {
 	} catch (err) {
 		console.log(err);
 	}
-	console.log(dataJson);
+	// console.log(dataJson);
 
 	BaoTinMinhChau.findOneAndUpdate(
 		{ name: dataJson.name },

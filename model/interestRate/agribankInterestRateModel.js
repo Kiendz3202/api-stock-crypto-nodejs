@@ -25,7 +25,6 @@ const agribankbankInterestRateSchema = mongoose.Schema(
 		month15Personal: { type: 'String' },
 		month18Personal: { type: 'String' },
 		month24Personal: { type: 'String' },
-		checkableDepositsPersonal: { type: 'String' },
 
 		khongkyhanBusiness: { type: 'String' },
 		month1Business: { type: 'String' },
@@ -44,7 +43,6 @@ const agribankbankInterestRateSchema = mongoose.Schema(
 		month15Business: { type: 'String' },
 		month18Business: { type: 'String' },
 		month24Business: { type: 'String' },
-		checkableDepositsBusiness: { type: 'String' },
 	},
 	{
 		timestamps: true,
