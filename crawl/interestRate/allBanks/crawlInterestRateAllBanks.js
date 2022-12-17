@@ -3,6 +3,7 @@ const cron = require('node-cron');
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 const axios = require('axios');
+const { uploadErrorToDb } = require('../../../utils/handleError');
 
 const {
 	collectQueryData,
@@ -29,7 +30,10 @@ const urlVib = 'https://webtygia.com/lai-suat-tien-gui/vib.html';
 const crawlVietcombankInterestRate = async () => {
 	const result = await axios(urlVietcombank)
 		.then((res) => res.data)
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 
 	const $ = cheerio.load(result);
 
@@ -113,7 +117,7 @@ const crawlVietcombankInterestRate = async () => {
 			.replace(/\s./g, '')
 			.slice(0, -1);
 	} catch (err) {
-		console.log(err);
+		console.log(err.message);
 	}
 
 	VietcombankInterestRate.findOneAndUpdate(
@@ -136,13 +140,19 @@ const crawlVietcombankInterestRate = async () => {
 		{ upsert: true }
 	)
 		// .then((doc) => console.log(doc))
-		.catch((err) => console.log(dataJson.symbol));
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 };
 
 const crawlVietinbankInterestRate = async () => {
 	const result = await axios(urlVietinbank)
 		.then((res) => res.data)
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 
 	const $ = cheerio.load(result);
 
@@ -375,7 +385,7 @@ const crawlVietinbankInterestRate = async () => {
 			.text()
 			.replace(/,/g, '.');
 	} catch (err) {
-		console.log(err);
+		console.log(err.message);
 	}
 
 	VietinbankInterestRate.findOneAndUpdate(
@@ -427,13 +437,19 @@ const crawlVietinbankInterestRate = async () => {
 		{ upsert: true }
 	)
 		// .then((doc) => console.log(doc))
-		.catch((err) => console.log(dataJson.symbol));
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 };
 
 const crawlAgribankbankInterestRate = async () => {
 	const result = await axios(urlAgribank)
 		.then((res) => res.data)
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 
 	const $ = cheerio.load(result);
 
@@ -638,11 +654,19 @@ const crawlAgribankbankInterestRate = async () => {
 		{ upsert: true }
 	)
 		// .then((doc) => console.log(doc))
-		.catch((err) => console.log(dataJson.symbol));
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 };
 
 const crawlBidvInterestRate = async () => {
-	const result = await axios(urlBidv).then((res) => res.data);
+	const result = await axios(urlBidv)
+		.then((res) => res.data)
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 	const data = result.hanoi.data;
 
 	let dataJson = {};
@@ -669,7 +693,7 @@ const crawlBidvInterestRate = async () => {
 		dataJson.month24 = data[11].VND;
 		dataJson.month36 = data[12].VND;
 	} catch (err) {
-		console.log(err);
+		console.log(err.message);
 	}
 
 	BidvInterestRate.findOneAndUpdate(
@@ -695,13 +719,19 @@ const crawlBidvInterestRate = async () => {
 		{ upsert: true }
 	)
 		// .then((doc) => console.log(doc))
-		.catch((err) => console.log(dataJson.symbol));
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 };
 
 const crawlScbInterestRate = async () => {
 	const result = await axios(urlScb)
 		.then((res) => res.data)
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 
 	const $ = cheerio.load(result);
 
@@ -746,7 +776,7 @@ const crawlScbInterestRate = async () => {
 			'#myTable tbody :nth-child(8) td:nth-child(3)'
 		).text();
 	} catch (err) {
-		console.log(err);
+		console.log(err.message);
 	}
 
 	ScbInterestRate.findOneAndUpdate(
@@ -768,13 +798,19 @@ const crawlScbInterestRate = async () => {
 		{ upsert: true }
 	)
 		// .then((doc) => console.log(doc))
-		.catch((err) => console.log(dataJson.symbol));
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 };
 
 const crawlMbbankInterestRate = async () => {
 	const result = await axios(urlMbbank)
 		.then((res) => res.data)
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 
 	const $ = cheerio.load(result);
 
@@ -819,7 +855,7 @@ const crawlMbbankInterestRate = async () => {
 			'#myTable tbody :nth-child(8) td:nth-child(3)'
 		).text();
 	} catch (err) {
-		console.log(err);
+		console.log(err.message);
 	}
 
 	MbbankInterestRate.findOneAndUpdate(
@@ -841,13 +877,19 @@ const crawlMbbankInterestRate = async () => {
 		{ upsert: true }
 	)
 		// .then((doc) => console.log(doc))
-		.catch((err) => console.log(dataJson.symbol));
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 };
 
 const crawlVibInterestRate = async () => {
 	const result = await axios(urlVib)
 		.then((res) => res.data)
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 
 	const $ = cheerio.load(result);
 
@@ -892,7 +934,7 @@ const crawlVibInterestRate = async () => {
 			'#myTable tbody :nth-child(8) td:nth-child(3)'
 		).text();
 	} catch (err) {
-		console.log(err);
+		console.log(err.message);
 	}
 
 	VibInterestRate.findOneAndUpdate(
@@ -914,7 +956,10 @@ const crawlVibInterestRate = async () => {
 		{ upsert: true }
 	)
 		// .then((doc) => console.log(doc))
-		.catch((err) => console.log(dataJson.symbol));
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 };
 
 module.exports = {

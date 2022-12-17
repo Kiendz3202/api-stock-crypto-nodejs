@@ -18,6 +18,16 @@ const hnxStockList = async (req, res, next) => {
 	try {
 		const perPage = req.query.per_page || 25;
 		const page = req.query.page || 1;
+		if (
+			!(
+				Number.isInteger(parseFloat(perPage)) && parseFloat(perPage) > 0
+			) ||
+			!(Number.isInteger(parseFloat(page)) && parseFloat(page) > 0)
+		) {
+			throw createError.BadRequest(
+				'query per_page and page must be integer and larger than 0'
+			);
+		}
 		const allStock = await Hnx.find();
 		const allStockLength = allStock.length;
 		const countPage = Math.ceil(allStockLength / perPage);

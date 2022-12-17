@@ -3,6 +3,7 @@ const cron = require('node-cron');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
+const { uploadErrorToDb } = require('../../utils/handleError');
 const {
 	convertTimestampToDate,
 } = require('../../utils/date/convertTimestampToDate');
@@ -44,7 +45,10 @@ const crawlDetailHnx30 = async () => {
 			`https://data-ifin.tvsi.com.vn/api/v1/Dashboard/GetListCompanyOverView?stockSymbol=${stock.symbol}`
 		)
 			.then((res) => res.data)
-			.catch((err) => console.log(err));
+			.catch((err) => {
+				console.log(err.message);
+				uploadErrorToDb(err.message);
+			});
 
 		let dataJson = {};
 
@@ -154,9 +158,10 @@ const crawlDetailHnx30 = async () => {
 				{ upsert: true }
 			)
 				// .then((doc) => console.log(doc?.symbol))
-				.catch((err) =>
-					console.log(`crawldetail hnx30 ${dataJson.symbol}` + err)
-				);
+				.catch((err) => {
+					console.log(err.message);
+					uploadErrorToDb(err.message);
+				});
 			await delay(2000);
 		}
 	}
@@ -173,7 +178,10 @@ const crawlDetailHnx = async () => {
 			`https://data-ifin.tvsi.com.vn/api/v1/Dashboard/GetListCompanyOverView?stockSymbol=${stock.symbol}`
 		)
 			.then((res) => res.data)
-			.catch((err) => console.log(err));
+			.catch((err) => {
+				console.log(err.message);
+				uploadErrorToDb(err.message);
+			});
 
 		let dataJson = {};
 
@@ -283,9 +291,10 @@ const crawlDetailHnx = async () => {
 				{ upsert: true }
 			)
 				// .then((doc) => console.log(doc?.symbol))
-				.catch((err) =>
-					console.log(`crawldetail hnx ${dataJson.symbol}` + err)
-				);
+				.catch((err) => {
+					console.log(err.message);
+					uploadErrorToDb(err.message);
+				});
 			await delay(2000);
 		}
 	}
@@ -302,7 +311,10 @@ const crawlDetailVn30 = async () => {
 			`https://data-ifin.tvsi.com.vn/api/v1/Dashboard/GetListCompanyOverView?stockSymbol=${stock.symbol}`
 		)
 			.then((res) => res.data)
-			.catch((err) => console.log(err));
+			.catch((err) => {
+				console.log(err.message);
+				uploadErrorToDb(err.message);
+			});
 
 		let dataJson = {};
 
@@ -412,9 +424,10 @@ const crawlDetailVn30 = async () => {
 				{ upsert: true }
 			)
 				// .then((doc) => console.log(doc?.symbol))
-				.catch((err) =>
-					console.log(`crawldetail vn30 ${dataJson.symbol}` + err)
-				);
+				.catch((err) => {
+					console.log(err.message);
+					uploadErrorToDb(err.message);
+				});
 			await delay(2000);
 		}
 	}
@@ -431,7 +444,10 @@ const crawlDetailHose = async () => {
 			`https://data-ifin.tvsi.com.vn/api/v1/Dashboard/GetListCompanyOverView?stockSymbol=${stock.symbol}`
 		)
 			.then((res) => res.data)
-			.catch((err) => console.log(err));
+			.catch((err) => {
+				console.log(err.message);
+				uploadErrorToDb(err.message);
+			});
 
 		let dataJson = {};
 
@@ -541,9 +557,10 @@ const crawlDetailHose = async () => {
 				{ upsert: true }
 			)
 				// .then((doc) => console.log(doc?.symbol))
-				.catch((err) =>
-					console.log(`crawldetail hose ${dataJson.symbol}` + err)
-				);
+				.catch((err) => {
+					console.log(err.message);
+					uploadErrorToDb(err.message);
+				});
 			await delay(2000);
 		}
 	}
@@ -560,7 +577,10 @@ const crawlDetailUpcom = async () => {
 			`https://data-ifin.tvsi.com.vn/api/v1/Dashboard/GetListCompanyOverView?stockSymbol=${stock.symbol}`
 		)
 			.then((res) => res.data)
-			.catch((err) => console.log(err));
+			.catch((err) => {
+				console.log(err.message);
+				uploadErrorToDb(err.message);
+			});
 
 		let dataJson = {};
 
@@ -670,9 +690,10 @@ const crawlDetailUpcom = async () => {
 				{ upsert: true }
 			)
 				// .then((doc) => console.log(doc?.symbol))
-				.catch((err) =>
-					console.log(`crawldetail upcom ${dataJson.symbol}` + err)
-				);
+				.catch((err) => {
+					console.log(err.message);
+					uploadErrorToDb(err.message);
+				});
 			await delay(2000);
 		}
 	}

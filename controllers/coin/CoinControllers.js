@@ -17,6 +17,16 @@ const paginationPageCoinController = async (req, res, next) => {
 	try {
 		const perPage = req.query.per_page || 25;
 		const page = req.query.page || 1;
+		if (
+			!(
+				Number.isInteger(parseFloat(perPage)) && parseFloat(perPage) > 0
+			) ||
+			!(Number.isInteger(parseFloat(page)) && parseFloat(page) > 0)
+		) {
+			throw createError.BadRequest(
+				'query per_page and page must be integer and larger than 0'
+			);
+		}
 		const allCoin = await Coin.find();
 		const allCoinLength = allCoin.length;
 		const countPage = Math.ceil(allCoinLength / perPage);
@@ -25,7 +35,8 @@ const paginationPageCoinController = async (req, res, next) => {
 		const coinList = await Coin.find({})
 			.sort({ rank: 1 })
 			.skip(perPage * page - perPage)
-			.limit(perPage);
+			.limit(perPage)
+			.select('-_id -createdAt -updatedAt -__v');
 
 		if (!coinList) {
 			throw createError.NotFound('can not find data');
@@ -44,7 +55,9 @@ const detailCoinController = async (req, res, next) => {
 	try {
 		const coinNameId = req.params.nameId || 'bitcoin';
 
-		const coinDetail = await Coin.find({ nameId: coinNameId });
+		const coinDetail = await Coin.find({ nameId: coinNameId }).select(
+			'-_id -createdAt -updatedAt -__v'
+		);
 
 		if (!coinDetail) {
 			throw createError.NotFound('can not find data');
@@ -61,7 +74,7 @@ const coinChartController = async (req, res, next) => {
 		const coinNameId = req.params.nameId || 'bitcoin';
 
 		const chartData = await CoinChart.find({ nameId: coinNameId }).select(
-			'-__v -createdAt -updatedAt'
+			'-_id -__v -createdAt -updatedAt'
 		);
 
 		if (!chartData) {

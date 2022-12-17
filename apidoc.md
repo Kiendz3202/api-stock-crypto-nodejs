@@ -152,6 +152,29 @@
 
 -   Authenication: Bear-Token
 
+-   Common Error Code Table For Bad Request:
+
+    -   500 - Internal Server Error
+    -   400 - Bad request
+    -   401 - Unauthorized
+    -   403 - Forbiden
+    -   404 - Not Found
+    -   408 - Request timeout
+    -   409 - conflict
+    -   429 - Too many requests
+    -   502 - bad gateway
+
+    -   **Response bad request**
+
+        ```
+        {
+            status: 'fail',
+            code: int,
+            message: "string",
+        }
+
+        ```
+
 -   Detail for endpoint:
 
     -   **Signup**:
@@ -183,16 +206,9 @@
                 }
                 ```
 
-            -   Bad request (Email is already registered, ...):
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string",
-                }
-                ```
+            -   Fail:
+
+                -   Status code: 409 - Email is already registered
 
     -   **Login**:
 
@@ -227,16 +243,8 @@
                 }
                 ```
 
-            -   Bad request (User not registered, ...):
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string"
-                }
-                ```
+            -   Fail:
+                -   Status code: 401, 404.
 
     -   **Logout(hoàn thành sau)**:
 
@@ -268,16 +276,9 @@
                 }
                 ```
 
-            -   Bad request (User not registered, ...):
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string"
-                }
-                ```
+            -   Fail:
+
+                -   Status code: 404
 
     -   **Get coins per page with pagination**:
 
@@ -305,16 +306,9 @@
                 }
                 ```
 
-            -   Bad request:
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string"
-                }
-                ```
+            -   Fail:
+
+                -   Status code: 400, 404
 
     -   **Get coin detail**:
 
@@ -336,16 +330,9 @@
                 }
                 ```
 
-            -   Bad request:
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string"
-                }
-                ```
+            -   Fail:
+
+                -   Status code: 404
 
     -   **Get chart coin detail**:
 
@@ -373,16 +360,9 @@
                 }
                 ```
 
-            -   Bad request:
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string"
-                }
-                ```
+            -   Fail:
+
+                -   Status code: 404
 
     -   **Get exchange rate of bank**:
 
@@ -442,16 +422,9 @@
                 }
                 ```
 
-            -   Bad request:
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string"
-                }
-                ```
+            -   Fail:
+
+                -   Status code: 404
 
     -   **Get interest rate of agribank**:
 
@@ -510,16 +483,9 @@
                 }
                 ```
 
-            -   Bad request:
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string"
-                }
-                ```
+            -   Fail:
+
+                -   Status code: 404
 
     -   **Get interest rate of vietinbank**:
 
@@ -582,16 +548,9 @@
                 }
                 ```
 
-            -   Bad request:
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string"
-                }
-                ```
+            -   Fail:
+
+                -   Status code: 404
 
     -   **Get interest rate of vietcombank**:
 
@@ -626,16 +585,9 @@
                 }
                 ```
 
-            -   Bad request:
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string"
-                }
-                ```
+            -   Fail:
+
+                -   Status code: 404
 
     -   **Get interest rate of bidv**:
 
@@ -673,16 +625,9 @@
                 }
                 ```
 
-            -   Bad request:
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string"
-                }
-                ```
+            -   Fail:
+
+                -   Status code: 404
 
     -   **Get interest rate of scb, mbbank, vib**:
 
@@ -723,16 +668,9 @@
                 }
                 ```
 
-            -   Bad request:
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string"
-                }
-                ```
+            -   Fail:
+
+                -   Status code: 404
 
     -   **Get price of sjc gold**:
 
@@ -799,16 +737,9 @@
                 }
                 ```
 
-            -   Bad request:
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string"
-                }
-                ```
+            -   Fail:
+
+                -   Status code: 404
 
     -   **Get chart of sjc gold**:
 
@@ -834,16 +765,9 @@
                 }
                 ```
 
-            -   Bad request:
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string"
-                }
-                ```
+            -   Fail:
+
+                -   Status code: 404
 
     -   **Get price of gold bảo tín minh châu**:
 
@@ -899,16 +823,9 @@
                 }
                 ```
 
-            -   Bad request:
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string"
-                }
-                ```
+            -   Fail:
+
+                -   Status code: 404
 
     -   **Get price of gold doji**:
 
@@ -988,16 +905,9 @@
                 }
                 ```
 
-            -   Bad request:
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string"
-                }
-                ```
+            -   Fail:
+
+                -   Status code: 404
 
     -   **Get price of gold pnj**:
 
@@ -1195,16 +1105,9 @@
                 }
                 ```
 
-            -   Bad request:
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string"
-                }
-                ```
+            -   Fail:
+
+                -   Status code: 404
 
     -   **Get price of gold phú quý sjc**:
 
@@ -1254,16 +1157,9 @@
                 }
                 ```
 
-            -   Bad request:
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string"
-                }
-                ```
+            -   Fail:
+
+                -   Status code: 404
 
     -   **Get price of gold mi hồng**:
 
@@ -1308,13 +1204,6 @@
                 }
                 ```
 
-            -   Bad request:
-                -   Status Code: 400
-                -   Payload:
-                ```
-                {
-                    "status": "fail",
-                    "code": int,
-                    "message": "string"
-                }
-                ```
+            -   Fail:
+
+                -   Status code: 404

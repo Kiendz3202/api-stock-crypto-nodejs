@@ -3,6 +3,7 @@ const cron = require('node-cron');
 const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 const axios = require('axios');
+const { uploadErrorToDb } = require('../../utils/handleError');
 
 const {
 	collectQueryDataHeightScroll,
@@ -15,7 +16,10 @@ const urlPetrolimex = 'https://webtygia.com/gia-xang-dau/petrolimex.html'; // re
 const crawlPetrolimex = async () => {
 	const result = await axios(urlPetrolimex)
 		.then((res) => res.data)
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 
 	const $ = cheerio.load(result);
 
@@ -117,7 +121,10 @@ const crawlPetrolimex = async () => {
 		{ upsert: true }
 	)
 		// .then((doc) => console.log(doc))
-		.catch((err) => console.log(dataJson.symbol));
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 };
 
 // const crawlPetrolimex = asyncHandler(async () => {

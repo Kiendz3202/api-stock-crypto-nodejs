@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const cron = require('node-cron');
 const axios = require('axios');
 const puppeteer = require('puppeteer');
+const { uploadErrorToDb } = require('../../utils/handleError');
 
 const {
 	collectQueryData,
@@ -128,7 +129,10 @@ const crawlHnx30 = asyncHandler(async () => {
 					{ upsert: true }
 				)
 					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawl hnx30' + err));
+					.catch((err) => {
+						console.log(err.message);
+						uploadErrorToDb(err.message);
+					});
 
 				Hnx30Chart.findOneAndUpdate(
 					{ symbol: stock.symbol },
@@ -142,7 +146,10 @@ const crawlHnx30 = asyncHandler(async () => {
 					// { upsert: true }
 				)
 					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawldetail hnx30' + err));
+					.catch((err) => {
+						console.log(err.message);
+						uploadErrorToDb(err.message);
+					});
 			});
 			// await browser.close();
 		}
@@ -253,7 +260,10 @@ const crawlHnx = asyncHandler(async () => {
 					{ upsert: true }
 				)
 					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawl hnx' + err));
+					.catch((err) => {
+						console.log(err.message);
+						uploadErrorToDb(err.message);
+					});
 
 				HnxChart.findOneAndUpdate(
 					{ symbol: stock.symbol },
@@ -267,7 +277,10 @@ const crawlHnx = asyncHandler(async () => {
 					// { upsert: true }
 				)
 					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawldetail hnx30' + err));
+					.catch((err) => {
+						console.log(err.message);
+						uploadErrorToDb(err.message);
+					});
 			});
 			// await browser.close();
 		}
@@ -378,7 +391,10 @@ const crawlVn30 = asyncHandler(async () => {
 					{ upsert: true }
 				)
 					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawl vn30' + err));
+					.catch((err) => {
+						console.log(err.message);
+						uploadErrorToDb(err.message);
+					});
 
 				Vn30Chart.findOneAndUpdate(
 					{ symbol: stock.symbol },
@@ -392,7 +408,10 @@ const crawlVn30 = asyncHandler(async () => {
 					// { upsert: true }
 				)
 					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawldetail hnx30' + err));
+					.catch((err) => {
+						console.log(err.message);
+						uploadErrorToDb(err.message);
+					});
 			});
 			// await browser.close();
 		}
@@ -503,7 +522,10 @@ const crawlHose = asyncHandler(async () => {
 					{ upsert: true }
 				)
 					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawl hose' + err));
+					.catch((err) => {
+						console.log(err.message);
+						uploadErrorToDb(err.message);
+					});
 
 				HoseChart.findOneAndUpdate(
 					{ symbol: stock.symbol },
@@ -517,7 +539,10 @@ const crawlHose = asyncHandler(async () => {
 					// { upsert: true }
 				)
 					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawldetail hnx30' + err));
+					.catch((err) => {
+						console.log(err.message);
+						uploadErrorToDb(err.message);
+					});
 			});
 			// await browser.close();
 		}
@@ -627,7 +652,10 @@ const crawlUpcom = asyncHandler(async () => {
 					{ upsert: true }
 				)
 					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawl upcom' + err));
+					.catch((err) => {
+						console.log(err.message);
+						uploadErrorToDb(err.message);
+					});
 
 				UpcomChart.findOneAndUpdate(
 					{ symbol: stock.symbol },
@@ -641,7 +669,10 @@ const crawlUpcom = asyncHandler(async () => {
 					// { upsert: true }
 				)
 					// .then((doc) => console.log(doc?.symbol))
-					.catch((err) => console.log('crawldetail hnx30' + err));
+					.catch((err) => {
+						console.log(err.message);
+						uploadErrorToDb(err.message);
+					});
 			});
 			// await browser.close();
 		}

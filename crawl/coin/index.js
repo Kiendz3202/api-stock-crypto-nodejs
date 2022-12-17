@@ -9,6 +9,7 @@ const {
 	crawlChartData1y,
 	crawlChartDataMax,
 } = require('../index');
+const { uploadErrorToDb } = require('../../utils/handleError');
 
 const { delay } = require('../../utils/promise/delayTime/delay');
 
@@ -99,16 +100,17 @@ const coinRunAll = asyncHandler(async () => {
 							{ upsert: true }
 						)
 							// .then((doc) => console.log(doc?.name))
-							.catch((err) => console.log(err));
+							.catch((err) => console.log(err.message));
 					});
 				});
 			// }, 1000 * index);
 		} catch (error) {
-			console.log(error);
+			console.log(error.message);
+			uploadErrorToDb(error.message);
 		}
 	});
 
-	await delay(30000);
+	await delay(40000);
 	// const CoinIsEnough = 800;
 	// if ((await Coin.find()).length != CoinIsEnough) {
 	// 	console.log('update not enough coins');
@@ -172,11 +174,12 @@ const coinRunAll = asyncHandler(async () => {
 								{ upsert: true }
 							)
 								// .then((doc) => console.log(doc?.symbol))
-								.catch((err) => console.log(err));
+								.catch((err) => console.log(err.message));
 						});
 				}, 8000 * index);
 			} catch (error) {
-				console.log(error);
+				console.log(error.message);
+				uploadErrorToDb(error.message);
 			}
 		});
 		console.log('end coinChartIsEmty');
@@ -222,11 +225,12 @@ const coinRunAll = asyncHandler(async () => {
 								{ upsert: true }
 							)
 								// .then((doc) => console.log(doc?.symbol))
-								.catch((err) => console.log(err));
+								.catch((err) => console.log(err.message));
 						});
 				}, 8000 * index);
 			} catch (error) {
 				console.log(error);
+				uploadErrorToDb(error.message);
 			}
 		});
 		console.log(countNeedUpdate);
@@ -318,13 +322,16 @@ const updateNewPrice = asyncHandler(async () => {
 										// { upsert: true }
 									)
 										// .then((doc) => console.log(doc?.symbol))
-										.catch((err) => console.log(err));
+										.catch((err) =>
+											console.log(err.message)
+										);
 								}
 							});
 						});
 				}, 1000 * index);
 			} catch (error) {
 				console.log(error);
+				uploadErrorToDb(error.message);
 			}
 		});
 	}

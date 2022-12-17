@@ -49,11 +49,11 @@ const {
 // myEmitter.setMaxListeners(0);
 
 //--------------------------------------------Main Body------------------------------------------------------------------
-// runCrawlCoin();
-// runCrawlGoldPetrolExchangerateInterestRate();
-// runCrawlAllListStocks();
-// runCrawlAllDetailStocks();
-// runCrawlAllChartStocks();
+runCrawlCoin();
+runCrawlGoldPetrolExchangerateInterestRate();
+runCrawlAllListStocks();
+runCrawlAllDetailStocks();
+runCrawlAllChartStocks();
 
 // -----------------------------------------------
 
@@ -117,9 +117,10 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-	res.json({
+	const status = err.status || 500;
+	res.status(status).json({
 		status: 'fail',
-		code: err.status || 500,
+		code: status,
 		message: err.message,
 	});
 });

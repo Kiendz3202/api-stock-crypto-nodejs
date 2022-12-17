@@ -20,12 +20,12 @@ const { delay } = require('../utils/promise/delayTime/delay');
 const runCrawlCoin = async () => {
 	// cron.schedule('1 tuan chay lai 1 lan', async () => {
 	//function delete all 800 coin
-	// cron.schedule('0 */2 * * *', async () => {
-	coinRunAll();
-	// });
-	// cron.schedule('*/2 * * * *', async () => {
-	updateNewPrice();
-	// });
+	cron.schedule('0 */2 * * *', async () => {
+		coinRunAll();
+	});
+	cron.schedule('*/2 * * * *', async () => {
+		updateNewPrice();
+	});
 	// });
 };
 
@@ -50,16 +50,16 @@ const runCrawlAllChartStocks = async () => {
 };
 
 const runCrawlGoldPetrolExchangerateInterestRate = async () => {
-	// cron.schedule('*/30 * * * *', async () => {
-	goldRunAll();
-	await delay(60000);
-	petrolRunAll();
-	await delay(40000);
-	exchangeRateRunAll();
-	await delay(60000);
-	interestRateRunAll();
-	await delay(70000);
-	// });
+	cron.schedule('*/30 * * * *', async () => {
+		goldRunAll();
+		await delay(60000);
+		petrolRunAll();
+		await delay(40000);
+		exchangeRateRunAll();
+		await delay(60000);
+		interestRateRunAll();
+		await delay(70000);
+	});
 };
 
 module.exports = {

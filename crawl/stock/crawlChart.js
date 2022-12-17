@@ -2,6 +2,7 @@ const asyncHandler = require('express-async-handler');
 const cron = require('node-cron');
 const axios = require('axios');
 const puppeteer = require('puppeteer');
+const { uploadErrorToDb } = require('../../utils/handleError');
 const Hnx30 = require('../../model/stock/stockList/hnx30Model');
 // const Hnx = require('../../model/stock/stockList/hnxModel');
 // const Vn30 = require('../../model/stock/stockList/vn30Model');
@@ -54,13 +55,19 @@ const crawlChartHnx30 = asyncHandler(async (symbol) => {
 						// .then((doc) =>
 						// 	console.log(stock.symbol + ' chart HNX30')
 						// )
-						.catch((err) => console.log(err));
+						.catch((err) => {
+							console.log(err.message);
+							uploadErrorToDb(err.message);
+						});
 				}
 			})
 			.catch((err) => {
-				console.log(err);
+				{
+					console.log(err.message);
+					uploadErrorToDb(err.message);
+				}
 			});
-		await delay(2000);
+		await delay(1000);
 	}
 	// console.log(count + ' chart HNX30');
 });
@@ -89,13 +96,19 @@ const crawlChartHnx = asyncHandler(async (symbol) => {
 						{ upsert: true }
 					)
 						// .then((doc) => console.log(stock.symbol + ' chart HNX'))
-						.catch((err) => console.log(err));
+						.catch((err) => {
+							console.log(err.message);
+							uploadErrorToDb(err.message);
+						});
 				}
 			})
 			.catch((err) => {
-				console.log(err);
+				{
+					console.log(err.message);
+					uploadErrorToDb(err.message);
+				}
 			});
-		await delay(2000);
+		await delay(1000);
 	}
 	// console.log(count + ' chart HNX');
 });
@@ -126,13 +139,19 @@ const crawlChartVn30 = asyncHandler(async (symbol) => {
 						// .then((doc) =>
 						// 	console.log(stock.symbol + ' chart VN30')
 						// )
-						.catch((err) => console.log(err));
+						.catch((err) => {
+							console.log(err.message);
+							uploadErrorToDb(err.message);
+						});
 				}
 			})
 			.catch((err) => {
-				console.log(err);
+				{
+					console.log(err.message);
+					uploadErrorToDb(err.message);
+				}
 			});
-		await delay(2000);
+		await delay(1000);
 	}
 	// console.log(count + ' chart VN30');
 });
@@ -163,13 +182,19 @@ const crawlChartHose = asyncHandler(async (symbol) => {
 						// .then((doc) =>
 						// 	console.log(stock.symbol + ' chart HOSE')
 						// )
-						.catch((err) => console.log(err));
+						.catch((err) => {
+							console.log(err.message);
+							uploadErrorToDb(err.message);
+						});
 				}
 			})
 			.catch((err) => {
-				console.log(err);
+				{
+					console.log(err.message);
+					uploadErrorToDb(err.message);
+				}
 			});
-		await delay(2000);
+		await delay(1000);
 	}
 	// console.log(count + ' chart HOSE');
 });
@@ -200,13 +225,19 @@ const crawlChartUpcom = asyncHandler(async (symbol) => {
 						// .then((doc) =>
 						// 	console.log(stock.symbol + ' chart UPCOM')
 						// )
-						.catch((err) => console.log(err));
+						.catch((err) => {
+							console.log(err.message);
+							uploadErrorToDb(err.message);
+						});
 				}
 			})
 			.catch((err) => {
-				console.log(err);
+				{
+					console.log(err.message);
+					uploadErrorToDb(err.message);
+				}
 			});
-		await delay(2000);
+		await delay(1000);
 	}
 	// console.log(count + ' chart UPCOM');
 });

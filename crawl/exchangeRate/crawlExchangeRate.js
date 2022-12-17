@@ -3,6 +3,7 @@ const cron = require('node-cron');
 const puppeteer = require('puppeteer');
 const axios = require('axios');
 const cheerio = require('cheerio');
+const { uploadErrorToDb } = require('../../utils/handleError');
 
 const {
 	collectQueryData,
@@ -26,7 +27,10 @@ const urlMbbank = 'https://webtygia.com/ty-gia/mbbank.html';
 const crawlAgribank = async () => {
 	const result = await axios(urlAgribank)
 		.then((res) => res.data)
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 
 	const $ = cheerio.load(result);
 
@@ -292,7 +296,7 @@ const crawlAgribank = async () => {
 			.slice(0, -1)
 			.replace(/\,/g, '');
 	} catch (err) {
-		console.log(err);
+		console.log(err.message);
 	}
 
 	Agribank.findOneAndUpdate(
@@ -365,7 +369,10 @@ const crawlAgribank = async () => {
 const crawlVietcombank = async () => {
 	const result = await axios(urlVietcombank)
 		.then((res) => res.data)
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 
 	const $ = cheerio.load(result);
 
@@ -896,7 +903,10 @@ const crawlVietcombank = async () => {
 const crawlBidv = async () => {
 	const result = await axios(urlBidv)
 		.then((res) => res.data)
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err);
+			uploadErrorToDb(err.message);
+		});
 
 	const $ = cheerio.load(result);
 
@@ -1493,7 +1503,10 @@ const crawlTechcombank = async () => {
 	try {
 		const result = await axios(urlTechcombank)
 			.then((res) => res.data)
-			.catch((err) => console.log(err));
+			.catch((err) => {
+				console.log(err);
+				uploadErrorToDb(err.message);
+			});
 
 		const $ = cheerio.load(result);
 
@@ -1825,7 +1838,10 @@ const crawlTechcombank = async () => {
 const crawlVietinbank = async () => {
 	const result = await axios(urlVietinbank)
 		.then((res) => res.data)
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err);
+			uploadErrorToDb(err.message);
+		});
 	const $ = cheerio.load(result);
 	let dataJson = {};
 	try {
@@ -2278,7 +2294,10 @@ const crawlVietinbank = async () => {
 const crawlMbbank = async () => {
 	const result = await axios(urlMbbank)
 		.then((res) => res.data)
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err);
+			uploadErrorToDb(err.message);
+		});
 
 	const $ = cheerio.load(result);
 

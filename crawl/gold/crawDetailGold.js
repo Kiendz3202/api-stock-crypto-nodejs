@@ -3,6 +3,7 @@ const cron = require('node-cron');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
+const { uploadErrorToDb } = require('../../utils/handleError');
 
 const { collectQueryData } = require('../../utils/pupperteer/collectQueryData');
 
@@ -32,7 +33,10 @@ const crawlSjc = async () => {
 	console.time('sjc');
 	const result = await axios(urlSjc)
 		.then((res) => res.data)
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err);
+			uploadErrorToDb(err.message);
+		});
 
 	const $ = cheerio.load(result);
 
@@ -432,7 +436,7 @@ const crawlSjc = async () => {
 			.replace(/\./g, '');
 		dataJson.currentTimestamp = Math.floor(Date.now() / 1000);
 	} catch (err) {
-		console.log(err);
+		console.log(err.message);
 	}
 	Sjc.findOneAndUpdate(
 		{ name: dataJson.name },
@@ -505,7 +509,10 @@ const crawlSjc = async () => {
 		{ upsert: true }
 	)
 		.then((doc) => console.timeEnd('sjc'))
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err);
+			uploadErrorToDb(err.message);
+		});
 
 	SjcChart.findOneAndUpdate(
 		{ name: dataJson.name },
@@ -519,14 +526,20 @@ const crawlSjc = async () => {
 		{ upsert: true }
 	)
 		// .then((doc) => console.log(doc))
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err);
+			uploadErrorToDb(err.message);
+		});
 };
 
 const crawlPnj = async (localtionNumber, index) => {
 	console.time('pnj' + index);
 	const result = await axios(`${urlPnj}${localtionNumber}`)
 		.then((res) => res.data)
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err);
+			uploadErrorToDb(err.message);
+		});
 
 	const $ = cheerio.load(result);
 
@@ -671,7 +684,7 @@ const crawlPnj = async (localtionNumber, index) => {
 				.replace(',', '') * 10000
 		).toString();
 	} catch (err) {
-		console.log(err);
+		console.log(err.message);
 	}
 
 	Pnj.findOneAndUpdate(
@@ -709,14 +722,20 @@ const crawlPnj = async (localtionNumber, index) => {
 		{ upsert: true }
 	)
 		.then((doc) => console.timeEnd('pnj' + index))
-		.catch((err) => console.log(dataJson.name));
+		.catch((err) => {
+			console.log(err.message);
+			uploadErrorToDb(err.message);
+		});
 };
 
 const crawlDoji = async () => {
 	console.time('doji');
 	const result = await axios(urlDoji)
 		.then((res) => res.data)
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err);
+			uploadErrorToDb(err.message);
+		});
 
 	const $ = cheerio.load(result);
 
@@ -1120,7 +1139,7 @@ const crawlDoji = async () => {
 			}
 		});
 	} catch (error) {
-		console.log(error);
+		console.log(error.message);
 	}
 
 	Doji.findOneAndUpdate(
@@ -1188,14 +1207,20 @@ const crawlDoji = async () => {
 		{ upsert: true }
 	)
 		.then((doc) => console.timeEnd('doji'))
-		.catch((err) => console.log(dataJson.name));
+		.catch((err) => {
+			console.log(err);
+			uploadErrorToDb(err.message);
+		});
 };
 
 const crawlPhuQuySjc = async () => {
 	console.time('phuquy');
 	const result = await axios(urlPhuQuySjc)
 		.then((res) => res.data)
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err);
+			uploadErrorToDb(err.message);
+		});
 
 	const $ = cheerio.load(result);
 
@@ -1372,14 +1397,20 @@ const crawlPhuQuySjc = async () => {
 		{ upsert: true }
 	)
 		.then((doc) => console.timeEnd('phuquy'))
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err);
+			uploadErrorToDb(err.message);
+		});
 };
 
 const crawlBaoTinMinhChau = async () => {
 	console.time('baotinminhchau');
 	const result = await axios(ulrBaoTinMinhChau)
 		.then((res) => res.data)
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err);
+			uploadErrorToDb(err.message);
+		});
 
 	const $ = cheerio.load(result);
 
@@ -1564,14 +1595,20 @@ const crawlBaoTinMinhChau = async () => {
 		{ upsert: true }
 	)
 		.then((doc) => console.timeEnd('baotinminhchau'))
-		.catch((err) => console.log(dataJson.name));
+		.catch((err) => {
+			console.log(err);
+			uploadErrorToDb(err.message);
+		});
 };
 
 const crawlMiHong = async () => {
 	console.time('mihong');
 	const result = await axios(urlMiHong)
 		.then((res) => res.data)
-		.catch((err) => console.log(err));
+		.catch((err) => {
+			console.log(err);
+			uploadErrorToDb(err.message);
+		});
 
 	const $ = cheerio.load(result);
 
@@ -1720,7 +1757,10 @@ const crawlMiHong = async () => {
 		{ upsert: true }
 	)
 		.then((doc) => console.timeEnd('mihong'))
-		.catch((err) => console.log(dataJson.name));
+		.catch((err) => {
+			console.log(err);
+			uploadErrorToDb(err.message);
+		});
 };
 
 //only this function crawlSjc crawl data price of sjc and update both price and chart
