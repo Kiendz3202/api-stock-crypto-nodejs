@@ -7,7 +7,8 @@ const uploadErrorToDb = async (messageError) => {
 		{
 			message: messageError,
 			timeUpdate: timeUpdate,
-		}
+		},
+		{ upsert: true }
 	).catch((err) => console.log(err.message));
 };
 
