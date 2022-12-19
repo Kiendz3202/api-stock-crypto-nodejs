@@ -63,22 +63,22 @@ const updateAllDetailStocks = async () => {
 
 	if (hnx30Length !== 0) {
 		crawlDetailHnx30();
-		await delay(hnx30Length * 2000);
+		await delay(hnx30Length * 3000);
 	}
 
 	if (hnxLength !== 0) {
 		crawlDetailHnx();
-		await delay(hnxLength * 2000);
+		await delay(hnxLength * 3000);
 	}
 
 	if (vn30Length !== 0) {
 		crawlDetailVn30();
-		await delay(vn30Length * 2000);
+		await delay(vn30Length * 3000);
 	}
 
 	if (hoseLength !== 0) {
 		crawlDetailHose();
-		await delay(hoseLength * 2000);
+		await delay(hoseLength * 3000);
 	}
 
 	// if (upcomLength !== 0) {
