@@ -130,8 +130,12 @@ const crawlHnx30 = asyncHandler(async () => {
 				)
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => {
-						console.log(err.message);
-						uploadErrorToDb(err.message);
+						console.log(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
+						uploadErrorToDb(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
 					});
 
 				Hnx30Chart.findOneAndUpdate(
@@ -147,8 +151,12 @@ const crawlHnx30 = asyncHandler(async () => {
 				)
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => {
-						console.log(err.message);
-						uploadErrorToDb(err.message);
+						console.log(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
+						uploadErrorToDb(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
 					});
 			});
 			// await browser.close();
@@ -261,8 +269,12 @@ const crawlHnx = asyncHandler(async () => {
 				)
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => {
-						console.log(err.message);
-						uploadErrorToDb(err.message);
+						console.log(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
+						uploadErrorToDb(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
 					});
 
 				HnxChart.findOneAndUpdate(
@@ -278,8 +290,12 @@ const crawlHnx = asyncHandler(async () => {
 				)
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => {
-						console.log(err.message);
-						uploadErrorToDb(err.message);
+						console.log(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
+						uploadErrorToDb(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
 					});
 			});
 			// await browser.close();
@@ -392,8 +408,12 @@ const crawlVn30 = asyncHandler(async () => {
 				)
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => {
-						console.log(err.message);
-						uploadErrorToDb(err.message);
+						console.log(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
+						uploadErrorToDb(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
 					});
 
 				Vn30Chart.findOneAndUpdate(
@@ -409,8 +429,12 @@ const crawlVn30 = asyncHandler(async () => {
 				)
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => {
-						console.log(err.message);
-						uploadErrorToDb(err.message);
+						console.log(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
+						uploadErrorToDb(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
 					});
 			});
 			// await browser.close();
@@ -523,8 +547,12 @@ const crawlHose = asyncHandler(async () => {
 				)
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => {
-						console.log(err.message);
-						uploadErrorToDb(err.message);
+						console.log(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
+						uploadErrorToDb(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
 					});
 
 				HoseChart.findOneAndUpdate(
@@ -540,8 +568,12 @@ const crawlHose = asyncHandler(async () => {
 				)
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => {
-						console.log(err.message);
-						uploadErrorToDb(err.message);
+						console.log(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
+						uploadErrorToDb(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
 					});
 			});
 			// await browser.close();
@@ -653,8 +685,12 @@ const crawlUpcom = asyncHandler(async () => {
 				)
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => {
-						console.log(err.message);
-						uploadErrorToDb(err.message);
+						console.log(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
+						uploadErrorToDb(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
 					});
 
 				UpcomChart.findOneAndUpdate(
@@ -670,8 +706,12 @@ const crawlUpcom = asyncHandler(async () => {
 				)
 					// .then((doc) => console.log(doc?.symbol))
 					.catch((err) => {
-						console.log(err.message);
-						uploadErrorToDb(err.message);
+						console.log(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
+						uploadErrorToDb(
+							err.code + ' ' + err.response.status + stock.symbol
+						);
 					});
 			});
 			// await browser.close();

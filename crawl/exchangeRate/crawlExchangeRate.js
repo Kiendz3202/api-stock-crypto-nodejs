@@ -28,8 +28,8 @@ const crawlAgribank = async () => {
 	const result = await axios(urlAgribank)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' Agribank');
+			uploadErrorToDb(err.code + ' ' + err.response.status + ' Agribank');
 		});
 
 	const $ = cheerio.load(result);
@@ -364,14 +364,18 @@ const crawlAgribank = async () => {
 		{ upsert: true }
 	)
 		// .then((doc) => console.log(doc))
-		.catch((err) => console.log(data.symbol));
+		.catch((err) =>
+			console.log(err.code + ' ' + err.response.status + ' Agribank')
+		);
 };
 const crawlVietcombank = async () => {
 	const result = await axios(urlVietcombank)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' Vietcombank');
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' Vietcombank'
+			);
 		});
 
 	const $ = cheerio.load(result);
@@ -898,14 +902,16 @@ const crawlVietcombank = async () => {
 		{ upsert: true }
 	)
 		// .then((doc) => console.log(doc))
-		.catch((err) => console.log(dataJson.symbol));
+		.catch((err) =>
+			console.log(err.code + ' ' + err.response.status + ' Vietcombank')
+		);
 };
 const crawlBidv = async () => {
 	const result = await axios(urlBidv)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' Bidv');
+			uploadErrorToDb(err.code + ' ' + err.response.status + ' Bidv');
 		});
 
 	const $ = cheerio.load(result);
@@ -1496,7 +1502,9 @@ const crawlBidv = async () => {
 		{ upsert: true }
 	)
 		// .then((doc) => console.log(doc))
-		.catch((err) => console.log(dataJson.symbol));
+		.catch((err) =>
+			console.log(err.code + ' ' + err.response.status + ' Bidv')
+		);
 };
 const crawlTechcombank = async () => {
 	let dataJson = {};
@@ -1504,8 +1512,12 @@ const crawlTechcombank = async () => {
 		const result = await axios(urlTechcombank)
 			.then((res) => res.data)
 			.catch((err) => {
-				console.log(err);
-				uploadErrorToDb(err.message);
+				console.log(
+					err.code + ' ' + err.response.status + ' Techcombank'
+				);
+				uploadErrorToDb(
+					err.code + ' ' + err.response.status + ' Techcombank'
+				);
 			});
 
 		const $ = cheerio.load(result);
@@ -1833,14 +1845,18 @@ const crawlTechcombank = async () => {
 		{ upsert: true }
 	)
 		// .then((doc) => console.log(doc))
-		.catch((err) => console.log(dataJson.symbol));
+		.catch((err) =>
+			console.log(err.code + ' ' + err.response.status + ' Techcombank')
+		);
 };
 const crawlVietinbank = async () => {
 	const result = await axios(urlVietinbank)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' VietinBank');
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' VietinBank'
+			);
 		});
 	const $ = cheerio.load(result);
 	let dataJson = {};
@@ -2288,15 +2304,17 @@ const crawlVietinbank = async () => {
 		{ upsert: true }
 	)
 		// .then((doc) => console.log(doc))
-		.catch((err) => console.log(vietinbankData.symbol));
+		.catch((err) =>
+			console.log(err.code + ' ' + err.response.status + ' VietinBank')
+		);
 };
 
 const crawlMbbank = async () => {
 	const result = await axios(urlMbbank)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' Mbbank');
+			uploadErrorToDb(err.code + ' ' + err.response.status + ' Mbbank');
 		});
 
 	const $ = cheerio.load(result);
@@ -2747,7 +2765,9 @@ const crawlMbbank = async () => {
 		{ upsert: true }
 	)
 		// .then((doc) => console.log(doc))
-		.catch((err) => console.log(data.symbol));
+		.catch((err) =>
+			console.log(err.code + ' ' + err.response.status + ' Mbbank')
+		);
 };
 
 // const crawlAgribank = asyncHandler(async () => {

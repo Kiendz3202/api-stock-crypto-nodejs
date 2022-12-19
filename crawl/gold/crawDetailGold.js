@@ -34,8 +34,8 @@ const crawlSjc = async () => {
 	const result = await axios(urlSjc)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' sjc');
+			uploadErrorToDb(err.code + ' ' + err.response.status + ' sjc');
 		});
 
 	const $ = cheerio.load(result);
@@ -510,8 +510,8 @@ const crawlSjc = async () => {
 	)
 		.then((doc) => console.timeEnd('sjc'))
 		.catch((err) => {
-			console.log(err);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' sjc');
+			uploadErrorToDb(err.code + ' ' + err.response.status + ' sjc');
 		});
 
 	SjcChart.findOneAndUpdate(
@@ -527,8 +527,8 @@ const crawlSjc = async () => {
 	)
 		// .then((doc) => console.log(doc))
 		.catch((err) => {
-			console.log(err);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' sjc');
+			uploadErrorToDb(err.code + ' ' + err.response.status + ' sjc');
 		});
 };
 
@@ -537,8 +537,8 @@ const crawlPnj = async (localtionNumber, index) => {
 	const result = await axios(`${urlPnj}${localtionNumber}`)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' pnj');
+			uploadErrorToDb(err.code + ' ' + err.response.status + ' pnj');
 		});
 
 	const $ = cheerio.load(result);
@@ -684,7 +684,7 @@ const crawlPnj = async (localtionNumber, index) => {
 				.replace(',', '') * 10000
 		).toString();
 	} catch (err) {
-		console.log(err.message);
+		console.log(err.code + ' ' + err.response.status + ' pnj');
 	}
 
 	Pnj.findOneAndUpdate(
@@ -723,8 +723,8 @@ const crawlPnj = async (localtionNumber, index) => {
 	)
 		.then((doc) => console.timeEnd('pnj' + index))
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' pnj');
+			uploadErrorToDb(err.code + ' ' + err.response.status + ' pnj');
 		});
 };
 
@@ -733,8 +733,8 @@ const crawlDoji = async () => {
 	const result = await axios(urlDoji)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' doji');
+			uploadErrorToDb(err.code + ' ' + err.response.status + ' doji');
 		});
 
 	const $ = cheerio.load(result);
@@ -1208,8 +1208,8 @@ const crawlDoji = async () => {
 	)
 		.then((doc) => console.timeEnd('doji'))
 		.catch((err) => {
-			console.log(err);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' doji');
+			uploadErrorToDb(err.code + ' ' + err.response.status + ' doji');
 		});
 };
 
@@ -1218,8 +1218,10 @@ const crawlPhuQuySjc = async () => {
 	const result = await axios(urlPhuQuySjc)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' Phú Quý SJC');
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' Phú Quý SJC'
+			);
 		});
 
 	const $ = cheerio.load(result);
@@ -1398,8 +1400,10 @@ const crawlPhuQuySjc = async () => {
 	)
 		.then((doc) => console.timeEnd('phuquy'))
 		.catch((err) => {
-			console.log(err);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' Phú Quý SJC');
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' Phú Quý SJC'
+			);
 		});
 };
 
@@ -1408,8 +1412,12 @@ const crawlBaoTinMinhChau = async () => {
 	const result = await axios(ulrBaoTinMinhChau)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err);
-			uploadErrorToDb(err.message);
+			console.log(
+				err.code + ' ' + err.response.status + ' baotinminhchau'
+			);
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' baotinminhchau'
+			);
 		});
 
 	const $ = cheerio.load(result);
@@ -1596,8 +1604,12 @@ const crawlBaoTinMinhChau = async () => {
 	)
 		.then((doc) => console.timeEnd('baotinminhchau'))
 		.catch((err) => {
-			console.log(err);
-			uploadErrorToDb(err.message);
+			console.log(
+				err.code + ' ' + err.response.status + ' baotinminhchau'
+			);
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' baotinminhchau'
+			);
 		});
 };
 
@@ -1606,8 +1618,8 @@ const crawlMiHong = async () => {
 	const result = await axios(urlMiHong)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' mihong');
+			uploadErrorToDb(err.code + ' ' + err.response.status + ' mihong');
 		});
 
 	const $ = cheerio.load(result);
@@ -1758,8 +1770,8 @@ const crawlMiHong = async () => {
 	)
 		.then((doc) => console.timeEnd('mihong'))
 		.catch((err) => {
-			console.log(err);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' mihong');
+			uploadErrorToDb(err.code + ' ' + err.response.status + ' mihong');
 		});
 };
 

@@ -17,8 +17,10 @@ const crawlPetrolimex = async () => {
 	const result = await axios(urlPetrolimex)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' petrolimex');
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' petrolimex'
+			);
 		});
 
 	const $ = cheerio.load(result);
@@ -122,8 +124,10 @@ const crawlPetrolimex = async () => {
 	)
 		// .then((doc) => console.log(doc))
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' petrolimex');
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' petrolimex'
+			);
 		});
 };
 

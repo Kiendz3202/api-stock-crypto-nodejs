@@ -1,3 +1,5 @@
+const { uploadErrorToDb } = require('../handleError');
+
 const puppeteer = require('puppeteer');
 // args: [
 // 	'--no-sandbox',
@@ -42,7 +44,8 @@ const collectQueryData = async (url, pageEvaluateFunc, props) => {
 			// .then(() => browser.close());
 		}
 	} catch (error) {
-		console.log('co loi o day' + error);
+		console.log(err.code + ' ' + err.response.status + ' pupeteer');
+		uploadErrorToDb(err.code + ' ' + err.response.status + ' pupeteer');
 		return false;
 	}
 };
@@ -101,7 +104,8 @@ const collectQueryDataHeightScroll = async (url, pageEvaluateFunc, props) => {
 			// .then(() => browser.close());
 		}
 	} catch (error) {
-		console.log('co loi o day' + error);
+		console.log(err.code + ' ' + err.response.status + ' pupeteer');
+		uploadErrorToDb(err.code + ' ' + err.response.status + ' pupeteer');
 		return false;
 	}
 };

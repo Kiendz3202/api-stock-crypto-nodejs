@@ -46,8 +46,20 @@ const crawlDetailHnx30 = async () => {
 		)
 			.then((res) => res.data)
 			.catch((err) => {
-				console.log(err.message);
-				uploadErrorToDb(err.message);
+				console.log(
+					err.code +
+						' ' +
+						err.response.status +
+						' hnx30detail ' +
+						stock.symbol
+				);
+				uploadErrorToDb(
+					err.code +
+						' ' +
+						err.response.status +
+						' hnx30detail ' +
+						stock.symbol
+				);
 			});
 
 		let dataJson = {};
@@ -159,8 +171,20 @@ const crawlDetailHnx30 = async () => {
 			)
 				// .then((doc) => console.log(doc?.symbol))
 				.catch((err) => {
-					console.log(err.message);
-					uploadErrorToDb(err.message);
+					console.log(
+						err.code +
+							' ' +
+							err.response.status +
+							' hnx30detail ' +
+							stock.symbol
+					);
+					uploadErrorToDb(
+						err.code +
+							' ' +
+							err.response.status +
+							' hnx30detail ' +
+							stock.symbol
+					);
 				});
 			await delay(2000);
 		}
@@ -179,8 +203,20 @@ const crawlDetailHnx = async () => {
 		)
 			.then((res) => res.data)
 			.catch((err) => {
-				console.log(err.message);
-				uploadErrorToDb(err.message);
+				console.log(
+					err.code +
+						' ' +
+						err.response.status +
+						' hnxdetail ' +
+						stock.symbol
+				);
+				uploadErrorToDb(
+					err.code +
+						' ' +
+						err.response.status +
+						' hnxdetail ' +
+						stock.symbol
+				);
 			});
 
 		let dataJson = {};
@@ -292,8 +328,20 @@ const crawlDetailHnx = async () => {
 			)
 				// .then((doc) => console.log(doc?.symbol))
 				.catch((err) => {
-					console.log(err.message);
-					uploadErrorToDb(err.message);
+					console.log(
+						err.code +
+							' ' +
+							err.response.status +
+							' hnxdetail ' +
+							stock.symbol
+					);
+					uploadErrorToDb(
+						err.code +
+							' ' +
+							err.response.status +
+							' hnxdetail ' +
+							stock.symbol
+					);
 				});
 			await delay(2000);
 		}
@@ -312,8 +360,20 @@ const crawlDetailVn30 = async () => {
 		)
 			.then((res) => res.data)
 			.catch((err) => {
-				console.log(err.message);
-				uploadErrorToDb(err.message);
+				console.log(
+					err.code +
+						' ' +
+						err.response.status +
+						' vn30detail ' +
+						stock.symbol
+				);
+				uploadErrorToDb(
+					err.code +
+						' ' +
+						err.response.status +
+						' vn30detail ' +
+						stock.symbol
+				);
 			});
 
 		let dataJson = {};
@@ -425,8 +485,20 @@ const crawlDetailVn30 = async () => {
 			)
 				// .then((doc) => console.log(doc?.symbol))
 				.catch((err) => {
-					console.log(err.message);
-					uploadErrorToDb(err.message);
+					console.log(
+						err.code +
+							' ' +
+							err.response.status +
+							' vn30detail ' +
+							stock.symbol
+					);
+					uploadErrorToDb(
+						err.code +
+							' ' +
+							err.response.status +
+							' vn30detail ' +
+							stock.symbol
+					);
 				});
 			await delay(2000);
 		}
@@ -445,8 +517,20 @@ const crawlDetailHose = async () => {
 		)
 			.then((res) => res.data)
 			.catch((err) => {
-				console.log(err.message);
-				uploadErrorToDb(err.message);
+				console.log(
+					err.code +
+						' ' +
+						err.response.status +
+						' hosedetail ' +
+						stock.symbol
+				);
+				uploadErrorToDb(
+					err.code +
+						' ' +
+						err.response.status +
+						' hosedetail ' +
+						stock.symbol
+				);
 			});
 
 		let dataJson = {};
@@ -558,8 +642,20 @@ const crawlDetailHose = async () => {
 			)
 				// .then((doc) => console.log(doc?.symbol))
 				.catch((err) => {
-					console.log(err.message);
-					uploadErrorToDb(err.message);
+					console.log(
+						err.code +
+							' ' +
+							err.response.status +
+							' hosedetail ' +
+							stock.symbol
+					);
+					uploadErrorToDb(
+						err.code +
+							' ' +
+							err.response.status +
+							' hosedetail ' +
+							stock.symbol
+					);
 				});
 			await delay(2000);
 		}
@@ -578,8 +674,20 @@ const crawlDetailUpcom = async () => {
 		)
 			.then((res) => res.data)
 			.catch((err) => {
-				console.log(err.message);
-				uploadErrorToDb(err.message);
+				console.log(
+					err.code +
+						' ' +
+						err.response.status +
+						' upcomdetail ' +
+						stock.symbol
+				);
+				uploadErrorToDb(
+					err.code +
+						' ' +
+						err.response.status +
+						' upcomdetail ' +
+						stock.symbol
+				);
 			});
 
 		let dataJson = {};
@@ -691,8 +799,20 @@ const crawlDetailUpcom = async () => {
 			)
 				// .then((doc) => console.log(doc?.symbol))
 				.catch((err) => {
-					console.log(err.message);
-					uploadErrorToDb(err.message);
+					console.log(
+						err.code +
+							' ' +
+							err.response.status +
+							' upcomdetail ' +
+							stock.symbol
+					);
+					uploadErrorToDb(
+						err.code +
+							' ' +
+							err.response.status +
+							' upcomdetail ' +
+							stock.symbol
+					);
 				});
 			await delay(2000);
 		}

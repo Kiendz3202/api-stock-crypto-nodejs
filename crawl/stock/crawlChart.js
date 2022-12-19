@@ -56,15 +56,39 @@ const crawlChartHnx30 = asyncHandler(async (symbol) => {
 						// 	console.log(stock.symbol + ' chart HNX30')
 						// )
 						.catch((err) => {
-							console.log(err.message);
-							uploadErrorToDb(err.message);
+							console.log(
+								err.code +
+									' ' +
+									err.response.status +
+									' hnx30chart ' +
+									stock.symbol
+							);
+							uploadErrorToDb(
+								err.code +
+									' ' +
+									err.response.status +
+									' hnx30chart ' +
+									stock.symbol
+							);
 						});
 				}
 			})
 			.catch((err) => {
 				{
-					console.log(err.message);
-					uploadErrorToDb(err.message);
+					console.log(
+						err.code +
+							' ' +
+							err.response.status +
+							' hnx30chart ' +
+							stock.symbol
+					);
+					uploadErrorToDb(
+						err.code +
+							' ' +
+							err.response.status +
+							' hnx30chart ' +
+							stock.symbol
+					);
 				}
 			});
 		await delay(1000);
@@ -97,15 +121,39 @@ const crawlChartHnx = asyncHandler(async (symbol) => {
 					)
 						// .then((doc) => console.log(stock.symbol + ' chart HNX'))
 						.catch((err) => {
-							console.log(err.message);
-							uploadErrorToDb(err.message);
+							console.log(
+								err.code +
+									' ' +
+									err.response.status +
+									' hnxchart ' +
+									stock.symbol
+							);
+							uploadErrorToDb(
+								err.code +
+									' ' +
+									err.response.status +
+									' hnxchart ' +
+									stock.symbol
+							);
 						});
 				}
 			})
 			.catch((err) => {
 				{
-					console.log(err.message);
-					uploadErrorToDb(err.message);
+					console.log(
+						err.code +
+							' ' +
+							err.response.status +
+							' hnxchart ' +
+							stock.symbol
+					);
+					uploadErrorToDb(
+						err.code +
+							' ' +
+							err.response.status +
+							' hnxchart ' +
+							stock.symbol
+					);
 				}
 			});
 		await delay(1000);
@@ -140,15 +188,39 @@ const crawlChartVn30 = asyncHandler(async (symbol) => {
 						// 	console.log(stock.symbol + ' chart VN30')
 						// )
 						.catch((err) => {
-							console.log(err.message);
-							uploadErrorToDb(err.message);
+							console.log(
+								err.code +
+									' ' +
+									err.response.status +
+									' vn30chart ' +
+									stock.symbol
+							);
+							uploadErrorToDb(
+								err.code +
+									' ' +
+									err.response.status +
+									' vn30chart ' +
+									stock.symbol
+							);
 						});
 				}
 			})
 			.catch((err) => {
 				{
-					console.log(err.message);
-					uploadErrorToDb(err.message);
+					console.log(
+						err.code +
+							' ' +
+							err.response.status +
+							' vn30chart ' +
+							stock.symbol
+					);
+					uploadErrorToDb(
+						err.code +
+							' ' +
+							err.response.status +
+							' vn30chart ' +
+							stock.symbol
+					);
 				}
 			});
 		await delay(1000);
@@ -183,15 +255,39 @@ const crawlChartHose = asyncHandler(async (symbol) => {
 						// 	console.log(stock.symbol + ' chart HOSE')
 						// )
 						.catch((err) => {
-							console.log(err.message);
-							uploadErrorToDb(err.message);
+							console.log(
+								err.code +
+									' ' +
+									err.response.status +
+									' hosechart ' +
+									stock.symbol
+							);
+							uploadErrorToDb(
+								err.code +
+									' ' +
+									err.response.status +
+									' hosechart ' +
+									stock.symbol
+							);
 						});
 				}
 			})
 			.catch((err) => {
 				{
-					console.log(err.message);
-					uploadErrorToDb(err.message);
+					console.log(
+						err.code +
+							' ' +
+							err.response.status +
+							' hosechart ' +
+							stock.symbol
+					);
+					uploadErrorToDb(
+						err.code +
+							' ' +
+							err.response.status +
+							' hosechart ' +
+							stock.symbol
+					);
 				}
 			});
 		await delay(1000);
@@ -226,15 +322,39 @@ const crawlChartUpcom = asyncHandler(async (symbol) => {
 						// 	console.log(stock.symbol + ' chart UPCOM')
 						// )
 						.catch((err) => {
-							console.log(err.message);
-							uploadErrorToDb(err.message);
+							console.log(
+								err.code +
+									' ' +
+									err.response.status +
+									' upcomchart ' +
+									stock.symbol
+							);
+							uploadErrorToDb(
+								err.code +
+									' ' +
+									err.response.status +
+									' upcomchart ' +
+									stock.symbol
+							);
 						});
 				}
 			})
 			.catch((err) => {
 				{
-					console.log(err.message);
-					uploadErrorToDb(err.message);
+					console.log(
+						err.code +
+							' ' +
+							err.response.status +
+							' upcomchart ' +
+							stock.symbol
+					);
+					uploadErrorToDb(
+						err.code +
+							' ' +
+							err.response.status +
+							' upcomchart ' +
+							stock.symbol
+					);
 				}
 			});
 		await delay(1000);

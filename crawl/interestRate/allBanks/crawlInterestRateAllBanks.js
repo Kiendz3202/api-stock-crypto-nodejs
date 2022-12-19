@@ -31,8 +31,12 @@ const crawlVietcombankInterestRate = async () => {
 	const result = await axios(urlVietcombank)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(
+				err.code + ' ' + err.response.status + ' vietcombankInterest'
+			);
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' vietcombankInterest'
+			);
 		});
 
 	const $ = cheerio.load(result);
@@ -117,7 +121,9 @@ const crawlVietcombankInterestRate = async () => {
 			.replace(/\s./g, '')
 			.slice(0, -1);
 	} catch (err) {
-		console.log(err.message);
+		console.log(
+			err.code + ' ' + err.response.status + ' vietcombankInterest'
+		);
 	}
 
 	VietcombankInterestRate.findOneAndUpdate(
@@ -141,8 +147,12 @@ const crawlVietcombankInterestRate = async () => {
 	)
 		// .then((doc) => console.log(doc))
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(
+				err.code + ' ' + err.response.status + ' vietcombankInterest'
+			);
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' vietcombankInterest'
+			);
 		});
 };
 
@@ -150,8 +160,12 @@ const crawlVietinbankInterestRate = async () => {
 	const result = await axios(urlVietinbank)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(
+				err.code + ' ' + err.response.status + ' vietinbankInterest'
+			);
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' vietinbankInterest'
+			);
 		});
 
 	const $ = cheerio.load(result);
@@ -385,7 +399,9 @@ const crawlVietinbankInterestRate = async () => {
 			.text()
 			.replace(/,/g, '.');
 	} catch (err) {
-		console.log(err.message);
+		console.log(
+			err.code + ' ' + err.response.status + ' vietinbankInterest'
+		);
 	}
 
 	VietinbankInterestRate.findOneAndUpdate(
@@ -438,8 +454,12 @@ const crawlVietinbankInterestRate = async () => {
 	)
 		// .then((doc) => console.log(doc))
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(
+				err.code + ' ' + err.response.status + ' vietinbankInterest'
+			);
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' vietinbankInterest'
+			);
 		});
 };
 
@@ -447,8 +467,12 @@ const crawlAgribankbankInterestRate = async () => {
 	const result = await axios(urlAgribank)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(
+				err.code + ' ' + err.response.status + ' agribankInterest'
+			);
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' agribankInterest'
+			);
 		});
 
 	const $ = cheerio.load(result);
@@ -655,8 +679,12 @@ const crawlAgribankbankInterestRate = async () => {
 	)
 		// .then((doc) => console.log(doc))
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(
+				err.code + ' ' + err.response.status + ' agribankInterest'
+			);
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' agribankInterest'
+			);
 		});
 };
 
@@ -664,8 +692,10 @@ const crawlBidvInterestRate = async () => {
 	const result = await axios(urlBidv)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' bidvInterest');
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' bidvInterest'
+			);
 		});
 	const data = result.hanoi.data;
 
@@ -693,7 +723,7 @@ const crawlBidvInterestRate = async () => {
 		dataJson.month24 = data[11].VND;
 		dataJson.month36 = data[12].VND;
 	} catch (err) {
-		console.log(err.message);
+		console.log(err.code + ' ' + err.response.status + ' bidvInterest');
 	}
 
 	BidvInterestRate.findOneAndUpdate(
@@ -720,8 +750,10 @@ const crawlBidvInterestRate = async () => {
 	)
 		// .then((doc) => console.log(doc))
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' bidvInterest');
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' bidvInterest'
+			);
 		});
 };
 
@@ -729,8 +761,10 @@ const crawlScbInterestRate = async () => {
 	const result = await axios(urlScb)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' scbInterest');
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' scbInterest'
+			);
 		});
 
 	const $ = cheerio.load(result);
@@ -776,7 +810,7 @@ const crawlScbInterestRate = async () => {
 			'#myTable tbody :nth-child(8) td:nth-child(3)'
 		).text();
 	} catch (err) {
-		console.log(err.message);
+		console.log(err.code + ' ' + err.response.status + ' scbInterest');
 	}
 
 	ScbInterestRate.findOneAndUpdate(
@@ -799,8 +833,10 @@ const crawlScbInterestRate = async () => {
 	)
 		// .then((doc) => console.log(doc))
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' scbInterest');
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' scbInterest'
+			);
 		});
 };
 
@@ -808,8 +844,12 @@ const crawlMbbankInterestRate = async () => {
 	const result = await axios(urlMbbank)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(
+				err.code + ' ' + err.response.status + ' mbbankInterest'
+			);
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' mbbankInterest'
+			);
 		});
 
 	const $ = cheerio.load(result);
@@ -855,7 +895,7 @@ const crawlMbbankInterestRate = async () => {
 			'#myTable tbody :nth-child(8) td:nth-child(3)'
 		).text();
 	} catch (err) {
-		console.log(err.message);
+		console.log(err.code + ' ' + err.response.status + ' mbbankInterest');
 	}
 
 	MbbankInterestRate.findOneAndUpdate(
@@ -878,8 +918,12 @@ const crawlMbbankInterestRate = async () => {
 	)
 		// .then((doc) => console.log(doc))
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(
+				err.code + ' ' + err.response.status + ' mbbankInterest'
+			);
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' mbbankInterest'
+			);
 		});
 };
 
@@ -887,8 +931,10 @@ const crawlVibInterestRate = async () => {
 	const result = await axios(urlVib)
 		.then((res) => res.data)
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' vibInterest');
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' vibInterest'
+			);
 		});
 
 	const $ = cheerio.load(result);
@@ -934,7 +980,7 @@ const crawlVibInterestRate = async () => {
 			'#myTable tbody :nth-child(8) td:nth-child(3)'
 		).text();
 	} catch (err) {
-		console.log(err.message);
+		console.log(err.code + ' ' + err.response.status + ' vibInterest');
 	}
 
 	VibInterestRate.findOneAndUpdate(
@@ -957,8 +1003,10 @@ const crawlVibInterestRate = async () => {
 	)
 		// .then((doc) => console.log(doc))
 		.catch((err) => {
-			console.log(err.message);
-			uploadErrorToDb(err.message);
+			console.log(err.code + ' ' + err.response.status + ' vibInterest');
+			uploadErrorToDb(
+				err.code + ' ' + err.response.status + ' vibInterest'
+			);
 		});
 };
 
