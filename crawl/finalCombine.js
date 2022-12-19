@@ -50,16 +50,16 @@ const runCrawlAllChartStocks = async () => {
 };
 
 const runCrawlGoldPetrolExchangerateInterestRate = async () => {
-	cron.schedule('*/30 * * * *', async () => {
-		goldRunAll();
-		await delay(60000);
-		petrolRunAll();
-		await delay(40000);
-		exchangeRateRunAll();
-		await delay(60000);
-		interestRateRunAll();
-		await delay(70000);
-	});
+	// cron.schedule('*/30 * * * *', async () => {
+	goldRunAll();
+	await delay(60000);
+	petrolRunAll();
+	await delay(40000);
+	exchangeRateRunAll();
+	await delay(60000);
+	interestRateRunAll();
+	await delay(70000);
+	// });
 };
 
 module.exports = {
