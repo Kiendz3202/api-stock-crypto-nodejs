@@ -144,7 +144,7 @@ const crawlHnx30 = asyncHandler(async () => {
 						symbol: stock.symbol,
 						$push: {
 							t: stock.timeUpdate,
-							price: stock.currentPrice,
+							price: stock.currentPrice || stock.reference,
 						},
 					}
 					// { upsert: true }
@@ -283,7 +283,7 @@ const crawlHnx = asyncHandler(async () => {
 						symbol: stock.symbol,
 						$push: {
 							t: stock.timeUpdate,
-							price: stock.currentPrice,
+							price: stock.currentPrice || stock.reference,
 						},
 					}
 					// { upsert: true }
@@ -422,7 +422,7 @@ const crawlVn30 = asyncHandler(async () => {
 						symbol: stock.symbol,
 						$push: {
 							t: stock.timeUpdate,
-							price: stock.currentPrice,
+							price: stock.currentPrice || stock.reference,
 						},
 					}
 					// { upsert: true }
@@ -561,7 +561,7 @@ const crawlHose = asyncHandler(async () => {
 						symbol: stock.symbol,
 						$push: {
 							t: stock.timeUpdate,
-							price: stock.currentPrice,
+							price: stock.currentPrice || stock.reference,
 						},
 					}
 					// { upsert: true }
@@ -699,7 +699,7 @@ const crawlUpcom = asyncHandler(async () => {
 						symbol: stock.symbol,
 						$push: {
 							t: stock.timeUpdate,
-							price: stock.currentPrice,
+							price: stock.currentPrice || stock.reference,
 						},
 					}
 					// { upsert: true }
