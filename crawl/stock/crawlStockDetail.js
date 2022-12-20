@@ -72,7 +72,7 @@ const crawlDetailHnx30 = async () => {
 				dataJson.reference = stock.reference;
 				dataJson.ceil = stock.ceil;
 				dataJson.floor = stock.floor;
-				dataJson.currentPrice = stock.currentPrice; //sửa thành crawl từ trang detail chứ kp lấy như thế này, mà trang all stock cũng ko cần currentprice, muốn xem thì vào trang details
+				dataJson.currentPrice = stock.currentPrice || stock.reference; //sửa thành crawl từ trang detail chứ kp lấy như thế này, mà trang all stock cũng ko cần currentprice, muốn xem thì vào trang details
 				dataJson.high = stock.high;
 				dataJson.low = stock.low;
 				dataJson.change = stock.change;
@@ -229,7 +229,7 @@ const crawlDetailHnx = async () => {
 				dataJson.reference = stock.reference;
 				dataJson.ceil = stock.ceil;
 				dataJson.floor = stock.floor;
-				dataJson.currentPrice = stock.currentPrice; //sửa thành crawl từ trang detail chứ kp lấy như thế này, mà trang all stock cũng ko cần currentprice, muốn xem thì vào trang details
+				dataJson.currentPrice = stock.currentPrice || stock.reference; //sửa thành crawl từ trang detail chứ kp lấy như thế này, mà trang all stock cũng ko cần currentprice, muốn xem thì vào trang details
 				dataJson.high = stock.high;
 				dataJson.low = stock.low;
 				dataJson.change = stock.change;
@@ -386,7 +386,7 @@ const crawlDetailVn30 = async () => {
 				dataJson.reference = stock.reference;
 				dataJson.ceil = stock.ceil;
 				dataJson.floor = stock.floor;
-				dataJson.currentPrice = stock.currentPrice; //sửa thành crawl từ trang detail chứ kp lấy như thế này, mà trang all stock cũng ko cần currentprice, muốn xem thì vào trang details
+				dataJson.currentPrice = stock.currentPrice || stock.reference; //sửa thành crawl từ trang detail chứ kp lấy như thế này, mà trang all stock cũng ko cần currentprice, muốn xem thì vào trang details
 				dataJson.high = stock.high;
 				dataJson.low = stock.low;
 				dataJson.change = stock.change;
@@ -543,7 +543,7 @@ const crawlDetailHose = async () => {
 				dataJson.reference = stock.reference;
 				dataJson.ceil = stock.ceil;
 				dataJson.floor = stock.floor;
-				dataJson.currentPrice = stock.currentPrice; //sửa thành crawl từ trang detail chứ kp lấy như thế này, mà trang all stock cũng ko cần currentprice, muốn xem thì vào trang details
+				dataJson.currentPrice = stock.currentPrice || stock.reference; //sửa thành crawl từ trang detail chứ kp lấy như thế này, mà trang all stock cũng ko cần currentprice, muốn xem thì vào trang details
 				dataJson.high = stock.high;
 				dataJson.low = stock.low;
 				dataJson.change = stock.change;
@@ -700,7 +700,7 @@ const crawlDetailUpcom = async () => {
 				dataJson.reference = stock.reference;
 				dataJson.ceil = stock.ceil;
 				dataJson.floor = stock.floor;
-				dataJson.currentPrice = stock.currentPrice; //sửa thành crawl từ trang detail chứ kp lấy như thế này, mà trang all stock cũng ko cần currentprice, muốn xem thì vào trang details
+				dataJson.currentPrice = stock.currentPrice || stock.reference; //sửa thành crawl từ trang detail chứ kp lấy như thế này, mà trang all stock cũng ko cần currentprice, muốn xem thì vào trang details
 				dataJson.high = stock.high;
 				dataJson.low = stock.low;
 				dataJson.change = stock.change;

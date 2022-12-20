@@ -33,48 +33,44 @@ const {
 
 const updateAllListStocks = async () => {
 	crawlHnx();
-	await delay(10000);
+	await delay(300000);
 	crawlHose();
-	await delay(10000);
-	crawlHnx30();
-	await delay(10000);
-	crawlVn30();
-	await delay(30000);
-	const hnxLength = await Hnx.find().count();
-	const hnx30Length = await Hnx30.find().count();
-	const vn30Length = await Vn30.find().count();
-	const hoseLength = await Hose.find().count();
-	// console.log(hnxLength + ' final');
-	// console.log(hnx30Length + ' final');
-	// console.log(vn30Length + ' final');
-	// console.log(hoseLength + ' final');
+	// await delay(10000);
+	// crawlHnx30();
+	// await delay(10000);
+	// crawlVn30();
+	// await delay(30000);
+	// const hnxLength = await Hnx.find().count();
+	// const hnx30Length = await Hnx30.find().count();
+	// const vn30Length = await Vn30.find().count();
+	// const hoseLength = await Hose.find().count();
 };
 
 const updateAllDetailStocks = async () => {
 	//----Length of collection to caculate time delay each crawlingFunction executes
 	const hnxLength = await Hnx.find().count();
-	const hnx30Length = await Hnx30.find().count();
-	const vn30Length = await Vn30.find().count();
+	// const hnx30Length = await Hnx30.find().count();
+	// const vn30Length = await Vn30.find().count();
 	const hoseLength = await Hose.find().count();
 	// const upcomLength = await Upcom.find().count();
 
 	//---crawl detail information in particularly stock and update price to array in database to draw chart
 	console.log('start crawl detail stocks');
 
-	if (hnx30Length !== 0) {
-		crawlDetailHnx30();
-		await delay(hnx30Length * 3000);
-	}
+	// if (hnx30Length !== 0) {
+	// 	crawlDetailHnx30();
+	// 	await delay(hnx30Length * 3000);
+	// }
 
 	if (hnxLength !== 0) {
 		crawlDetailHnx();
 		await delay(hnxLength * 3000);
 	}
 
-	if (vn30Length !== 0) {
-		crawlDetailVn30();
-		await delay(vn30Length * 3000);
-	}
+	// if (vn30Length !== 0) {
+	// 	crawlDetailVn30();
+	// 	await delay(vn30Length * 3000);
+	// }
 
 	if (hoseLength !== 0) {
 		crawlDetailHose();
@@ -92,25 +88,25 @@ const updateAllDetailStocks = async () => {
 const updateAllChartStocks = async () => {
 	//----Length of collection to caculate time delay each crawlingFunction executes
 	const hnxLength = await Hnx.find().count();
-	const hnx30Length = await Hnx30.find().count();
-	const vn30Length = await Vn30.find().count();
+	// const hnx30Length = await Hnx30.find().count();
+	// const vn30Length = await Vn30.find().count();
 	const hoseLength = await Hose.find().count();
 	// const upcomLength = await Upcom.find().count();
 
-	if (hnx30Length !== 0) {
-		crawlChartHnx30();
-		await delay(hnx30Length * 3000);
-	}
+	// if (hnx30Length !== 0) {
+	// 	crawlChartHnx30();
+	// 	await delay(hnx30Length * 3000);
+	// }
 
 	if (hnxLength !== 0) {
 		crawlChartHnx();
 		await delay(hnxLength * 3000);
 	}
 
-	if (vn30Length !== 0) {
-		crawlChartVn30();
-		await delay(vn30Length * 3000);
-	}
+	// if (vn30Length !== 0) {
+	// 	crawlChartVn30();
+	// 	await delay(vn30Length * 3000);
+	// }
 
 	if (hoseLength !== 0) {
 		crawlChartHose();
