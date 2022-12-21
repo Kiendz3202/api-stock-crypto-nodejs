@@ -44,7 +44,7 @@ const runCrawlAllDetailStocks = async () => {
 
 const runCrawlAllChartStocks = async () => {
 	// 0 2 * * *
-	cron.schedule('0 2 * * *', async () => {
+	cron.schedule('0 2,10 * * *', async () => {
 		updateAllChartStocks();
 	});
 };
