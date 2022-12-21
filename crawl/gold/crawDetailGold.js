@@ -30,7 +30,6 @@ const { JSDOM } = jsdom;
 // const request = require('request-promise');
 
 const crawlSjc = async () => {
-	console.time('sjc');
 	const result = await axios(urlSjc)
 		.then((res) => res.data)
 		.catch((err) => {
@@ -508,7 +507,7 @@ const crawlSjc = async () => {
 		},
 		{ upsert: true }
 	)
-		.then((doc) => console.timeEnd('sjc'))
+		// .then((doc) => console.log(doc))
 		.catch((err) => {
 			console.log(err.code + ' ' + err.response.status + ' sjc');
 			uploadErrorToDb(err.code + ' ' + err.response.status + ' sjc');
@@ -533,7 +532,6 @@ const crawlSjc = async () => {
 };
 
 const crawlPnj = async (localtionNumber, index) => {
-	console.time('pnj' + index);
 	const result = await axios(`${urlPnj}${localtionNumber}`)
 		.then((res) => res.data)
 		.catch((err) => {
@@ -721,7 +719,7 @@ const crawlPnj = async (localtionNumber, index) => {
 		},
 		{ upsert: true }
 	)
-		.then((doc) => console.timeEnd('pnj' + index))
+		// .then((doc) => console.log(doc))
 		.catch((err) => {
 			console.log(err.code + ' ' + err.response.status + ' pnj');
 			uploadErrorToDb(err.code + ' ' + err.response.status + ' pnj');
@@ -729,7 +727,6 @@ const crawlPnj = async (localtionNumber, index) => {
 };
 
 const crawlDoji = async () => {
-	console.time('doji');
 	const result = await axios(urlDoji)
 		.then((res) => res.data)
 		.catch((err) => {
@@ -1206,7 +1203,7 @@ const crawlDoji = async () => {
 		},
 		{ upsert: true }
 	)
-		.then((doc) => console.timeEnd('doji'))
+		// .then((doc) => console.log(doc))
 		.catch((err) => {
 			console.log(err.code + ' ' + err.response.status + ' doji');
 			uploadErrorToDb(err.code + ' ' + err.response.status + ' doji');
@@ -1214,7 +1211,6 @@ const crawlDoji = async () => {
 };
 
 const crawlPhuQuySjc = async () => {
-	console.time('phuquy');
 	const result = await axios(urlPhuQuySjc)
 		.then((res) => res.data)
 		.catch((err) => {
@@ -1398,7 +1394,7 @@ const crawlPhuQuySjc = async () => {
 		},
 		{ upsert: true }
 	)
-		.then((doc) => console.timeEnd('phuquy'))
+		// .then((doc) => console.log(doc))
 		.catch((err) => {
 			console.log(err.code + ' ' + err.response.status + ' Phú Quý SJC');
 			uploadErrorToDb(
@@ -1408,7 +1404,6 @@ const crawlPhuQuySjc = async () => {
 };
 
 const crawlBaoTinMinhChau = async () => {
-	console.time('baotinminhchau');
 	const result = await axios(ulrBaoTinMinhChau)
 		.then((res) => res.data)
 		.catch((err) => {
@@ -1602,7 +1597,7 @@ const crawlBaoTinMinhChau = async () => {
 		},
 		{ upsert: true }
 	)
-		.then((doc) => console.timeEnd('baotinminhchau'))
+		// .then((doc) => console.log(doc))
 		.catch((err) => {
 			console.log(
 				err.code + ' ' + err.response.status + ' baotinminhchau'
@@ -1614,7 +1609,6 @@ const crawlBaoTinMinhChau = async () => {
 };
 
 const crawlMiHong = async () => {
-	console.time('mihong');
 	const result = await axios(urlMiHong)
 		.then((res) => res.data)
 		.catch((err) => {
@@ -1768,7 +1762,7 @@ const crawlMiHong = async () => {
 		},
 		{ upsert: true }
 	)
-		.then((doc) => console.timeEnd('mihong'))
+		// .then((doc) => console.log(doc))
 		.catch((err) => {
 			console.log(err.code + ' ' + err.response.status + ' mihong');
 			uploadErrorToDb(err.code + ' ' + err.response.status + ' mihong');

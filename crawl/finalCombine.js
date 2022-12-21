@@ -30,21 +30,21 @@ const runCrawlCoin = async () => {
 };
 
 const runCrawlAllListStocks = async () => {
-	cron.schedule('*/10 9-15 * * 1-5', async () => {
+	cron.schedule('*/10 9-14 * * 1-5', async () => {
 		updateAllListStocks();
 	});
 };
 
 const runCrawlAllDetailStocks = async () => {
 	//  0 2,12 * * *
-	cron.schedule('0 2,11,13 * * *', async () => {
+	cron.schedule('0 2,10,12,14,16 * * *', async () => {
 		updateAllDetailStocks();
 	});
 };
 
 const runCrawlAllChartStocks = async () => {
 	// 0 2 * * *
-	cron.schedule('0 2,10 * * *', async () => {
+	cron.schedule('0 4 * * *', async () => {
 		updateAllChartStocks();
 	});
 };
