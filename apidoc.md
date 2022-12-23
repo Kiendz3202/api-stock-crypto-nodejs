@@ -2,7 +2,7 @@
 
 -   Endpoints:
 
-    -   Pre-endpoint: **baseURL = "https://66.42.58.72/api/v1"**
+    -   Pre-endpoint: **baseURL = "http://66.42.58.72/api/v1"**
 
     -   Sign up:
         _POST baseURL/register_
