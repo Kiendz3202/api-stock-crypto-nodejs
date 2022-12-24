@@ -55,8 +55,8 @@ const paginationPageCoinController = async (req, res, next) => {
 			{
 				$project: {
 					_id: 0,
-					t: { $slice: ['$t', -10] },
-					price: { $slice: ['$price', -10] },
+					t: { $slice: ['$t', -24] },
+					price: { $slice: ['$price', -24] },
 					nameId: 1,
 				},
 			},
