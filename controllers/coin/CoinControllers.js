@@ -27,8 +27,7 @@ const paginationPageCoinController = async (req, res, next) => {
 				'query per_page and page must be integer and larger than 0'
 			);
 		}
-		const allCoin = await Coin.find();
-		const allCoinLength = allCoin.length;
+		const allCoinLength = await Coin.count();
 		const countPage = Math.ceil(allCoinLength / perPage);
 
 		//-------------pagination by mongoose------------------------
@@ -42,9 +41,30 @@ const paginationPageCoinController = async (req, res, next) => {
 			throw createError.NotFound('can not find data');
 		}
 
+		const arr = [];
+		coinList.forEach((coin) => {
+			arr.push(coin.nameId);
+		});
+		// const test = async () => {
+		const dataChart = await CoinChart.aggregate([
+			{
+				$match: {
+					$expr: { $in: ['$nameId', arr] },
+				},
+			},
+			{
+				$project: {
+					_id: 0,
+					t: { $slice: ['$t', -10] },
+					price: { $slice: ['$price', -10] },
+					nameId: 1,
+				},
+			},
+		]);
+
 		res.status(200).json({
 			status: 'ok',
-			data: { coinList, pages: countPage },
+			data: { coinList, dataChart, pages: countPage },
 		});
 	} catch (error) {
 		next(error);
