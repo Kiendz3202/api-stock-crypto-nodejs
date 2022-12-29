@@ -34,12 +34,12 @@ const collectQueryData = async (url, pageEvaluateFunc, props) => {
 
 		if (props) {
 			const result = await page.evaluate(pageEvaluateFunc, ...props);
-			await browser.close();
+			browser.close();
 			return result;
 			// .then(() => browser.close());
 		} else {
 			const result = await page.evaluate(pageEvaluateFunc);
-			await browser.close();
+			browser.close();
 			return result;
 			// .then(() => browser.close());
 		}
@@ -94,12 +94,12 @@ const collectQueryDataHeightScroll = async (url, pageEvaluateFunc, props) => {
 
 		if (props) {
 			const result = await page.evaluate(pageEvaluateFunc, ...props);
-			await browser.close();
+			browser.close();
 			return result;
 			// .then(() => browser.close());
 		} else {
 			const result = await page.evaluate(pageEvaluateFunc);
-			await browser.close();
+			browser.close();
 			return result;
 			// .then(() => browser.close());
 		}
